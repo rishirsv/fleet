@@ -44,7 +44,7 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    Include explicit light and dark icon paths, even when both use the same artwork.
    Installing or publishing skills does not start Tunnel or authorize folders.
 5. Refresh the desktop plugin inventory and verify a fresh loader uses the
-   selected source without duplicates. The current `verify-codex-skills.py`
+   selected source without duplicates. The current `verify-skills.py`
    checks availability and known duplicates, not complete release contents.
    Report cloud publication separately from desktop verification. Restart only
    after active chats finish if desktop retains stale skills.

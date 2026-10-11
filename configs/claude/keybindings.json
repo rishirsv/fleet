@@ -3,9 +3,8 @@
     {
       "context": "Chat",
       "bindings": {
-        "shift+enter": "chat:newline",
-        "meta+enter": "chat:newline",
-        "enter": "chat:submit"
+        "ctrl+alt+shift+cmd+m": "chat:modelPicker",
+        "ctrl+alt+shift+cmd+f": "chat:fastMode"
       }
     }
   ]

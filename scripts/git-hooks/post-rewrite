@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+# A pull with rebase fires post-rewrite instead of post-merge.
+[ "${1:-}" = rebase ] || exit 0
+root=$(git rev-parse --show-toplevel)
+"$root/scripts/sync-configs.sh" --apply

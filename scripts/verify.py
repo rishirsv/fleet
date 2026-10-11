@@ -178,7 +178,7 @@ def run(*command: str, env: dict[str, str] | None = None) -> None:
 
 
 def full_checks(codex_names: list[str], claude_names: list[str]) -> None:
-    run("node", "scripts/generate-claude-agents.mjs", "--check")
+    run("node", "scripts/plugin-sync/generate-agents.mjs", "--check")
     run("claude", "plugin", "validate", ".", "--strict")
     for name in claude_names:
         run("claude", "plugin", "validate", f"plugins/{name}", "--strict")
@@ -194,7 +194,7 @@ def full_checks(codex_names: list[str], claude_names: list[str]) -> None:
                         (ROOT / "plugins/dots/skills/html/scripts").glob("*.test.mjs"))
     run("node", "--test", *html_tests)
     env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
-    # Keep each suite's existing owner; both are required by the release gate.
+    # Check package validation and plugin runtime behavior; sync has no unit suite.
     for suite in ("tests", "plugins/dots/tests"):
         run(sys.executable, "-m", "unittest", "discover", "-s", suite, "-p", "test_*.py", env=env)
 

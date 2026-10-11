@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+root=$(git rev-parse --show-toplevel)
+# Rebase creates intermediate commits; publish only completed user commits.
+if [ -d "$(git rev-parse --git-path rebase-merge)" ] || [ -d "$(git rev-parse --git-path rebase-apply)" ]; then
+  exit 0
+fi
+git push || {
+  echo 'Fleet: commit succeeded, but push failed. Local config was not applied; retry push, then scripts/sync-configs.sh --apply.' >&2
+  exit 1
+}
+"$root/scripts/sync-configs.sh" --apply || {
+  echo 'Fleet: push succeeded, but local config sync failed. Retry scripts/sync-configs.sh --apply.' >&2
+  exit 1
+}

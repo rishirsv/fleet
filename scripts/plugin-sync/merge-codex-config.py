@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # /// script
-# requires-python = ">=3.9"
+# requires-python = ">=3.10"
 # dependencies = ["tomlkit==0.13.3"]
 # ///
 """Apply repo-owned Codex settings without replacing application-owned state."""
@@ -24,11 +24,6 @@ from typing import Any, Iterable, Optional, Tuple
 import tomlkit
 from tomlkit.exceptions import TOMLKitError
 
-
-LEGACY_MARKERS = {
-    "# >>> Dots portable Codex config >>>",
-    "# <<< Dots portable Codex config <<<",
-}
 
 LOCAL_TOP_LEVEL_KEYS = {"notify", "service_tier"}
 LOCAL_TABLE_PREFIXES = (
@@ -93,14 +88,6 @@ def parse_document(text: str, label: str) -> Any:
         raise ConfigError("invalid TOML in {}: {}".format(label, error)) from error
 
 
-def without_legacy_markers(text: str) -> str:
-    return "".join(
-        line
-        for line in text.splitlines(keepends=True)
-        if line.rstrip("\r\n") not in LEGACY_MARKERS
-    )
-
-
 def validate_portable_source(source: Mapping[str, Any]) -> None:
     root_keys = set(source.keys())
     if {"default_permissions", "sandbox_mode"} <= root_keys:
@@ -126,21 +113,6 @@ def remove_root(document: Mapping[str, Any], key: str, changed: list[KeyPath]) -
 def apply_compatibility_rules(
     source: Mapping[str, Any], live: Mapping[str, Any], changed: list[KeyPath]
 ) -> None:
-    if unwrapped(source.get("model_provider")) == "openai":
-        catalog = unwrapped(live.get("model_catalog_json"))
-        obsolete_catalog = catalog in {
-            "model-catalog-no-confirmations.json",
-            "/Users/rishi/.codex/model-catalog-no-confirmations.json",
-        }
-        if catalog == "cliproxy-models.json" or (
-            obsolete_catalog and "model_catalog_json" not in source
-        ):
-            remove_root(live, "model_catalog_json", changed)
-        providers = live.get("model_providers", {})
-        if "cliproxyapi" in providers:
-            del providers["cliproxyapi"]
-            changed.append(("model_providers", "cliproxyapi"))
-
     if "sandbox_mode" in source:
         remove_root(live, "default_permissions", changed)
         remove_root(live, "permissions", changed)
@@ -195,7 +167,7 @@ def plan_config(source: Path, target: Path) -> ConfigPlan:
 
     before = read_target(target) if path_exists(target) else None
     live_text = before.decode("utf-8") if before is not None else ""
-    live_document = parse_document(without_legacy_markers(live_text), str(target))
+    live_document = parse_document(live_text, str(target))
 
     changed: list[KeyPath] = []
     apply_compatibility_rules(source_document, live_document, changed)

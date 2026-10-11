@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT="${0:A:h:h}"
-source "$ROOT/scripts/codex-plugin-source.sh"
+source "$ROOT/scripts/plugin-sync/source.sh"
 typeset -A TARGETS
 typeset -i ALLOW_DIRTY=0
 PLUGIN_SOURCE=""
@@ -43,9 +43,9 @@ done
 (( ${#TARGETS} )) || TARGETS=([codex]=1 [claude]=1)
 
 sync_paths=(plugins)
-(( ${+TARGETS[codex]} )) && sync_paths+=(scripts/sync-plugins.sh scripts/sync-codex-config.py scripts/codex-plugin-source.sh scripts/verify-codex-skills.py configs/codex/plugin-exclusions.toml configs/codex/plugins-cloud.toml)
+(( ${+TARGETS[codex]} )) && sync_paths+=(scripts/sync-plugins.sh scripts/plugin-sync/merge-codex-config.py scripts/plugin-sync/source.sh scripts/plugin-sync/verify-skills.py scripts/plugin-sync/plugin-exclusions.toml scripts/plugin-sync/plugins-cloud.toml)
 (( ${+TARGETS[codex]} )) && sync_paths+=(.agents/plugins/marketplace.json)
-(( ${+TARGETS[claude]} )) && sync_paths+=(.claude-plugin/marketplace.json)
+(( ${+TARGETS[claude]} )) && sync_paths+=(.claude-plugin/marketplace.json scripts/sync-plugins.sh scripts/plugin-sync/generate-agents.mjs)
 dirty_source="$(git -C "$ROOT" status --porcelain=v1 --untracked-files=all -- "${sync_paths[@]}")"
 if [[ -n "$dirty_source" ]]; then
   if (( ! ALLOW_DIRTY )); then
@@ -116,7 +116,7 @@ sync_codex_home() {
     printf '%s\n' "$selection" > "$profile_home/dots-plugin-source"
   fi
   policy="$(codex_plugin_source "$profile_home")"
-  uv run --quiet --script "$ROOT/scripts/sync-codex-config.py" apply \
+  uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" apply \
     --source "$policy" \
     --target "$profile_home/config.toml"
   # Registering the repo can install its packages again. Cloud profiles must
@@ -158,7 +158,7 @@ errors = ["%s@dots: expected %s, got %s" % (name, version, installed.get(name + 
 errors += ["%s: duplicate copy is still enabled" % key for key, settings in policy.items() if settings.get("enabled") is False and plugins.get(key, {}).get("enabled") is True]
 if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(errors))
 ' "$policy" "${active_specs[@]}" <<< "$installed"
-  CODEX_HOME="$profile_home" uv run --quiet --script "$ROOT/scripts/verify-codex-skills.py" \
+  CODEX_HOME="$profile_home" uv run --quiet --script "$ROOT/scripts/plugin-sync/verify-skills.py" \
     --policy "$policy" --cwd "$ROOT"
 
   if [[ "$policy" == */plugins-cloud.toml ]]; then
@@ -174,7 +174,7 @@ if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(error
       codex_for "$home" plugin marketplace remove dots >/dev/null
     fi
     # plugin remove also removes its config entry; retain explicit exclusions.
-    uv run --quiet --script "$ROOT/scripts/sync-codex-config.py" apply \
+    uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" apply \
       --source "$policy" --target "$profile_home/config.toml"
   fi
 
@@ -198,7 +198,7 @@ if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(error
 sync_claude() {
   local spec name version plugin_id installed marketplaces marketplace_status stale details
   echo "Syncing Claude"
-  node "$ROOT/scripts/generate-claude-agents.mjs" --check >/dev/null
+  node "$ROOT/scripts/plugin-sync/generate-agents.mjs" --check >/dev/null
   claude plugin validate "$ROOT/plugins/dots" --strict >/dev/null
 
   marketplaces="$(claude plugin marketplace list --json)"

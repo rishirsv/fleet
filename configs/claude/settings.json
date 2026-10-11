@@ -1,30 +1,14 @@
 {
-  "model": "fable",
-  "workflowKeywordTriggerEnabled": false,
-  "enabledPlugins": {
-    "codex@openai-codex": true,
-    "dots@dots": true,
-    "build-ios-apps@steady-app": true
+  "permissions": {
+    "defaultMode": "bypassPermissions"
   },
-  "extraKnownMarketplaces": {
-    "dots": {
-      "source": {
-        "source": "github",
-        "repo": "rishirsv/dots"
-      }
-    }
-  },
-  "effortLevel": "medium",
-  "modelSettings": {
-    "claude-fable-5": {
-      "effortLevel": "xhigh"
-    },
-    "claude-fable-5-1": {
-      "effortLevel": "medium"
-    }
-  },
-  "tui": "default",
   "skipDangerousModePermissionPrompt": true,
-  "theme": "light",
-  "enableRemoteControl": false
+  "sandbox": {
+    "enabled": false
+  },
+  "enabledPlugins": {
+    "dots@dots": true,
+    "drafts@dots": true
+  },
+  "theme": "auto"
 }

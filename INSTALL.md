@@ -1,167 +1,133 @@
-# Onboard a Mac
+# Set up Fleet
 
-Use this checklist to install Dots on a new Mac or refresh an existing one.
-Plugin installation is separate from machine configuration. The files under
-`configs/` contain personal, opinionated defaults, so inspect them before
-applying them.
+Clone this repository on each computer. Install the apps you use and sign in.
+Sync requires Git, Python 3.10+, and Zsh; Codex/plugin sync also needs uv, and
+Claude plugin sync needs Node. VS Code extension installation needs `code` on
+PATH. On macOS, install Karabiner-Elements and grant its requested permissions
+for Caps Lock → Hyper. Tunnel and Logi Options retain their separate setup.
 
-## Prepare the Mac
-
-Put `git`, `python3`, `uv`, and `zsh` on `PATH`. Install and sign in to Codex,
-Claude Code, or both. Claude plugin sync also requires `node` on `PATH`. Config
-sync uses `uv` to run its pinned TOML dependency without modifying system
-Python.
-
-Install and open each app whose configuration you plan to restore. Declarative
-config targets cover Codex, a second Codex profile, Claude Code, VS Code,
-Ghostty, Starship, and Zsh. Separate setup commands cover Computer Use,
-Tinycast, and Wispr Flow with Logi Options+. Tinycast onboarding expects its
-Coffee extension to be installed. The Wispr and Logitech repair requires `jq`
-and `sqlite3` and expects both apps to have created their local settings.
-
-## Get the repository
-
-Create the canonical checkout or update it:
+## Check this computer
 
 ```sh
-if [[ -d ~/Code/dots/.git ]]; then
-  git -C ~/Code/dots pull --ff-only
-else
-  mkdir -p ~/Code
-  git clone https://github.com/rishirsv/dots.git ~/Code/dots
-fi
-cd ~/Code/dots
+python3 scripts/doctor.py
+python3 scripts/doctor.py --configs
 ```
 
-## Install the plugins
+Doctor checks required CLI tools, per-profile plugin-source choices, Fleet hooks,
+and macOS app/font installation. `--configs` also checks saved configuration
+drift; `--profile PATH` selects a Codex profile. It reports problems without
+applying changes. App sign-ins, Tunnel authorization, and macOS permissions
+still need verification in their apps.
 
-Choose one Codex source for the account signed in on this Mac:
+## Preview and apply
 
 ```sh
-# Personal account with Dots and Drafts installed in ChatGPT:
+scripts/sync-configs.sh --dry-run
+scripts/sync-configs.sh --apply
+scripts/install-hooks.sh
+```
+
+Preview is the default. Apply backs up changed files. JSON/TOML sync preserves
+unlisted settings and unrelated shortcuts, but rewrites JSONC as plain JSON.
+Ghostty and `.zshrc` are replaced with backups; move private exports and any
+needed local shell setup into `~/.zshrc.local` before applying. Open a new shell
+and reload affected apps afterward.
+
+Choose one or several targets when needed:
+
+| Target | Managed configuration |
+| --- | --- |
+| `--agents` | Shared guidance in Codex `AGENTS.md` and Claude `CLAUDE.md` |
+| `--codex` | Settings and shortcuts in each selected Codex profile |
+| `--claude` | Settings and supported shortcuts |
+| `--vscode` | Minimal editor settings, shortcuts, Codex and Claude extensions |
+| `--karabiner` | Selected-profile Caps Lock mapping, macOS only |
+| `--ghostty` | Terminal settings and Paper Mono |
+| `--zsh` | Interactive shell, completion, history, and helpers |
+
+Without targets, sync covers all of them. Codex defaults to `CODEX_HOME` or
+`~/.codex`, plus `~/.codex-personal` when present. `--profile PATH` selects one
+Codex profile; it does not narrow other targets. Claude uses `CLAUDE_CONFIG_DIR`
+or `~/.claude`; VS Code supports `VSCODE_USER_DIR`. Paper Mono Regular installs
+on macOS when syncing Codex, VS Code, or Ghostty. Font size is 16 throughout;
+apps use different sizing units, so visual adjustment may still be needed.
+
+Shared guidance uses a managed block and preserves existing global instructions.
+Repository instructions take precedence. Fleet's publishing rules and hooks
+stay in Fleet; using the shared guidance in another repo never installs hooks
+there. Edit `configs/agents/AGENTS.md` to change the shared guidance.
+
+Apply can succeed for one target before another fails. Check the output and
+retry the failed target; backups are beside changed files. `--status` reports
+drift without writing. Sync does not execute on another computer.
+
+## Plugins and Tunnel
+
+Choose the source for the account in the current Codex profile:
+
+```sh
+# Personal account with existing cloud Dots/Drafts installations
 scripts/sync-plugins.sh --codex --source cloud
-
-# Work account without those cloud installations:
+# Work account using local plugins
 scripts/sync-plugins.sh --codex --source local
+# Claude marketplace plugins
+scripts/sync-plugins.sh --claude
 ```
 
-Cloud mode uses the same account plugins on web and desktop. It verifies that
-Codex can load their skills before removing local Dots/Drafts packages. Local
-mode installs from this repository and disables the cloud copies only in that
-local profile. It preserves account-wide cloud installations.
+The source choice is saved per profile and preserved by later syncs. Cloud mode
+requires the account's existing installations. Sync validates a fresh Codex
+loader and rejects duplicates; restart existing desktop sessions when needed.
+Claude uses the `rishirsv/dots` marketplace; `/reload-plugins` refreshes sessions.
+Plugin sync refuses dirty plugin/tooling source; `--allow-dirty` is for development.
 
-The choice is saved in `~/.codex/dots-plugin-source`, or under `CODEX_HOME`
-when set. Later plugin and config syncs preserve it. Profiles without a saved
-choice default to local. Codex sync also refreshes `~/.codex-personal` when
-present, using that profile's own choice. To select its source explicitly:
+`scripts/sync-plugins.sh --all` refreshes both hosts. Local sync does not publish
+cloud releases; follow [cloud releases](docs/maintainers/cloud-releases.md).
+Config sync installs the selected VS Code extensions; Codex/Claude plugin
+installation remains a separate step.
 
-```sh
-CODEX_HOME="$HOME/.codex-personal" scripts/sync-plugins.sh --codex --source local
-```
+Follow [Tunnel setup](plugins/dots/scripts/dots-tunnel/README.md#local-setup)
+for its separate connection and folder authorization. Retained mouse/keyboard
+setup is in [Logi Options](configs/logi-options-plus/shortcuts.md).
 
-After choosing, run `scripts/sync-plugins.sh --codex` for later refreshes. Sync
-fails if Codex loads duplicates or cannot load the selected plugins. Check the
-desktop skill picker after changing source; an existing app server can retain
-old skills until the desktop app restarts.
+## Shortcuts and shell
 
-For Claude, run `scripts/sync-plugins.sh --claude`. Existing Claude sessions
-require `/reload-plugins` or a restart.
+Hyper means Command+Control+Option+Shift. Hold Caps Lock for Hyper; tap it for
+Escape. Equivalent Karabiner rules are retained; conflicting Caps Lock mappings
+stop that target for manual integration. Unrelated rules remain.
 
-Local sync does not publish cloud releases. Use the cloud release procedure
-to publish Dots from the same repository source.
+| Hyper key | Codex | Claude Code | VS Code |
+| --- | --- | --- | --- |
+| T | Terminal | — | Terminal |
+| R | Cycle reasoning | — | — |
+| M | Model picker | Model picker | — |
+| F | Fast mode | Fast mode | — |
+| W | Worktree mode | — | — |
+| B | Sidebar | — | Sidebar |
+| O | Project picker | — | Open folder |
 
-## Cloud installations
+Ghostty forwards Claude's supported bindings using extended terminal sequences.
+Use Claude's model picker for effort controls. Claude inherits terminal fonts
+and its automatic theme follows the terminal background. Codex and Claude
+settings enable the selected unrestricted permissions; VS Code enables tool
+auto-approval. Model and effort remain app defaults.
 
-Cloud plugins belong to the account or workspace where they were installed.
-This repository does not grant access to the maintainer's private installations.
-Use local installation unless your account already has Dots and Drafts.
+Shell helpers: `cx` (Codex), `cxp` (personal Codex), `cl` (Claude), `gs` (status),
+`gd` (diff), `gds` (staged diff), `gr` (repo root), and `fleet` (config preview).
+Set `FLEET_HOME` in `.zshrc.local` if Fleet is outside `~/Code/fleet`.
 
-Maintainers publish account releases separately using the
-[cloud release procedure](docs/maintainers/cloud-releases.md). Local sync does
-not publish a cloud release.
+## Fleet hooks
 
-## Optional local file access
+Install hooks separately in each Fleet checkout. They push after a commit,
+then apply local configs. Failed push prevents apply without undoing the commit.
+Rebase intermediate commits skip publishing; completed rebase/merge pulls apply
+locally. A pull with no changes may not invoke hooks: sync manually if needed.
+Existing hook configuration must be integrated before installation.
 
-For ChatGPT access to local files, follow the optional
-[dots-tunnel setup](plugins/dots/scripts/dots-tunnel/README.md#local-setup).
-Plugin installation alone does not start a tunnel or authorize any folder.
+Pull Fleet on another computer to receive changes. Git does not copy hook
+installation, app sign-ins, private shell settings, or macOS permissions.
 
-## Restore machine configuration
-
-Choose the targets needed on this Mac. Run `scripts/sync-configs.sh --help` to
-see the authoritative target list.
-
-The `--fonts` target installs the repo-owned Paper Mono family into
-`~/Library/Fonts`. Codex uses it for code and other monospaced text in both
-light and dark themes.
-
-Preview the selected targets first, inspect every proposed replacement, and
-then apply the same target list. For example:
-
-```sh
-scripts/sync-configs.sh --dry-run --codex --claude --vscode --ghostty --starship --zsh
-scripts/sync-configs.sh           --codex --claude --vscode --ghostty --starship --zsh
-```
-
-To apply every declarative file target, use:
-
-```sh
-scripts/sync-configs.sh --dry-run --all
-scripts/sync-configs.sh --all
-```
-
-Config sync creates timestamped backups before replacing existing files. It
-does not copy secrets, authentication state, sessions, caches, clipboard
-contents, AI conversations, or macOS privacy grants. Keep secrets and
-machine-local shell overrides in `~/.zshrc.local`.
-
-Application-specific setup is deliberately separate because it changes macOS
-defaults, app databases, or running processes. Preview and apply only the setup
-you need:
-
-```sh
-python3 scripts/sync-codex-computer-use.py apply --dry-run
-python3 scripts/sync-codex-computer-use.py apply
-
-python3 scripts/sync-tinycast-config.py apply --config configs/tinycast/settings.json --dry-run
-python3 scripts/sync-tinycast-config.py apply --config configs/tinycast/settings.json
-
-scripts/repair-wispr-logitech-shortcut.sh --dry-run
-scripts/repair-wispr-logitech-shortcut.sh
-```
-
-## Finish per-machine setup
-
-Complete the settings that macOS and individual apps do not allow Dots to
-restore:
-
-1. Grant the required Screen Recording, Accessibility, and Computer Use app
-   permissions in macOS System Settings.
-2. Opt in to Computer History on this Mac. If collection later stops, use
-   **Settings > Computer history > Resume**.
-3. Confirm Tinycast has Coffee installed before applying its config.
-4. Follow [`configs/logi-options-plus/shortcuts.md`](configs/logi-options-plus/shortcuts.md)
-   for the remaining device assignments and end-to-end Wispr checks.
-5. Restore account-specific app settings and sign-ins from their original
-   services rather than copying local application data.
-
-The optional Computer Use command enables the helper's undocumented
-`ComputerUseAllowForbiddenTargets` default so it can target ChatGPT, Codex, and
-terminal-class apps. It fails if an installed helper no longer ships that
-override. ChatGPT's startup surface remains app runtime state and is not a
-documented Codex config key.
-
-## Verify the onboarding
-
-Check the same config targets that were applied, then confirm each installed
-plugin host can load its inventory:
-
-```sh
-scripts/sync-configs.sh --status --codex --claude --vscode --ghostty --starship --zsh
-codex plugin list
-claude plugin list
-```
-
-Use `scripts/sync-configs.sh --status --all` after applying the complete
-profile. Onboarding is complete when the status command and the relevant plugin
-inventory commands exit successfully, followed by the manual checks above.
+Scripts expose sync, doctor, hook installation, and validation. `config-sync.py`
+contains the shared file merge helper; `plugin-sync/` contains plugin internals.
+The retained Logi repair helper is under `scripts/logi-options/`. Root tests
+cover package validation only. Sync is checked through doctor, dry-run, and
+status commands; skill and Tunnel runtime tests stay with their plugin source.

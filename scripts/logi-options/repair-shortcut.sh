@@ -16,7 +16,7 @@ WISPR_LEFT_CONTROL_KEY_CODE=59
 
 usage() {
   cat <<'EOF'
-Usage: scripts/repair-wispr-logitech-shortcut.sh [--check|--dry-run]
+Usage: scripts/logi-options/repair-shortcut.sh [--check|--dry-run]
 
 Repairs and verifies the MX Master 4 and Wispr Flow hands-free shortcut:
   - MX Master 4 top button c196 -> Right Control

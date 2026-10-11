@@ -1,176 +1,54 @@
-# Load completion once, then retain Oh My Zsh's Git aliases without loading
-# the full framework. Starship owns the prompt below.
+# Fleet's interactive shell. Keep non-interactive agent commands quiet.
+[[ -o interactive ]] || return
+
+# Preserve inherited PATH; discover portable user tools and Homebrew binaries.
+typeset -U path PATH
+path=($HOME/.local/bin $HOME/.bun/bin $HOME/.cargo/bin $path)
+[[ ! -d /opt/homebrew/bin ]] || path=(/opt/homebrew/bin /opt/homebrew/sbin $path)
+[[ ! -d /usr/local/bin ]] || path=(/usr/local/bin $path)
+
+# Machine-specific exports and secrets stay outside Git.
+[[ ! -f "$HOME/.zshrc.local" ]] || source "$HOME/.zshrc.local"
+
+HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
+HISTSIZE=20000
+SAVEHIST=20000
+setopt APPEND_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS
+
 autoload -Uz compinit
-compinit -C
-source "$HOME/.oh-my-zsh/plugins/git/git.plugin.zsh"
-
-# ==============================================
-# Custom Aliases
-# ==============================================
-export CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN=1
-export CLAUDE_CODE_DISABLE_MOUSE=1
-
-alias claude='command claude'
-alias cc='claude --dangerously-skip-permissions'
-alias zrsch='source "$HOME/.zshrc"'
-
-codex() {
-  if [[ "${1:-}" == "p" ]]; then
-    shift
-    CODEX_HOME="$HOME/.codex-personal" command codex "$@"
-  else
-    command codex "$@"
-  fi
-}
-
-# ==============================================
-# PATH Additions
-# ==============================================
-
-# Bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
-
-# uv tools
-export PATH="$HOME/.local/bin:$PATH"
-
-# ==============================================
-# Version Managers
-# ==============================================
-
-# mise (universal version manager)
-eval "$(mise activate zsh)"
-
-# fnm (Fast Node Manager)
-eval "$(fnm env --use-on-cd)"
-
-# ==============================================
-# Bun Completions
-# ==============================================
-
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-# ==============================================
-# Prompt
-# ==============================================
-
-# Starship prompt
-ZSH_INIT_CACHE="$HOME/.cache/zsh-init"
-[[ -d "$ZSH_INIT_CACHE" ]] || mkdir -p "$ZSH_INIT_CACHE"
-
-if [[ ! -s "$ZSH_INIT_CACHE/starship.zsh" || $commands[starship] -nt "$ZSH_INIT_CACHE/starship.zsh" ]]; then
-  starship init zsh >| "$ZSH_INIT_CACHE/starship.zsh"
-fi
-source "$ZSH_INIT_CACHE/starship.zsh"
-
-# ==============================================
-# Completion UX
-# ==============================================
-
-zmodload zsh/complist
-setopt AUTO_MENU
-setopt COMPLETE_IN_WORD
-setopt ALWAYS_TO_END
-setopt GLOB_COMPLETE
-
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*:descriptions' format '%F{39}%B%d%b%f'
-zstyle ':completion:*:messages' format '%F{220}%d%f'
-zstyle ':completion:*:warnings' format '%F{196}no matches%f'
-
+compinit
+bindkey -e
 autoload -Uz up-line-or-beginning-search down-line-or-beginning-search
-bindkey '^[[Z' reverse-menu-complete
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
 bindkey '^[[A' up-line-or-beginning-search
 bindkey '^[[B' down-line-or-beginning-search
 
-# Support Shift-Enter as a literal newline in terminals that emit these sequences.
-shift-enter-newline() {
-  LBUFFER+=$'\n'
+# No Git subprocess on every prompt; agents can inspect status explicitly.
+PROMPT='%F{cyan}%~%f %(?.%F{green}.%F{red})❯%f '
+RPROMPT=''
+
+# Agent shortcuts pass arguments unchanged and retain each tool's permissions.
+cx() { command codex "$@"; }
+cxp() { CODEX_HOME="$HOME/.codex-personal" command codex "$@"; }
+cl() { command claude "$@"; }
+
+# Explicit Git inspection; avoid aliases for destructive or publishing commands.
+gs() { command git status --short --branch "$@"; }
+gd() { command git diff "$@"; }
+gds() { command git diff --cached "$@"; }
+gr() {
+  local root
+  root="$(command git rev-parse --show-toplevel)" || return
+  cd "$root"
 }
-zle -N shift-enter-newline
-bindkey $'\e[13;2u' shift-enter-newline
-bindkey $'\e[27;2;13~' shift-enter-newline
-bindkey $'\e[13;2~' shift-enter-newline
 
-# ==============================================
-# Autocomplete & Shell Enhancements
-# ==============================================
-
-# --- zsh-autosuggestions Configuration ---
-source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-export ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
-export ZSH_AUTOSUGGEST_USE_ASYNC=1
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=#6e6e6e,italic"
-export ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-
-# --- fzf Configuration ---
-if [[ ! -s "$ZSH_INIT_CACHE/fzf.zsh" || $commands[fzf] -nt "$ZSH_INIT_CACHE/fzf.zsh" ]]; then
-  fzf --zsh >| "$ZSH_INIT_CACHE/fzf.zsh"
-fi
-source "$ZSH_INIT_CACHE/fzf.zsh"
-
-export FZF_DEFAULT_OPTS="
-  --height 40%
-  --layout=reverse
-  --border
-  --preview-window=right:50%
-  --color=bg+:#1f1f1f,bg:#181818,spinner:#339cff,hl:#fa423e
-  --color=fg:#f4f4f5,header:#fa423e,info:#ad7bf9,pointer:#339cff
-  --color=marker:#40c977,fg+:#ffffff,prompt:#339cff,hl+:#ff6965
-  --color=border:#303030,gutter:#181818,preview-bg:#181818
-  --bind='ctrl-/:toggle-preview'
-"
-
-if command -v fd >/dev/null 2>&1; then
-  export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
-  export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-fi
-
-# --- zoxide Configuration ---
-if [[ ! -s "$ZSH_INIT_CACHE/zoxide.zsh" || $commands[zoxide] -nt "$ZSH_INIT_CACHE/zoxide.zsh" ]]; then
-  zoxide init zsh >| "$ZSH_INIT_CACHE/zoxide.zsh"
-fi
-source "$ZSH_INIT_CACHE/zoxide.zsh"
-
-# --- Atuin Configuration ---
-if [[ ! -s "$ZSH_INIT_CACHE/atuin.zsh" || $commands[atuin] -nt "$ZSH_INIT_CACHE/atuin.zsh" ]]; then
-  atuin init zsh >| "$ZSH_INIT_CACHE/atuin.zsh"
-fi
-source "$ZSH_INIT_CACHE/atuin.zsh"
-
-# --- zsh-syntax-highlighting Configuration ---
-# Keep this last so every widget above gets highlighted correctly.
-typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[default]='fg=default'
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#fa423e,bold'
-ZSH_HIGHLIGHT_STYLES[reserved-word]='fg=#ad7bf9,bold'
-ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=#339cff,underline'
-ZSH_HIGHLIGHT_STYLES[global-alias]='fg=#339cff,bold'
-ZSH_HIGHLIGHT_STYLES[precommand]='fg=#e5b454'
-ZSH_HIGHLIGHT_STYLES[commandseparator]='fg=#6e6e6e'
-ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=#339cff,bold'
-ZSH_HIGHLIGHT_STYLES[path]='fg=#339cff,underline'
-ZSH_HIGHLIGHT_STYLES[path_pathseparator]='fg=#6e6e6e'
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=#e5b454'
-ZSH_HIGHLIGHT_STYLES[history-expansion]='fg=#e5b454,bold'
-ZSH_HIGHLIGHT_STYLES[command-substitution]='fg=default'
-ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter]='fg=#6e6e6e'
-ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=#40c977'
-ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=#40c977'
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#40c977'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#40c977'
-ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#40c977'
-ZSH_HIGHLIGHT_STYLES[redirection]='fg=#ad7bf9'
-ZSH_HIGHLIGHT_STYLES[arg0]='fg=#339cff,bold'
-source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# ==============================================
-# Local Secrets And Machine Overrides
-# ==============================================
-
-# Keep API keys and other machine-local exports out of Git.
-[ -f "$HOME/.zshrc.local" ] && source "$HOME/.zshrc.local"
+# Preview by default. Set FLEET_HOME in ~/.zshrc.local for another checkout path.
+fleet() {
+  local repo="${FLEET_HOME:-$HOME/Code/fleet}"
+  if [[ ! -x "$repo/scripts/sync-configs.sh" ]]; then
+    print -u2 'Fleet checkout not found. Set FLEET_HOME in ~/.zshrc.local.'
+    return 1
+  fi
+  "$repo/scripts/sync-configs.sh" "$@"
+}

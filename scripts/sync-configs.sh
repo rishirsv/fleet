@@ -2,323 +2,155 @@
 set -euo pipefail
 
 ROOT="${0:A:h:h}"
-source "$ROOT/scripts/codex-plugin-source.sh"
-DRY_RUN=0
+source "$ROOT/scripts/plugin-sync/source.sh"
 MODE=apply
-STATUS=0
+DRY_RUN=1
+PROFILE=""
 TARGETS=()
 
 usage() {
   cat <<'EOF'
-Usage: scripts/sync-configs.sh [--status] [--dry-run] [--all|--agent-instructions|--codex|--codex-personal|--claude|--fonts|--vscode|--ghostty|--starship|--zsh ...]
+Usage: scripts/sync-configs.sh [--dry-run|--apply|--status] [--agents|--codex|--claude|--vscode|--karabiner|--ghostty|--zsh ...] [--profile PATH]
 
-Installs repo-owned config sources from configs/ to this machine.
-Existing targets are backed up before they are replaced.
-Apply is the default mode. --status makes no changes.
-
-Codex config.toml is a regular 0600 file. Settings explicitly present in the
-tracked source are managed by Dots; all other live settings are preserved.
-Other managed files and directories are copied from the tracked source.
-
-This script does not manage secrets. Keep shell secrets in ~/.zshrc.local.
+Preview by default. Selected targets cover Codex, Claude, VS Code, Karabiner,
+Ghostty, and Zsh. Merge Fleet's Codex settings into CODEX_HOME (or ~/.codex)
+and ~/.codex-personal when present. --profile selects just one profile.
+Each profile retains its cloud/local Dots/Drafts policy and machine-local state.
+Apply validates settings and backs up existing config before writing.
+Sync also merges shared agent guidance and installs selected VS Code extensions.
+Codex/Claude plugin installation uses sync-plugins.sh. Sync does not push Git
+or contact other computers. --profile scopes Codex settings and guidance only.
 EOF
-}
-
-add_target() {
-  local target="$1"
-  if [[ "$target" == "all" ]]; then
-    TARGETS=(codex codex-personal claude fonts vscode ghostty starship zsh)
-    return
-  fi
-  TARGETS+=("$target")
 }
 
 while (( $# )); do
   case "$1" in
-    --dry-run)
-      DRY_RUN=1
-      ;;
-    --status)
-      if [[ "$MODE" != "apply" ]]; then
-        echo "--status may only be specified once" >&2
-        exit 2
-      fi
-      MODE=status
-      ;;
-    --all)
-      add_target all
-      ;;
-    --agent-instructions)
-      add_target agent-instructions
-      ;;
-    --codex)
-      add_target codex
-      ;;
-    --codex-personal)
-      add_target codex-personal
-      ;;
-    --claude)
-      add_target claude
-      ;;
-    --fonts)
-      add_target fonts
-      ;;
-    --vscode)
-      add_target vscode
-      ;;
-    --ghostty)
-      add_target ghostty
-      ;;
-    --starship)
-      add_target starship
-      ;;
-    --zsh)
-      add_target zsh
-      ;;
-    -h|--help)
-      usage
-      exit 0
-      ;;
-    *)
-      echo "Unknown argument: $1" >&2
-      usage >&2
-      exit 2
-      ;;
+    --dry-run) MODE=apply; DRY_RUN=1 ;;
+    --apply) MODE=apply; DRY_RUN=0 ;;
+    --status) MODE=status; DRY_RUN=0 ;;
+    --agents|--codex|--claude|--vscode|--karabiner|--ghostty|--zsh) TARGETS+=("${1#--}") ;;
+    --profile)
+      (( $# >= 2 )) || { usage >&2; exit 2; }
+      PROFILE="$2"; shift ;;
+    -h|--help) usage; exit 0 ;;
+    *) usage >&2; exit 2 ;;
   esac
   shift
 done
+(( ${#TARGETS} )) || TARGETS=(agents codex claude vscode karabiner ghostty zsh)
 
-if (( ${#TARGETS[@]} == 0 )); then
-  usage >&2
-  exit 2
+if (( ${TARGETS[(Ie)codex]} )); then
+  command -v uv >/dev/null || { echo 'uv is required for Codex sync' >&2; exit 2; }
+fi
+profiles=("${CODEX_HOME:-$HOME/.codex}")
+if [[ -n "$PROFILE" ]]; then
+  profiles=("$PROFILE")
+elif [[ -d "$HOME/.codex-personal" && "${profiles[1]}" != "$HOME/.codex-personal" ]]; then
+  profiles+=("$HOME/.codex-personal")
 fi
 
-if [[ "$MODE" != "apply" ]] && (( DRY_RUN )); then
-  echo "--dry-run is only valid in apply mode" >&2
-  exit 2
+result=0
+if (( ${TARGETS[(Ie)agents]} )); then
+  guidance_targets=("${CLAUDE_CONFIG_DIR:-$HOME/.claude}/CLAUDE.md")
+  for profile in "${profiles[@]}"; do
+    guidance_targets+=("$profile/AGENTS.md")
+  done
+  for target in "${guidance_targets[@]}"; do
+    args=("$MODE" --source "$ROOT/configs/agents/AGENTS.md" --target "$target")
+    (( ! DRY_RUN )) || args+=(--dry-run)
+    python3 "$ROOT/scripts/config-sync.py" "${args[@]}" --format guidance || result=$?
+  done
 fi
-
-timestamp() {
-  date +%Y%m%d%H%M%S
-}
-
-log() {
-  printf '%s\n' "$*"
-}
-
-ensure_source() {
-  local source="$1"
-  if [[ ! -e "$source" ]]; then
-    echo "Missing source: $source" >&2
-    exit 1
+if (( ${TARGETS[(Ie)codex]} )); then
+for profile in "${profiles[@]}"; do
+  policy="$(codex_plugin_source "$profile")"
+  # One combined source makes base settings and profile policy one validated,
+  # atomic config update rather than two partially applied writes.
+  source_file="$(mktemp "${TMPDIR:-/tmp}/fleet-codex-config.XXXXXX")"
+  trap 'rm -f "$source_file"' EXIT
+  cat "$ROOT/configs/codex/config.toml" > "$source_file"
+  printf '\n' >> "$source_file"
+  cat "$policy" >> "$source_file"
+  args=("$MODE" --source "$source_file" --target "$profile/config.toml")
+  (( ! DRY_RUN )) || args+=(--dry-run)
+  uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" "${args[@]}" || result=$?
+  rm -f "$source_file"
+  if [[ -f "$ROOT/configs/codex/keybindings.json" ]]; then
+    args=("$MODE" --source "$ROOT/configs/codex/keybindings.json" --target "$profile/keybindings.json")
+    (( ! DRY_RUN )) || args+=(--dry-run)
+    python3 "$ROOT/scripts/config-sync.py" "${args[@]}" --format codex-keys || result=$?
   fi
-}
-
-backup_path() {
-  local target="$1"
-  local backup="${target}.bak.$(timestamp)"
-  if (( DRY_RUN )); then
-    log "Would back up $target -> $backup"
+done
+fi
+if (( ${TARGETS[(Ie)claude]} )); then
+  args=("$MODE" --source "$ROOT/configs/claude/settings.json" --target "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/settings.json")
+  (( ! DRY_RUN )) || args+=(--dry-run)
+  python3 "$ROOT/scripts/config-sync.py" "${args[@]}" || result=$?
+  args=("$MODE" --source "$ROOT/configs/claude/keybindings.json" --target "${CLAUDE_CONFIG_DIR:-$HOME/.claude}/keybindings.json" --format claude-keys)
+  (( ! DRY_RUN )) || args+=(--dry-run)
+  python3 "$ROOT/scripts/config-sync.py" "${args[@]}" || result=$?
+fi
+if (( ${TARGETS[(Ie)vscode]} )); then
+  if [[ "$(uname -s)" == Darwin ]]; then
+    vscode_dir="${VSCODE_USER_DIR:-$HOME/Library/Application Support/Code/User}"
   else
-    cp -pR "$target" "$backup"
-    log "Backed up $target -> $backup"
+    vscode_dir="${VSCODE_USER_DIR:-${XDG_CONFIG_HOME:-$HOME/.config}/Code/User}"
   fi
-}
+  for file in settings keybindings; do
+    args=("$MODE" --source "$ROOT/configs/vscode/$file.json" --target "$vscode_dir/$file.json")
+    [[ "$file" != keybindings ]] || args+=(--format vscode-keys)
+    (( ! DRY_RUN )) || args+=(--dry-run)
+    python3 "$ROOT/scripts/config-sync.py" "${args[@]}" || result=$?
+  done
+  args=("$MODE" --source "$ROOT/configs/vscode/extensions.json")
+  (( ! DRY_RUN )) || args+=(--dry-run)
+  python3 "$ROOT/scripts/config-sync.py" "${args[@]}" --format extensions || result=$?
+fi
+if (( ${TARGETS[(Ie)karabiner]} )) && [[ "$(uname -s)" == Darwin ]]; then
+  args=("$MODE" --source "$ROOT/configs/karabiner/hyper.json" --target "${XDG_CONFIG_HOME:-$HOME/.config}/karabiner/karabiner.json" --format karabiner)
+  (( ! DRY_RUN )) || args+=(--dry-run)
+  python3 "$ROOT/scripts/config-sync.py" "${args[@]}" || result=$?
+fi
+font_source="$ROOT/configs/fonts/paper-mono/PaperMono-Regular.otf"
+font_target="$HOME/Library/Fonts/PaperMono-Regular.otf"
+if (( ${TARGETS[(Ie)codex]} || ${TARGETS[(Ie)vscode]} || ${TARGETS[(Ie)ghostty]} )) && [[ "$(uname -s)" == Darwin && -f "$font_source" ]]; then
+  if [[ ! -f "$font_target" ]] || ! cmp -s "$font_source" "$font_target"; then
+    if [[ "$MODE" == status ]]; then
+      echo "Drift $font_target"; result=1
+    elif (( DRY_RUN )); then
+      echo "Would install $font_target"
+    elif (( result == 0 )); then
+      mkdir -p "${font_target:h}"
+      [[ ! -e "$font_target" ]] || cp -p "$font_target" "$font_target.bak.$(date +%Y%m%d%H%M%S)"
+      cp -p "$font_source" "$font_target"
+    fi
+  fi
+fi
 
 install_file() {
-  local source="$1"
-  local target="$2"
-  ensure_source "$source"
-
-  if [[ "$MODE" == "status" ]]; then
-    if [[ -f "$target" && ! -L "$target" ]] && cmp -s "$source" "$target"; then
-      log "Current $target"
-    else
-      log "Drift $target"
-      STATUS=1
-    fi
-    return
-  fi
-
+  local source="$1" target="$2"
+  [[ -f "$source" ]] || return 0
   if [[ -f "$target" && ! -L "$target" ]] && cmp -s "$source" "$target"; then
-    log "Unchanged $target"
-    return
-  fi
-
-  if (( DRY_RUN )); then
-    log "Would install file $source -> $target"
+    echo "Current $target"
+  elif [[ "$MODE" == status ]]; then
+    echo "Drift $target"; result=1
+  elif (( DRY_RUN )); then
+    echo "Would install $source -> $target"
+  else
+    mkdir -p "${target:h}"
     if [[ -e "$target" || -L "$target" ]]; then
-      backup_path "$target"
+      cp -pP "$target" "$target.bak.$(date +%Y%m%d%H%M%S)"
+      rm -f "$target"
     fi
-    return
+    cp -p "$source" "$target"
   fi
-
-  mkdir -p "${target:h}"
-  if [[ -e "$target" || -L "$target" ]]; then
-    backup_path "$target"
+}
+if (( result == 0 || DRY_RUN )) || [[ "$MODE" == status ]]; then
+  if (( ${TARGETS[(Ie)ghostty]} )); then
+    install_file "$ROOT/configs/ghostty/config.ghostty" "${XDG_CONFIG_HOME:-$HOME/.config}/ghostty/config.ghostty"
   fi
-  if [[ -L "$target" ]]; then
-    rm "$target"
+  if (( ${TARGETS[(Ie)zsh]} )); then
+    install_file "$ROOT/configs/zsh/.zshrc" "${ZDOTDIR:-$HOME}/.zshrc"
   fi
-  cp -p "$source" "$target"
-  log "Installed file $target"
-}
-
-install_tree() {
-  local source="$1"
-  local target="$2"
-  ensure_source "$source"
-
-  if [[ "$MODE" == "status" ]]; then
-    if [[ -d "$target" && ! -L "$target" ]] && diff -qr "$source" "$target" >/dev/null; then
-      log "Current directory $target"
-    else
-      log "Drift directory $target"
-      STATUS=1
-    fi
-    return
-  fi
-
-  if [[ -d "$target" && ! -L "$target" ]] && diff -qr "$source" "$target" >/dev/null; then
-    log "Unchanged directory $target"
-    return
-  fi
-
-  if (( DRY_RUN )); then
-    log "Would install directory $source -> $target"
-    if [[ -e "$target" || -L "$target" ]]; then
-      backup_path "$target"
-    fi
-    return
-  fi
-
-  mkdir -p "${target:h}"
-  if [[ -e "$target" || -L "$target" ]]; then
-    backup_path "$target"
-    rm -rf "$target"
-  fi
-  cp -pR "$source" "$target"
-  log "Installed directory $target"
-}
-
-sync_codex_agents() {
-  install_file "$ROOT/configs/agents/AGENTS.md" "$HOME/.codex/AGENTS.md"
-}
-
-sync_codex_personal_agents() {
-  install_file "$ROOT/configs/agents/AGENTS.md" "$HOME/.codex-personal/AGENTS.md"
-}
-
-sync_claude_agents() {
-  install_file "$ROOT/configs/agents/AGENTS.md" "$HOME/.claude/CLAUDE.md"
-}
-
-sync_agent_instructions() {
-  sync_codex_agents
-  sync_codex_personal_agents
-  sync_claude_agents
-}
-
-run_codex_config() {
-  if ! command -v uv >/dev/null 2>&1; then
-    echo "Missing required command: uv (install from https://docs.astral.sh/uv/)" >&2
-    return 2
-  fi
-  uv run --quiet --script "$ROOT/scripts/sync-codex-config.py" "$@"
-}
-
-sync_codex_profile() {
-  local codex_home="$1"
-  install_file "$ROOT/configs/agents/AGENTS.md" "$codex_home/AGENTS.md"
-  local helper_args=("$MODE" --source "$ROOT/configs/codex/config.toml" --target "$codex_home/config.toml")
-  if (( DRY_RUN )); then
-    helper_args+=(--dry-run)
-  fi
-  if ! run_codex_config "${helper_args[@]}"; then
-    STATUS=1
-  fi
-  helper_args=("$MODE" --source "$(codex_plugin_source "$codex_home")" --target "$codex_home/config.toml")
-  if (( DRY_RUN )); then
-    helper_args+=(--dry-run)
-  fi
-  if ! run_codex_config "${helper_args[@]}"; then
-    STATUS=1
-  fi
-  install_file "$ROOT/configs/codex/keybindings.json" "$codex_home/keybindings.json"
-  local old_catalog="$codex_home/cliproxy-models.json"
-  if [[ -e "$old_catalog" ]]; then
-    if [[ "$MODE" == "status" ]]; then
-      log "Drift $old_catalog: obsolete proxy catalog"
-      STATUS=1
-    elif (( DRY_RUN )); then
-      log "Would remove $old_catalog"
-    else
-      rm "$old_catalog"
-      log "Removed $old_catalog"
-    fi
-  fi
-  install_file "$ROOT/configs/codex/muse.config.toml" "$codex_home/muse.config.toml"
-  install_file "$ROOT/configs/codex/muse-models.json" "$codex_home/muse-models.json"
-  install_tree "$ROOT/plugins/dots/agents" "$codex_home/agents"
-}
-
-sync_codex() {
-  sync_codex_profile "$HOME/.codex"
-}
-
-sync_codex_personal() {
-  sync_codex_profile "$HOME/.codex-personal"
-}
-
-sync_claude() {
-  sync_claude_agents
-  install_file "$ROOT/configs/claude/settings.json" "$HOME/.claude/settings.json"
-  install_file "$ROOT/configs/claude/keybindings.json" "$HOME/.claude/keybindings.json"
-}
-
-sync_fonts() {
-  local source
-  for source in "$ROOT"/configs/fonts/paper-mono/*.otf; do
-    install_file "$source" "$HOME/Library/Fonts/${source:t}"
-  done
-}
-
-sync_vscode() {
-  local user_dir="$HOME/Library/Application Support/Code/User"
-  install_file "$ROOT/configs/vscode/settings.json" "$user_dir/settings.json"
-  install_file "$ROOT/configs/vscode/keybindings.json" "$user_dir/keybindings.json"
-}
-
-sync_ghostty() {
-  install_file "$ROOT/configs/ghostty/config.ghostty" "$HOME/.config/ghostty/config.ghostty"
-}
-
-sync_starship() {
-  install_file "$ROOT/configs/starship.toml" "$HOME/.config/starship.toml"
-}
-
-sync_zsh() {
-  install_file "$ROOT/configs/zsh/.zshrc" "$HOME/.zshrc"
-}
-
-for target in "${TARGETS[@]}"; do
-  case "$target" in
-    agent-instructions) sync_agent_instructions ;;
-    codex) sync_codex ;;
-    codex-personal) sync_codex_personal ;;
-    claude) sync_claude ;;
-    fonts) sync_fonts ;;
-    vscode) sync_vscode ;;
-    ghostty) sync_ghostty ;;
-    starship) sync_starship ;;
-    zsh) sync_zsh ;;
-    *)
-      echo "Unknown target: $target" >&2
-      exit 2
-      ;;
-  esac
-done
-
-if (( STATUS )); then
-  exit "$STATUS"
 fi
+exit "$result"

@@ -1,50 +1,26 @@
-# Codex settings managed by Dots. Each setting present here overrides the same
-# live setting; unlisted machine-local and Codex Desktop state is preserved.
+web_search = "live"
 
-# Default to non-interactive execution with unrestricted filesystem and
-# network access. Codex Desktop reads this legacy pair in its Settings UI.
-# Host-managed restrictions still take precedence.
+# Model, reasoning effort, and UI text size use app defaults.
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-web_search = "live"
-suppress_unstable_features_warning = true
-model = "gpt-6.1-sol"
-model_provider = "openai"
-model_reasoning_effort = "low"
-[features]
-context_management = true
-fast_mode = true
 
-[model_providers.vercel-ai-gateway]
-name = "Vercel AI Gateway"
-base_url = "https://ai-gateway.vercel.sh/v1"
-wire_api = "responses"
+# Codex settings rebuilt from explicit user choices.
+# Dots/Drafts source selection is managed by scripts/plugin-sync/.
+# Image generation uses the available image_gen tool and imagegen skill.
 
-[model_providers.vercel-ai-gateway.auth]
-command = "/usr/bin/security"
-args = ["find-generic-password", "-s", "com.openai.codex.vercel-ai-gateway", "-w"]
-
-[apps._default]
-default_tools_approval_mode = "approve"
-open_world_enabled = true
-destructive_enabled = true
-
-[plugins."computer-use@openai-bundled"]
+[plugins."browser@openai-bundled"]
 enabled = true
 
 [plugins."chrome@openai-bundled"]
 enabled = true
 
-[plugins."visualize@openai-bundled"]
+[plugins."computer-use@openai-bundled"]
 enabled = true
 
-[plugins."browser@openai-bundled"]
+[plugins."unified-computer-use@openai-bundled"]
 enabled = true
 
 [plugins."documents@openai-primary-runtime"]
-enabled = true
-
-[plugins."codex-app-tools@openai-bundled"]
 enabled = true
 
 [plugins."pdf@openai-primary-runtime"]
@@ -56,33 +32,30 @@ enabled = true
 [plugins."presentations@openai-primary-runtime"]
 enabled = true
 
-[plugins."template-creator@openai-primary-runtime"]
+[plugins."visualize@openai-bundled"]
 enabled = true
 
-[plugins."messages@openai-bundled"]
-enabled = true
-
-[plugins."unified-computer-use@openai-bundled"]
+[plugins."build-ios-apps@openai-curated-remote"]
 enabled = true
 
 [desktop]
-followUpQueueMode = "queue"
-conversationDetailMode = "STEPS_COMMANDS"
-defaultTerminalLocation = "right"
-reviewDelivery = "detached"
-show-context-window-usage = true
-git-pull-request-merge-method = "squash"
+git-branch-prefix = ""
+git-create-pull-request-as-draft = false
 worktree-upstream-refresh-mode = "best-effort"
+worktree-auto-cleanup-enabled = true
+worktree-keep-count = 15
+git-pull-request-merge-method = "squash"
+show-educational-tips = false
+codeFontSize = 16
+reviewDelivery = "detached"
+show-context-window-usage = false
 preventSleepWhileRunning = true
+followUpQueueMode = "queue"
+defaultTerminalLocation = "right"
+appearanceTheme = "system"
 
 [desktop.appearanceLightChromeTheme.fonts]
 code = '"Paper Mono", ui-monospace, "SFMono-Regular"'
 
 [desktop.appearanceDarkChromeTheme.fonts]
 code = '"Paper Mono", ui-monospace, "SFMono-Regular"'
-
-# Local Computer Use skill copy in ~/.agents/skills/computer-use/ replaces the
-# bundled one (whose second half is OpenAI's confirmations policy).
-[[skills.config]]
-name = "computer-use:computer-use"
-enabled = false

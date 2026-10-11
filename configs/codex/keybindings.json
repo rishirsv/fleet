@@ -1,70 +1,30 @@
 [
   {
+    "command": "toggleTerminal",
+    "key": "Ctrl+Alt+Shift+Command+T"
+  },
+  {
     "command": "composer.cycleReasoningEffort",
-    "key": "Ctrl+Command+Alt+Shift+R"
-  },
-  {
-    "command": "composer.decreaseReasoningEffort",
-    "key": "Ctrl+Command+Alt+Shift+["
-  },
-  {
-    "command": "composer.increaseReasoningEffort",
-    "key": "Ctrl+Command+Alt+Shift+]"
+    "key": "Ctrl+Alt+Shift+Command+R"
   },
   {
     "command": "composer.openModelPicker",
-    "key": "Ctrl+Command+Alt+Shift+M"
+    "key": "Ctrl+Alt+Shift+Command+M"
   },
   {
-    "command": "composer.startDictation",
-    "key": "Ctrl+Command+Alt+Shift+D"
+    "command": "composer.toggleWorktreeMode",
+    "key": "Ctrl+Alt+Shift+Command+W"
   },
   {
-    "command": "composer.startVoiceMode",
-    "key": "Ctrl+Command+Alt+Shift+V"
+    "command": "composer.toggleFastMode",
+    "key": "Ctrl+Alt+Shift+Command+F"
   },
   {
-    "command": "composer.togglePlanMode",
-    "key": "Command+Shift+P"
+    "command": "toggleSidebar",
+    "key": "Ctrl+Alt+Shift+Command+B"
   },
   {
-    "command": "globalDictationHold",
-    "key": null
-  },
-  {
-    "command": "globalDictationToggle",
-    "key": null
-  },
-  {
-    "command": "hotkeyWindow",
-    "key": "Ctrl+`"
-  },
-  {
-    "command": "nextRecentThread",
-    "key": null
-  },
-  {
-    "command": "nextThread",
-    "key": "Command+Alt+Down"
-  },
-  {
-    "command": "openCommandMenu",
-    "key": "CmdOrCtrl+K"
-  },
-  {
-    "command": "previousRecentThread",
-    "key": null
-  },
-  {
-    "command": "previousThread",
-    "key": "Command+Alt+Up"
-  },
-  {
-    "command": "searchChats",
-    "key": "Ctrl+Command+Alt+Shift+K"
-  },
-  {
-    "command": "toggleTerminal",
-    "key": "Ctrl+Shift+`"
+    "command": "composer.openProjectPicker",
+    "key": "Ctrl+Alt+Shift+Command+O"
   }
 ]

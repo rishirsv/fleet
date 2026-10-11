@@ -1,36 +1,8 @@
-# Ghostty owns terminal rendering; Zsh owns prompt, completion, and history UX.
-font-size = 15.5
-
-# Keep a stable palette: Codex caches terminal colors at startup.
-theme = Catppuccin Mocha
-background-opacity = 0.94
-background-blur = macos-glass-regular
-window-colorspace = display-p3
-
-cursor-style = bar
-cursor-style-blink = false
-
-window-padding-x = 12
-window-padding-y = 10
-window-padding-balance = true
-window-save-state = never
-unfocused-split-opacity = 0.85
-
-macos-titlebar-style = transparent
-
+# Ghostty renders the terminal; Zsh owns the shell workflow.
+font-family = Paper Mono
+font-size = 16
 shell-integration = zsh
-macos-option-as-alt = true
 
-# Drop-down terminal shown on the active display.
-keybind = global:ctrl+alt+backquote=toggle_quick_terminal
-quick-terminal-position = top
-quick-terminal-size = 42%
-quick-terminal-screen = main
-
-# Command-based clipboard shortcuts. Codex reads clipboard images on Ctrl-V.
-keybind = super+v=paste_from_clipboard
-keybind = super+shift+v=text:\x16
-
-# Command-click URLs and image/file paths to open their default macOS app.
-link-url = true
-link-previews = true
+# Forward Hyper to terminal apps with all four modifiers intact.
+keybind = ctrl+alt+shift+super+m=text:\x1b[109;16u
+keybind = ctrl+alt+shift+super+f=text:\x1b[102;16u

@@ -1,64 +1,66 @@
-# Dots
+# Fleet
 
-Source repo for Dots plugins, agent workflows, and optional machine config.
+Source for Dots and Drafts plugins, Tunnel, and selected portable configuration.
+For setup and sync behavior, see [INSTALL.md](INSTALL.md).
 
-## Source
+## Ownership
 
-- Plugin source lives under `plugins/<plugin-name>/`.
-- Codex and Claude marketplace source lives at `.agents/plugins/marketplace.json`
-  and `.claude-plugin/marketplace.json`.
-- Config source lives under `configs/<tool>/`.
-- Helper entrypoints live under `scripts/`.
-- Do not edit installed plugin/config caches.
-- Load one Dots/Drafts source per Codex profile. Use cloud on the personal
-  account shared by web and desktop; use local on the work account without
-  those cloud plugins. `scripts/sync-plugins.sh --codex --source cloud|local`
-  records the choice in that profile's `dots-plugin-source` file. Preserve
-  other profiles' choices. Both plugin sync and config sync must enforce it.
-  Never uninstall account-wide cloud plugins to fix desktop duplicates.
-- Keep **Dots** as a standalone skills plugin and **Tunnel** as a separate app.
-  Dots manifests must not bind Tunnel through `.app.json` or `apps`. Preserve
-  the existing Tunnel app, its service, connection, and authorized folders. Do not put Dots skills back into its
-  app-backed canonical plugin. Keep the tools-only Tunnel plugin enabled
-  independently of the Dots/Drafts skill-source policies.
-- For cloud propagation, follow [the cloud release procedure](docs/maintainers/cloud-releases.md).
-  Use Plugin Creator source and archive update tools before browser automation.
-  Resolve the existing plugin's exact backend ID from installation metadata,
-  authorized discovery, or the maintainer's local
-  `~/.config/dots/cloud-plugins.json`. Read its current release and pass that
-  release as `expected_release_id`; preserve its identity, scope, and audience.
-  Never create another Dots plugin during ordinary updates. Archive updates
-  overlay files and cannot delete them: report retired files that remain.
-  Verify the complete expected skill inventory and changed content in cloud,
-  then check a fresh desktop loader for one skill source and zero duplicates.
-  Local sync does not publish cloud releases. Report publication and desktop
-  verification separately; if either fails, report it as pending.
-- Work-in-progress skills that must not ship in any plugin live under `wip/`.
+- Plugin source: `plugins/<plugin-name>/`. Marketplaces:
+  `.agents/plugins/marketplace.json` and `.claude-plugin/marketplace.json`.
+- Selected settings: `configs/<tool>/`; retain only user-selected settings.
+  Keep Logi Options under `configs/logi-options-plus/`.
+- Shared, repository-neutral guidance: `configs/agents/AGENTS.md`. Keep Fleet
+  release rules here; never propagate them into other repositories.
+- Helpers: `scripts/`. Plugin policies and TOML merge: `scripts/plugin-sync/`.
+  Unreleased skills that must not ship belong in `wip/`.
+- Edit maintained source, not installed caches. Name new branches by purpose:
+  `fix/`, `feature/`, `refactor/`, `docs/`, or `chore/`, followed by lowercase
+  kebab-case; omit an extra `codex/` prefix.
 
-## Commands
+## Plugin boundaries
 
-- Sync repo-owned marketplace plugins and installed local plugin caches with
-  `scripts/sync-plugins.sh`; run it after commits on `main` and plugin PR merges.
-- In this repo, when the user says `commit` or `sync`, publish and propagate the
-  scoped work: commit only the scoped files, push the current branch, then run
-  every relevant repo sync command. Use `scripts/sync-plugins.sh --all` for
-  plugin changes. For config changes, follow the dry-run and scoped sync rule
-  below. Never include unrelated working-tree changes.
-- Bump the owning `plugin.json` version only when the release content is final
-  and ready to commit. Do not bump versions during iterative editing.
-- Before syncing configs, run `scripts/sync-configs.sh --dry-run --all`; then
-  apply scoped syncs such as `--zsh` or `--vscode`.
-- Skill creation and mechanical validation belong to the active environment's
-  default skill creator. Dots-specific quality guidance lives at
-  `plugins/dots/skills/skill-standards/references/standards.md`.
+Load one Dots/Drafts source per Codex profile: cloud for the personal account
+shared by web and desktop; local for the work account without cloud plugins.
+`scripts/sync-plugins.sh --codex --source cloud|local` records that profile's
+choice in `dots-plugin-source`. Preserve other profiles' choices and enforce
+this policy in config and plugin sync. Never uninstall account-wide cloud
+plugins to fix desktop duplicates.
+
+Keep Dots a standalone skills plugin and Tunnel a separate tools-only app.
+Dots manifests must not bind Tunnel through `.app.json` or `apps`. Preserve
+Tunnel's existing identity, service, connection, and authorized folders. Keep
+Tunnel enabled independently of Dots/Drafts source selection; never return
+Dots skills to its app-backed canonical plugin.
+
+Follow [the cloud release procedure](docs/maintainers/cloud-releases.md).
+Prefer Plugin Creator source/archive updates. Update the existing backend ID
+with its current `expected_release_id`; preserve identity, scope, and audience.
+Never create a replacement Dots plugin during an ordinary update. Archive
+updates cannot delete files: report retired files that remain. Verify expected
+cloud skills/content and a fresh desktop loader with one source and zero
+duplicates. Report cloud publication and desktop verification separately;
+failed verification remains pending. Local sync does not publish cloud.
+
+## Work and propagation
+
+- In this repository, `commit` or `sync` means commit only scoped files, push
+  the current branch, then run relevant sync commands. Exclude unrelated changes.
+- For plugin changes, use `scripts/sync-plugins.sh --all` after commits on
+  `main` and plugin PR merges. Bump the owning `plugin.json` only when release
+  content is final and ready to commit.
+- Preview machine changes with `scripts/sync-configs.sh --dry-run`; apply only
+  when requested with `--apply`. Installed Fleet hooks push and apply after
+  commits, and apply after merge/rebase pulls. Install hooks per Fleet checkout,
+  never automatically in another repository.
+- Use the active environment's default skill creator for creation/validation.
+  Dots quality guidance: `plugins/dots/skills/skill-standards/references/standards.md`.
 
 ## Validation
 
-- After editing a skill, review the changed files directly and run relevant
-  deterministic tests plus the active environment's default skill validation.
-- `scripts/verify.py --plugins` checks both source plugin packages.
-- `scripts/verify.py --full` is the full repository integration gate. Use
-  Python 3.10+ for either mode; the full gate also requires `uv`.
-- Run `scripts/verify.py --full` only when the user explicitly requests it, for
-  marketplace or plugin packaging, for cross-plugin/shared integration or
-  release-infrastructure changes, or when changing the gate itself.
+Review changed files and run relevant deterministic checks. Skill changes also
+require the active environment's default skill validation.
+
+`scripts/verify.py --plugins` checks both packages. Use Python 3.10+.
+Run `scripts/verify.py --full` (also requires `uv`) only when explicitly requested,
+for marketplace/plugin packaging, shared integration or release infrastructure,
+or changes to the gate itself.

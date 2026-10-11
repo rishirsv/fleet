@@ -4,13 +4,13 @@ import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const root = dirname(dirname(fileURLToPath(import.meta.url)));
+const root = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
 const agentsDir = join(root, "plugins", "dots", "agents");
 const args = process.argv.slice(2);
 const check = args[0] === "--check";
 
 if (args.length > 1 || (args.length === 1 && !check)) {
-  console.error("Usage: scripts/generate-claude-agents.mjs [--check]");
+  console.error("Usage: scripts/plugin-sync/generate-agents.mjs [--check]");
   process.exit(2);
 }
 
