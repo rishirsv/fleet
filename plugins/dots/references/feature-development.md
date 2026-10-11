@@ -11,8 +11,9 @@ outcome, non-goals, settled decisions, responsible code, chosen direction,
 current route, and proof status.
 
 For work spanning sessions or several implementation passes, save the working
-record in the repository's established plan location. Keep one current next
-action, completed and remaining work, blockers, and verification evidence.
+record in the repository's established plan location when one exists. Otherwise,
+keep the record in the active task and include it in the handoff. Keep one current
+next action, completed and remaining work, blockers, and verification evidence.
 Update it when discoveries change the plan and before a handoff. Replace stale
 instructions rather than appending another status summary.
 
