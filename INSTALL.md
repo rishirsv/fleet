@@ -101,7 +101,7 @@ stop that target for manual integration. Unrelated rules remain.
 | R | Cycle reasoning | — | — |
 | M | Model picker | Model picker | — |
 | F | Fast mode | Fast mode | — |
-| W | Worktree mode | — | — |
+| Y | Worktree mode | — | — |
 | B | Sidebar | — | Sidebar |
 | O | Project picker | — | Open folder |
 

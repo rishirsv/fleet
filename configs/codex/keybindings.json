@@ -13,7 +13,7 @@
   },
   {
     "command": "composer.toggleWorktreeMode",
-    "key": "Ctrl+Alt+Shift+Command+W"
+    "key": "Ctrl+Alt+Shift+Command+Y"
   },
   {
     "command": "composer.toggleFastMode",
