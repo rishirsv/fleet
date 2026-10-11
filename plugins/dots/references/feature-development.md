@@ -10,6 +10,13 @@ performance work, and configuration changes that affect behavior. Keep one compa
 outcome, non-goals, settled decisions, responsible code, chosen direction,
 current route, and proof status.
 
+For work spanning sessions or several implementation passes, save the working
+record in the repository's established plan location when one exists. Otherwise,
+keep the record in the active task and include it in the handoff. Keep one current
+next action, completed and remaining work, blockers, and verification evidence.
+Update it when discoveries change the plan and before a handoff. Replace stale
+instructions rather than appending another status summary.
+
 ## Choose the route
 
 - **Feature:** add or change behavior. Define the data or state and the
@@ -74,12 +81,23 @@ When an earlier mantra meets the target, stop.
    cheaper worker; the coordinator retains design decisions, integration,
    review, and final proof. Return to step 4 when repeated implementation problems show that the
    selected module boundary or data shape is wrong.
+   Record consequential decisions made during implementation that the request
+   or plan left open. Include the reason, tradeoff, and whether the decision is
+   provisional. Reopen a settled decision only when new evidence changes it.
 6. **Prove it.** Run focused repository checks and exercise the real product
    path when one exists. A build or unit test does not by itself prove an
    integration or visible behavior. Bugs use the original reproduction;
    refactors compare behavior with the recorded baseline; performance work
    repeats the same measurement on the fixed input.
+   When adding or repairing a regression test, confirm that it fails for the
+   intended reason on the broken behavior and passes after the fix. If written
+   after the fix, demonstrate the failure using an isolated copy or reversible
+   change that preserves unrelated work. Report any missing failing control.
 7. **Review and finish.** Inspect the final diff against the requested outcome.
+   Before finishing, reconcile every requirement and consequential recorded
+   decision with the final implementation. Each must be implemented and
+   supported by appropriate evidence, explicitly require no code, or remain
+   identified as an unresolved gap.
    Apply `$change-review` when the user requests a review, repository
    policy requires it, or consequential behavior needs independent challenge.
    Give the reviewer the task's diff and intended behavior. During implementation,
