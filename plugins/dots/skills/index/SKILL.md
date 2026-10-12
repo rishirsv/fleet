@@ -41,7 +41,8 @@ Each skill's description defines its boundary. Choose within these groups:
 - Agent work: `$handoff`, `$meta-prompt`, `$skill-standards`
 
 The user-controlled modes `$ask-model`, `$clarify-requirements`,
-`$shape-idea`, `$explain-simply`, `$catch-up`, `$recall`, `$self-improve`, and `$usage-insights`
+`$shape-idea`, `$explain-simply`, `$catch-up`, `$recall`, `$self-improve`,
+`$usage-insights`, and `$verification-skill`
 remain explicit. Load them only when the user selects that mode. Their
 descriptions define the exact boundary.
 

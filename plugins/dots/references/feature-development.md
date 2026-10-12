@@ -95,7 +95,9 @@ The steps describe the contract between phases; adapt their depth to the task.
    unit test does not by itself prove an integration or visible behavior; verify visible output with
    [Visual proof](visual-proof.md). Bugs use the original reproduction;
    refactors compare behavior with the recorded baseline; performance work
-   repeats the same measurement on the fixed input.
+   repeats the same measurement on the fixed input. When the repository has a
+   `verify-<app>` skill, drive the change with it and fix its feature map if
+   the change made the map wrong.
    Place new or moved tests with [Test consolidation](test-consolidation.md).
    When adding or repairing a regression test, confirm that it fails for the
    intended reason on the broken behavior and passes after the fix. If written
