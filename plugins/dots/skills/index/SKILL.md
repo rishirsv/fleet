@@ -29,6 +29,8 @@ For a material feature, bug fix, refactor, measured performance change,
 behavior-changing configuration, or implementation plan, read and follow
 [Feature Development](../../references/feature-development.md) as the primary
 workflow. It routes into focused skills as its phases require.
+Use `$agent-workflow` instead when the user wants the whole plan-to-PR flow
+run with delegated agents.
 
 ## Choose the focused owner
 
@@ -41,7 +43,7 @@ Each skill's description defines its boundary. Choose within these groups:
 - Agent work: `$handoff`, `$meta-prompt`, `$skill-standards`
 
 The user-controlled modes `$ask-model`, `$clarify-requirements`,
-`$shape-idea`, `$explain-simply`, `$catch-up`, `$recall`, `$self-improve`,
+`$shape-idea`, `$explain-simply`, `$catch-up`, `$self-improve`,
 `$usage-insights`, and `$verification-skill`
 remain explicit. Load them only when the user selects that mode. Their
 descriptions define the exact boundary.

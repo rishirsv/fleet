@@ -1,6 +1,6 @@
 ---
 name: html
-description: "Creates or edits self-contained HTML pages, linked page sets, embed blocks, and HTML template assets. Use when the result should be a browser-openable document such as a report, plan, or walkthrough; use ui-design for product interfaces."
+description: "Creates or edits self-contained HTML pages, linked page sets, and embed blocks. Use when the result should be a browser-openable document such as a report, plan, or walkthrough; use ui-design for product interfaces."
 ---
 
 # HTML
@@ -30,7 +30,6 @@ Read only the references the task needs:
 | Linked page set, course, workshop, or embed block | [page-sets-and-embeds.md](references/page-sets-and-embeds.md) |
 | Tone, custom CSS, or visual rules beyond the helpers | [DESIGN.md](references/DESIGN.md) |
 | Generated raster imagery | [generated-images.md](references/generated-images.md) |
-| A named HTML-template skill | [creating-templates.md](references/creating-templates.md) with `skill-standards` |
 
 ## Build and check
 

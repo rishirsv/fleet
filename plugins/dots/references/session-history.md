@@ -101,8 +101,8 @@ See [Claude Code data storage](https://code.claude.com/docs/en/claude-directory)
 
 ## Shared helper
 
-The `self-improve` helper normalizes both local stores. From either the `recall`
-or `self-improve` skill directory:
+The `self-improve` helper normalizes both local stores. From any Dots skill
+directory:
 
 ```bash
 python3 ../self-improve/scripts/self_improve.py --platform codex triage --days 30 --limit 100
