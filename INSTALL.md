@@ -80,6 +80,8 @@ The source choice is saved per profile and preserved by later syncs. Cloud mode
 requires the account's existing installations. Sync validates a fresh Codex
 loader and rejects duplicates; restart existing desktop sessions when needed.
 Claude uses the `rishirsv/dots` marketplace; `/reload-plugins` refreshes sessions.
+Sync compares installed files with the refreshed marketplace and reinstalls stale
+copies even when their version is unchanged, preserving data and disabled state.
 Plugin sync refuses dirty plugin/tooling source; `--allow-dirty` is for development.
 
 `scripts/sync-plugins.sh --all` refreshes both hosts. Local sync does not publish

@@ -45,7 +45,7 @@ done
 sync_paths=(plugins)
 (( ${+TARGETS[codex]} )) && sync_paths+=(scripts/sync-plugins.sh scripts/plugin-sync/merge-codex-config.py scripts/plugin-sync/source.sh scripts/plugin-sync/verify-skills.py scripts/plugin-sync/plugin-exclusions.toml scripts/plugin-sync/plugins-cloud.toml)
 (( ${+TARGETS[codex]} )) && sync_paths+=(.agents/plugins/marketplace.json)
-(( ${+TARGETS[claude]} )) && sync_paths+=(.claude-plugin/marketplace.json scripts/sync-plugins.sh scripts/plugin-sync/generate-agents.mjs)
+(( ${+TARGETS[claude]} )) && sync_paths+=(.claude-plugin/marketplace.json scripts/sync-plugins.sh scripts/plugin-sync/generate-agents.mjs scripts/plugin-sync/claude-cache.py)
 dirty_source="$(git -C "$ROOT" status --porcelain=v1 --untracked-files=all -- "${sync_paths[@]}")"
 if [[ -n "$dirty_source" ]]; then
   if (( ! ALLOW_DIRTY )); then
@@ -196,7 +196,7 @@ if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(error
 }
 
 sync_claude() {
-  local spec name version plugin_id installed marketplaces marketplace_status stale details
+  local spec name version plugin_id installed marketplaces marketplace_status marketplace_root stale details
   echo "Syncing Claude"
   node "$ROOT/scripts/plugin-sync/generate-agents.mjs" --check >/dev/null
   claude plugin validate "$ROOT/plugins/dots" --strict >/dev/null
@@ -214,16 +214,24 @@ else:
 ' <<< "$marketplaces")"
   [[ "$marketplace_status" == "present" ]] || claude plugin marketplace add rishirsv/dots --scope user >/dev/null
   claude plugin marketplace update dots >/dev/null
+  marketplaces="$(claude plugin marketplace list --json)"
+  marketplace_root="$(python3 -c '
+import json, sys
+print(next(entry["installLocation"] for entry in json.load(sys.stdin) if entry.get("name") == "dots"))
+' <<< "$marketplaces")"
 
   installed="$(claude plugin list --json)"
   for spec in "${CLAUDE_SPECS[@]}"; do
     IFS=$'\t' read -r name version <<< "$spec"
     plugin_id="$name@dots"
-    if python3 -c 'import json,sys; raise SystemExit(not any(p.get("id") == sys.argv[1] for p in json.load(sys.stdin)))' "$plugin_id" <<< "$installed"; then
+    if python3 -c 'import json,sys; raise SystemExit(not any(p.get("id") == sys.argv[1] and p.get("scope") == "user" for p in json.load(sys.stdin)))' "$plugin_id" <<< "$installed"; then
       claude plugin update "$plugin_id" --scope user >/dev/null
     else
       claude plugin install "$plugin_id" --scope user >/dev/null
     fi
+    # Claude skips updates when the version is unchanged, even if content moved.
+    # Compare with the fetched release, never with unpublished working-tree edits.
+    python3 "$ROOT/scripts/plugin-sync/claude-cache.py" "$marketplace_root/plugins/$name" "$plugin_id"
   done
 
   installed="$(claude plugin list --json)"
