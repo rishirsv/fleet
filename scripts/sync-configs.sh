@@ -75,6 +75,9 @@ for profile in "${profiles[@]}"; do
   (( ! DRY_RUN )) || args+=(--dry-run)
   uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" "${args[@]}" || result=$?
   rm -f "$source_file"
+  args=("$MODE" --browser --source "$ROOT/configs/codex/browser.toml" --target "$profile/browser/config.toml")
+  (( ! DRY_RUN )) || args+=(--dry-run)
+  uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" "${args[@]}" || result=$?
   if [[ -f "$ROOT/configs/codex/keybindings.json" ]]; then
     args=("$MODE" --source "$ROOT/configs/codex/keybindings.json" --target "$profile/keybindings.json")
     (( ! DRY_RUN )) || args+=(--dry-run)

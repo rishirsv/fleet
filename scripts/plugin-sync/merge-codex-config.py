@@ -160,17 +160,40 @@ def read_target(path: Path) -> bytes:
         raise ConfigError("cannot read {}: {}".format(path, error)) from error
 
 
-def plan_config(source: Path, target: Path) -> ConfigPlan:
+def validate_browser_source(source: Mapping[str, Any]) -> None:
+    # Only selected portable preferences belong here; site rules stay local.
+    allowed = {
+        "approval_mode": {"always_ask", "never_ask"},
+        "download_approval_mode": {"always_ask", "never_ask"},
+        "full_cdp_access_enabled": None,
+    }
+    for key, value in source.items():
+        value = unwrapped(value)
+        if key not in allowed:
+            raise ConfigError("unmanaged browser setting in portable source: " + key)
+        choices = allowed[key]
+        valid = type(value) is bool if choices is None else (
+            isinstance(value, str) and value in choices
+        )
+        if not valid:
+            raise ConfigError("invalid browser preference: " + key)
+
+
+def plan_config(source: Path, target: Path, *, browser: bool = False) -> ConfigPlan:
     source_text = source.read_text(encoding="utf-8")
     source_document = parse_document(source_text, str(source))
-    validate_portable_source(source_document)
+    if browser:
+        validate_browser_source(source_document)
+    else:
+        validate_portable_source(source_document)
 
     before = read_target(target) if path_exists(target) else None
     live_text = before.decode("utf-8") if before is not None else ""
     live_document = parse_document(live_text, str(target))
 
     changed: list[KeyPath] = []
-    apply_compatibility_rules(source_document, live_document, changed)
+    if not browser:
+        apply_compatibility_rules(source_document, live_document, changed)
     merge_settings(live_document, source_document, changed)
     after = tomlkit.dumps(live_document).encode("utf-8")
 
@@ -256,9 +279,11 @@ def sync_config(
     operation: str,
     *,
     dry_run: bool = False,
+    browser: bool = False,
 ) -> int:
-    plan = plan_config(source, target)
-    validate_codex_schema(plan.after.decode("utf-8"), source)
+    plan = plan_config(source, target, browser=browser)
+    if not browser:
+        validate_codex_schema(plan.after.decode("utf-8"), source)
 
     problems = []
     if plan.changed_paths:
@@ -299,6 +324,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source", type=Path, required=True)
     parser.add_argument("--target", type=Path, required=True)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--browser", action="store_true", help="merge selected IAB preferences")
     args = parser.parse_args()
     if args.dry_run and args.operation != "apply":
         parser.error("--dry-run is only valid with apply")
@@ -313,6 +339,7 @@ def main() -> int:
             args.target,
             args.operation,
             dry_run=args.dry_run,
+            browser=args.browser,
         )
     except (ConfigError, OSError, UnicodeDecodeError) as error:
         print("Error: {}".format(error), file=sys.stderr)

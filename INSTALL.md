@@ -38,7 +38,7 @@ Choose one or several targets when needed:
 | Target | Managed configuration |
 | --- | --- |
 | `--agents` | Shared guidance in Codex `AGENTS.md` and Claude `CLAUDE.md` |
-| `--codex` | Settings and shortcuts in each selected Codex profile |
+| `--codex` | Settings, shortcuts, and selected IAB preferences in each selected Codex profile |
 | `--claude` | Settings and supported shortcuts |
 | `--vscode` | Minimal editor settings, shortcuts, Codex and Claude extensions |
 | `--karabiner` | Selected-profile Caps Lock mapping, macOS only |
@@ -49,7 +49,9 @@ Without targets, sync covers all of them. Codex defaults to `CODEX_HOME` or
 `~/.codex`, plus `~/.codex-personal` when present. `--profile PATH` selects one
 Codex profile; it does not narrow other targets. Claude uses `CLAUDE_CONFIG_DIR`
 or `~/.claude`; VS Code supports `VSCODE_USER_DIR`. Paper Mono Regular installs
-on macOS when syncing Codex, VS Code, or Ghostty. Font size is 16 throughout;
+on macOS when syncing Codex, VS Code, or Ghostty. IAB sync merges the selected
+preferences from `configs/codex/browser.toml`, preserving profile-specific site
+rules and other browser settings. Font size is 16 throughout;
 apps use different sizing units, so visual adjustment may still be needed.
 
 Shared guidance uses a managed block and preserves existing global instructions.

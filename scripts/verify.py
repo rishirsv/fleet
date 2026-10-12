@@ -194,7 +194,7 @@ def full_checks(codex_names: list[str], claude_names: list[str]) -> None:
                         (ROOT / "plugins/dots/skills/html/scripts").glob("*.test.mjs"))
     run("node", "--test", *html_tests)
     env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
-    # Check package validation and plugin runtime behavior; sync has no unit suite.
+    # Check package validation, browser config sync, and plugin runtime behavior.
     for suite in ("tests", "plugins/dots/tests"):
         run(sys.executable, "-m", "unittest", "discover", "-s", suite, "-p", "test_*.py", env=env)
 

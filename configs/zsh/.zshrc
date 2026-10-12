@@ -29,22 +29,22 @@ PROMPT='%F{cyan}%~%f %(?.%F{green}.%F{red})❯%f '
 RPROMPT=''
 
 # Agent shortcuts pass arguments unchanged and retain each tool's permissions.
-cx() { command codex "$@"; }
-cxp() { CODEX_HOME="$HOME/.codex-personal" command codex "$@"; }
-cl() { command claude "$@"; }
+function cx { command codex "$@"; }
+function cxp { CODEX_HOME="$HOME/.codex-personal" command codex "$@"; }
+function cl { command claude "$@"; }
 
 # Explicit Git inspection; avoid aliases for destructive or publishing commands.
-gs() { command git status --short --branch "$@"; }
-gd() { command git diff "$@"; }
-gds() { command git diff --cached "$@"; }
-gr() {
+function gs { command git status --short --branch "$@"; }
+function gd { command git diff "$@"; }
+function gds { command git diff --cached "$@"; }
+function gr {
   local root
   root="$(command git rev-parse --show-toplevel)" || return
   cd "$root"
 }
 
 # Preview by default. Set FLEET_HOME in ~/.zshrc.local for another checkout path.
-fleet() {
+function fleet {
   local repo="${FLEET_HOME:-$HOME/Code/fleet}"
   if [[ ! -x "$repo/scripts/sync-configs.sh" ]]; then
     print -u2 'Fleet checkout not found. Set FLEET_HOME in ~/.zshrc.local.'
