@@ -3,7 +3,7 @@ name: skill-standards
 description: "Creates, updates, or statically reviews Dots plugin skill source against Dots standards. Use when authoring, revising, or diagnosing a Dots skill; not for behavioral evaluation or plugin packaging."
 ---
 
-# Skill Standards
+# Skill standards
 
 Read [standards.md](references/standards.md) for every task. Apply
 [Writing style](../../references/writing-style.md) while writing instructions
@@ -20,8 +20,12 @@ For a static review, read [skill-review.md](references/skill-review.md).
 Review-only requests leave source unchanged; when the user also requests
 fixes, apply the supported edits.
 
-When the user wants the current or a named Codex task turned into a new or
-updated skill, read [session-capture.md](references/session-capture.md).
+When the user wants the current or a named task turned into a skill, read
+only that task's history and capture the reusable method: the requests that
+should and should not select it, the steps that reached an accepted result,
+the judgment calls, and the failure behind each user correction. Treat a flow
+as successful only with evidence such as an accepted output or passing check,
+and keep task IDs, local paths, and private details out of the shipped skill.
 
 When the skill being authored produces visual artifacts whose layout affects
 correctness, read [Visual proof](../../references/visual-proof.md) for how its

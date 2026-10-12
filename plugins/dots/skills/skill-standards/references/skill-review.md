@@ -51,36 +51,21 @@ Check meaning before style. For a prose defect, identify the action or
 condition that is unclear and report it in the writing style's prose-finding
 form.
 
-Inspect for:
+Check each instruction against the sections of
+[standards.md](standards.md): discovery and description form, structure and
+loading, instructions that change behavior, authority and stops, revisions to
+an existing skill, and completion and evidence. Also look for:
 
-- descriptions that overlap other skills, select similar but unrelated
-  requests, or depart from the "<Does X>. Use when …" form;
-- an opener that promises quality, confidence, or impact without naming the
-  work, or compression that removes actions, artifacts, decision rules, or
-  completion conditions;
-- vague, contradictory, duplicated, no-op, or unjustifiably rigid instructions;
-- emphasis without a reason, requirements softened by `try to` or
-  `if possible`, and runs of prohibitions with no stated constraint;
-- history in the runtime: incident narratives, relative phrasing such as "now"
-  or "no longer", stacked single-incident conditionals, and unverified paths,
-  versions, or flags;
-- a single example the agent will copy as a template, or numeric length limits
-  that no reader or consumer requires;
-- behavioral guidance in bare lists that drop each rule's reason or hide
-  which rules take priority;
+- a single example the agent will copy as a template, or numeric limits no
+  reader or consumer requires;
 - a menu of equal alternatives where one default would do, and scoring
   language that describes a grader instead of stating the requirement;
-- deterministic work left to the agent, such as lookup tables, point systems,
-  arithmetic, or fixed formatting that a data file or script should own;
-- missing modes, decisions, examples, output fields, or completion conditions;
-- instructions in the wrong file, references chained from other references,
-  long references without Contents, and resources no workflow loads;
-- instructions to verify or run tests the agent would run anyway, and
-  approval stops for work the user already authorized;
-- validators that accept plausible bad results;
-- missing authorization, failure, stop, or partial-success behavior;
-- private, source-specific, or maintainer material in the runtime; and
-- tests that assert wording rather than observable behavior.
+- deterministic work left to the agent, such as lookup tables, arithmetic, or
+  fixed formatting that a data file or script should own;
+- validators that accept plausible bad results, and tests that assert wording
+  rather than observable behavior;
+- missing authorization, failure, stop, or partial-success behavior; and
+- private, source-specific, or maintainer material in the runtime.
 
 Search for textual signals: all-caps `MUST|NEVER|ALWAYS|CRITICAL|IMPORTANT`,
 `try to|if possible|ideally`, runs of `Do not|Never|Avoid`,

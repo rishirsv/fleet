@@ -12,10 +12,8 @@ Contents:
 - [Structure and loading](#structure-and-loading)
 - [Instructions that change behavior](#instructions-that-change-behavior)
 - [Authority and stops](#authority-and-stops)
-- [Pruning](#pruning)
-- [Preserving existing skills](#preserving-existing-skills)
+- [Revise an existing skill](#revise-an-existing-skill)
 - [Completion and evidence](#completion-and-evidence)
-- [Skills that produce deliverables](#skills-that-produce-deliverables)
 
 ## How to apply this standard
 
@@ -169,22 +167,24 @@ instructions an agent will execute.
   known-fail case, or a required receipt. Keep explicit permission for
   known-safe workflows the agent might otherwise hesitate to run.
 
-## Pruning
+## Revise an existing skill
 
 Ask what the agent would do differently because a sentence exists. Delete it
 in full only when it changes nothing and its removal loses no useful
-explanation, emphasis, voice, or navigation. A shorter, more abstract version
-of an unnecessary sentence is still unnecessary.
+explanation, emphasis, voice, or navigation. **Requirement:** compare the
+revision with the original and keep its selection criteria, permissions,
+required actions, exceptions, examples, output fields, and completion
+conditions. If the original meaning is unclear, resolve it from source or
+report the uncertainty; a paraphrase must not create new policy.
 
 - **Shorten structurally first.** Remove obsolete branches, duplicated
   procedures, unnecessary templates, and unconditional ceremony before
-  rewriting good local prose.
+  rewriting good local prose. Leave clear prose and wording the user asked to
+  keep alone.
 - **Keep context only the author has.** Audience, environment facts, tool and
   script contracts, the quality bar, hard judgment calls, and the reasons
   behind constraints are not pruning targets. Prune restatements of what the
   agent already does.
-- **Preserve the method.** Keep the actions, artifacts, decision rules,
-  examples, and completion conditions that make the workflow executable.
 - **Account for the target model.** A workaround for an older model may now
   constrain useful judgment. Preserve operational invariants and treat
   uncertain behavioral benefits as hypotheses. Use a focused trial only when it
@@ -200,37 +200,13 @@ of an unnecessary sentence is still unnecessary.
 - **Use the environment as the source of truth.** Point to cheap authoritative
   sources such as configuration, schemas, directory structure, and `--help`.
   Keep the reason, convention, or failure pattern the environment cannot show.
+- **Account for every removal.** Before finishing, list each removed mode,
+  branch, decision rule, example, output field, and accepted passage, and
+  search the package and repository for references to it, including tests,
+  evaluations, docs, other skills, and scripts, then update or remove each one.
 - **Judge by behavior.** **Requirement:** a shorter skill counts as better
   only when it preserves or improves capability, judgment, and writing
   quality. Line count alone is not evidence.
-
-## Preserving existing skills
-
-**Requirement:** compare revised instructions with the originals and preserve
-selection criteria, permissions, required actions, exceptions, examples,
-output fields, and completion conditions. If the original meaning is unclear,
-resolve it from source or report the uncertainty; a paraphrase must not create
-new policy.
-
-- **Preserve accepted wording.** Keep language the user praised or asked to
-  retain unless the requested behavior requires a change.
-- **Limit edits to the requested change.** Preserve unrelated behavior,
-  explanations, examples, output quality, and authorization limits. Leave
-  clear prose alone instead of paraphrasing it for uniformity.
-- **Account for every removal.** Before finishing, identify every removed
-  mode, branch, decision rule, example, output field, and accepted passage.
-- **Remove dependents with the text.** When removing an instruction, mode, or
-  name, search the package and repository for references to it, including
-  tests, evaluations, docs, other skills, and scripts that match its wording,
-  and update or remove each one.
-- **Review the prose as well as the structure.** Look for ambiguous actors,
-  conditions, pronouns, term changes, hidden actions, and dense noun groups.
-  A skill is not clear merely because it avoids a list of words or uses short
-  sentences.
-- **Record coverage for a collection-wide rewrite.** List every instructional
-  file inspected, including references and prompts outside `SKILL.md`, and
-  whether it changed, remained clear, or needs follow-up. Keep this record with
-  the development evidence, outside the shipped skill.
 
 ## Completion and evidence
 
@@ -256,23 +232,3 @@ new policy.
   contract, accepted output, observed failure, or credible domain source. Treat
   a generated example or one unexplained failure as a hypothesis, and keep a
   narrow correction narrow until repeated evidence supports a broader rule.
-
-## Skills that produce deliverables
-
-When a skill produces documents, spreadsheets, analyses, or other work for a
-person, its instructions should cover these points.
-
-- **Audience and decision.** Identify who uses the result, what they need to
-  decide or understand, and which sources control the answer. Deliver the
-  result itself rather than a report about the agent's process.
-- **Kinds of claims.** Distinguish sourced facts, calculations,
-  interpretations, assumptions, estimates, and gaps, and point important
-  claims to a source location, calculation, or artifact a reader can inspect.
-  State limitations that change the decision and omit generic disclaimers.
-- **User artifacts.** Keep original files unless the user requests in-place
-  editing. Preserve formulas, links, validations, relationships, numbering,
-  layouts, styles, fields, and editable objects outside the requested change.
-  When source material is missing, ask, leave an explicit gap, or use an
-  authorized assumption.
-- **The actual deliverable.** Inspect content and non-visible structure, and
-  render visual artifacts when layout affects correctness.
