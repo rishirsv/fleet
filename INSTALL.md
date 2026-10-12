@@ -113,6 +113,11 @@ and its automatic theme follows the terminal background. Codex and Claude
 settings enable the selected unrestricted permissions; VS Code enables tool
 auto-approval. Model and effort remain app defaults.
 
+Claude Code uses fullscreen rendering with mouse support so conversation scrolling
+stays inside Claude instead of relying on terminal redraw history. The managed
+settings override stale shell variables that disabled the alternate screen or mouse.
+Mouse-wheel scrolling uses a three-line multiplier.
+
 Shell helpers: `cx` (Codex), `cxp` (personal Codex), `cl` (Claude), `gs` (status),
 `gd` (diff), `gds` (staged diff), `gr` (repo root), and `fleet` (config preview).
 Set `FLEET_HOME` in `.zshrc.local` if Fleet is outside `~/Code/fleet`.

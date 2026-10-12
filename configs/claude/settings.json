@@ -10,5 +10,11 @@
     "dots@dots": true,
     "drafts@dots": true
   },
-  "theme": "auto"
+  "theme": "auto",
+  "tui": "fullscreen",
+  "env": {
+    "CLAUDE_CODE_DISABLE_ALTERNATE_SCREEN": "0",
+    "CLAUDE_CODE_DISABLE_MOUSE": "0",
+    "CLAUDE_CODE_SCROLL_SPEED": "3"
+  }
 }
