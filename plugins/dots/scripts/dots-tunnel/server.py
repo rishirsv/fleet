@@ -16,8 +16,10 @@ from mcp_types import CacheableResult, RequestParams, ToolAnnotations
 
 from files import MountedWorkspace, revision
 
+from branding import icons
+
 SKILL_URI = "skill://dots/dots-tunnel/SKILL.md"
-SKILL_PATH = Path(__file__).resolve().parents[2] / "skills/dots-tunnel/SKILL.md"
+SKILL_PATH = Path(__file__).resolve().parent / "workflow/SKILL.md"
 
 
 class GetSkillParams(RequestParams):
@@ -116,7 +118,7 @@ def create_server(workspace: MountedWorkspace, execution=None, config_directory=
                     await execution.close()
 
     server = MCPServer(
-        "Dots Tunnel", version="0.3.0", extensions=[Skills()], log_level="WARNING", lifespan=lifespan,
+        "Tunnel", version="0.3.0", icons=icons(), extensions=[Skills()], log_level="WARNING", lifespan=lifespan,
         instructions="Read and edit locally authorized folders. List '.' to discover the named mounts; "
                      "include the mount prefix in all paths and patch headers, and search one mount at a time. "
                      "Workflow: skill://dots/dots-tunnel/SKILL.md. "
@@ -246,7 +248,7 @@ def create_server(workspace: MountedWorkspace, execution=None, config_directory=
 
 def main():
     parser = argparse.ArgumentParser(description="dots-tunnel: folder-scoped file MCP over stdio (macOS/Linux)")
-    parser.add_argument("--mount", action="append", required=True, metavar="NAME=PATH",
+    parser.add_argument("--mount", action="append", default=[], metavar="NAME=PATH",
                         help="Explicit named folder; repeat for multiple folders")
     parser.add_argument("--state", default=str(Path.home() / ".local/state/dots-tunnel"))
     parser.add_argument("--exec", action="store_true", help="Opt in to native Codex sandboxed commands; requires a deployed copy outside all mounts")
@@ -263,6 +265,8 @@ def main():
         config = load_config(args.config_directory)
         validate_folders(config, remote=True, directory=args.config_directory)
         mounts, args.state, args.exec = config['mounts'], config['state'], config.get('exec', False)
+    if not mounts:
+        parser.error('Provide --mount or --config-directory with saved mounts')
     workspace = MountedWorkspace(mounts, args.state)
     try:
         execution = None

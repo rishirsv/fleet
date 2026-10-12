@@ -1,30 +1,9 @@
 ---
 name: dots-tunnel
-description: Manage dots-tunnel locally, or use its MCP tools from ChatGPT to discover repositories, edit projects, diagnose issues, and recover native execution without restarting the conversation. Not for browser automation.
+description: Use Tunnel MCP tools on the explicitly selected computer to discover projects, edit files, run commands, and recover execution. Not for browser automation.
 ---
 
 # dots-tunnel
-
-## Start and manage locally
-
-When invoked in Codex on the configured Mac for startup or file work, run
-`python3 <plugin-root>/scripts/dots-tunnel/runtime.py start` first. Resolve
-`<plugin-root>` from this skill's location (two directories above its folder).
-The helper reuses a ready runtime, or starts the saved connection and checks
-readiness. It never chooses a new folder or creates credentials. For a status
-question use `status` instead; for an explicit stop request use `stop` instead.
-Do not start the service merely to explain it.
-
-If setup is missing or the runtime is unhealthy, report that result; do not
-reconfigure, repeatedly restart, or broaden access. After successful startup,
-tell the user to open ChatGPT and mention `@Tunnel`. Loading this skill in a
-cloud or Web session cannot start a stopped service on the Mac: ask the user
-to invoke `$dots-tunnel` locally in Codex instead.
-
-Leave it running when the task ends. It survives closing the chat or terminal;
-it may stop on logout, reboot, or failure. Optional macOS login startup is installed with `runtime.py startup`; its supervisor respects an explicit `stop` until `start`. Sleep or
-lost connectivity makes it unavailable. To stop it, invoke this skill locally
-with “stop dots-tunnel”; restarting later uses the same `start` command.
 
 ## Discover the workflow in ChatGPT
 
@@ -36,7 +15,7 @@ Load this skill with MCP `skills/list`, `skills/get`, and `resources/read` when
 supported. Otherwise call `get_workflow` once: it returns these instructions,
 the authorized absolute folder paths, and whether command execution is enabled.
 Use the tools actually advertised by this connection; skill text does not grant
-access or install missing tools. Connect the separate Tunnel app for these tools; the Dots skills plugin does not bundle that app. Preserve the existing Tunnel connection rather than creating another app.
+access or install missing tools. Connect the Tunnel app for these tools; these instructions are delivered by MCP, independently of the Dots plugin. Preserve the existing Tunnel connection rather than creating another app.
 
 ## Inspect and edit
 
@@ -139,9 +118,3 @@ On an unhealthy executor, inspect `doctor`, then call `repair`. It replaces only
 Commands return `operation_id` as well as existing result fields. Use `result` with that ID, `offset`, and `limit` to recover output without consuming the incremental collector. At most 64 results are retained for ten minutes in memory, with 64 KiB output per operation; follow `next_offset`. MCP restart loses results. Session IDs and operation IDs are shared by chats using the same tunnel.
 
 A dead upstream/MCP transport cannot diagnose itself remotely. The local login supervisor restarts a stopped tunnel-client; a live but unhealthy transport requires the local operator's diagnostics. Neither executor repair nor login startup guarantees reachability while the host is asleep or offline.
-
-## One local folder command
-
-`python3 <plugin-root>/scripts/dots-tunnel/runtime.py folders` lists folders and the revision. Combine repeated `--add NAME=/absolute/path`, `--remove NAME`, and `--discover` in that command; changes are previews until `--apply`. `--query` and `--branch` filter discovery. Only a local operator may use `--approve-parent /absolute/parent` to expand authority. Never mount the home directory, trusted deployment, dependencies, credentials, recovery state, or startup files. `--directory` selects this host's private config directory.
-
-Use `startup` to enable macOS login supervision, or `startup --disable` to remove it. `stop` writes a durable pause; `start` clears it. Preserve other hosts' endpoints and sessions. Deployment and credentials stay outside remotely writable roots. Account-level connector discovery may cache tool catalogs; verify actual advertised tools before relying on new ones in an existing conversation.

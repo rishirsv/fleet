@@ -40,10 +40,17 @@ def load_config(directory):
             or not all(isinstance(path, str) and Path(path).is_absolute() for path in mounts.values())
             or not isinstance(config.get("exec", False), bool)):
         raise RuntimeError("config.json needs tunnel_id, absolute python/state paths, and absolute mounts.")
+    if 'router_config' in config and (not isinstance(config['router_config'], str)
+                                     or not Path(config['router_config']).is_absolute()):
+        raise RuntimeError('router_config must be an absolute private configuration path')
     return config
 
 
 def server_command(config, server=SERVER, directory=None):
+    if config.get('router_config'):
+        validate_folders(config, remote=True, directory=directory)
+        return [config['python'], str(Path(server).with_name('router.py')),
+                '--config', config['router_config']]
     args = [config["python"], str(server)]
     for name, path in config["mounts"].items():
         args += ["--mount", f"{name}={path}"]
@@ -223,6 +230,8 @@ def validate_folders(config, remote=False, directory=None):
                  Path(config["python"]).resolve().parent, Path.home() / 'Library/LaunchAgents']
     if directory:
         protected.append(Path(directory).resolve())
+    if config.get('router_config'):
+        protected.append(Path(config['router_config']).resolve())
     if not config['mounts'] or len(config['mounts']) > 64:
         raise ValueError("Keep 1..64 named mounts")
     for name, value in config['mounts'].items():

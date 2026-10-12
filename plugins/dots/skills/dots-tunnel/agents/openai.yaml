@@ -1,6 +1,0 @@
-interface:
-  display_name: "dots-tunnel"
-  short_description: "Start your tunnel and work with authorized files."
-  default_prompt: "Use $dots-tunnel to start the saved connection locally, or inspect and edit authorized files in ChatGPT."
-policy:
-  allow_implicit_invocation: true
