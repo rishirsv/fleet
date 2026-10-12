@@ -15,34 +15,36 @@
 .plan-review .review-toolbar button { font-size: 13px; padding: 8px 12px; min-height: 44px; }
 .review-toolbar [data-review-response] { display: flex; align-items: center; gap: 8px; }
 .review-toolbar [data-review-count] { font-size: 11px; line-height: 1; padding: 4px 6px; border-radius: var(--r-inline); background: var(--a12); }
-.plan-review button, .plan-review select { font: inherit; font-size: 14px; color: var(--foreground); background: var(--background); border: 1px solid var(--a20); border-radius: var(--r-card); padding: 10px 14px; min-height: 44px; cursor: pointer; }
-.plan-review button:hover { background: var(--a4); }
-.plan-review [data-review-response], .plan-review [data-review-copy] { background: var(--accent); border-color: var(--accent); color: var(--background); }
+.plan-review button, .plan-review select { font: inherit; font-size: 14px; font-weight: 500; color: var(--foreground); background: var(--surface); border: 1px solid var(--a20); border-radius: var(--r-card); padding: 10px 14px; min-height: 44px; cursor: pointer; box-shadow: var(--shadow-sm); }
+.plan-review button:hover { background: var(--a4); border-color: var(--a40); }
+.plan-review [data-review-response], .plan-review [data-review-copy] { background: var(--accent); border-color: var(--accent); color: var(--background); box-shadow: var(--shadow-md); }
+.plan-review [data-review-response]:hover, .plan-review [data-review-copy]:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
 .plan-review :is(button,input,textarea,select,summary):focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .plan-review label { display: block; font-size: 14px; font-weight: 500; }
 .plan-review textarea, .plan-review select { display: block; width: 100%; margin-block: 8px 16px; box-sizing: border-box; }
-.plan-review textarea { padding: 12px; border: 1px solid var(--a20); border-radius: var(--r-card); background: var(--background); color: var(--foreground); font: inherit; font-size: 15px; line-height: 1.5; resize: vertical; }
-.review-save { font-size: 13px; color: var(--text-muted); min-height: 1em; }
+.plan-review textarea { padding: 12px; border: 1px solid var(--a20); border-radius: var(--r-card); background: var(--surface); color: var(--foreground); font: inherit; font-size: 15px; line-height: 1.5; resize: vertical; }
+.review-save { font-size: 13px; color: var(--text-muted); min-height: 1em; margin: 10px 0 var(--block); }
 .review-point { margin-block: var(--review-gap); padding: 24px 0; border: 0; border-top: 1px solid var(--a12); scroll-margin-top: 100px; }
-.review-point > h3 { font-size: 24px; letter-spacing: -.03em; margin: 0; }
+.review-point > h3 { font-size: 24px; letter-spacing: -.02em; margin: 0 0 10px; }
 .review-point > p { max-width: 75ch; }
 .review-summary { font-size: 18px; line-height: 1.5; max-width: 62ch; }
 .review-notes { border-top: 1px solid var(--a12); padding-top: 12px; margin-top: 24px; }
 .review-notes summary { cursor: pointer; font-size: 14px; min-height: 32px; }
 .review-notes[open] summary { margin-bottom: 12px; }
-.review-decision { min-width: 0; padding: 20px; border: 1px solid var(--accent); border-radius: var(--r-card); background: var(--a4); margin-block: 24px; scroll-margin-top: 110px; }
+.review-decision { min-width: 0; padding: 20px; border: 1px solid var(--accent-line); border-radius: var(--r-card); background: var(--accent-soft); margin-block: 24px; scroll-margin-top: 110px; }
 .review-decision legend { font-size: 19px; font-weight: 600; padding-inline: 6px; }
 .decision-state { color: var(--text-muted); font-size: 13px; margin-top: 0; }
 .decision-options { display: grid; gap: 10px; }
-.plan-review .decision-option { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid var(--a12); border-radius: var(--r-card); background: var(--background); cursor: pointer; }
-.decision-option:has(input:checked) { border-color: var(--accent); background: var(--a4); }
+.plan-review .decision-option { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid var(--a12); border-radius: var(--r-card); background: var(--surface); box-shadow: var(--shadow-sm); cursor: pointer; transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.plan-review .decision-option:hover { border-color: var(--a40); }
+.decision-option:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-md); }
 .decision-option input { margin: 3px 0 0; width: 20px; height: 20px; accent-color: var(--accent); flex-shrink: 0; }
 .decision-option small { display: block; font-size: 14px; font-weight: 400; line-height: 1.5; margin-top: 6px; color: var(--text-muted); }
-.decision-recommended { display: inline-block; font-size: 11px; font-weight: 600; color: var(--accent-deep); margin-left: 10px; }
+.decision-recommended { display: inline-block; font-size: 11.5px; font-weight: 600; line-height: 20px; padding: 0 8px; border-radius: var(--r-pill); color: var(--accent-deep); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-line); margin-left: 10px; vertical-align: 1px; }
 .decision-note { margin-top: 16px; }
 .review-code { margin-block: 24px; }
 .review-code textarea[data-review-field$=":code"] { font: 13px/1.7 var(--font-mono); background: var(--code-surface); color: var(--code-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
-.review-dialog { background: var(--background); color: var(--foreground); border: 1px solid var(--a20); border-radius: var(--r-card); width: min(760px, calc(100vw - 48px)); max-height: 85vh; box-sizing: border-box; padding: 24px; }
+.review-dialog { background: var(--surface); color: var(--foreground); border: 1px solid var(--a20); border-radius: calc(var(--r-card) + 4px); box-shadow: var(--shadow-md); width: min(760px, calc(100vw - 48px)); max-height: 85vh; box-sizing: border-box; padding: 24px; }
 .review-dialog::backdrop { background: var(--a55); }
 .review-dialog h2 { margin-top: 16px; }
 .review-dialog form { display: flex; justify-content: flex-end; }

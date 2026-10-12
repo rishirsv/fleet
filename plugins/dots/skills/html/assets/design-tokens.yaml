@@ -6,49 +6,54 @@ name: dots
 description: Visual style for Dots HTML pages.
 colors:
   background: "#fbfbfa"
-  foreground: "#0d0d0d"
-  accent: "#1f5eff"
-  accent-deep: "#12379e"
+  foreground: "#111113"
+  surface: "#ffffff"
+  accent: "#2459f5"
+  accent-deep: "#163aa8"
+  accent-soft: "rgba(36,89,245,0.05)"
+  accent-line: "rgba(36,89,245,0.26)"
   warning-ink: "#6b4c00"
   warning-line: "rgba(180,130,0,0.35)"
   warning-bg: "rgba(255,178,0,0.06)"
   danger-ink: "#8c1d18"
   danger-line: "rgba(200,60,50,0.35)"
   danger-bg: "rgba(220,70,60,0.05)"
-  code-surface: "#0d0d0d"
-  code-ink: "#ededed"
+  code-surface: "#121214"
+  code-ink: "#e8e8ea"
+  shadow-sm: "0 1px 2px rgba(17,17,19,0.04), 0 1px 1px rgba(17,17,19,0.03)"
+  shadow-md: "0 1px 2px rgba(17,17,19,0.05), 0 6px 16px -4px rgba(17,17,19,0.10)"
 typography:
   h1:
-    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
-    fontSize: 40px
+    fontFamily: -apple-system, BlinkMacSystemFont, Segoe UI Variable Display, Segoe UI, Helvetica Neue, Arial, sans-serif
+    fontSize: 42px
     mobileFontSize: 32px
-    fontWeight: 600
+    fontWeight: 650
     lineHeight: 48px
     mobileLineHeight: 38px
-    letterSpacing: -2.4px
-    mobileLetterSpacing: -1.5px
+    letterSpacing: -1.35px
+    mobileLetterSpacing: -0.9px
   h2:
-    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontFamily: -apple-system, BlinkMacSystemFont, Segoe UI Variable Display, Segoe UI, Helvetica Neue, Arial, sans-serif
     fontSize: 24px
-    fontWeight: 600
+    fontWeight: 620
     lineHeight: 32px
-    letterSpacing: -0.96px
+    letterSpacing: -0.55px
   h3:
-    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontFamily: -apple-system, BlinkMacSystemFont, Segoe UI Variable Display, Segoe UI, Helvetica Neue, Arial, sans-serif
     fontSize: 16px
     fontWeight: 600
     lineHeight: 24px
-    letterSpacing: -0.32px
+    letterSpacing: -0.18px
   body:
-    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontFamily: -apple-system, BlinkMacSystemFont, Segoe UI Variable Text, Segoe UI, Helvetica Neue, Arial, sans-serif
     fontSize: 15px
     fontWeight: 400
-    lineHeight: 1.7
+    lineHeight: 1.65
   display:
-    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontFamily: -apple-system, BlinkMacSystemFont, Segoe UI Variable Display, Segoe UI, Helvetica Neue, Arial, sans-serif
     tracking: 1
   mono:
-    fontFamily: ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace
+    fontFamily: ui-monospace, SF Mono, SFMono-Regular, JetBrains Mono, Menlo, Consolas, monospace
     fontSize: 13px
     fontWeight: 400
     lineHeight: 20px
@@ -60,16 +65,19 @@ spacing:
   section: 48px
   block: 16px
 rounded:
-  card: 6px
-  code: 6px
-  inline: 4px
-  pill: 6px
+  card: 10px
+  code: 10px
+  inline: 5px
+  pill: 999px
   bubble: 18px
 x-dark:
   background: "#0f0f0e"
-  foreground: "#f5f5f4"
-  accent: "#6f94ff"
-  accent-deep: "#b7c9ff"
+  foreground: "#f3f3f1"
+  surface: "#171716"
+  accent: "#7c9dff"
+  accent-deep: "#bccbff"
+  accent-soft: "rgba(124,157,255,0.10)"
+  accent-line: "rgba(124,157,255,0.38)"
   warning-ink: "#f2c14e"
   warning-line: "rgba(255,193,77,0.35)"
   warning-bg: "rgba(255,193,77,0.08)"
@@ -77,23 +85,31 @@ x-dark:
   danger-line: "rgba(255,120,110,0.35)"
   danger-bg: "rgba(255,120,110,0.07)"
   code-surface: "#161615"
-  code-ink: "#ededed"
+  code-ink: "#e8e8ea"
+  shadow-sm: "0 0 0 1px rgba(255,255,255,0.02)"
+  shadow-md: "0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px -8px rgba(0,0,0,0.6)"
 x-alpha-steps: [4, 8, 12, 20, 40, 55, 60, 70]
 x-tones:
   personal:
     colors:
       background: "#f7f2ec"
       foreground: "#2b2320"
+      surface: "#fffcf8"
       accent: "#0866d6"
       accent-deep: "#0a4fa3"
+      accent-soft: "rgba(8,102,214,0.05)"
+      accent-line: "rgba(8,102,214,0.30)"
       danger-ink: "#9c3148"
       danger-line: "rgba(180,72,93,0.30)"
       danger-bg: "rgba(180,72,93,0.06)"
     dark:
       background: "#171412"
       foreground: "#f2ebe4"
+      surface: "#1e1a17"
       accent: "#4ea1ff"
       accent-deep: "#a9d0ff"
+      accent-soft: "rgba(78,161,255,0.10)"
+      accent-line: "rgba(78,161,255,0.38)"
       danger-ink: "#ea8a9b"
       danger-line: "rgba(234,138,155,0.30)"
       danger-bg: "rgba(234,138,155,0.08)"
@@ -112,7 +128,7 @@ x-chart:
   label: var(--text-muted)
   value: var(--text-muted)
 x-motion:
-  duration-fast: 150ms
-  duration-reveal: 400ms
-  ease: cubic-bezier(0.2, 0, 0, 1)
-  stagger-step: 60ms
+  duration-fast: 180ms
+  duration-reveal: 640ms
+  ease: cubic-bezier(0.16, 1, 0.3, 1)
+  stagger-step: 55ms

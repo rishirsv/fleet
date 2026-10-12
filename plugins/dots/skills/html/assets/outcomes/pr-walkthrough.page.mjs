@@ -19,7 +19,7 @@ export default function(h, {pr}) {
   return page({
     title:"Find a building block. Keep the source.",
     dek:"Dots PR #65 helps HTML authors choose an existing block, carry editable source inside a finished page, and restore that source for another edit.",
-    layout:"article", tools:true,
+    layout:"article", tools:true, behavior:true,
     footer:`Dots PR #65 (${pr.url}), merged September 24, 2026. Historical snapshot: base ${pr.base}; head ${pr.head}. This walkthrough explains that change; it does not report the current branch's behavior.`
   }, [
     html`<style>

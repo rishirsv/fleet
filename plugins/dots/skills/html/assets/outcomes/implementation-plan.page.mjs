@@ -14,7 +14,7 @@ export default function(h) {
     title:"Send Later for PostBox",
     context:"PostBox / implementation proposal",
     dek:"Choose when a message should leave, manage it in Scheduled, and recover clearly if sending fails.",
-    layout:"article", tools:true,
+    layout:"article", tools:true, behavior:true,
     footer:"Proposal based on the requested behavior. No PostBox repository was supplied; all contracts and module boundaries below are proposed."
   },[
     html`<style>

@@ -14,16 +14,46 @@ gotchas: One per document — if you need a second, the document has two
 -->
 <style>
   .recommendation {
-    border: 1px solid var(--a12);
+    position: relative;
+    border: 1px solid var(--accent-line);
     border-radius: var(--r-card);
-    padding: 20px 22px;
-    font-size: 15px;
-    line-height: 1.7;
+    background: var(--accent-soft);
+    box-shadow: var(--shadow-sm);
+    padding: 20px 24px 20px 54px;
+    font-size: 15.5px;
+    line-height: 1.65;
     margin-bottom: var(--section);
   }
+  .recommendation::before {
+    /* check mark: a rotated L-shape so no icon asset is needed */
+    content: "";
+    position: absolute;
+    left: 22px;
+    top: 24px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .recommendation::after {
+    content: "";
+    position: absolute;
+    left: 28.5px;
+    top: 27.5px;
+    width: 4.5px;
+    height: 8.5px;
+    border-right: 2px solid var(--surface);
+    border-bottom: 2px solid var(--surface);
+    transform: rotate(45deg);
+  }
   .recommendation p { margin: 0; }
-  .recommendation p + p { margin-top: 10px; }
-  .recommendation strong { font-weight: 700; }
+  .recommendation p + p { margin-top: 10px; color: var(--a70); }
+  .recommendation strong { font-weight: 650; }
+  @media (max-width: 520px) {
+    .recommendation { padding: 18px 18px 18px 48px; }
+    .recommendation::before { left: 16px; top: 22px; }
+    .recommendation::after { left: 22.5px; top: 25.5px; }
+  }
 </style>
 
 <div data-component="recommendation" class="recommendation">

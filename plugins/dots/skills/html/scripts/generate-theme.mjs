@@ -184,17 +184,28 @@ ${toneCss ? `\n${toneCss}\n` : ""}
 
 html, body { margin: 0; padding: 0; overflow-x: clip; }
 
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   font-size: ${t("body", "fontSize")};
   line-height: ${t("body", "lineHeight")};
+  font-optical-sizing: auto;
+  font-kerning: normal;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: transparent;
+}
+a:hover { text-decoration-color: currentColor; }
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -202,7 +213,7 @@ a:hover { text-decoration: underline; }
   border-radius: var(--r-inline);
 }
 
-::selection { background: var(--a12); }
+::selection { background: var(--accent-soft); background: color-mix(in srgb, var(--accent) 22%, transparent); }
 
 h1 {
   font-family: var(--font-display);
@@ -228,7 +239,7 @@ h2 {
   line-height: ${t("h2", "lineHeight")};
   letter-spacing: calc(${t("h2", "letterSpacing")} * var(--display-tracking));
   font-weight: ${t("h2", "fontWeight")};
-  margin: 0 0 16px;
+  margin: 0 0 14px;
   text-wrap: balance;
 }
 
@@ -238,47 +249,69 @@ h3 {
   line-height: ${t("h3", "lineHeight")};
   letter-spacing: calc(${t("h3", "letterSpacing")} * var(--display-tracking));
   font-weight: ${t("h3", "fontWeight")};
-  margin: 0 0 12px;
+  margin: 0 0 10px;
+  text-wrap: balance;
 }
 
-p { margin: 0 0 var(--block); }
+p { margin: 0 0 var(--block); text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 
-section { margin-bottom: var(--section); }
+strong, b { font-weight: 620; }
+
+section { margin-bottom: var(--section); scroll-margin-top: 24px; }
 
 code {
   font-family: var(--font-mono);
-  font-size: ${t("mono", "fontSize")};
+  font-size: 0.87em;
   background: var(--a4);
+  box-shadow: inset 0 0 0 1px var(--a8);
   border-radius: var(--r-inline);
-  padding: 1px 5px;
+  padding: 0.1em 0.38em;
+}
+
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  padding: 0.08em 0.42em;
+  border-radius: var(--r-inline);
+  background: var(--surface);
+  box-shadow: inset 0 -1px 0 var(--a20), 0 0 0 1px var(--a12);
 }
 
 pre { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; }
-pre code { background: none; padding: 0; white-space: inherit; overflow-wrap: inherit; }
+pre code { background: none; box-shadow: none; padding: 0; font-size: inherit; white-space: inherit; overflow-wrap: inherit; }
+
+hr { border: 0; border-top: 1px solid var(--a12); margin: var(--section) 0; }
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
-  border-top: 1px solid var(--a20);
+  font-variant-numeric: tabular-nums;
 }
 
 th, td {
   text-align: left;
-  padding: 12px 4px;
-  border-bottom: 1px solid var(--a12);
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--a8);
   vertical-align: top;
 }
 
+th:first-child, td:first-child { padding-left: 4px; }
+th:last-child, td:last-child { padding-right: 4px; }
+
 thead th {
   font-size: 12px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 560;
+  border-bottom: 1px solid var(--a20);
+  white-space: nowrap;
 }
 
-tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
+tbody tr { transition: background-color var(--dur-fast) var(--ease); }
+tbody tr:hover { background: var(--a4); }
+tbody tr:last-child td { border-bottom: 1px solid var(--a12); }
 
 .num { font-variant-numeric: tabular-nums; }
 
@@ -290,34 +323,53 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
 @media (prefers-reduced-motion: no-preference) {
   html.js-motion .stagger > * {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(10px);
+    filter: blur(4px);
     animation: rise var(--dur-reveal) var(--ease) forwards;
   }
-  html.js-motion .stagger > *:nth-child(1) { animation-delay: 0ms; }
   html.js-motion .stagger > *:nth-child(2) { animation-delay: var(--stagger); }
   html.js-motion .stagger > *:nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
   html.js-motion .stagger > *:nth-child(4) { animation-delay: calc(var(--stagger) * 3); }
   html.js-motion .stagger > *:nth-child(5) { animation-delay: calc(var(--stagger) * 4); }
+  html.js-motion .stagger > *:nth-child(6) { animation-delay: calc(var(--stagger) * 5); }
+  html.js-motion .stagger > *:nth-child(n+7) { animation-delay: calc(var(--stagger) * 6); }
 
   html.js-motion .reveal {
     opacity: 0;
-    transform: translateY(8px);
-    transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
+    transform: translateY(12px);
+    filter: blur(4px);
+    transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease), filter var(--dur-reveal) var(--ease);
   }
-  html.js-motion .reveal.is-in { opacity: 1; transform: none; }
+  html.js-motion .reveal.is-in { opacity: 1; transform: none; filter: none; }
 
   html.js-motion .reveal .bar-fill {
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform calc(var(--dur-reveal) * 1.5) var(--ease) 120ms;
+    transition: transform calc(var(--dur-reveal) * 1.6) var(--ease) 140ms;
   }
   html.js-motion .reveal.is-in .bar-fill { transform: scaleX(1); }
 
-  a, summary, button { transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+  a, summary, button, select, input, textarea {
+    transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease),
+      text-decoration-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  }
+  button:active:not(:disabled) { transform: scale(0.97); }
+
+  /* Smoothly open native disclosures where the browser supports it. */
+  :root { interpolate-size: allow-keywords; }
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition: block-size var(--dur-reveal) var(--ease), content-visibility var(--dur-reveal) allow-discrete;
+  }
+  details[open]::details-content { block-size: auto; }
+
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 320ms; }
 }
 
 @keyframes rise {
-  to { opacity: 1; transform: none; }
+  to { opacity: 1; transform: none; filter: none; }
 }
 `;
 

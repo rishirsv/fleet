@@ -238,7 +238,7 @@ function comparison(options, { columns = options?.length } = {}) {
   if (columns !== options.length) fail("comparison", "columns");
   if (options.filter((option) => option.recommended).length > 1) fail('comparison', 'recommendation');
   return html`<div data-component="comparison-grid" class="comparison-grid" data-columns="${options.length}">${options.map(({ title, body, bestFor, recommended }) =>
-    html`<div class="${recommended ? "option-card recommended" : "option-card"}"><h3>${required("comparison", "title", title)}</h3><p>${recommended ? html`<span class="recommend-mark">Recommended.</span> ` : ""}${body}</p>${bestFor != null ? html`<div class="best-for">best for: ${bestFor}</div>` : ""}</div>`)}</div>`;
+    html`<div class="${recommended ? "option-card recommended" : "option-card"}"><h3>${required("comparison", "title", title)}</h3><p>${recommended ? html`<span class="recommend-mark">Recommended</span>` : ""}${body}</p>${bestFor != null ? html`<div class="best-for">best for: ${bestFor}</div>` : ""}</div>`)}</div>`;
 }
 
 // ---------- code ----------

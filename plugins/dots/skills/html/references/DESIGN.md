@@ -99,20 +99,23 @@ grids, declare the item count and leave no empty columns.
 
 ## Surfaces and code
 
-The style is flat. Hierarchy comes from spacing, type, ink contrast, and
-hairline rules. A component may use a faint semantic tint when meaning
-requires it, but it never creates a second page background, a shadow, or
-simulated elevation. Keep one surface per exhibit: inside a review point, use
-flat disclosures and spacing instead of bordered cards inside bordered cards.
+Hierarchy comes from spacing, type, ink contrast, and hairline rules first.
+Objects the reader compares or acts on (stat tiles, option cards,
+disclosures, code panels, form choices) sit on the `surface` color with a
+hairline border and the soft `shadow-sm`; only the recommended or selected
+object steps up to `shadow-md`. Running prose, tables, and timelines stay on
+the page background. A component may use a faint semantic tint when meaning
+requires it. Keep one surface per exhibit: inside a review point, use flat
+disclosures and spacing instead of bordered cards inside bordered cards.
 
 Wrap code and diffs within their panels, including long identifiers, so
 readers never scroll sideways. Wrapping must preserve the original text when
 copied. Give copy controls a small icon with an accessible name and visible
 focus.
 
-`rounded.card` (6px) is for cards and code panels; `rounded.inline` (4px) for
-inline code and focus rings. Keep the radius uniform. Borders are 1px
-hairlines from the alpha ladder.
+`rounded.card` (10px) is for cards and code panels; `rounded.inline` (5px) for
+inline code and focus rings; `rounded.pill` for status chips. Keep the radius
+uniform within a component. Borders are 1px hairlines from the alpha ladder.
 
 ## Components
 
@@ -130,9 +133,12 @@ Charts use the `x-chart` roles for structure, marks, labels, values, and the
 single emphasized point. Those roles follow light and dark modes and keep
 chart emphasis independent from links and callouts.
 
-Use `x-motion` only for a one-time load stagger on header elements (≤400ms
-total), one-time reveals for figures entering the viewport (bars grow once,
-SVG paths draw once), and hover, focus, and TOC active states. Add no ambient
+Use `x-motion` only for a one-time load stagger on header elements (a short
+rise with a slight blur that settles within about a second), one-time reveals
+for figures entering the viewport (bars grow once, SVG paths draw once),
+disclosures opening, the theme cross-fade, and hover, focus, press, and TOC
+active states. The shared ease decelerates quickly, so motion feels responsive
+without overshoot. Add no ambient
 or looping motion. Enable motion only under
 `prefers-reduced-motion: no-preference`. With JavaScript off, the page renders
 completely and stays static.
@@ -144,14 +150,16 @@ completely and stays static.
 - Mark callouts with a full hairline border and, if needed, a faint tint. Put
   no left-side accent stripe on callouts, quotes, recommendations, or the TOC;
   the active TOC item uses weight and color alone.
-- Use at most one status chip per page ("draft"). Inside callouts and headers,
-  start with a bold lead word ("**Note.**") instead of a label chip.
+- Use chips only for a status value inside a structured component, such as a
+  milestone state, a finding's severity, or the recommended option. Inside
+  callouts and headers, start with a bold lead word ("**Note.**") instead of
+  a label chip.
 - Start with the title and follow the heading rules in
   [Dots writing style](../../../references/writing-style.md). Keep document
   metadata in the footer, review IDs in exported feedback, and functional
   breadcrumb navigation below the introduction.
-- Keep the single accent for links, active states, and the one emphasized
-  data point. Amber and red mark genuine warnings only.
+- Keep the single accent for links, active states, the recommendation and
+  recommended option, and the one emphasized data point. Amber and red mark genuine warnings only.
 - Use numbered markers, dividers, and labels only for real structure. If the
   content is not a sequence, do not number it.
 - Use a generated raster image when it gives the reader meaningful subject
