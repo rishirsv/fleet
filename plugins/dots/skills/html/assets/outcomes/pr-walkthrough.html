@@ -575,6 +575,177 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a12); }
 @media(max-width:640px) { .review-point { padding: 20px 0; } .review-toolbar { bottom: calc(12px + env(safe-area-inset-bottom, 0px)); } .review-decision { padding: 12px; } .review-point > h3 { font-size: 21px; } }
 @media print { .review-toolbar,.review-save,.review-notes,.review-dialog,.decision-note { display: none !important; } .review-point { break-inside: auto; } }
 
+.flow-diagram-wrap {
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scrollbar-gutter: stable;
+    margin-bottom: 12px;
+  }
+
+  .flow-diagram {
+    display: block;
+    width: 100%;
+    height: auto;
+    min-width: 560px;
+  }
+
+  .flow-node-rect {
+    fill: var(--surface);
+    stroke: var(--a40);
+    stroke-width: 1;
+  }
+
+  .flow-node-rect.is-emphasized {
+    fill: var(--accent-soft);
+    stroke: var(--accent);
+    stroke-width: 1.25;
+  }
+
+  .flow-node-label {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 560;
+    fill: var(--foreground);
+    text-anchor: middle;
+    dominant-baseline: middle;
+  }
+
+  .flow-edge {
+    fill: none;
+    stroke: var(--a40);
+    stroke-width: 1;
+    stroke-linejoin: round;
+  }
+
+  .flow-edge-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    fill: var(--a60);
+    text-anchor: middle;
+    /* a background-colored halo keeps labels legible where they cross a line */
+    paint-order: stroke;
+    stroke: var(--background);
+    stroke-width: 4px;
+    stroke-linejoin: round;
+  }
+
+  .flow-caption {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+  .flow-callout {
+    fill: var(--accent);
+    stroke: var(--background);
+    stroke-width: 2;
+  }
+  .flow-callout-label {
+    fill: var(--background);
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 600;
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+  .flow-notes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+    padding: 16px 0 0;
+    margin: 0;
+    list-style: none;
+    counter-reset: flow-note;
+  }
+  .flow-notes li {
+    counter-increment: flow-note;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .flow-notes li::before {
+    content: counter(flow-note);
+    display: block;
+    color: var(--accent-deep);
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  @media (max-width: 680px) {
+    .flow-notes { grid-template-columns: 1fr; gap: 12px; }
+  }
+
+  /* Shared diagram grammar for authored SVG figures (see references/diagrams.md). */
+  .diagram-canvas {
+  display: block;
+  max-width: none;
+  height: auto;
+  margin-inline: auto;
+  overflow: visible;
+  }
+  :is(.diagram-canvas, .flow-diagram) text.is-start { text-anchor: start; }
+  :is(.diagram-canvas, .flow-diagram) text.is-middle { text-anchor: middle; }
+  :is(.diagram-canvas, .flow-diagram) text.is-end { text-anchor: end; }
+  /* Diagram grammar: 1px hairlines, 6px node corners, surface-filled nodes,
+  one or two focal elements in the accent, mono caps for edge and region labels. */
+  .diagram-node { fill: var(--surface); stroke: var(--a40); stroke-width: 1; }
+  .diagram-node.is-focal { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-node.is-store { fill: var(--a4); }
+  .diagram-node.is-external { fill: none; stroke-dasharray: 4 3; }
+  .diagram-node.is-added { fill: var(--accent-soft); stroke: var(--accent); }
+  .diagram-node.is-removed { fill: none; stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-region { fill: var(--a4); stroke: var(--a12); stroke-width: 1; }
+  .diagram-edge { fill: none; stroke: var(--a40); stroke-width: 1; stroke-linejoin: round; }
+  .diagram-edge.is-focal { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-async { stroke-dasharray: 5 4; }
+  .diagram-edge.is-added { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-removed { stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-gridline { stroke: var(--a12); stroke-width: 1; }
+  .diagram-arrow { fill: var(--a55); }
+  .diagram-arrow.is-focal { fill: var(--accent); }
+  .diagram-arrow.is-removed { fill: var(--danger-ink); }
+  .diagram-arrow.is-hollow { fill: var(--background); stroke: var(--a55); }
+  .diagram-set { fill: var(--a4); stroke: var(--a40); stroke-width: 1; }
+  .diagram-set.is-focal { fill: var(--accent); fill-opacity: 0.14; stroke: none; }
+  .diagram-label {
+  fill: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 560;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-label.is-small { fill: var(--text-muted); font-family: var(--font-mono); font-size: 11px; font-weight: 400; }
+  .diagram-label.is-focal { fill: var(--accent-deep); }
+  .diagram-tag {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: var(--background);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  }
+  .diagram-tag.is-focal { fill: var(--accent-deep); }
+  .diagram-tag.is-removed { fill: var(--danger-ink); }
+  .diagram-value {
+  fill: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-value.is-focal { fill: var(--accent-deep); }
+  .diagram-value.is-inverse { fill: var(--background); }
+  /* Opacity steps over the card background keep computed fills in rgb() for contrast checks. */
+  .diagram-heat-0 { fill: var(--a4); }
+  .diagram-heat-1 { fill: var(--accent); fill-opacity: 0.18; }
+  .diagram-heat-2 { fill: var(--accent); fill-opacity: 0.38; }
+  .diagram-heat-3 { fill: var(--accent); fill-opacity: 0.62; }
+  .diagram-heat-4 { fill: var(--accent); }
+
 .disclosure {
     border: 1px solid var(--a12);
     border-radius: var(--r-card);
@@ -848,7 +1019,7 @@ node scripts/catalog.mjs --help code</code></pre><p>The author can ask for a hel
     <div class="review-toolbar" data-document-control hidden><span class="review-progress" data-document-control role="status" aria-live="polite"></span><button type="button" data-review-next aria-label="Next unanswered decision">Next decision</button><button type="button" data-review-response>Prepare response<span data-review-count aria-hidden="true" hidden></span></button></div>
     <p class="review-save" data-document-control role="status" aria-live="polite"></p>
     <noscript><p>Choices and notes need JavaScript to export. Send your feedback in chat using the item headings.</p></noscript>
-    <section id="mechanism"><h2>How the change produces the result</h2><article data-component="plan-review" class="review-point" id="discovery" data-review-point="discovery" data-review-label="Helper examples drive discovery and galleries"><h3>Helper examples drive discovery and galleries</h3><p class="review-summary">The author can find a block without scanning the whole gallery. The gallery can be checked against the same maintained examples.</p><p>The new catalog command reads the helper metadata. Its list and help routes expose signatures and examples. Its write and check routes generate gallery sections from those examples and detect stale output. The retained templates supply the authored page layout. Helper metadata clarifies required chart sources and other rules. The atlas starts helper-generated diagram IDs at 1000 to keep them distinct from the earlier gallery diagrams.</p><details data-component="disclosure" class="disclosure"><summary>The exact list and help routes</summary><div class="disclosure-content"><p><a href="https://github.com/rishirsv/dots/blob/f72893a7a21b72fd450c5685bc501ac3733859aa/plugins/dots/skills/html/scripts/catalog.mjs#L98-L105">scripts/catalog.mjs · head lines 98–105</a>. Exact excerpt; surrounding source is available at the link.</p><div data-component="code-panel" class="code-panel"><pre><code>    if (args.length === 1 &amp;&amp; args[0] === &#39;--list&#39;) {
+    <section id="mechanism"><h2>How the change produces the result</h2><div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 840 284" style="min-width:840px" aria-hidden="true"><defs><marker id="pr65-delta-arrow-added" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow is-focal" d="M0 0 10 5 0 10Z"/></marker></defs><defs><marker id="pr65-delta-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs><rect class="diagram-region" x="0" y="0" width="840" height="132" rx="8"/><text class="diagram-tag is-start" x="12" y="16">BEFORE · MAIN</text><rect class="diagram-node" x="20" y="32" width="104" height="36" rx="6"/><text class="diagram-label" x="72.0" y="50">author</text><rect class="diagram-node" x="220" y="32" width="148" height="36" rx="6"/><text class="diagram-label" x="294.0" y="50">gallery pages</text><rect class="diagram-node" x="440" y="32" width="148" height="36" rx="6"/><text class="diagram-label" x="514.0" y="50">helper source</text><path class="diagram-edge" d="M124 50 L218 50" marker-end="url(#pr65-delta-arrow)"/><text class="diagram-tag is-middle" x="171.0" y="40">SCAN</text><path class="diagram-edge" d="M368 50 L438 50" marker-end="url(#pr65-delta-arrow)"/><text class="diagram-tag is-middle" x="403.0" y="40">OPEN</text><rect class="diagram-node" x="20" y="80" width="104" height="36" rx="6"/><text class="diagram-label" x="72.0" y="98">page.mjs</text><rect class="diagram-node" x="220" y="80" width="148" height="36" rx="6"/><text class="diagram-label" x="294.0" y="98">page.html</text><path class="diagram-edge" d="M124 98 L218 98" marker-end="url(#pr65-delta-arrow)"/><text class="diagram-tag is-middle" x="171.0" y="88">BUILD</text><text class="diagram-label is-small is-start" x="392" y="98">source is not kept</text><rect class="diagram-region" x="0" y="148" width="840" height="132" rx="8"/><text class="diagram-tag is-start is-focal" x="12" y="164">AFTER · PR #65</text><rect class="diagram-node" x="20" y="180" width="104" height="36" rx="6"/><text class="diagram-label" x="72.0" y="198">author</text><rect class="diagram-node is-added" x="220" y="180" width="148" height="36" rx="6"/><text class="diagram-label is-focal" x="294.0" y="198">catalog.mjs</text><rect class="diagram-node" x="440" y="180" width="148" height="36" rx="6"/><text class="diagram-label" x="514.0" y="198">helper metadata</text><rect class="diagram-node is-added" x="660" y="180" width="148" height="36" rx="6"/><text class="diagram-label is-focal" x="734.0" y="198">galleries</text><path class="diagram-edge is-added" d="M124 198 L218 198" marker-end="url(#pr65-delta-arrow-added)"/><text class="diagram-tag is-middle is-focal" x="171.0" y="188">LIST · HELP</text><path class="diagram-edge" d="M368 198 L438 198" marker-end="url(#pr65-delta-arrow)"/><text class="diagram-tag is-middle" x="403.0" y="188">READ</text><path class="diagram-edge is-added" d="M588 198 L658 198" marker-end="url(#pr65-delta-arrow-added)"/><text class="diagram-tag is-middle is-focal" x="623.0" y="188">WRITE</text><rect class="diagram-node" x="20" y="228" width="104" height="36" rx="6"/><text class="diagram-label" x="72.0" y="246">page.mjs</text><rect class="diagram-node" x="220" y="228" width="148" height="36" rx="6"/><text class="diagram-label" x="294.0" y="246">page.html</text><rect class="diagram-node is-added" x="440" y="228" width="148" height="36" rx="6"/><text class="diagram-label is-focal" x="514.0" y="246">page.mjs</text><path class="diagram-edge is-added" d="M124 246 L218 246" marker-end="url(#pr65-delta-arrow-added)"/><text class="diagram-tag is-middle is-focal" x="171.0" y="236">EMBED</text><path class="diagram-edge is-added" d="M368 246 L438 246" marker-end="url(#pr65-delta-arrow-added)"/><text class="diagram-tag is-middle is-focal" x="403.0" y="236">EXTRACT</text><text class="diagram-label is-small is-start" x="612" y="246">restored for the next edit</text></svg></div><p class="flow-caption">Before the change, authors scanned galleries and helper source, and a built page lost its module. After it, catalog.mjs answers from helper metadata and writes the galleries, and a page can carry and restore its source.</p><article data-component="plan-review" class="review-point" id="discovery" data-review-point="discovery" data-review-label="Helper examples drive discovery and galleries"><h3>Helper examples drive discovery and galleries</h3><p class="review-summary">The author can find a block without scanning the whole gallery. The gallery can be checked against the same maintained examples.</p><p>The new catalog command reads the helper metadata. Its list and help routes expose signatures and examples. Its write and check routes generate gallery sections from those examples and detect stale output. The retained templates supply the authored page layout. Helper metadata clarifies required chart sources and other rules. The atlas starts helper-generated diagram IDs at 1000 to keep them distinct from the earlier gallery diagrams.</p><details data-component="disclosure" class="disclosure"><summary>The exact list and help routes</summary><div class="disclosure-content"><p><a href="https://github.com/rishirsv/dots/blob/f72893a7a21b72fd450c5685bc501ac3733859aa/plugins/dots/skills/html/scripts/catalog.mjs#L98-L105">scripts/catalog.mjs · head lines 98–105</a>. Exact excerpt; surrounding source is available at the link.</p><div data-component="code-panel" class="code-panel"><pre><code>    if (args.length === 1 &amp;&amp; args[0] === &#39;--list&#39;) {
       for (const [name, entry] of Object.entries(meta)) console.log(`${name}: ${entry.params}`);
     } else if (args.length === 2 &amp;&amp; args[0] === &#39;--help&#39;) {
       const entry = meta[args[1]];

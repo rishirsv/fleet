@@ -130,12 +130,20 @@ function chartCard(norm, body) {
 function lineFragment(norm) {
   const values = norm.data.map(([, value]) => value);
   const lo = Math.min(...values), hi = Math.max(...values);
-  const x = (i) => 44 + i * (560 / Math.max(1, values.length - 1));
-  const y = (value) => hi === lo ? 110 : 190 - (value - lo) / (hi - lo) * 150;
+  // Pad the value range so the series never touches the frame, then draw 1:1 at 640 wide.
+  const pad = hi === lo ? Math.abs(hi) || 1 : (hi - lo) * 0.15;
+  const min = lo - pad, max = hi + pad;
+  const left = 44, right = 616, top = 16, bottom = 164;
+  const x = (i) => left + i * ((right - left) / Math.max(1, values.length - 1));
+  const y = (value) => bottom - (value - min) / (max - min) * (bottom - top);
+  const ticks = [0, 1, 2, 3].map((i) => min + (max - min) * i / 3);
+  const grid = ticks.map((tick) => `<line class="line-grid" x1="${left}" x2="${right}" y1="${round(y(tick))}" y2="${round(y(tick))}"/><text class="line-tick" x="${left - 8}" y="${round(y(tick))}" text-anchor="end" dominant-baseline="middle">${round(tick)}</text>`).join('');
   const points = values.map((value, i) => `${round(x(i))},${round(y(value))}`).join(' ');
-  const labels = norm.data.map(([label], i) => `<text x="${round(x(i))}" y="230" text-anchor="middle">${escapeHtml(label)}</text>`).join('');
+  const area = `${left},${bottom} ${points} ${round(x(values.length - 1))},${bottom}`;
+  const last = values.length - 1;
+  const labels = norm.data.map(([label], i) => `<text class="line-tick" x="${round(x(i))}" y="188" text-anchor="middle">${escapeHtml(label)}</text>`).join('');
   const data = `  <ul class="chart-data">${norm.data.map(([label, value]) => `<li>${escapeHtml(label)}: ${value}</li>`).join('')}</ul>`;
-  const body = `  <div class="chart-scroll"><svg viewBox="0 0 640 250" style="min-width:640px" aria-hidden="true"><polyline class="line-series" points="${points}"/>${values.map((value, i) => `<circle class="line-point" cx="${round(x(i))}" cy="${round(y(value))}" r="4"/>`).join('')}${labels}</svg></div>\n${data}`;
+  const body = `  <div class="chart-scroll"><svg viewBox="0 0 640 200" style="min-width:640px;max-width:640px" aria-hidden="true">${grid}<polygon class="line-area" points="${area}"/><polyline class="line-series" points="${points}"/>${values.map((value, i) => `<circle class="line-point${i === last ? ' is-last' : ''}" cx="${round(x(i))}" cy="${round(y(value))}" r="${i === last ? 4.5 : 3}"/>`).join('')}<text class="line-value" x="${round(x(last))}" y="${round(y(values[last]) - 12)}" text-anchor="end">${values[last]}</text>${labels}</svg></div>\n${data}`;
   return chartCard(norm, body);
 }
 

@@ -584,19 +584,21 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a12); }
   }
 
   .flow-node-rect {
-    fill: var(--background);
+    fill: var(--surface);
     stroke: var(--a40);
-    stroke-width: 1.5;
+    stroke-width: 1;
   }
 
   .flow-node-rect.is-emphasized {
+    fill: var(--accent-soft);
     stroke: var(--accent);
-    stroke-width: 2;
+    stroke-width: 1.25;
   }
 
   .flow-node-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 13px;
+    font-weight: 560;
     fill: var(--foreground);
     text-anchor: middle;
     dominant-baseline: middle;
@@ -605,13 +607,21 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a12); }
   .flow-edge {
     fill: none;
     stroke: var(--a40);
-    stroke-width: 1.5;
+    stroke-width: 1;
+    stroke-linejoin: round;
   }
 
   .flow-edge-label {
-    font-size: 13px;
-    fill: var(--a55);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    fill: var(--a60);
     text-anchor: middle;
+    /* a background-colored halo keeps labels legible where they cross a line */
+    paint-order: stroke;
+    stroke: var(--background);
+    stroke-width: 4px;
+    stroke-linejoin: round;
   }
 
   .flow-caption {
@@ -657,6 +667,78 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a12); }
   @media (max-width: 680px) {
     .flow-notes { grid-template-columns: 1fr; gap: 12px; }
   }
+
+  /* Shared diagram grammar for authored SVG figures (see references/diagrams.md). */
+  .diagram-canvas {
+  display: block;
+  max-width: none;
+  height: auto;
+  margin-inline: auto;
+  overflow: visible;
+  }
+  :is(.diagram-canvas, .flow-diagram) text.is-start { text-anchor: start; }
+  :is(.diagram-canvas, .flow-diagram) text.is-middle { text-anchor: middle; }
+  :is(.diagram-canvas, .flow-diagram) text.is-end { text-anchor: end; }
+  /* Diagram grammar: 1px hairlines, 6px node corners, surface-filled nodes,
+  one or two focal elements in the accent, mono caps for edge and region labels. */
+  .diagram-node { fill: var(--surface); stroke: var(--a40); stroke-width: 1; }
+  .diagram-node.is-focal { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-node.is-store { fill: var(--a4); }
+  .diagram-node.is-external { fill: none; stroke-dasharray: 4 3; }
+  .diagram-node.is-added { fill: var(--accent-soft); stroke: var(--accent); }
+  .diagram-node.is-removed { fill: none; stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-region { fill: var(--a4); stroke: var(--a12); stroke-width: 1; }
+  .diagram-edge { fill: none; stroke: var(--a40); stroke-width: 1; stroke-linejoin: round; }
+  .diagram-edge.is-focal { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-async { stroke-dasharray: 5 4; }
+  .diagram-edge.is-added { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-removed { stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-gridline { stroke: var(--a12); stroke-width: 1; }
+  .diagram-arrow { fill: var(--a55); }
+  .diagram-arrow.is-focal { fill: var(--accent); }
+  .diagram-arrow.is-removed { fill: var(--danger-ink); }
+  .diagram-arrow.is-hollow { fill: var(--background); stroke: var(--a55); }
+  .diagram-set { fill: var(--a4); stroke: var(--a40); stroke-width: 1; }
+  .diagram-set.is-focal { fill: var(--accent); fill-opacity: 0.14; stroke: none; }
+  .diagram-label {
+  fill: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 560;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-label.is-small { fill: var(--text-muted); font-family: var(--font-mono); font-size: 11px; font-weight: 400; }
+  .diagram-label.is-focal { fill: var(--accent-deep); }
+  .diagram-tag {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: var(--background);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  }
+  .diagram-tag.is-focal { fill: var(--accent-deep); }
+  .diagram-tag.is-removed { fill: var(--danger-ink); }
+  .diagram-value {
+  fill: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-value.is-focal { fill: var(--accent-deep); }
+  .diagram-value.is-inverse { fill: var(--background); }
+  /* Opacity steps over the card background keep computed fills in rgb() for contrast checks. */
+  .diagram-heat-0 { fill: var(--a4); }
+  .diagram-heat-1 { fill: var(--accent); fill-opacity: 0.18; }
+  .diagram-heat-2 { fill: var(--accent); fill-opacity: 0.38; }
+  .diagram-heat-3 { fill: var(--accent); fill-opacity: 0.62; }
+  .diagram-heat-4 { fill: var(--accent); }
 
 .finding-list { list-style: none; padding: 0; margin: 0 0 var(--section); }
   .finding {
@@ -767,7 +849,7 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a12); }
     <li class="milestone"><span class="milestone-marker" aria-hidden="true"></span><div class="milestone-body"><div class="milestone-head"><span class="milestone-title">Configuration reverted</span><span class="milestone-date">14:21</span></div><p class="milestone-detail">New requests began succeeding, but retry cohorts remained synchronized.</p></div></li>
     <li class="milestone is-current"><span class="milestone-marker" aria-hidden="true"></span><div class="milestone-body"><div class="milestone-head"><span class="milestone-title">Traffic recovered</span><span class="milestone-date">14:49</span></div><p class="milestone-detail">Queue depth returned below the autoscaling threshold.</p></div></li>
   </ol></section>
-  <section id="cause"><h2>Causal chain</h2><p>The initiating cause was a gateway config requiring a header that clients did not send. The duration cause was deterministic retry timing: clients that failed together retried together, preventing a smooth recovery.</p></section>
+  <section id="cause"><h2>Causal chain</h2><p>The initiating cause was a gateway config requiring a header that clients did not send. The duration cause was deterministic retry timing: clients that failed together retried together, preventing a smooth recovery.</p><div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 840 300" style="min-width:840px;max-width:840px;margin-inline:auto" aria-hidden="true"><defs><marker id="incident-fishbone-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs><path class="diagram-edge" d="M20 150 L626 150" marker-end="url(#incident-fishbone-arrow)"/><rect class="diagram-node" x="628" y="124" width="192" height="52" rx="6"/><text class="diagram-label" x="724.0" y="144">checkout failures</text><text class="diagram-label is-small" x="724.0" y="160">8.4% · 47 min</text><rect class="diagram-node is-focal" x="128" y="16" width="144" height="36" rx="6"/><text class="diagram-label is-focal" x="200.0" y="34">gateway config</text><path class="diagram-edge is-focal" d="M200 52 L200 150"/><path class="diagram-edge" d="M176 84 L200 84"/><text class="diagram-label is-small is-end" x="170" y="84">required header</text><path class="diagram-edge" d="M176 116 L200 116"/><text class="diagram-label is-small is-end" x="170" y="116">clients lacked it</text><rect class="diagram-node is-focal" x="358" y="16" width="144" height="36" rx="6"/><text class="diagram-label is-focal" x="430.0" y="34">retry timing</text><path class="diagram-edge is-focal" d="M430 52 L430 150"/><path class="diagram-edge" d="M406 84 L430 84"/><text class="diagram-label is-small is-end" x="400" y="84">fixed 1 · 2 · 4 s</text><path class="diagram-edge" d="M406 116 L430 116"/><text class="diagram-label is-small is-end" x="400" y="116">no jitter</text><rect class="diagram-node" x="128" y="248" width="144" height="36" rx="6"/><text class="diagram-label" x="200.0" y="266">rollout</text><path class="diagram-edge" d="M200 150 L200 248"/><path class="diagram-edge" d="M176 184 L200 184"/><text class="diagram-label is-small is-end" x="170" y="184">no compat check</text><path class="diagram-edge" d="M176 216 L200 216"/><text class="diagram-label is-small is-end" x="170" y="216">oldest client untested</text><rect class="diagram-node" x="358" y="248" width="144" height="36" rx="6"/><text class="diagram-label" x="430.0" y="266">detection</text><path class="diagram-edge" d="M430 150 L430 248"/><path class="diagram-edge" d="M406 184 L430 184"/><text class="diagram-label is-small is-end" x="400" y="184">alert on rejects only</text><path class="diagram-edge" d="M406 216 L430 216"/><text class="diagram-label is-small is-end" x="400" y="216">no recovery signal</text></svg></div><p class="flow-caption">The gateway configuration started the failures and synchronized retry timing kept them going; rollout and detection gaps let both reach customers.</p></section>
   <section id="findings"><h2>Findings</h2><ol data-component="finding-list" class="finding-list">
     <li class="finding" data-severity="high"><div class="finding-severity">High</div><div><h3>Retries had no jitter</h3><p><strong>Evidence.</strong> All clients used fixed delays of 1, 2, and 4 seconds.</p><p><strong>Consequence.</strong> Each recovery attempt produced another coordinated load spike.</p><p class="finding-action"><strong>Action.</strong> Use full jitter and cap aggregate retry volume.</p></div></li>
     <li class="finding" data-severity="medium"><div class="finding-severity">Medium</div><div><h3>The config rollout lacked a compatibility check</h3><p><strong>Evidence.</strong> Staging did not include the oldest supported client.</p><p class="finding-action"><strong>Action.</strong> Add the compatibility case to the owning gateway gate.</p></div></li>

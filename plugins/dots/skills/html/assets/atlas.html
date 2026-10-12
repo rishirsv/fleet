@@ -1082,10 +1082,15 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
 
 
   .chart-scroll { overflow-x: auto; }
-  .chart-scroll svg { display: block; width: 100%; height: auto; }
+  .chart-scroll svg { display: block; width: 100%; height: auto; margin-inline: auto; }
   .chart-scroll svg text { fill: var(--text-muted); font: 12px var(--font-sans); }
-  .line-series { fill: none; stroke: var(--accent); stroke-width: 2; }
-  .line-point { fill: var(--accent); }
+  .chart-scroll svg .line-tick { font: 11px var(--font-mono); fill: var(--text-muted); }
+  .chart-scroll svg .line-value { font: 600 12px var(--font-mono); fill: var(--accent-deep); }
+  .line-grid { stroke: var(--a8); stroke-width: 1; }
+  .line-area { fill: var(--accent-soft); }
+  .line-series { fill: none; stroke: var(--accent); stroke-width: 1.75; stroke-linejoin: round; stroke-linecap: round; }
+  .line-point { fill: var(--background); stroke: var(--accent); stroke-width: 1.5; }
+  .line-point.is-last { fill: var(--accent); }
   .chart-data { display:flex; flex-wrap:wrap; gap:4px 16px; margin:10px 0 0; padding:0; list-style:none; color:var(--text-muted); font-size:12px; }
 
 
@@ -1587,19 +1592,21 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
   }
 
   .flow-node-rect {
-    fill: var(--background);
+    fill: var(--surface);
     stroke: var(--a40);
-    stroke-width: 1.5;
+    stroke-width: 1;
   }
 
   .flow-node-rect.is-emphasized {
+    fill: var(--accent-soft);
     stroke: var(--accent);
-    stroke-width: 2;
+    stroke-width: 1.25;
   }
 
   .flow-node-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 13px;
+    font-weight: 560;
     fill: var(--foreground);
     text-anchor: middle;
     dominant-baseline: middle;
@@ -1608,13 +1615,21 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
   .flow-edge {
     fill: none;
     stroke: var(--a40);
-    stroke-width: 1.5;
+    stroke-width: 1;
+    stroke-linejoin: round;
   }
 
   .flow-edge-label {
-    font-size: 13px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
     fill: var(--a60);
     text-anchor: middle;
+    /* a background-colored halo keeps labels legible where they cross a line */
+    paint-order: stroke;
+    stroke: var(--background);
+    stroke-width: 4px;
+    stroke-linejoin: round;
   }
 
   .flow-caption {
@@ -1660,6 +1675,78 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
   @media (max-width: 680px) {
     .flow-notes { grid-template-columns: 1fr; gap: 12px; }
   }
+
+  /* Shared diagram grammar for authored SVG figures (see references/diagrams.md). */
+  .diagram-canvas {
+  display: block;
+  max-width: none;
+  height: auto;
+  margin-inline: auto;
+  overflow: visible;
+  }
+  :is(.diagram-canvas, .flow-diagram) text.is-start { text-anchor: start; }
+  :is(.diagram-canvas, .flow-diagram) text.is-middle { text-anchor: middle; }
+  :is(.diagram-canvas, .flow-diagram) text.is-end { text-anchor: end; }
+  /* Diagram grammar: 1px hairlines, 6px node corners, surface-filled nodes,
+  one or two focal elements in the accent, mono caps for edge and region labels. */
+  .diagram-node { fill: var(--surface); stroke: var(--a40); stroke-width: 1; }
+  .diagram-node.is-focal { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-node.is-store { fill: var(--a4); }
+  .diagram-node.is-external { fill: none; stroke-dasharray: 4 3; }
+  .diagram-node.is-added { fill: var(--accent-soft); stroke: var(--accent); }
+  .diagram-node.is-removed { fill: none; stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-region { fill: var(--a4); stroke: var(--a12); stroke-width: 1; }
+  .diagram-edge { fill: none; stroke: var(--a40); stroke-width: 1; stroke-linejoin: round; }
+  .diagram-edge.is-focal { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-async { stroke-dasharray: 5 4; }
+  .diagram-edge.is-added { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-removed { stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-gridline { stroke: var(--a12); stroke-width: 1; }
+  .diagram-arrow { fill: var(--a55); }
+  .diagram-arrow.is-focal { fill: var(--accent); }
+  .diagram-arrow.is-removed { fill: var(--danger-ink); }
+  .diagram-arrow.is-hollow { fill: var(--background); stroke: var(--a55); }
+  .diagram-set { fill: var(--a4); stroke: var(--a40); stroke-width: 1; }
+  .diagram-set.is-focal { fill: var(--accent); fill-opacity: 0.14; stroke: none; }
+  .diagram-label {
+  fill: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 560;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-label.is-small { fill: var(--text-muted); font-family: var(--font-mono); font-size: 11px; font-weight: 400; }
+  .diagram-label.is-focal { fill: var(--accent-deep); }
+  .diagram-tag {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: var(--background);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  }
+  .diagram-tag.is-focal { fill: var(--accent-deep); }
+  .diagram-tag.is-removed { fill: var(--danger-ink); }
+  .diagram-value {
+  fill: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-value.is-focal { fill: var(--accent-deep); }
+  .diagram-value.is-inverse { fill: var(--background); }
+  /* Opacity steps over the card background keep computed fills in rgb() for contrast checks. */
+  .diagram-heat-0 { fill: var(--a4); }
+  .diagram-heat-1 { fill: var(--accent); fill-opacity: 0.18; }
+  .diagram-heat-2 { fill: var(--accent); fill-opacity: 0.38; }
+  .diagram-heat-3 { fill: var(--accent); fill-opacity: 0.62; }
+  .diagram-heat-4 { fill: var(--accent); }
 
 
   .mockup-frame { margin: 0 0 var(--section); }
@@ -1996,7 +2083,7 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
     .diagram-card {
       min-width: 0;
       margin: 0;
-      padding: 18px;
+      padding: 20px;
       border: 1px solid var(--a12);
       border-radius: var(--r-card);
       background: var(--background);
@@ -2004,41 +2091,15 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
     .diagram-card h2 { font-size: 18px; line-height: 24px; margin-bottom: 4px; }
     .diagram-use { color: var(--text-muted); font-size: 13px; margin-bottom: 14px; }
     .diagram-scroll { overflow-x: auto; overscroll-behavior-inline: contain; }
-    .diagram-canvas {
-      display: block;
-      width: 100%;
-      height: auto;
-      min-width: 320px;
-      border: 1px solid var(--a8);
-      border-radius: var(--r-card);
-      background: var(--a4);
-    }
-    .diagram-node { fill: var(--background); stroke: var(--a40); stroke-width: 1.5; }
-    .diagram-node.is-focal { fill: var(--a4); stroke: var(--accent); stroke-width: 2; }
-    .diagram-edge { fill: none; stroke: var(--a40); stroke-width: 1.5; }
-    .diagram-edge.is-focal { stroke: var(--accent); stroke-width: 2; }
-    .diagram-gridline { stroke: var(--a12); stroke-width: 1; }
-    .diagram-label {
-      fill: var(--foreground);
-      font-family: var(--font-sans);
-      font-size: 14px;
-      text-anchor: middle;
-      dominant-baseline: middle;
-    }
-    .diagram-label.is-small { fill: var(--text-muted); font-size: 12px; }
-    .diagram-value {
-      fill: var(--foreground);
-      font-family: var(--font-mono);
-      font-size: 13px;
-      text-anchor: middle;
-    }
+    /* Figures draw at 1:1 from their width and height attributes; narrower cards scroll. */
     .diagram-summary {
       color: var(--text-muted);
       font-size: 13px;
       line-height: 1.55;
       margin: 12px 0 0;
     }
-    @media (max-width: 760px) {
+    /* Two columns only where a 520px figure fits its card at 1:1. */
+    @media (max-width: 1219px) {
       .diagram-grid { grid-template-columns: 1fr; }
     }
 
@@ -2061,10 +2122,10 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
   .stacked-legend span { display:inline-flex; align-items:center; gap:5px; }
   .stacked-legend i { display:inline-block; width:10px; height:10px; }
 
-.diagram-card .chart-card{border:0;padding:0;margin:0}.diagram-card .flow-diagram-wrap{margin:0}.diagram-card:is([data-diagram="flowchart"],[data-diagram="state-machine"],[data-diagram="sequence"],[data-diagram="timeline"],[data-diagram="line-chart"]){grid-column:1/-1}
+.diagram-card .chart-card{border:0;padding:0;margin:0}.diagram-card .flow-diagram-wrap{margin:0}.diagram-card:is([data-diagram="architecture-delta"],[data-diagram="flowchart"],[data-diagram="state-machine"],[data-diagram="sequence"],[data-diagram="timeline"],[data-diagram="gantt"],[data-diagram="fishbone"],[data-diagram="line-chart"]){grid-column:1/-1}
 
 
-.diagram-card .chart-card{border:0;padding:0;margin:0}.diagram-card .flow-diagram-wrap{margin:0}.diagram-card:is([data-diagram="flowchart"],[data-diagram="state-machine"],[data-diagram="sequence"],[data-diagram="timeline"],[data-diagram="line-chart"]){grid-column:1/-1}</style>
+.diagram-card .chart-card{border:0;padding:0;margin:0}.diagram-card .flow-diagram-wrap{margin:0}.diagram-card:is([data-diagram="architecture-delta"],[data-diagram="flowchart"],[data-diagram="state-machine"],[data-diagram="sequence"],[data-diagram="timeline"],[data-diagram="gantt"],[data-diagram="fishbone"],[data-diagram="line-chart"]){grid-column:1/-1}</style>
 </head>
 <body>
 <div data-component="page-shell" class="page" data-layout="canvas">
@@ -2091,52 +2152,141 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
       <a class="outcome-preview" href="outcomes/pr-walkthrough.html"><img src="outcomes/pr-walkthrough-preview.png" alt="Preview of an interactive PR walkthrough with behavior comparisons, exact source, and local review notes"><div class="outcome-preview-copy"><h3>PR walkthrough</h3><p>Explain the behavior, inspect pinned source, and export local review notes.</p><div class="outcome-layout">article · interactive change walkthrough</div></div></a>
     </div>
   </section>
-  <section id="diagram-vocabulary"><h2>Diagram templates</h2><p class="reading-column">Choose among 19 relationship-specific forms before drawing. Open the dedicated <a href="./diagrams.html">diagram atlas</a> when this vocabulary is the main work surface.</p>
+  <section id="diagram-vocabulary"><h2>Diagram templates</h2><p class="reading-column">Choose among 24 relationship-specific forms before drawing. Open the dedicated <a href="./diagrams.html">diagram atlas</a> when this vocabulary is the main work surface.</p>
 <div class="diagram-grid">
     <figure id="diagram-template-architecture" class="diagram-card" data-diagram="architecture"><h2>Architecture</h2><p class="diagram-use">System components and their principal connections.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 180" aria-hidden="true">
-        <defs><marker id="architecture-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs>
-        <path class="diagram-edge" d="M76 90H116M204 90H244M160 68V42" marker-end="url(#architecture-arrow)"/>
-        <rect class="diagram-node" x="16" y="68" width="60" height="44" rx="6"/><text class="diagram-label" x="46" y="90">client</text>
-        <rect class="diagram-node is-focal" x="116" y="68" width="88" height="44" rx="6"/><text class="diagram-label" x="160" y="90">service</text>
-        <rect class="diagram-node" x="244" y="68" width="60" height="44" rx="6"/><text class="diagram-label" x="274" y="90">store</text>
-        <rect class="diagram-node" x="122" y="10" width="76" height="32" rx="6"/><text class="diagram-label is-small" x="160" y="26">policy</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 152" width="520" height="152" aria-hidden="true">
+        <defs><marker id="architecture-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <rect class="diagram-region" x="168" y="20" width="332" height="112" rx="8"/><text class="diagram-tag" x="180" y="36">POLICY BOUNDARY</text>
+        <path class="diagram-edge" d="M116 82H189" marker-end="url(#architecture-arrow)"/>
+        <path class="diagram-edge" d="M304 82H361" marker-end="url(#architecture-arrow)"/>
+        <text class="diagram-tag is-middle" x="142" y="70">HTTPS</text>
+        <text class="diagram-tag is-middle" x="334" y="70">READ</text>
+        <rect class="diagram-node is-external" x="20" y="56" width="96" height="52" rx="6"/><text class="diagram-label" x="68" y="75">client</text><text class="diagram-label is-small" x="68" y="89">browser</text>
+        <rect class="diagram-node is-focal" x="192" y="56" width="112" height="52" rx="6"/><text class="diagram-label" x="248" y="75">service</text><text class="diagram-label is-small" x="248" y="89">orders api</text>
+        <rect class="diagram-node is-store" x="364" y="56" width="112" height="52" rx="6"/><text class="diagram-label" x="420" y="75">store</text><text class="diagram-label is-small" x="420" y="89">postgres</text>
       </svg></div>
       <figcaption class="diagram-summary">The client enters one focal service, which reads the store under a policy boundary.</figcaption>
     </figure>
 
     <figure id="diagram-template-architecture-board" class="diagram-card" data-diagram="architecture-board"><h2>Architecture board</h2><p class="diagram-use">Show the full system, its layers, runtime path, and responsibilities.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 220" aria-hidden="true">
-        <rect class="diagram-node" x="14" y="14" width="292" height="34" rx="5"/><text class="diagram-label" x="160" y="31">roles · operators · consumers</text>
-        <rect class="diagram-node" x="14" y="58" width="292" height="52" rx="5"/><line class="diagram-gridline" x1="111" y1="58" x2="111" y2="110"/><line class="diagram-gridline" x1="209" y1="58" x2="209" y2="110"/><text class="diagram-label" x="62" y="84">surface</text><text class="diagram-label" x="160" y="84">runtime</text><text class="diagram-label" x="258" y="84">control</text>
-        <rect class="diagram-node is-focal" x="14" y="120" width="292" height="36" rx="5"/><text class="diagram-label" x="160" y="138">primary execution path</text>
-        <rect class="diagram-node" x="14" y="166" width="292" height="40" rx="5"/><text class="diagram-label" x="160" y="186">owners · proof · next intervention</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 288" width="520" height="288" aria-hidden="true">
+        <defs><marker id="architecture-board-arrow-focal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow is-focal" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <rect class="diagram-region" x="20" y="20" width="480" height="52" rx="8"/><text class="diagram-tag" x="32" y="36">USERS</text>
+        <rect class="diagram-region" x="20" y="80" width="480" height="52" rx="8"/><text class="diagram-tag" x="32" y="96">SYSTEM</text>
+        <rect class="diagram-region" x="20" y="140" width="480" height="52" rx="8"/><text class="diagram-tag" x="32" y="156">MAIN PATH</text>
+        <rect class="diagram-region" x="20" y="200" width="480" height="68" rx="8"/><text class="diagram-tag" x="32" y="216">OWNERSHIP</text>
+        <rect class="diagram-node is-external" x="120" y="28" width="104" height="36" rx="6"/><text class="diagram-label" x="172" y="46">operators</text>
+        <rect class="diagram-node is-external" x="252" y="28" width="104" height="36" rx="6"/><text class="diagram-label" x="304" y="46">consumers</text>
+        <rect class="diagram-node is-external" x="384" y="28" width="104" height="36" rx="6"/><text class="diagram-label" x="436" y="46">auditors</text>
+        <rect class="diagram-node" x="120" y="88" width="104" height="36" rx="6"/><text class="diagram-label" x="172" y="106">surface</text>
+        <rect class="diagram-node" x="252" y="88" width="104" height="36" rx="6"/><text class="diagram-label" x="304" y="106">runtime</text>
+        <rect class="diagram-node" x="384" y="88" width="104" height="36" rx="6"/><text class="diagram-label" x="436" y="106">control</text>
+        <path class="diagram-edge is-focal" d="M188 166H217" marker-end="url(#architecture-board-arrow-focal)"/>
+        <path class="diagram-edge is-focal" d="M288 166H317" marker-end="url(#architecture-board-arrow-focal)"/>
+        <path class="diagram-edge is-focal" d="M388 166H417" marker-end="url(#architecture-board-arrow-focal)"/>
+        <rect class="diagram-node" x="120" y="148" width="68" height="36" rx="6"/><text class="diagram-label" x="154" y="166">request</text>
+        <rect class="diagram-node" x="220" y="148" width="68" height="36" rx="6"/><text class="diagram-label" x="254" y="166">queue</text>
+        <rect class="diagram-node" x="320" y="148" width="68" height="36" rx="6"/><text class="diagram-label" x="354" y="166">worker</text>
+        <rect class="diagram-node is-store" x="420" y="148" width="68" height="36" rx="6"/><text class="diagram-label" x="454" y="166">store</text>
+        <rect class="diagram-node" x="120" y="208" width="104" height="52" rx="6"/><text class="diagram-label" x="172" y="227">platform team</text><text class="diagram-label is-small" x="172" y="241">owner</text>
+        <rect class="diagram-node" x="252" y="208" width="104" height="52" rx="6"/><text class="diagram-label" x="304" y="227">e2e suite</text><text class="diagram-label is-small" x="304" y="241">proof</text>
+        <rect class="diagram-node" x="384" y="208" width="104" height="52" rx="6"/><text class="diagram-label" x="436" y="227">split queue</text><text class="diagram-label is-small" x="436" y="241">next change</text>
       </svg></div>
       <figcaption class="diagram-summary">Four bands separate who uses the system, what runs, the main path, and who owns the next change.</figcaption>
     </figure>
 
+    <figure id="diagram-template-architecture-delta" class="diagram-card" data-diagram="architecture-delta"><h2>Architecture delta</h2><p class="diagram-use">Show what a change removes, adds, and keeps in a system.</p>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 1040 272" width="1040" height="272" aria-hidden="true">
+        <defs><marker id="architecture-delta-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker><marker id="architecture-delta-arrow-added" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow is-focal" d="M0 0 10 5 0 10Z"/></marker><marker id="architecture-delta-arrow-removed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow is-removed" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <rect class="diagram-region" x="20" y="20" width="480" height="200" rx="8"/><text class="diagram-tag" x="32" y="36">BEFORE · MAIN</text>
+        <path class="diagram-edge" d="M136 82H209" marker-end="url(#architecture-delta-arrow)"/>
+        <path class="diagram-edge is-removed" d="M308 82H381" marker-end="url(#architecture-delta-arrow-removed)"/>
+        <path class="diagram-edge" d="M260 108V145" marker-end="url(#architecture-delta-arrow)"/>
+        <path class="diagram-edge is-removed" d="M432 108V145" marker-end="url(#architecture-delta-arrow-removed)"/>
+        <text class="diagram-tag is-middle is-removed" x="346" y="70">CALL</text>
+        <text class="diagram-tag is-start is-removed" x="440" y="127">RPC</text>
+        <rect class="diagram-node" x="40" y="56" width="96" height="52" rx="6"/><text class="diagram-label" x="88" y="75">storefront</text><text class="diagram-label is-small" x="88" y="89">web</text>
+        <rect class="diagram-node" x="212" y="56" width="96" height="52" rx="6"/><text class="diagram-label" x="260" y="75">orders api</text><text class="diagram-label is-small" x="260" y="89">node</text>
+        <rect class="diagram-node is-removed" x="384" y="56" width="96" height="52" rx="6"/><text class="diagram-label" x="432" y="75">dispatcher</text><text class="diagram-label is-small" x="432" y="89">removed</text>
+        <rect class="diagram-node is-store" x="212" y="148" width="96" height="52" rx="6"/><text class="diagram-label" x="260" y="167">orders db</text><text class="diagram-label is-small" x="260" y="181">postgres</text>
+        <rect class="diagram-node" x="384" y="148" width="96" height="52" rx="6"/><text class="diagram-label" x="432" y="167">worker</text><text class="diagram-label is-small" x="432" y="181">fulfilment</text>
+        <rect class="diagram-region" x="540" y="20" width="480" height="200" rx="8"/><text class="diagram-tag" x="552" y="36">AFTER · THIS PR</text>
+        <path class="diagram-edge" d="M656 82H729" marker-end="url(#architecture-delta-arrow)"/>
+        <path class="diagram-edge is-added" d="M828 82H901" marker-end="url(#architecture-delta-arrow-added)"/>
+        <path class="diagram-edge" d="M780 108V145" marker-end="url(#architecture-delta-arrow)"/>
+        <path class="diagram-edge is-added" d="M952 108V145" marker-end="url(#architecture-delta-arrow-added)"/>
+        <text class="diagram-tag is-middle is-focal" x="866" y="70">ENQUEUE</text>
+        <text class="diagram-tag is-start is-focal" x="960" y="127">CONSUME</text>
+        <rect class="diagram-node" x="560" y="56" width="96" height="52" rx="6"/><text class="diagram-label" x="608" y="75">storefront</text><text class="diagram-label is-small" x="608" y="89">web</text>
+        <rect class="diagram-node" x="732" y="56" width="96" height="52" rx="6"/><text class="diagram-label" x="780" y="75">orders api</text><text class="diagram-label is-small" x="780" y="89">node</text>
+        <rect class="diagram-node is-added" x="904" y="56" width="96" height="52" rx="6"/><text class="diagram-label" x="952" y="75">queue</text><text class="diagram-label is-small" x="952" y="89">added</text>
+        <rect class="diagram-node is-store" x="732" y="148" width="96" height="52" rx="6"/><text class="diagram-label" x="780" y="167">orders db</text><text class="diagram-label is-small" x="780" y="181">postgres</text>
+        <rect class="diagram-node" x="904" y="148" width="96" height="52" rx="6"/><text class="diagram-label" x="952" y="167">worker</text><text class="diagram-label is-small" x="952" y="181">fulfilment</text>
+        <rect class="diagram-node" x="20" y="238" width="20" height="12" rx="3"/>
+        <text class="diagram-tag" x="48" y="244">UNCHANGED</text>
+        <rect class="diagram-node is-added" x="138" y="238" width="20" height="12" rx="3"/>
+        <text class="diagram-tag" x="166" y="244">ADDED</text>
+        <rect class="diagram-node is-removed" x="227" y="238" width="20" height="12" rx="3"/>
+        <text class="diagram-tag" x="255" y="244">REMOVED</text>
+      </svg></div>
+      <figcaption class="diagram-summary">The pull request replaces the synchronous dispatcher with a durable queue; the storefront, API, database, and worker stay in place.</figcaption>
+    </figure>
+
     <figure id="diagram-template-flowchart" class="diagram-card" data-diagram="flowchart"><h2>Flowchart</h2><p class="diagram-use">A decision branch where each edge changes the outcome.</p>
-      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 378 96" style="min-width:560px" aria-hidden="true"><defs><marker id="dots-flow-1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs><path class="flow-edge" d="M144,48 H189 V48 H228" marker-end="url(#dots-flow-1-arrow)"/><rect class="flow-node-rect" x="24" y="24" width="120" height="48" rx="8"/><text class="flow-node-label" x="84" y="48">build</text><rect class="flow-node-rect" x="234" y="24" width="120" height="48" rx="8"/><text class="flow-node-label" x="294" y="48">verify</text></svg></div><p class="flow-caption">Build leads to verification.</p>
+      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 378 96" style="min-width:378px;max-width:378px;margin-inline:auto" aria-hidden="true"><defs><marker id="dots-flow-1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a55)"/></marker></defs><path class="flow-edge" d="M144,48 H189 V48 H228" marker-end="url(#dots-flow-1-arrow)"/><rect class="flow-node-rect" x="24" y="24" width="120" height="48" rx="6"/><text class="flow-node-label" x="84" y="48">build</text><rect class="flow-node-rect" x="234" y="24" width="120" height="48" rx="6"/><text class="flow-node-label" x="294" y="48">verify</text></svg></div><p class="flow-caption">Build leads to verification.</p>
     </figure>
 
     <figure id="diagram-template-quadrant" class="diagram-card" data-diagram="quadrant"><h2>Quadrant</h2><p class="diagram-use">Position items against two independent criteria.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 180" aria-hidden="true">
-        <line class="diagram-gridline" x1="42" y1="144" x2="298" y2="144"/><line class="diagram-gridline" x1="42" y1="144" x2="42" y2="18"/>
-        <line class="diagram-gridline" x1="170" y1="18" x2="170" y2="144"/><line class="diagram-gridline" x1="42" y1="81" x2="298" y2="81"/>
-        <circle cx="236" cy="48" r="9" fill="var(--accent)"/><text class="diagram-label is-small" x="236" y="30">A</text>
-        <circle cx="112" cy="62" r="7" fill="var(--a40)"/><text class="diagram-label is-small" x="112" y="44">B</text>
-        <circle cx="220" cy="116" r="7" fill="var(--a40)"/><text class="diagram-label is-small" x="220" y="98">C</text>
-        <text class="diagram-label is-small" x="170" y="164">effort →</text><text class="diagram-label is-small" transform="translate(18 82) rotate(-90)">impact →</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 280" width="520" height="280" aria-hidden="true">
+        <line class="diagram-gridline" x1="260" y1="44" x2="260" y2="236"/>
+        <line class="diagram-gridline" x1="20" y1="140" x2="500" y2="140"/>
+        <path class="diagram-edge" d="M20 44V236H500"/>
+        <text class="diagram-tag is-start" x="20" y="28">IMPACT ↑</text>
+        <text class="diagram-tag is-end" x="500" y="252">EFFORT →</text>
+        <text class="diagram-tag is-start" x="32" y="60">QUICK WINS</text>
+        <text class="diagram-tag is-end" x="488" y="60">BIG BETS</text>
+        <text class="diagram-tag is-start" x="32" y="220">FILL-INS</text>
+        <text class="diagram-tag is-end" x="488" y="220">TIME SINKS</text>
+        <circle cx="132" cy="100" r="6" fill="var(--a40)"/>
+        <text class="diagram-label is-start" x="146" y="100">B</text>
+        <circle cx="412" cy="184" r="6" fill="var(--a40)"/>
+        <text class="diagram-label is-start" x="426" y="184">C</text>
+        <circle cx="356" cy="84" r="7" fill="var(--accent)"/>
+        <text class="diagram-label is-start is-focal" x="371" y="84">A</text>
       </svg></div>
       <figcaption class="diagram-summary">Option A combines the highest impact with above-average effort.</figcaption>
     </figure>
 
     <figure id="diagram-template-bar-chart" class="diagram-card" data-diagram="bar-chart"><h2>Bar chart</h2><p class="diagram-use">Compare category magnitudes with one meaningful emphasis.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 180" aria-hidden="true">
-        <text class="diagram-label is-small" x="48" y="38">alpha</text><rect x="82" y="26" width="154" height="20" rx="3" fill="var(--a20)"/><text class="diagram-value" x="254" y="41">68</text>
-        <text class="diagram-label is-small" x="48" y="78">beta</text><rect x="82" y="66" width="202" height="20" rx="3" fill="var(--accent)"/><text class="diagram-value" x="298" y="81">89</text>
-        <text class="diagram-label is-small" x="48" y="118">gamma</text><rect x="82" y="106" width="118" height="20" rx="3" fill="var(--a20)"/><text class="diagram-value" x="218" y="121">52</text>
-        <text class="diagram-label is-small" x="48" y="158">delta</text><rect x="82" y="146" width="78" height="20" rx="3" fill="var(--a20)"/><text class="diagram-value" x="178" y="161">34</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 220" width="520" height="220" aria-hidden="true">
+        <text class="diagram-tag is-end" x="60" y="30">ALPHA</text>
+        <rect x="72" y="20" width="380" height="20" rx="3" fill="var(--a4)"/>
+        <rect x="72" y="20" width="258.4" height="20" rx="3" fill="var(--a20)"/>
+        <text class="diagram-value is-end" x="500" y="30">68</text>
+        <text class="diagram-tag is-end" x="60" y="70">BETA</text>
+        <rect x="72" y="60" width="380" height="20" rx="3" fill="var(--a4)"/>
+        <rect x="72" y="60" width="338.2" height="20" rx="3" fill="var(--accent)"/>
+        <text class="diagram-value is-end is-focal" x="500" y="70">89</text>
+        <text class="diagram-tag is-end" x="60" y="110">GAMMA</text>
+        <rect x="72" y="100" width="380" height="20" rx="3" fill="var(--a4)"/>
+        <rect x="72" y="100" width="197.6" height="20" rx="3" fill="var(--a20)"/>
+        <text class="diagram-value is-end" x="500" y="110">52</text>
+        <text class="diagram-tag is-end" x="60" y="150">DELTA</text>
+        <rect x="72" y="140" width="380" height="20" rx="3" fill="var(--a4)"/>
+        <rect x="72" y="140" width="129.2" height="20" rx="3" fill="var(--a20)"/>
+        <text class="diagram-value is-end" x="500" y="150">34</text>
+        <line class="diagram-gridline" x1="72" y1="176" x2="452" y2="176"/>
+        <line class="diagram-gridline" x1="72" y1="176" x2="72" y2="180"/>
+        <text class="diagram-tag is-middle" x="72" y="194">0</text>
+        <line class="diagram-gridline" x1="167" y1="176" x2="167" y2="180"/>
+        <text class="diagram-tag is-middle" x="167" y="194">25</text>
+        <line class="diagram-gridline" x1="262" y1="176" x2="262" y2="180"/>
+        <text class="diagram-tag is-middle" x="262" y="194">50</text>
+        <line class="diagram-gridline" x1="357" y1="176" x2="357" y2="180"/>
+        <text class="diagram-tag is-middle" x="357" y="194">75</text>
+        <line class="diagram-gridline" x1="452" y1="176" x2="452" y2="180"/>
+        <text class="diagram-tag is-middle" x="452" y="194">100</text>
       </svg></div>
       <figcaption class="diagram-summary">Beta leads the four supplied categories at 89.</figcaption>
     </figure>
@@ -2145,7 +2295,7 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
       <div data-component="line-chart" data-source="APM" class="chart-card reveal">
 <!-- chart-spec {"type":"line","title":"Latency by week","source":"APM","data":[["W1",100],["W2",120],["W3",140]],"sort":"none"} -->
   <div class="chart-title">Latency by week</div>
-  <div class="chart-scroll"><svg viewBox="0 0 640 250" style="min-width:640px" aria-hidden="true"><polyline class="line-series" points="44,190 324,115 604,40"/><circle class="line-point" cx="44" cy="190" r="4"/><circle class="line-point" cx="324" cy="115" r="4"/><circle class="line-point" cx="604" cy="40" r="4"/><text x="44" y="230" text-anchor="middle">W1</text><text x="324" y="230" text-anchor="middle">W2</text><text x="604" y="230" text-anchor="middle">W3</text></svg></div>
+  <div class="chart-scroll"><svg viewBox="0 0 640 200" style="min-width:640px;max-width:640px" aria-hidden="true"><line class="line-grid" x1="44" x2="616" y1="164" y2="164"/><text class="line-tick" x="36" y="164" text-anchor="end" dominant-baseline="middle">94</text><line class="line-grid" x1="44" x2="616" y1="114.67" y2="114.67"/><text class="line-tick" x="36" y="114.67" text-anchor="end" dominant-baseline="middle">111.33</text><line class="line-grid" x1="44" x2="616" y1="65.33" y2="65.33"/><text class="line-tick" x="36" y="65.33" text-anchor="end" dominant-baseline="middle">128.67</text><line class="line-grid" x1="44" x2="616" y1="16" y2="16"/><text class="line-tick" x="36" y="16" text-anchor="end" dominant-baseline="middle">146</text><polygon class="line-area" points="44,164 44,146.92 330,90 616,33.08 616,164"/><polyline class="line-series" points="44,146.92 330,90 616,33.08"/><circle class="line-point" cx="44" cy="146.92" r="3"/><circle class="line-point" cx="330" cy="90" r="3"/><circle class="line-point is-last" cx="616" cy="33.08" r="4.5"/><text class="line-value" x="616" y="21.08" text-anchor="end">140</text><text class="line-tick" x="44" y="188" text-anchor="middle">W1</text><text class="line-tick" x="330" y="188" text-anchor="middle">W2</text><text class="line-tick" x="616" y="188" text-anchor="middle">W3</text></svg></div>
   <ul class="chart-data"><li>W1: 100</li><li>W2: 120</li><li>W3: 140</li></ul>
 </div>
     </figure>
@@ -2161,116 +2311,417 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
     </figure>
 
     <figure id="diagram-template-donut-chart" class="diagram-card" data-diagram="donut-chart"><h2>Donut chart</h2><p class="diagram-use">Show a whole divided into a few clearly labeled parts.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 180" aria-hidden="true">
-        <circle cx="98" cy="90" r="52" fill="none" stroke="var(--a12)" stroke-width="24"/>
-        <circle cx="98" cy="90" r="52" fill="none" stroke="var(--accent)" stroke-width="24" stroke-dasharray="171.5 155.2" transform="rotate(-90 98 90)"/>
-        <circle cx="98" cy="90" r="52" fill="none" stroke="var(--a40)" stroke-width="24" stroke-dasharray="98 228.7" stroke-dashoffset="-171.5" transform="rotate(-90 98 90)"/>
-        <text class="diagram-value" x="98" y="94">core 52%</text>
-        <rect x="182" y="46" width="12" height="12" rx="2" fill="var(--accent)"/><text class="diagram-label is-small" x="240" y="52">core · 52%</text>
-        <rect x="182" y="82" width="12" height="12" rx="2" fill="var(--a40)"/><text class="diagram-label is-small" x="240" y="88">support · 30%</text>
-        <rect x="182" y="118" width="12" height="12" rx="2" fill="var(--a12)"/><text class="diagram-label is-small" x="240" y="124">other · 18%</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 208" width="520" height="208" aria-hidden="true">
+        <circle cx="104" cy="104" r="72" fill="none" stroke="var(--accent)" stroke-width="24" stroke-dasharray="233.24 219.15" stroke-dashoffset="-1" transform="rotate(-90 104 104)"/>
+        <circle cx="104" cy="104" r="72" fill="none" stroke="var(--a40)" stroke-width="24" stroke-dasharray="133.72 318.67" stroke-dashoffset="-236.24" transform="rotate(-90 104 104)"/>
+        <circle cx="104" cy="104" r="72" fill="none" stroke="var(--a20)" stroke-width="24" stroke-dasharray="79.43 372.96" stroke-dashoffset="-371.96" transform="rotate(-90 104 104)"/>
+        <text class="diagram-value" x="104" y="97">52%</text>
+        <text class="diagram-label is-small" x="104" y="113">core</text>
+        <rect x="236" y="66" width="12" height="12" rx="3" fill="var(--accent)"/>
+        <text class="diagram-label is-start" x="260" y="72">core</text>
+        <text class="diagram-value is-end" x="500" y="72">52%</text>
+        <rect x="236" y="98" width="12" height="12" rx="3" fill="var(--a40)"/>
+        <text class="diagram-label is-start" x="260" y="104">support</text>
+        <text class="diagram-value is-end" x="500" y="104">30%</text>
+        <rect x="236" y="130" width="12" height="12" rx="3" fill="var(--a20)"/>
+        <text class="diagram-label is-start" x="260" y="136">other</text>
+        <text class="diagram-value is-end" x="500" y="136">18%</text>
       </svg></div>
       <figcaption class="diagram-summary">Core work accounts for 52% of the supplied total, followed by support at 30%.</figcaption>
     </figure>
 
     <figure id="diagram-template-state-machine" class="diagram-card" data-diagram="state-machine"><h2>State machine</h2><p class="diagram-use">Finite states and the events that transition between them.</p>
-      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 378 96" style="min-width:560px" aria-hidden="true"><defs><marker id="dots-state-2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs><path class="flow-edge" d="M144,48 H189 V48 H228" marker-end="url(#dots-state-2-arrow)"/><text class="flow-edge-label" x="189" y="40">finish</text><rect class="flow-node-rect" x="24" y="24" width="120" height="48" rx="8"/><text class="flow-node-label" x="84" y="48">open</text><rect class="flow-node-rect" x="234" y="24" width="120" height="48" rx="8"/><text class="flow-node-label" x="294" y="48">closed</text></svg></div><p class="flow-caption">An open request closes when finished.</p>
+      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 378 96" style="min-width:378px;max-width:378px;margin-inline:auto" aria-hidden="true"><defs><marker id="dots-state-2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a55)"/></marker></defs><path class="flow-edge" d="M144,48 H189 V48 H228" marker-end="url(#dots-state-2-arrow)"/><text class="flow-edge-label" x="189" y="40">finish</text><rect class="flow-node-rect" x="24" y="24" width="120" height="48" rx="6"/><text class="flow-node-label" x="84" y="48">open</text><rect class="flow-node-rect" x="234" y="24" width="120" height="48" rx="6"/><text class="flow-node-label" x="294" y="48">closed</text></svg></div><p class="flow-caption">An open request closes when finished.</p>
     </figure>
 
     <figure id="diagram-template-timeline" class="diagram-card" data-diagram="timeline"><h2>Timeline</h2><p class="diagram-use">Milestones where order and elapsed time carry meaning.</p>
-      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 541 180" style="min-width:560px" aria-hidden="true"><path class="flow-edge" d="M48.18000000000001,90 H498.18"/><circle cx="48.18000000000001" cy="90" r="5" fill="var(--foreground)"/><text class="flow-edge-label" x="48.18000000000001" y="65">09:10</text><text class="flow-node-label" x="48.18000000000001" y="120">detect</text><circle cx="198.18" cy="90" r="5" fill="var(--foreground)"/><text class="flow-edge-label" x="198.18" y="65">09:18</text><text class="flow-node-label" x="198.18" y="120">contain</text><circle cx="348.18" cy="90" r="5" fill="var(--foreground)"/><text class="flow-edge-label" x="348.18" y="65">09:31</text><text class="flow-node-label" x="348.18" y="120">repair</text><circle cx="498.18" cy="90" r="5" fill="var(--accent)"/><text class="flow-edge-label" x="498.18" y="65">09:42</text><text class="flow-node-label" x="498.18" y="120">close</text></svg></div><p class="flow-caption">Detection led to containment, repair, and closure.</p>
+      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 541 104" style="min-width:541px;max-width:541px;margin-inline:auto" aria-hidden="true"><path class="flow-edge" d="M48.18000000000001,52 H498.18"/><circle cx="48.18000000000001" cy="52" r="5" fill="var(--foreground)" stroke="var(--background)" stroke-width="3"/><text class="flow-edge-label" x="48.18000000000001" y="30">09:10</text><text class="flow-node-label" x="48.18000000000001" y="80">detect</text><circle cx="198.18" cy="52" r="5" fill="var(--foreground)" stroke="var(--background)" stroke-width="3"/><text class="flow-edge-label" x="198.18" y="30">09:18</text><text class="flow-node-label" x="198.18" y="80">contain</text><circle cx="348.18" cy="52" r="5" fill="var(--foreground)" stroke="var(--background)" stroke-width="3"/><text class="flow-edge-label" x="348.18" y="30">09:31</text><text class="flow-node-label" x="348.18" y="80">repair</text><circle cx="498.18" cy="52" r="5" fill="var(--accent)" stroke="var(--background)" stroke-width="3"/><text class="flow-edge-label" x="498.18" y="30">09:42</text><text class="flow-node-label" x="498.18" y="80">close</text></svg></div><p class="flow-caption">Detection led to containment, repair, and closure.</p>
+    </figure>
+
+    <figure id="diagram-template-gantt" class="diagram-card" data-diagram="gantt"><h2>Gantt</h2><p class="diagram-use">Plan phases on a time axis with dependencies and today’s position.</p>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 1040 380" width="1040" height="380" aria-hidden="true">
+        <defs><marker id="gantt-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <rect class="diagram-region" x="20" y="44" width="1000" height="100" rx="8"/><text class="diagram-tag" x="32" y="60">DESIGN</text>
+        <rect class="diagram-region" x="20" y="152" width="1000" height="100" rx="8"/><text class="diagram-tag" x="32" y="168">BUILD</text>
+        <rect class="diagram-region" x="20" y="260" width="1000" height="100" rx="8"/><text class="diagram-tag" x="32" y="276">LAUNCH</text>
+        <line class="diagram-gridline" x1="176" y1="40" x2="176" y2="360"/>
+        <line class="diagram-gridline" x1="276" y1="40" x2="276" y2="360"/>
+        <line class="diagram-gridline" x1="376" y1="40" x2="376" y2="360"/>
+        <line class="diagram-gridline" x1="476" y1="40" x2="476" y2="360"/>
+        <line class="diagram-gridline" x1="576" y1="40" x2="576" y2="360"/>
+        <line class="diagram-gridline" x1="676" y1="40" x2="676" y2="360"/>
+        <line class="diagram-gridline" x1="776" y1="40" x2="776" y2="360"/>
+        <line class="diagram-gridline" x1="876" y1="40" x2="876" y2="360"/>
+        <line class="diagram-gridline" x1="976" y1="40" x2="976" y2="360"/>
+        <text class="diagram-tag is-start" x="184" y="28">W1</text>
+        <text class="diagram-tag is-start" x="284" y="28">W2</text>
+        <text class="diagram-tag is-start" x="384" y="28">W3</text>
+        <text class="diagram-tag is-start" x="484" y="28">W4</text>
+        <text class="diagram-tag is-start" x="584" y="28">W5</text>
+        <text class="diagram-tag is-start" x="684" y="28">W6</text>
+        <text class="diagram-tag is-start" x="784" y="28">W7</text>
+        <text class="diagram-tag is-start" x="884" y="28">W8</text>
+        <path class="diagram-edge is-focal is-async" d="M626 40V360"/>
+        <text class="diagram-tag is-start is-focal" x="634" y="60">TODAY</text>
+        <path class="diagram-edge" d="M426 120H444Q452 120 452 128V188Q452 196 460 196H473" marker-end="url(#gantt-arrow)"/>
+        <text class="diagram-label is-start" x="32" y="88">write spec</text>
+        <rect x="176" y="80" width="150" height="16" rx="3" fill="var(--a20)"/>
+        <text class="diagram-label is-start" x="32" y="120">api contract</text>
+        <rect x="276" y="112" width="150" height="16" rx="3" fill="var(--a20)"/>
+        <text class="diagram-label is-start" x="32" y="196">service</text>
+        <rect x="476" y="188" width="300" height="16" rx="3" fill="var(--accent)"/>
+        <text class="diagram-label is-start" x="32" y="228">web ui</text>
+        <rect x="526" y="220" width="300" height="16" rx="3" fill="var(--a20)"/>
+        <text class="diagram-label is-start" x="32" y="304">beta</text>
+        <rect x="776" y="296" width="100" height="16" rx="3" fill="var(--a20)"/>
+        <text class="diagram-label is-start" x="32" y="336">rollout</text>
+        <rect x="876" y="328" width="100" height="16" rx="3" fill="var(--a20)"/>
+      </svg></div>
+      <figcaption class="diagram-summary">The service build starts once the API contract lands and is mid-flight today; beta and rollout follow in weeks 7 and 8.</figcaption>
     </figure>
 
     <figure id="diagram-template-swimlane" class="diagram-card" data-diagram="swimlane"><h2>Swimlane</h2><p class="diagram-use">A process crossing responsibilities or system boundaries.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 220" aria-hidden="true">
-        <defs><marker id="swimlane-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs>
-        <rect class="diagram-node" x="10" y="12" width="300" height="58" rx="5"/><rect class="diagram-node" x="10" y="80" width="300" height="58" rx="5"/><rect class="diagram-node" x="10" y="148" width="300" height="58" rx="5"/>
-        <text class="diagram-label is-small" x="46" y="41">author</text><text class="diagram-label is-small" x="46" y="109">CI</text><text class="diagram-label is-small" x="46" y="177">release</text>
-        <rect class="diagram-node" x="86" y="24" width="66" height="34" rx="5"/><text class="diagram-label is-small" x="119" y="41">commit</text>
-        <rect class="diagram-node is-focal" x="150" y="92" width="70" height="34" rx="5"/><text class="diagram-label is-small" x="185" y="109">verify</text>
-        <rect class="diagram-node" x="220" y="160" width="70" height="34" rx="5"/><text class="diagram-label is-small" x="255" y="177">publish</text>
-        <path class="diagram-edge" d="M152 41 C176 41 164 78 176 88M220 109 C248 109 238 144 248 156" marker-end="url(#swimlane-arrow)"/>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 272" width="520" height="272" aria-hidden="true">
+        <defs><marker id="swimlane-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <rect class="diagram-region" x="20" y="20" width="480" height="72" rx="8"/><text class="diagram-tag" x="32" y="36">AUTHOR</text>
+        <rect class="diagram-region" x="20" y="100" width="480" height="72" rx="8"/><text class="diagram-tag" x="32" y="116">CI</text>
+        <rect class="diagram-region" x="20" y="180" width="480" height="72" rx="8"/><text class="diagram-tag" x="32" y="196">RELEASE</text>
+        <path class="diagram-edge" d="M216 56H292Q300 56 300 64V115" marker-end="url(#swimlane-arrow)"/>
+        <path class="diagram-edge" d="M352 136H428Q436 136 436 144V195" marker-end="url(#swimlane-arrow)"/>
+        <path class="diagram-edge is-async" d="M248 136H172Q164 136 164 128V77" marker-end="url(#swimlane-arrow)"/>
+        <text class="diagram-tag is-middle" x="254" y="44">PUSH</text>
+        <text class="diagram-tag is-middle" x="394" y="124">ON PASS</text>
+        <text class="diagram-tag is-middle" x="206" y="124">ON FAIL</text>
+        <rect class="diagram-node" x="112" y="38" width="104" height="36" rx="6"/><text class="diagram-label" x="164" y="56">commit</text>
+        <rect class="diagram-node is-focal" x="248" y="118" width="104" height="36" rx="6"/><text class="diagram-label" x="300" y="136">verify</text>
+        <rect class="diagram-node" x="384" y="198" width="104" height="36" rx="6"/><text class="diagram-label" x="436" y="216">publish</text>
       </svg></div>
       <figcaption class="diagram-summary">The author commits, CI owns verification, and release owns publication.</figcaption>
     </figure>
 
     <figure id="diagram-template-tree" class="diagram-card" data-diagram="tree"><h2>Tree</h2><p class="diagram-use">Parent-child hierarchy such as modules, teams, or directories.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 200" aria-hidden="true">
-        <path class="diagram-edge" d="M160 52V78M64 78H256M64 78V104M160 78V104M256 78V104M64 138V160M256 138V160"/>
-        <rect class="diagram-node is-focal" x="120" y="18" width="80" height="34" rx="5"/><text class="diagram-label" x="160" y="35">root</text>
-        <rect class="diagram-node" x="24" y="104" width="80" height="34" rx="5"/><text class="diagram-label" x="64" y="121">surface</text>
-        <rect class="diagram-node" x="120" y="104" width="80" height="34" rx="5"/><text class="diagram-label" x="160" y="121">runtime</text>
-        <rect class="diagram-node" x="216" y="104" width="80" height="34" rx="5"/><text class="diagram-label" x="256" y="121">proof</text>
-        <text class="diagram-label is-small" x="64" y="178">web · app</text><text class="diagram-label is-small" x="256" y="178">tests · logs</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 244" width="520" height="244" aria-hidden="true">
+        <path class="diagram-edge" d="M260 56V104"/>
+        <path class="diagram-edge" d="M92 104V88Q92 80 100 80H420Q428 80 428 88V104"/>
+        <path class="diagram-edge" d="M92 140V164"/>
+        <path class="diagram-edge" d="M50 188V172Q50 164 58 164H126Q134 164 134 172V188"/>
+        <path class="diagram-edge" d="M260 140V164"/>
+        <path class="diagram-edge" d="M218 188V172Q218 164 226 164H294Q302 164 302 172V188"/>
+        <path class="diagram-edge" d="M428 140V164"/>
+        <path class="diagram-edge" d="M386 188V172Q386 164 394 164H462Q470 164 470 172V188"/>
+        <rect class="diagram-node is-focal" x="204" y="20" width="112" height="36" rx="6"/><text class="diagram-label" x="260" y="38">root</text>
+        <rect class="diagram-node" x="32" y="104" width="120" height="36" rx="6"/><text class="diagram-label" x="92" y="122">surface</text>
+        <rect class="diagram-node" x="20" y="188" width="60" height="36" rx="6"/><text class="diagram-label" x="50" y="206">web</text>
+        <rect class="diagram-node" x="104" y="188" width="60" height="36" rx="6"/><text class="diagram-label" x="134" y="206">app</text>
+        <rect class="diagram-node" x="200" y="104" width="120" height="36" rx="6"/><text class="diagram-label" x="260" y="122">runtime</text>
+        <rect class="diagram-node" x="188" y="188" width="60" height="36" rx="6"/><text class="diagram-label" x="218" y="206">api</text>
+        <rect class="diagram-node" x="272" y="188" width="60" height="36" rx="6"/><text class="diagram-label" x="302" y="206">jobs</text>
+        <rect class="diagram-node" x="368" y="104" width="120" height="36" rx="6"/><text class="diagram-label" x="428" y="122">proof</text>
+        <rect class="diagram-node" x="356" y="188" width="60" height="36" rx="6"/><text class="diagram-label" x="386" y="206">tests</text>
+        <rect class="diagram-node" x="440" y="188" width="60" height="36" rx="6"/><text class="diagram-label" x="470" y="206">logs</text>
       </svg></div>
       <figcaption class="diagram-summary">The root separates the surface, runtime, and proof domains.</figcaption>
     </figure>
 
+    <figure id="diagram-template-fishbone" class="diagram-card" data-diagram="fishbone"><h2>Fishbone</h2><p class="diagram-use">Group an incident’s causes by category and mark the confirmed root cause.</p>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 1040 320" width="1040" height="320" aria-hidden="true">
+        <defs><marker id="fishbone-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <path class="diagram-edge" d="M120 160H845" marker-end="url(#fishbone-arrow)"/>
+        <path class="diagram-edge" d="M280 56V160"/>
+        <path class="diagram-edge" d="M280 92H256"/>
+        <text class="diagram-label is-small is-end" x="248" y="92">canary skipped</text>
+        <path class="diagram-edge" d="M280 124H256"/>
+        <text class="diagram-label is-small is-end" x="248" y="124">slow rollback</text>
+        <path class="diagram-edge" d="M440 264V160"/>
+        <path class="diagram-edge" d="M440 228H416"/>
+        <text class="diagram-label is-small is-end" x="408" y="228">peak traffic</text>
+        <path class="diagram-edge" d="M440 196H416"/>
+        <text class="diagram-label is-small is-end" x="408" y="196">no autoscale</text>
+        <path class="diagram-edge is-focal" d="M600 56V160"/>
+        <path class="diagram-edge" d="M600 92H576"/>
+        <text class="diagram-label is-small is-end" x="568" y="92">pool size 50 → 25</text>
+        <path class="diagram-edge" d="M600 124H576"/>
+        <text class="diagram-label is-small is-end" x="568" y="124">no diff alert</text>
+        <path class="diagram-edge" d="M760 264V160"/>
+        <path class="diagram-edge" d="M760 228H736"/>
+        <text class="diagram-label is-small is-end" x="728" y="228">payments p99 2s</text>
+        <path class="diagram-edge" d="M760 196H736"/>
+        <text class="diagram-label is-small is-end" x="728" y="196">retry storm</text>
+        <rect class="diagram-node" x="208" y="20" width="144" height="36" rx="6"/><text class="diagram-label" x="280" y="38">deploy</text>
+        <rect class="diagram-node" x="368" y="264" width="144" height="36" rx="6"/><text class="diagram-label" x="440" y="282">capacity</text>
+        <rect class="diagram-node is-focal" x="528" y="20" width="144" height="36" rx="6"/><text class="diagram-label" x="600" y="38">config</text>
+        <rect class="diagram-node" x="688" y="264" width="144" height="36" rx="6"/><text class="diagram-label" x="760" y="282">dependencies</text>
+        <rect class="diagram-node is-focal" x="848" y="134" width="172" height="52" rx="6"/><text class="diagram-label" x="934" y="153">checkout errors</text><text class="diagram-label is-small" x="934" y="167">5xx 12% · 39 min</text>
+      </svg></div>
+      <figcaption class="diagram-summary">Four cause categories feed the checkout error spike; halving the database connection pool is the confirmed root cause.</figcaption>
+    </figure>
+
+    <figure id="diagram-template-dependency-graph" class="diagram-card" data-diagram="dependency-graph"><h2>Dependency graph</h2><p class="diagram-use">Directed dependencies among modules, with one cycle or hotspot.</p>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 292" width="520" height="292" aria-hidden="true">
+        <defs><marker id="dependency-graph-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker><marker id="dependency-graph-arrow-focal" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow is-focal" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <path class="diagram-edge" d="M120 72V117" marker-end="url(#dependency-graph-arrow)"/>
+        <path class="diagram-edge" d="M400 72V117" marker-end="url(#dependency-graph-arrow)"/>
+        <path class="diagram-edge" d="M180 138H337" marker-end="url(#dependency-graph-arrow)"/>
+        <path class="diagram-edge is-focal is-async" d="M340 154H183" marker-end="url(#dependency-graph-arrow-focal)"/>
+        <text class="diagram-tag is-middle is-focal" x="260" y="168">CYCLE</text>
+        <path class="diagram-edge" d="M120 172V238Q120 246 128 246H197" marker-end="url(#dependency-graph-arrow)"/>
+        <path class="diagram-edge" d="M400 172V238Q400 246 392 246H323" marker-end="url(#dependency-graph-arrow)"/>
+        <rect class="diagram-node" x="60" y="20" width="120" height="52" rx="6"/><text class="diagram-label" x="120" y="39">web</text><text class="diagram-label is-small" x="120" y="53">apps/web</text>
+        <rect class="diagram-node" x="340" y="20" width="120" height="52" rx="6"/><text class="diagram-label" x="400" y="39">worker</text><text class="diagram-label is-small" x="400" y="53">apps/worker</text>
+        <rect class="diagram-node" x="60" y="120" width="120" height="52" rx="6"/><text class="diagram-label" x="120" y="139">orders</text><text class="diagram-label is-small" x="120" y="153">pkg/orders</text>
+        <rect class="diagram-node" x="340" y="120" width="120" height="52" rx="6"/><text class="diagram-label" x="400" y="139">billing</text><text class="diagram-label is-small" x="400" y="153">pkg/billing</text>
+        <rect class="diagram-node is-store" x="200" y="220" width="120" height="52" rx="6"/><text class="diagram-label" x="260" y="239">db</text><text class="diagram-label is-small" x="260" y="253">pkg/db</text>
+      </svg></div>
+      <figcaption class="diagram-summary">Orders and billing import each other, the one cycle in the graph; both also depend on the shared database module.</figcaption>
+    </figure>
+
     <figure id="diagram-template-layer-stack" class="diagram-card" data-diagram="layer-stack"><h2>Layer stack</h2><p class="diagram-use">Vertically ordered layers and the contracts between them.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 220" aria-hidden="true">
-        <rect class="diagram-node" x="42" y="18" width="236" height="34" rx="5"/><text class="diagram-label" x="160" y="35">experience</text>
-        <rect class="diagram-node" x="54" y="60" width="212" height="34" rx="5"/><text class="diagram-label" x="160" y="77">application</text>
-        <rect class="diagram-node is-focal" x="66" y="102" width="188" height="34" rx="5"/><text class="diagram-label" x="160" y="119">domain</text>
-        <rect class="diagram-node" x="78" y="144" width="164" height="34" rx="5"/><text class="diagram-label" x="160" y="161">data</text>
-        <rect class="diagram-node" x="90" y="186" width="140" height="24" rx="5"/><text class="diagram-label is-small" x="160" y="198">infrastructure</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 316" width="520" height="316" aria-hidden="true">
+        <defs><marker id="layer-stack-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <path class="diagram-edge" d="M60 56V77" marker-end="url(#layer-stack-arrow)"/>
+        <text class="diagram-tag is-start" x="72" y="68">HTTP API</text>
+        <path class="diagram-edge" d="M60 116V137" marker-end="url(#layer-stack-arrow)"/>
+        <text class="diagram-tag is-start" x="72" y="128">COMMANDS</text>
+        <path class="diagram-edge" d="M60 176V197" marker-end="url(#layer-stack-arrow)"/>
+        <text class="diagram-tag is-start" x="72" y="188">REPOSITORIES</text>
+        <path class="diagram-edge" d="M60 236V257" marker-end="url(#layer-stack-arrow)"/>
+        <text class="diagram-tag is-start" x="72" y="248">DRIVERS</text>
+        <rect class="diagram-node" x="20" y="20" width="480" height="36" rx="6"/>
+        <text class="diagram-label is-start" x="36" y="38">experience</text>
+        <text class="diagram-label is-small is-end" x="484" y="38">web · mobile</text>
+        <rect class="diagram-node" x="20" y="80" width="480" height="36" rx="6"/>
+        <text class="diagram-label is-start" x="36" y="98">application</text>
+        <text class="diagram-label is-small is-end" x="484" y="98">use cases</text>
+        <rect class="diagram-node is-focal" x="20" y="140" width="480" height="36" rx="6"/>
+        <text class="diagram-label is-start" x="36" y="158">domain</text>
+        <text class="diagram-label is-small is-end" x="484" y="158">orders · billing</text>
+        <rect class="diagram-node" x="20" y="200" width="480" height="36" rx="6"/>
+        <text class="diagram-label is-start" x="36" y="218">data</text>
+        <text class="diagram-label is-small is-end" x="484" y="218">postgres · redis</text>
+        <rect class="diagram-node" x="20" y="260" width="480" height="36" rx="6"/>
+        <text class="diagram-label is-start" x="36" y="278">infrastructure</text>
+        <text class="diagram-label is-small is-end" x="484" y="278">k8s · queues</text>
       </svg></div>
       <figcaption class="diagram-summary">Experience depends on application and domain layers, which sit above data and infrastructure.</figcaption>
     </figure>
 
     <figure id="diagram-template-venn" class="diagram-card" data-diagram="venn"><h2>Venn</h2><p class="diagram-use">Meaningful overlap among two or three bounded sets.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 180" aria-hidden="true">
-        <circle cx="128" cy="86" r="58" fill="var(--accent)" fill-opacity=".10" stroke="var(--accent)" stroke-width="2"/>
-        <circle cx="192" cy="86" r="58" fill="var(--a20)" stroke="var(--a40)" stroke-width="2"/>
-        <text class="diagram-label" x="104" y="82">speed</text><text class="diagram-label" x="216" y="82">proof</text><rect x="126" y="92" width="68" height="24" rx="5" fill="var(--background)" stroke="var(--a40)"/><text class="diagram-label" x="160" y="104">release</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 240" width="520" height="240" aria-hidden="true">
+        <defs><clipPath id="venn-clip"><circle cx="200" cy="120" r="100"/></clipPath></defs>
+        <circle class="diagram-set is-focal" cx="320" cy="120" r="100" clip-path="url(#venn-clip)"/>
+        <circle class="diagram-set" cx="200" cy="120" r="100"/>
+        <circle class="diagram-set" cx="320" cy="120" r="100"/>
+        <text class="diagram-label" x="152" y="120">speed</text>
+        <text class="diagram-label" x="368" y="120">proof</text>
+        <text class="diagram-label is-focal" x="260" y="120">release</text>
       </svg></div>
       <figcaption class="diagram-summary">The release path is the overlap between fast execution and durable proof.</figcaption>
     </figure>
 
     <figure id="diagram-template-candlestick" class="diagram-card" data-diagram="candlestick"><h2>Candlestick</h2><p class="diagram-use">Open-high-low-close movement where ranges matter.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 180" aria-hidden="true">
-        <line class="diagram-gridline" x1="28" y1="146" x2="300" y2="146"/><line class="diagram-gridline" x1="28" y1="28" x2="28" y2="146"/>
-        <g stroke-width="2"><line x1="66" y1="46" x2="66" y2="126" stroke="var(--a40)"/><rect x="56" y="68" width="20" height="34" fill="var(--background)" stroke="var(--a40)"/>
-        <line x1="112" y1="54" x2="112" y2="138" stroke="var(--accent)"/><rect x="102" y="84" width="20" height="30" fill="var(--accent)" stroke="var(--accent)"/>
-        <line x1="158" y1="34" x2="158" y2="118" stroke="var(--a40)"/><rect x="148" y="54" width="20" height="38" fill="var(--background)" stroke="var(--a40)"/>
-        <line x1="204" y1="60" x2="204" y2="142" stroke="var(--accent)"/><rect x="194" y="84" width="20" height="34" fill="var(--accent)" stroke="var(--accent)"/>
-        <line x1="250" y1="28" x2="250" y2="110" stroke="var(--a40)"/><rect x="240" y="48" width="20" height="36" fill="var(--background)" stroke="var(--a40)"/></g>
-        <text class="diagram-label is-small" x="160" y="164">five periods</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 256" width="520" height="256" aria-hidden="true">
+        <text class="diagram-tag is-start" x="20" y="28">P95 · MS</text>
+        <line class="diagram-gridline" x1="72" y1="48" x2="500" y2="48"/>
+        <text class="diagram-tag is-end" x="60" y="48">80</text>
+        <line class="diagram-gridline" x1="72" y1="88" x2="500" y2="88"/>
+        <text class="diagram-tag is-end" x="60" y="88">70</text>
+        <line class="diagram-gridline" x1="72" y1="128" x2="500" y2="128"/>
+        <text class="diagram-tag is-end" x="60" y="128">60</text>
+        <line class="diagram-gridline" x1="72" y1="168" x2="500" y2="168"/>
+        <text class="diagram-tag is-end" x="60" y="168">50</text>
+        <line class="diagram-gridline" x1="72" y1="208" x2="500" y2="208"/>
+        <text class="diagram-tag is-end" x="60" y="208">40</text>
+        <path class="diagram-edge" d="M132 128V144M132 176V200"/>
+        <rect x="120" y="144" width="24" height="32" rx="2" fill="var(--surface)" stroke="var(--a55)"/>
+        <text class="diagram-tag is-middle" x="132" y="228">MON</text>
+        <path class="diagram-edge" d="M212 120V144M212 168V184"/>
+        <rect x="200" y="144" width="24" height="24" rx="2" fill="var(--a40)" stroke="var(--a40)"/>
+        <text class="diagram-tag is-middle" x="212" y="228">TUE</text>
+        <path class="diagram-edge" d="M292 104V120M292 168V176"/>
+        <rect x="280" y="120" width="24" height="48" rx="2" fill="var(--surface)" stroke="var(--a55)"/>
+        <text class="diagram-tag is-middle" x="292" y="228">WED</text>
+        <path class="diagram-edge" d="M372 96V120M372 144V160"/>
+        <rect x="360" y="120" width="24" height="24" rx="2" fill="var(--a40)" stroke="var(--a40)"/>
+        <text class="diagram-tag is-middle" x="372" y="228">THU</text>
+        <path class="diagram-edge is-focal" d="M452 64V80M452 144V152"/>
+        <rect x="440" y="80" width="24" height="64" rx="2" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.25"/>
+        <text class="diagram-tag is-middle" x="452" y="228">FRI</text>
+        <text class="diagram-tag is-end is-focal" x="440" y="64">HIGH 76</text>
       </svg></div>
       <figcaption class="diagram-summary">The five-period series alternates down and up closes while the overall high moves upward.</figcaption>
     </figure>
 
     <figure id="diagram-template-waterfall" class="diagram-card" data-diagram="waterfall"><h2>Waterfall</h2><p class="diagram-use">Show how additions and deductions change the starting total into the ending total.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 180" aria-hidden="true">
-        <line class="diagram-gridline" x1="24" y1="146" x2="302" y2="146"/>
-        <rect x="34" y="86" width="42" height="60" fill="var(--a40)"/><text class="diagram-value" x="55" y="78">100</text>
-        <rect x="88" y="58" width="42" height="28" fill="var(--accent)"/><line class="diagram-gridline" x1="76" y1="86" x2="88" y2="86"/><text class="diagram-value" x="109" y="50">+24</text>
-        <rect x="142" y="58" width="42" height="18" fill="var(--a20)"/><line class="diagram-gridline" x1="130" y1="58" x2="142" y2="58"/><text class="diagram-value" x="163" y="92">−18</text>
-        <rect x="196" y="40" width="42" height="36" fill="var(--accent)"/><line class="diagram-gridline" x1="184" y1="76" x2="196" y2="76"/><text class="diagram-value" x="217" y="32">+32</text>
-        <rect x="250" y="40" width="42" height="106" fill="var(--foreground)"/><text class="diagram-value" x="271" y="30">138</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 252" width="520" height="252" aria-hidden="true">
+        <line class="diagram-gridline" x1="20" y1="206" x2="500" y2="206"/>
+        <rect x="40" y="86" width="64" height="120" rx="3" fill="var(--a20)"/>
+        <text class="diagram-value" x="72" y="74">100</text>
+        <text class="diagram-tag is-middle" x="72" y="224">START</text>
+        <line class="diagram-gridline" x1="104" y1="86" x2="136" y2="86" stroke-dasharray="2 2"/>
+        <rect x="136" y="57.2" width="64" height="28.8" rx="3" fill="var(--a20)"/>
+        <text class="diagram-value" x="168" y="45.2">+24</text>
+        <text class="diagram-tag is-middle" x="168" y="224">NEW TESTS</text>
+        <line class="diagram-gridline" x1="200" y1="57.2" x2="232" y2="57.2" stroke-dasharray="2 2"/>
+        <rect x="232" y="57.2" width="64" height="21.6" rx="3" fill="var(--a20)"/>
+        <text class="diagram-value" x="264" y="92.8">−18</text>
+        <text class="diagram-tag is-middle" x="264" y="224">FLAKY</text>
+        <line class="diagram-gridline" x1="296" y1="78.8" x2="328" y2="78.8" stroke-dasharray="2 2"/>
+        <rect x="328" y="40.4" width="64" height="38.4" rx="3" fill="var(--accent)"/>
+        <text class="diagram-value is-focal" x="360" y="28.4">+32</text>
+        <text class="diagram-tag is-middle" x="360" y="224">COVERAGE</text>
+        <line class="diagram-gridline" x1="392" y1="40.4" x2="424" y2="40.4" stroke-dasharray="2 2"/>
+        <rect x="424" y="40.4" width="64" height="165.6" rx="3" fill="var(--a20)"/>
+        <text class="diagram-value" x="456" y="28.4">138</text>
+        <text class="diagram-tag is-middle" x="456" y="224">END</text>
       </svg></div>
       <figcaption class="diagram-summary">A starting value of 100 reaches 138 after additions of 24 and 32 offset an 18-point deduction.</figcaption>
     </figure>
 
+    <figure id="diagram-template-heatmap" class="diagram-card" data-diagram="heatmap"><h2>Heatmap</h2><p class="diagram-use">Intensity across two categories, such as failures by service and day.</p>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 248" width="520" height="248" aria-hidden="true">
+        <text class="diagram-tag is-middle" x="109" y="28">MON</text>
+        <text class="diagram-tag is-middle" x="169" y="28">TUE</text>
+        <text class="diagram-tag is-middle" x="229" y="28">WED</text>
+        <text class="diagram-tag is-middle" x="289" y="28">THU</text>
+        <text class="diagram-tag is-middle" x="349" y="28">FRI</text>
+        <text class="diagram-tag is-middle" x="409" y="28">SAT</text>
+        <text class="diagram-tag is-middle" x="469" y="28">SUN</text>
+        <text class="diagram-tag is-end" x="70" y="55">API</text>
+        <rect class="diagram-heat-1" x="80" y="40" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="109" y="55">2</text>
+        <rect class="diagram-heat-1" x="140" y="40" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="169" y="55">1</text>
+        <rect class="diagram-heat-2" x="200" y="40" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="229" y="55">3</text>
+        <rect class="diagram-heat-1" x="260" y="40" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="289" y="55">2</text>
+        <rect class="diagram-heat-1" x="320" y="40" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="349" y="55">1</text>
+        <rect class="diagram-heat-0" x="380" y="40" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="409" y="55">0</text>
+        <rect class="diagram-heat-0" x="440" y="40" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="469" y="55">0</text>
+        <text class="diagram-tag is-end" x="70" y="87">AUTH</text>
+        <rect class="diagram-heat-1" x="80" y="72" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="109" y="87">1</text>
+        <rect class="diagram-heat-0" x="140" y="72" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="169" y="87">0</text>
+        <rect class="diagram-heat-1" x="200" y="72" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="229" y="87">2</text>
+        <rect class="diagram-heat-2" x="260" y="72" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="289" y="87">4</text>
+        <rect class="diagram-heat-2" x="320" y="72" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="349" y="87">3</text>
+        <rect class="diagram-heat-1" x="380" y="72" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="409" y="87">1</text>
+        <rect class="diagram-heat-0" x="440" y="72" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="469" y="87">0</text>
+        <text class="diagram-tag is-end" x="70" y="119">BILLING</text>
+        <rect class="diagram-heat-1" x="80" y="104" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="109" y="119">1</text>
+        <rect class="diagram-heat-1" x="140" y="104" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="169" y="119">2</text>
+        <rect class="diagram-heat-3" x="200" y="104" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="229" y="119">6</text>
+        <rect class="diagram-heat-4" x="260" y="104" width="58" height="30" rx="3"/>
+        <text class="diagram-value is-inverse" x="289" y="119">14</text>
+        <rect class="diagram-heat-2" x="320" y="104" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="349" y="119">5</text>
+        <rect class="diagram-heat-1" x="380" y="104" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="409" y="119">1</text>
+        <rect class="diagram-heat-0" x="440" y="104" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="469" y="119">0</text>
+        <text class="diagram-tag is-end" x="70" y="151">SEARCH</text>
+        <rect class="diagram-heat-0" x="80" y="136" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="109" y="151">0</text>
+        <rect class="diagram-heat-1" x="140" y="136" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="169" y="151">1</text>
+        <rect class="diagram-heat-1" x="200" y="136" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="229" y="151">1</text>
+        <rect class="diagram-heat-1" x="260" y="136" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="289" y="151">2</text>
+        <rect class="diagram-heat-1" x="320" y="136" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="349" y="151">1</text>
+        <rect class="diagram-heat-0" x="380" y="136" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="409" y="151">0</text>
+        <rect class="diagram-heat-1" x="440" y="136" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="469" y="151">1</text>
+        <text class="diagram-tag is-end" x="70" y="183">WEB</text>
+        <rect class="diagram-heat-2" x="80" y="168" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="109" y="183">3</text>
+        <rect class="diagram-heat-1" x="140" y="168" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="169" y="183">2</text>
+        <rect class="diagram-heat-1" x="200" y="168" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="229" y="183">2</text>
+        <rect class="diagram-heat-2" x="260" y="168" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="289" y="183">5</text>
+        <rect class="diagram-heat-1" x="320" y="168" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="349" y="183">2</text>
+        <rect class="diagram-heat-1" x="380" y="168" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="409" y="183">1</text>
+        <rect class="diagram-heat-1" x="440" y="168" width="58" height="30" rx="3"/>
+        <text class="diagram-value" x="469" y="183">1</text>
+        <text class="diagram-tag is-start" x="80" y="222">FEWER</text>
+        <rect class="diagram-heat-0" x="128" y="216" width="20" height="12" rx="3"/>
+        <rect class="diagram-heat-1" x="152" y="216" width="20" height="12" rx="3"/>
+        <rect class="diagram-heat-2" x="176" y="216" width="20" height="12" rx="3"/>
+        <rect class="diagram-heat-3" x="200" y="216" width="20" height="12" rx="3"/>
+        <rect class="diagram-heat-4" x="224" y="216" width="20" height="12" rx="3"/>
+        <text class="diagram-tag is-start" x="256" y="222">MORE</text>
+      </svg></div>
+      <figcaption class="diagram-summary">Billing failures peak at 14 on Thursday, the busiest service-day of the week.</figcaption>
+    </figure>
+
     <figure id="diagram-template-sequence" class="diagram-card" data-diagram="sequence"><h2>Sequence</h2><p class="diagram-use">Messages among participants ordered from top to bottom.</p>
-      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 398 194" style="min-width:560px" aria-hidden="true"><defs><marker id="dots-sequence-3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs><text class="flow-node-label" x="84" y="35">client</text><path class="flow-edge" d="M84,52 V174" stroke-dasharray="4 4"/><text class="flow-node-label" x="314" y="35">server</text><path class="flow-edge" d="M314,52 V174" stroke-dasharray="4 4"/><path class="flow-edge" d="M84,96 H308" marker-end="url(#dots-sequence-3-arrow)"/><text class="flow-edge-label" x="199" y="87">request</text></svg></div><p class="flow-caption">The client sends a request.</p>
+      <div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 398 194" style="min-width:398px;max-width:398px;margin-inline:auto" aria-hidden="true"><defs><marker id="dots-sequence-3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a55)"/></marker></defs><text class="flow-node-label" x="84" y="35">client</text><path class="flow-edge" d="M84,52 V174" stroke-dasharray="4 4"/><text class="flow-node-label" x="314" y="35">server</text><path class="flow-edge" d="M314,52 V174" stroke-dasharray="4 4"/><path class="flow-edge" d="M84,96 H308" marker-end="url(#dots-sequence-3-arrow)"/><text class="flow-edge-label" x="199" y="87">request</text></svg></div><p class="flow-caption">The client sends a request.</p>
     </figure>
 
     <figure id="diagram-template-class" class="diagram-card" data-diagram="class"><h2>Class</h2><p class="diagram-use">Types, their fields and methods, and inheritance.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 220" aria-hidden="true">
-        <defs><marker id="class-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 5 10 0 10 10Z" fill="var(--background)" stroke="var(--a40)"/></marker></defs>
-        <rect class="diagram-node is-focal" x="104" y="14" width="112" height="76" rx="4"/><line class="diagram-gridline" x1="104" y1="42" x2="216" y2="42"/><line class="diagram-gridline" x1="104" y1="66" x2="216" y2="66"/><text class="diagram-label" x="160" y="28">Artifact</text><text class="diagram-label is-small" x="160" y="54">title: string</text><text class="diagram-label is-small" x="160" y="78">render()</text>
-        <rect class="diagram-node" x="24" y="138" width="112" height="62" rx="4"/><line class="diagram-gridline" x1="24" y1="166" x2="136" y2="166"/><text class="diagram-label" x="80" y="152">Page</text><text class="diagram-label is-small" x="80" y="182">layout: width</text>
-        <rect class="diagram-node" x="184" y="138" width="112" height="62" rx="4"/><line class="diagram-gridline" x1="184" y1="166" x2="296" y2="166"/><text class="diagram-label" x="240" y="152">Fragment</text><text class="diagram-label is-small" x="240" y="182">scope: host</text>
-        <path class="diagram-edge" d="M80 138V114H144V94" marker-end="url(#class-arrow)"/><path class="diagram-edge" d="M240 138V114H176V94" marker-end="url(#class-arrow)"/>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 256" width="520" height="256" aria-hidden="true">
+        <defs><marker id="class-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto"><path class="diagram-arrow is-hollow" d="M0 0 10 5 0 10Z"/></marker></defs>
+        <path class="diagram-edge" d="M140 176V160Q140 152 148 152H372Q380 152 380 160V176"/>
+        <path class="diagram-edge" d="M260 152V131" marker-end="url(#class-arrow)"/>
+        <rect class="diagram-node is-focal" x="180" y="20" width="160" height="108" rx="6"/>
+        <text class="diagram-label" x="260" y="36">Artifact</text>
+        <line class="diagram-gridline" x1="180" y1="52" x2="340" y2="52"/>
+        <text class="diagram-label is-small is-start" x="192" y="66">id: string</text>
+        <text class="diagram-label is-small is-start" x="192" y="86">title: string</text>
+        <line class="diagram-gridline" x1="180" y1="100" x2="340" y2="100"/>
+        <text class="diagram-label is-small is-start" x="192" y="114">render(): html</text>
+        <rect class="diagram-node" x="60" y="176" width="160" height="60" rx="6"/>
+        <text class="diagram-label" x="140" y="192">Page</text>
+        <line class="diagram-gridline" x1="60" y1="208" x2="220" y2="208"/>
+        <text class="diagram-label is-small is-start" x="72" y="222">layout: width</text>
+        <rect class="diagram-node" x="300" y="176" width="160" height="60" rx="6"/>
+        <text class="diagram-label" x="380" y="192">Fragment</text>
+        <line class="diagram-gridline" x1="300" y1="208" x2="460" y2="208"/>
+        <text class="diagram-label is-small is-start" x="312" y="222">scope: host</text>
       </svg></div>
       <figcaption class="diagram-summary">Page and Fragment inherit the shared Artifact contract while adding their own fields.</figcaption>
     </figure>
 
     <figure id="diagram-template-entity-relationship" class="diagram-card" data-diagram="entity-relationship"><h2>Entity relationship</h2><p class="diagram-use">Records, keys, and the cardinality between them.</p>
-      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 320 220" aria-hidden="true">
-        <rect class="diagram-node is-focal" x="18" y="42" width="108" height="120" rx="4"/><line class="diagram-gridline" x1="18" y1="72" x2="126" y2="72"/><text class="diagram-label" x="72" y="57">Outcome</text><text class="diagram-label is-small" x="72" y="90">id · primary</text><text class="diagram-label is-small" x="72" y="116">title</text><text class="diagram-label is-small" x="72" y="142">layout</text>
-        <rect class="diagram-node" x="194" y="42" width="108" height="120" rx="4"/><line class="diagram-gridline" x1="194" y1="72" x2="302" y2="72"/><text class="diagram-label" x="248" y="57">Section</text><text class="diagram-label is-small" x="248" y="90">id · primary</text><text class="diagram-label is-small" x="248" y="116">outcome_id</text><text class="diagram-label is-small" x="248" y="142">position</text>
-        <line class="diagram-edge" x1="126" y1="102" x2="194" y2="102"/><text class="diagram-label" x="142" y="92">1</text><text class="diagram-label" x="178" y="92">N</text>
+      <div class="diagram-scroll"><svg class="diagram-canvas" viewBox="0 0 520 184" width="520" height="184" aria-hidden="true">
+        <path class="diagram-edge" d="M200 66H252Q260 66 260 74V86Q260 94 268 94H320"/>
+        <text class="diagram-tag is-start" x="212" y="54">1</text>
+        <text class="diagram-tag is-end" x="308" y="82">N</text>
+        <rect class="diagram-node is-focal" x="40" y="20" width="160" height="144" rx="6"/>
+        <text class="diagram-label" x="120" y="36">Outcome</text>
+        <line class="diagram-gridline" x1="40" y1="52" x2="200" y2="52"/>
+        <text class="diagram-label is-small is-start" x="52" y="66">id</text>
+        <text class="diagram-label is-small is-end" x="188" y="66">PK</text>
+        <text class="diagram-label is-small is-start" x="52" y="94">title</text>
+        <text class="diagram-label is-small is-start" x="52" y="122">layout</text>
+        <text class="diagram-label is-small is-start" x="52" y="150">updated_at</text>
+        <rect class="diagram-node" x="320" y="20" width="160" height="144" rx="6"/>
+        <text class="diagram-label" x="400" y="36">Section</text>
+        <line class="diagram-gridline" x1="320" y1="52" x2="480" y2="52"/>
+        <text class="diagram-label is-small is-start" x="332" y="66">id</text>
+        <text class="diagram-label is-small is-end" x="468" y="66">PK</text>
+        <text class="diagram-label is-small is-start" x="332" y="94">outcome_id</text>
+        <text class="diagram-label is-small is-end" x="468" y="94">FK</text>
+        <text class="diagram-label is-small is-start" x="332" y="122">position</text>
+        <text class="diagram-label is-small is-start" x="332" y="150">body</text>
       </svg></div>
       <figcaption class="diagram-summary">One Outcome owns many ordered Sections through the outcome identifier.</figcaption>
     </figure>
@@ -2379,7 +2830,7 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
 <div data-component="line-chart" data-source="APM" class="chart-card reveal">
 <!-- chart-spec {"type":"line","title":"Latency by week","source":"APM","data":[["W1",100],["W2",120],["W3",140]],"sort":"none"} -->
   <div class="chart-title">Latency by week</div>
-  <div class="chart-scroll"><svg viewBox="0 0 640 250" style="min-width:640px" aria-hidden="true"><polyline class="line-series" points="44,190 324,115 604,40"/><circle class="line-point" cx="44" cy="190" r="4"/><circle class="line-point" cx="324" cy="115" r="4"/><circle class="line-point" cx="604" cy="40" r="4"/><text x="44" y="230" text-anchor="middle">W1</text><text x="324" y="230" text-anchor="middle">W2</text><text x="604" y="230" text-anchor="middle">W3</text></svg></div>
+  <div class="chart-scroll"><svg viewBox="0 0 640 200" style="min-width:640px;max-width:640px" aria-hidden="true"><line class="line-grid" x1="44" x2="616" y1="164" y2="164"/><text class="line-tick" x="36" y="164" text-anchor="end" dominant-baseline="middle">94</text><line class="line-grid" x1="44" x2="616" y1="114.67" y2="114.67"/><text class="line-tick" x="36" y="114.67" text-anchor="end" dominant-baseline="middle">111.33</text><line class="line-grid" x1="44" x2="616" y1="65.33" y2="65.33"/><text class="line-tick" x="36" y="65.33" text-anchor="end" dominant-baseline="middle">128.67</text><line class="line-grid" x1="44" x2="616" y1="16" y2="16"/><text class="line-tick" x="36" y="16" text-anchor="end" dominant-baseline="middle">146</text><polygon class="line-area" points="44,164 44,146.92 330,90 616,33.08 616,164"/><polyline class="line-series" points="44,146.92 330,90 616,33.08"/><circle class="line-point" cx="44" cy="146.92" r="3"/><circle class="line-point" cx="330" cy="90" r="3"/><circle class="line-point is-last" cx="616" cy="33.08" r="4.5"/><text class="line-value" x="616" y="21.08" text-anchor="end">140</text><text class="line-tick" x="44" y="188" text-anchor="middle">W1</text><text class="line-tick" x="330" y="188" text-anchor="middle">W2</text><text class="line-tick" x="616" y="188" text-anchor="middle">W3</text></svg></div>
   <ul class="chart-data"><li>W1: 100</li><li>W2: 120</li><li>W3: 140</li></ul>
 </div>
 </section>
@@ -2427,7 +2878,7 @@ gotchas: Start with the title; omit eyebrows. Put document metadata in the foote
 <ol data-component="timeline" class="timeline"><li class="milestone"><span class="milestone-marker" aria-hidden="true"></span><div class="milestone-body"><div class="milestone-head"><span class="milestone-title">Detected</span><span class="milestone-date">14:02</span></div><p class="milestone-detail">Alert fired.</p></div></li><li class="milestone is-current"><span class="milestone-marker" aria-hidden="true"></span><div class="milestone-body"><div class="milestone-head"><span class="milestone-title">Rollback</span><span class="milestone-date">14:24</span></div></div></li><li class="milestone is-pending"><span class="milestone-marker" aria-hidden="true"></span><div class="milestone-body"><div class="milestone-head"><span class="milestone-title">Postmortem</span><span class="milestone-date">pending</span></div></div></li></ol>
 </section>
 <section id="flow-diagram"><h2>Flow diagram</h2><p class="reading-column">A branching system whose connections explain the behavior; inline SVG on tokens, with a text fallback.</p>
-<div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 378 96" style="min-width:560px" aria-hidden="true"><defs><marker id="dots-flow-1001-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs><path class="flow-edge" d="M144,48 H189 V48 H228" marker-end="url(#dots-flow-1001-arrow)"/><rect class="flow-node-rect" x="24" y="24" width="120" height="48" rx="8"/><text class="flow-node-label" x="84" y="48">build</text><rect class="flow-node-rect" x="234" y="24" width="120" height="48" rx="8"/><text class="flow-node-label" x="294" y="48">verify</text></svg></div><p class="flow-caption">Build leads to verification.</p>
+<div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 378 96" style="min-width:378px;max-width:378px;margin-inline:auto" aria-hidden="true"><defs><marker id="dots-flow-1001-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a55)"/></marker></defs><path class="flow-edge" d="M144,48 H189 V48 H228" marker-end="url(#dots-flow-1001-arrow)"/><rect class="flow-node-rect" x="24" y="24" width="120" height="48" rx="6"/><text class="flow-node-label" x="84" y="48">build</text><rect class="flow-node-rect" x="234" y="24" width="120" height="48" rx="6"/><text class="flow-node-label" x="294" y="48">verify</text></svg></div><p class="flow-caption">Build leads to verification.</p>
 </section>
 <section id="mockup-frame"><h2>Mockup frame</h2><p class="reading-column">A static concept view helps explain an intended result and is labeled as non-observed UI.</p>
 <figure data-component="mockup-frame" class="mockup-frame"><div class="mockup-surface" role="img" aria-label="Concept layout with navigation"><div class="mockup-toolbar" aria-hidden="true"><span></span><span></span><span></span></div><div class="mockup-layout" aria-hidden="true"><div class="mockup-nav"><div class="mockup-line is-accent"></div><div class="mockup-line"></div><div class="mockup-line"></div><div class="mockup-line"></div></div><div class="mockup-main"><div class="mockup-line is-strong"></div><div class="mockup-line"></div><div class="mockup-line is-short"></div><div class="mockup-block"></div></div></div></div><figcaption><strong>Concept — not observed UI.</strong> The action and its evidence share one path.</figcaption></figure>

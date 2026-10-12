@@ -140,7 +140,7 @@ export function timelineLayout(events, budget = 672) {
   const centers = [];
   widths.forEach((width, index) => centers.push(index === 0 ? 24 + width / 2 : centers[index - 1] + Math.max(150, widths[index - 1] / 2 + width / 2 + 24)));
   const horizontalWidth = Math.ceil(centers.at(-1) + widths.at(-1) / 2 + 24);
-  if (horizontalWidth <= budget) return { events: events.map((event, index) => ({ ...event, x: centers[index] })), width: horizontalWidth, height: 180, orientation: 'horizontal' };
+  if (horizontalWidth <= budget) return { events: events.map((event, index) => ({ ...event, x: centers[index] })), width: horizontalWidth, height: 104, orientation: 'horizontal' };
   const labelWidth = Math.max(...widths);
   const verticalWidth = Math.max(272, Math.ceil(labelWidth + 120));
   if (verticalWidth > budget) throw new Error('layout: timeline label exceeds the diagram width budget');

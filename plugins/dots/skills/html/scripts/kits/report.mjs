@@ -300,9 +300,11 @@ function flowDiagram({ viewBox, content, caption, notes, minWidth, emphasis = []
   return html`<div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="${viewBox}"${style} aria-hidden="true">${content}</svg></div>${description}`;
 }
 
-function computedSvg(kind, markup, width, height, summary, compact = false) {
+function computedSvg(kind, markup, rawWidth, height, summary) {
   required(kind, "summary", summary);
-  return html`<div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 ${width} ${height}" style="${compact ? `min-width:${width}px;max-width:${width}px;margin-inline:auto` : `min-width:${Math.max(width, 560)}px`}" aria-hidden="true">${raw(markup)}</svg></div><p class="flow-caption">${summary}</p>`;
+  // Draw at exactly 1:1 so labels keep their authored size; whole pixels avoid sub-pixel shrink.
+  const width = Math.ceil(rawWidth);
+  return html`<div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 ${width} ${height}" style="min-width:${width}px;max-width:${width}px;margin-inline:auto" aria-hidden="true">${raw(markup)}</svg></div><p class="flow-caption">${summary}</p>`;
 }
 
 function flow({ nodes, edges, summary, emphasis = [] }, kind = "flow") {
@@ -315,8 +317,8 @@ function flow({ nodes, edges, summary, emphasis = [] }, kind = "flow") {
   const prefix = `dots-${kind}-${++figureSerial}`;
   const marker = `${prefix}-arrow`;
   const lines = layout.edges.map((edge) => `<path class="flow-edge" d="${edge.path}" marker-end="url(#${marker})"/>${edge.label ? `<text class="flow-edge-label" x="${edge.labelX}" y="${edge.labelY}">${escapeHtml(edge.label)}</text>` : ""}`).join("");
-  const boxes = layout.nodes.map((node) => `<rect class="flow-node-rect${selected.includes(node.id) ? " is-emphasized" : ""}" x="${node.x}" y="${node.y}" width="${node.width}" height="${node.height}" rx="8"/><text class="flow-node-label" x="${node.x + node.width / 2}" y="${node.y + node.height / 2}">${escapeHtml(node.label)}</text>`).join("");
-  return computedSvg(kind, `<defs><marker id="${marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs>${lines}${boxes}`, layout.width, layout.height, summary, layout.orientation === "vertical");
+  const boxes = layout.nodes.map((node) => `<rect class="flow-node-rect${selected.includes(node.id) ? " is-emphasized" : ""}" x="${node.x}" y="${node.y}" width="${node.width}" height="${node.height}" rx="6"/><text class="flow-node-label" x="${node.x + node.width / 2}" y="${node.y + node.height / 2}">${escapeHtml(node.label)}</text>`).join("");
+  return computedSvg(kind, `<defs><marker id="${marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a55)"/></marker></defs>${lines}${boxes}`, layout.width, layout.height, summary, layout.orientation === "vertical");
 }
 
 function state(spec) { return flow(spec, "state"); }
@@ -336,16 +338,16 @@ function sequence({ actors, events, summary }) {
     const mid = (from.x + to.x) / 2;
     return `<path class="flow-edge" d="M${from.x},${event.y} H${to.x + (from.x < to.x ? -6 : 6)}" marker-end="url(#${marker})"/><text class="flow-edge-label" x="${mid}" y="${event.y - 9}">${escapeHtml(event.label ?? "")}</text>`;
   }).join("");
-  return computedSvg("sequence", `<defs><marker id="${marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs>${lines}${arrows}`, layout.width, layout.height, summary, layout.orientation === 'vertical');
+  return computedSvg("sequence", `<defs><marker id="${marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a55)"/></marker></defs>${lines}${arrows}`, layout.width, layout.height, summary, layout.orientation === 'vertical');
 }
 
 function timelineFigure({ events, summary }) {
   list("timeline", "events", events);
   const layout = timelineLayout(events);
-  const line = layout.orientation === 'vertical' ? `<path class="flow-edge" d="M40,60 V${layout.events.at(-1).y}"/>` : `<path class="flow-edge" d="M${layout.events[0].x},90 H${layout.events.at(-1).x}"/>`;
+  const line = layout.orientation === 'vertical' ? `<path class="flow-edge" d="M40,60 V${layout.events.at(-1).y}"/>` : `<path class="flow-edge" d="M${layout.events[0].x},52 H${layout.events.at(-1).x}"/>`;
   const points = layout.events.map((event, index) => layout.orientation === 'vertical'
-    ? `<circle cx="40" cy="${event.y}" r="5" fill="${index === layout.events.length - 1 ? "var(--accent)" : "var(--foreground)"}"/><text class="flow-edge-label" x="90" y="${event.y - 9}" style="text-anchor:start">${escapeHtml(event.date ?? "")}</text><text class="flow-node-label" x="90" y="${event.y + 14}" style="text-anchor:start">${escapeHtml(event.title ?? event.label)}</text>`
-    : `<circle cx="${event.x}" cy="90" r="5" fill="${index === layout.events.length - 1 ? "var(--accent)" : "var(--foreground)"}"/><text class="flow-edge-label" x="${event.x}" y="65">${escapeHtml(event.date ?? "")}</text><text class="flow-node-label" x="${event.x}" y="120">${escapeHtml(event.title ?? event.label)}</text>`).join("");
+    ? `<circle cx="40" cy="${event.y}" r="5" fill="${index === layout.events.length - 1 ? "var(--accent)" : "var(--foreground)"}" stroke="var(--background)" stroke-width="3"/><text class="flow-edge-label" x="90" y="${event.y - 9}" style="text-anchor:start">${escapeHtml(event.date ?? "")}</text><text class="flow-node-label" x="90" y="${event.y + 14}" style="text-anchor:start">${escapeHtml(event.title ?? event.label)}</text>`
+    : `<circle cx="${event.x}" cy="52" r="5" fill="${index === layout.events.length - 1 ? "var(--accent)" : "var(--foreground)"}" stroke="var(--background)" stroke-width="3"/><text class="flow-edge-label" x="${event.x}" y="30">${escapeHtml(event.date ?? "")}</text><text class="flow-node-label" x="${event.x}" y="80">${escapeHtml(event.title ?? event.label)}</text>`).join("");
   return computedSvg("timeline", line + points, layout.width, layout.height, summary, layout.orientation === 'vertical');
 }
 
