@@ -1,7 +1,7 @@
 # dots-tunnel
 
 Read and edit locally authorized folders from a normal ChatGPT conversation.
-The server belongs to Dots; it does not run a model, automate a browser, or
+The server source is maintained in Fleet; it does not run a model, automate a browser, or
 depend on an active Codex task.
 
 ```text
@@ -22,7 +22,7 @@ Connect Tunnel in ChatGPT, mention `@Tunnel`, and ask for a file change:
 
 Send follow-ups in the same conversation. Each operation supplies its own path
 and revision, so there is no turn-token synchronization or hidden browser tab.
-The [dots-tunnel skill](../../skills/dots-tunnel/SKILL.md) describes the workflow.
+The [MCP workflow](workflow/SKILL.md) is delivered by `get_workflow`; no Dots skill is required.
 
 | Tool | Purpose |
 | --- | --- |
@@ -44,6 +44,112 @@ write with a stale revision. Read the file after editing before claiming
 success. If delivery is uncertain, read the file before considering another write. Do not retry a denied call through another connection or model.
 
 ## Local setup
+
+### One Tunnel app for several computers
+
+`router.py` provides one tool catalog with a required `computer` argument on
+every existing tool. In ChatGPT, the intended interaction is:
+
+> @Tunnel use Akira and read Fleet's AGENTS.md.
+>
+> Now use the Mac and inspect the same repository there.
+
+ChatGPT first calls `list_computers`, then uses the configured name on each
+call: `read_file(computer="akira", path="Code/fleet/AGENTS.md")`. There is no
+shared selected-computer setting. Paths and revisions remain local to each
+backend. The router translates command, operation, and recovery handles and
+rejects their use on a different computer. It checks `get_workflow.host`
+against the configured identity before forwarding the first user operation.
+
+Run the router on a coordinator computer with private access to each backend.
+It starts the existing server locally or through a fixed SSH command over
+stdio. It does not forward calls through the two ChatGPT app connections:
+those connections are client-facing interfaces, not a backend RPC service.
+The existing per-host Tunnel connections can remain intact during migration.
+Never point two independent tunnel-client processes at the same tunnel ID.
+
+Keep `router.json`, the deployed source, Python dependencies, and SSH keys
+outside all remotely writable mounts. The local operator supplies the commands
+and verifies SSH host keys before startup. Tool callers cannot change this
+configuration. The following is a template, with deployment paths and hostnames
+to replace from each computer's verified setup:
+
+```json
+{
+  "computers": {
+    "mac": {
+      "expected_host": "your-mac-hostname",
+      "command": [
+        "/private/deployment/venv/bin/python",
+        "/private/deployment/dots/scripts/dots-tunnel/server.py",
+        "--config-directory", "/private/tunnel-config"
+      ]
+    },
+    "akira": {
+      "expected_host": "your-akira-hostname",
+      "command": [
+        "/usr/bin/ssh", "-T", "-oBatchMode=yes",
+        "-oStrictHostKeyChecking=yes", "-oConnectTimeout=10",
+        "your-verified-ssh-alias",
+        "/private/deployment/venv/bin/python /private/deployment/dots/scripts/dots-tunnel/server.py --config-directory /private/tunnel-config"
+      ]
+    }
+  }
+}
+```
+
+SSH treats its final argument as a remote shell command. Quote remote paths
+with spaces in that argument; use only operator-reviewed constants. Each worker
+reads its own existing mount/state/execution configuration. Its command engine
+keeps the existing filesystem and network sandbox. The router's SSH transport
+runs separately from that engine and grants no network access to project commands.
+
+Start the router with the existing Python environment:
+
+```sh
+/private/deployment/venv/bin/python \
+  /private/deployment/dots/scripts/dots-tunnel/router.py \
+  --config /private/router.json
+```
+
+This is a stdio MCP entrypoint. For rollout, bind it as the single `main` command
+of the existing **Tunnel** secure-tunnel runtime, preserving that app and tunnel
+ID, runtime credential, audience, and per-host mounts. Add the absolute private
+path as `"router_config": "/private/router.json"` to the coordinator's existing
+`config.json`. The lifecycle helper and login supervisor then build the router
+command on the next start. This choice takes effect after an explicit stop/start;
+an already healthy runtime is left running. Remove that key to return to the
+single-host command on a later stop/start. Refresh Tunnel's ChatGPT
+tool catalog after switching the command. Keep any separate per-computer app connected
+until two real Web turns successfully access and edit the intended hosts, then
+remove the redundant listing while retaining its private rollback configuration.
+
+The coordinator must be awake and reachable to access either computer. Choose
+the computer that should remain available independently of the other; an Akira
+coordinator can serve Akira locally while the Mac sleeps. When moving the
+coordinator, stop the old runtime before starting the same tunnel ID on the new
+host, disable the old login supervisor, and preserve private rollback backups.
+Use a separate private coordinator config so each worker keeps its original
+mount map. On macOS, SSH access to a Desktop mount requires the operator to
+authorize Remote Login disk access in System Settings; never remove a mount or
+broaden OS permissions silently. An
+offline backend does not prevent catalog discovery or access to another host.
+Backend calls are serialized per computer; a pending poll can delay other calls
+to that computer. A failed backend stays failed until an operator restarts the
+router. It never reconnects automatically, replays a command, or falls back to
+another computer. After an interrupted write, inspect effects before retrying.
+Router restart loses translated command/operation/recovery handles; recovery
+copies remain on the backend for local operator recovery. Separate existing
+Tunnel connections have their own command handles and executor health.
+
+After deployment, verify the live runtime's command points to `router.py`;
+`start` leaves an already healthy runtime untouched, so a configuration change
+requires an explicit stop/start. Refresh tools in the existing Tunnel app's
+ChatGPT settings, then open a fresh chat with that app selected. Test discovery,
+host identities, revision-checked edits, readback, native commands, and polling
+on both computers. Repeat edits in a follow-up turn with the host order reversed
+and independently inspect the files on each machine. Local stdio tests alone do
+not establish that ChatGPT has received the new catalog.
 
 Requires macOS/Linux, Python 3.11+, uv, and the official
 [OpenAI secure MCP tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels).
