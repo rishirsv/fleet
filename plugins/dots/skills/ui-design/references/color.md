@@ -15,25 +15,16 @@ stable than the specific color value.
 
 Choose foregrounds relative to their surface. A generic gray or reduced-opacity
 white can look muddy or disabled on a colored background and can vary over
-imagery. Select a foreground for the actual background. It must have the
-intended prominence and pass contrast checks in every state.
+imagery. Select a foreground for the actual background with the intended
+prominence and passing contrast in every state.
 
 For text over imagery, test the full range of expected crops and user-provided
 content. Reposition the text or focal crop when possible; otherwise control the
-local background with a scrim, gradient, or image treatment rather than relying
-on one text color to work over every pixel.
+local background with a scrim, gradient, or image treatment.
 
 Apply changes consistently through the governing token system. Check text,
 controls, focus, selection, and status contrast in their actual contexts and
-themes. Do not rely on color alone to communicate essential information.
-
-For measured contrast checks, read [contrast](recipes/contrast.md). For creating
-or extending theme tokens, read [color tokens](recipes/color-tokens.md). For
-page themes or exposed backgrounds during overscroll, read [document
-canvas](recipes/document-canvas.md). For gradient interpolation, read
-[gradients](recipes/gradients.md).
-
-For a theme switch that unintentionally animates the whole page, use the scoped
-[theme-transition recipe](recipes/theme-transitions.md). For depth, read
-[surface depth](recipes/surface-depth.md); for image edges, read [image
-outlines](recipes/image-outlines.md).
+themes. Pair color with a shape, icon, or text cue for essential information.
+Paint the document canvas from the same theme state as the app so overscroll
+and short pages match. When a theme switch animates the whole page, suppress
+transitions for the swap.

@@ -1,9 +1,9 @@
 ---
 name: ui-design
-description: "Design and refine web or native app interfaces, write UI copy, stress test components, review UI changes and UX, and verify builds against accepted designs."
+description: "Designs, builds, and refines web or native app interfaces, including recreating an accepted image, mockup, or URL and checking the build against it. Use when making or changing how a product interface looks or behaves."
 ---
 
-# UI Design
+# UI design
 
 Make deliberate choices about palette, typography, composition, and interaction
 that fit the brief. Challenge clichés and familiar templates. Take aesthetic
@@ -15,55 +15,71 @@ Establish visual hierarchy before adding decoration. Reduce the prominence of
 competing elements before enlarging or emphasizing the main element. Use a
 small, consistent set of type, color, spacing, radius, and depth values. Add
 exceptions when an element has a distinct role or a visible problem. Preserve
-the meaning and behavior of conventional controls.
+the meaning and behavior of conventional controls. Start sections with the
+heading itself; put category or context labels in the body or footer, and keep
+functional navigation separate from headings.
 
-Do not use eyebrows: small category, context, or identifier labels above or
-beside headings. Start with the heading and place necessary metadata in the
-body or footer. Keep functional navigation separate from headings.
+To audit an existing interface, review a UI change, or stress test a component,
+load `$ui-review`.
 
-## Choose The Work
+## Choose the workflow
 
-Read only the references needed for the current decision. For a focused design
-edit, read the reference for that design property. For a task with a distinct
-workflow, read its workflow reference. Read a recipe only when implementing or
-checking the treatment it describes.
+Read only the references the current decision needs. Read a recipe file only
+when implementing or checking the treatment it describes; each has a contents
+list at the top.
 
 | Outcome | Read |
 |---|---|
-| Build a new interface or substantially redesign one | [Ground the design](references/brief.md), then [build](references/build.md) |
-| Refine a settled interface | [Build or refine](references/build.md); reuse established context |
+| Build a new interface or substantially redesign one | [Ground and build](references/build.md) |
+| Refine a settled interface | [Build or refine](references/build.md#build-or-refine); reuse established context |
 | Explore directions or compare variants | [Ideation](references/ideation.md) |
-| Review UI regressions in a diff, branch or PR | [Change audit](references/change-audit.md) |
-| Stress test or harden a component | [Component stress](references/component-stress.md) |
-| Judge visual quality, UX or readiness | [Design audit](references/design-audit.md) |
-| Recreate an accepted image, mockup or live page | [Reference to code](references/reference-to-code.md) |
-| Check or correct fidelity to an accepted design | [Design QA](references/design-qa.md) |
+| Recreate an accepted image, mockup, or live page | [Recreate a reference](references/recreate.md) |
+| Check or correct a build against an accepted design | [Design QA](references/design-qa.md) |
 
-## Choose The Craft
+Design QA belongs to this skill: it compares a build with its accepted target
+and corrects the build. Judging whether a design itself is good belongs to
+`$ui-review`.
 
-| Decision | Read |
-|---|---|
-| Compose hierarchy, density, repeated rows or responsive layout | [Layout](references/layout.md) |
-| Choose fonts, text roles or readable wrapping | [Typography](references/typography.md) |
-| Choose palette, contrast or theme colors | [Color](references/color.md) |
-| Define controls, forms, feedback or recovery | [Interaction](references/interaction.md) |
-| Set animation timing, choreography or gesture motion | [Motion](references/motion.md) |
-| Refine radii, optical alignment, depth or image edges | [Surface recipes](references/surfaces.md) |
-| Choose icon weight, states, size or direction | [Icons](references/icons.md) |
-| Place search, scope queries or design results | [Search](references/search.md) |
-| Explore feature or destination names | [Naming](references/naming.md) |
-| Write labels, errors, settings or empty-state copy | [Product copy](references/product-copy.md) |
-| Choose native Apple controls, branding or window behavior | [Apple interfaces](references/platforms/apple.md) |
-| Create a launcher/app icon | [App icons](references/platforms/app-icons.md) |
-| Compose an immersive scene or manipulable 3D experience | [Spatial experiences](references/platforms/spatial.md) |
+## Choose the craft
 
-## Explain The Result
+| Decision | Guidance | Code recipes |
+|---|---|---|
+| Hierarchy, density, repeated rows, responsive layout | [Layout](references/layout.md) | [Logical properties and container queries](references/recipes/text-color-layout.md#direction-aware-layout) |
+| Fonts, text roles, wrapping, truncation | [Typography](references/typography.md) | [Web fonts and text CSS](references/recipes/text-color-layout.md#web-fonts) |
+| Palette, contrast, themes, gradients | [Color](references/color.md) | [Contrast, tokens, canvas](references/recipes/text-color-layout.md#measure-contrast); [gradients and grain](references/recipes/surfaces.md#gradient-interpolation) |
+| Controls, forms, feedback, search, labels | [Interaction](references/interaction.md) | [Accessible interaction](references/recipes/accessibility.md) |
+| Timing, choreography, gesture motion | [Motion](references/motion.md) | [Motion recipes](references/recipes/motion.md) |
+| Radii, optical alignment, depth, image edges, texture | Treatments below | [Surface recipes](references/recipes/surfaces.md) |
+| Icon weight, states, size, direction | [Icons](references/icons.md) | [Icon swap](references/recipes/motion.md#icon-swap) |
+| Native Apple controls, app icons, lazy SwiftUI lists, spatial scenes | [Platforms](references/platforms.md) | |
+
+Use surface treatments only when they fit the accepted visual system. Preserve
+structural, selection, and focus boundaries, and use system components and
+materials on native platforms.
+
+## Prove the result
+
+Follow [visual proof](../../references/visual-proof.md) for any claim about how
+the interface renders or behaves. Inspect the states the change affects:
+
+- Layout: narrow and wide containers, widths just above and below each
+  breakpoint, real and extreme content, text scaling, and sticky regions over
+  focused content. Check that the hierarchy survives as well as the fit.
+- Typography: long strings, localized expansion, fallback fonts, supported
+  text sizes, and reflow when fonts load.
+- Interaction: the main path, errors, retries, cancellation, dismissal, back
+  navigation, and both directions of reversible changes.
+- Motion: entry, exit, rapid repetition, reversal, interruption, and reduced
+  motion. A static capture proves the endpoint only; use a recording or
+  intermediate frames when continuity is in question.
+
+## Explain the result
 
 Lead with the visible result, design decision, or blocker. Support judgments
 with specific observations. Name the element, quote the copy, or describe which
 elements compete for attention. Explain how the observation affects the user's
-task and what change would improve it. “Four equally prominent actions obscure
-where to start; give the primary task more weight” is more useful than “improve
-hierarchy.” Distinguish observed behavior from assumptions about users'
+task and what change would improve it. "Four equally prominent actions obscure
+where to start; give the primary task more weight" is more useful than "improve
+hierarchy." Distinguish observed behavior from assumptions about users'
 feelings. Name strengths a correction could damage, and show relevant previews
 or evidence when available.

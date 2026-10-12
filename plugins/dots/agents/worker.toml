@@ -1,5 +1,5 @@
 name = "worker"
-description = "Implement work within the assigned scope."
+description = "Implements a well-specified change within an assigned scope at medium effort. Use for routine edits and mechanical follow-through; use luna for hard or ambiguous work."
 model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 nickname_candidates = ["Steve Wozniak", "Margaret Hamilton", "Kelly Johnson", "James Dyson"]

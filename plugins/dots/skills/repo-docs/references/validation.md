@@ -1,56 +1,39 @@
 # Validation
 
-Verify the claims, examples, and interfaces described by the documentation
-change. Run only applicable checks; this is documentation QA, not an application
-release gate.
+Check the claims, examples, and interfaces the documentation change describes.
+This is documentation QA, so apply only the checks the change touches.
 
-## Check truth
+## Truth
 
-- Verify behavior against source code, config, CLI help, tests, schemas, or
-  authoritative docs when the claim depends on them.
-- Check that examples, commands, paths, flags, environment variables, and output
-  names match the current repo.
-- Label inference, proposals, and partial evidence near the affected claim.
-- Describe a claim as verified only when a current check or recently supplied
+- Confirm behavior against source, config, CLI help, tests, schemas, or
+  authoritative docs when a claim depends on them.
+- Match examples, commands, paths, flags, environment variables, and output
+  names to the current repository.
+- Label inference, proposals, and partial evidence beside the affected claim,
+  and call a claim verified only when a current check or recently supplied
   result supports it.
 
-## Check the document
+## The document
 
-- Confirm the selected document recipe and repository conventions are met.
-- Check heading order, links, code fences, tables, inline code, and terminology
+- Meet the selected recipe's or design checklist's expectations and the
+  repository's conventions.
+- Check heading order, links, code fences, tables, inline code, and terms
   where the change touches them.
 - Keep link text meaningful without surrounding prose.
 - Keep essential text available as text; give informative images alt text and
-  do not encode meaning through color, shape, size, or position alone.
+  carry meaning by more than color, shape, size, or position.
 - Distinguish required actions, optional actions, expected outcomes, and
   possible outcomes.
+- Keep protected sections' heading, markers, body, formatting, and position
+  unchanged unless the user requested that section, and place generated
+  content outside them.
 
-## Preserve protected content
+## Agent-readable bundles
 
-- Compare protected sections before and after the edit.
-- Keep their heading, markers, body, formatting, and position unchanged unless
-  the user requested that section.
-- Place generated content outside protected sections.
-
-## Check agent-readable bundles
-
-- Parse required frontmatter and require a non-empty `type`.
+- Parse required frontmatter and require a non-empty `type`; preserve unknown
+  existing fields unless the user asks to remove them.
 - Match index entries to added, removed, and renamed concept files.
 - Keep descriptions useful as one-sentence search or index snippets.
-- Existing unknown frontmatter fields are preserved unless the user asks to
-  remove them.
-- Cross-links connect relevant concepts and use the repo's preferred path style.
-- External claims have inline source links or a `# Citations` section when
+- Link related concepts in the repository's preferred path style.
+- Give external claims inline source links or a `# Citations` section when
   source authority matters.
-
-## Check the selected specialist recipe
-
-Validate design docs against the review checklist in
-[design-docs.md](design-docs.md). Validate other specialist documents against
-their selected recipe in [document-types.md](document-types.md). Do not repeat
-those checklists here.
-
-## Final report
-
-Report the files and document types changed, checks performed, material checks
-skipped, and open verification gaps.

@@ -1,9 +1,9 @@
 ---
 name: meta-prompt
-description: "Create, rewrite, or tighten a standalone prompt for another assistant from a task description, existing prompt, or supplied context. Use for prompt-writing requests, including coding-agent and image prompts; not for performing the task described in the prompt or explaining prompting techniques."
+description: "Writes, rewrites, or tightens a standalone prompt for another assistant from a task, an existing prompt, or context. Use when the user asks for a prompt, including coding-agent and image prompts; not for doing the task itself."
 ---
 
-# Meta Prompt
+# Meta prompt
 
 Write the prompt the user can give to another assistant. The deliverable is
 the complete prompt itself: no acknowledgment, preamble, explanation, change
@@ -45,8 +45,8 @@ Choose which instructions materially affect the result:
   publish, and what event ends the authorized work.
 - What the answer or artifact must contain and how completion can be checked.
 
-These are composition decisions, not required headings. Use only the structure
-the prompt needs. State the intended result first. For standard document types,
+Treat these as composition decisions and use only the structure the prompt
+needs. State the intended result first. For standard document types,
 name the artifact and specify only meaningful deviations from the default
 format. Use the recipient's existing knowledge; do not teach the recipient how
 to perform familiar work.
@@ -65,10 +65,11 @@ recipient derive the inspection steps. Do not expand each concern into a
 checklist or prescribe every section of the eventual report unless the user
 needs that detail.
 
-Keep prompt brevity separate from answer verbosity. Treat 220 words as the
-normal upper bound for a task brief; simple requests can be much shorter.
-Exceed it only when required context, exact contracts, or user-requested detail
-would otherwise be lost. Do not pass this bound on to the recipient's answer.
+Keep prompt brevity separate from answer verbosity. Write only the context the
+recipient lacks; most task briefs fit in about 220 words, and simple requests
+can be much shorter. Go longer when required context, exact contracts, or
+user-requested detail would otherwise be lost. Do not pass this length on to
+the recipient's answer.
 Put output structure and any requested answer-length guidance together once.
 
 Improve clarity without adding product scope, dependencies, metrics, or
@@ -105,6 +106,5 @@ output:
 if the user wants a prompt requesting JSON, return that prompt, not JSON results.
 
 Use no outer code fence unless the user requests one. Internal examples or
-schemas may use fences. Prompt-only behavior applies to this prompt-writing task
-and its revisions; if the user explicitly requests a different kind of work,
-stop applying prompt-only behavior.
+schemas may use fences. If the user asks for something other than a prompt, do
+that instead.

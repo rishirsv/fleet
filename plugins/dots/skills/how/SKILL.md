@@ -1,6 +1,6 @@
 ---
 name: how
-description: "Explains how code, a subsystem, change, commit, branch, or pull request works, including runtime flow, ownership, placement, and layering. Use why for historical rationale, explain-simply for a quick plain-language answer, and architecture-review for a broad structural audit."
+description: "Explains how code, a subsystem, or a change works: runtime flow, ownership, and layering. Use when the user asks how something works or wants a walkthrough of a commit, branch, or PR; use why for historical rationale."
 ---
 
 # How
@@ -24,8 +24,7 @@ state your best interpretation and proceed so the user can redirect you.
 
 Read [tracing.md](references/tracing.md) before exploring. For a diff, commit,
 branch, pull request, or completed body of work, also read
-[changes.md](references/changes.md). A file list or diff summary is not an
-explanation.
+[changes.md](references/changes.md).
 
 Choose the exploration path:
 
@@ -53,8 +52,8 @@ different pieces of the question. A rate limiter might split into:
 - request path and enforcement; and
 - configuration, metrics, and operational controls.
 
-Read [explorer-prompt.md](references/explorer-prompt.md) before briefing
-explorers. Each explorer should stop only when it can describe its path from
+Build each explorer brief from
+[explorer-prompt.md](references/explorer-prompt.md). Each explorer should stop only when it can describe its path from
 input to output or from trigger to effect, with evidence for each step. It returns the
 components found, flow traced, files read, and anything surprising or easy to
 misunderstand.
@@ -64,8 +63,9 @@ misunderstand.
 Combine your findings into one explanation. Resolve conflicting findings
 before writing the answer. Combine reports in the current context unless
 they are large, conflict, or each require substantial analysis.
-Only then use a separate explainer with
-[explainer-prompt.md](references/explainer-prompt.md).
+Only then use a separate explainer built from
+[explainer-prompt.md](references/explainer-prompt.md), and supply `tracing.md`
+and the output contract below with it.
 
 Lead with the system's purpose and how its parts work together. Then walk through what
 happens, where state lives, how data moves, and which decisions change the
@@ -97,14 +97,14 @@ smallest useful view. Otherwise use a visual when several components interact
 or data changes shape across stages and the picture makes that relationship
 easier to understand. Skip it when prose already makes the flow clear.
 
-For change mode, follow `changes.md` to choose the explanation's order.
+When explaining a change, follow `changes.md` to choose the explanation's order.
 Use headings that fit the change.
 
 ## Delivery and completion
 
 Return chat unless the user asks for HTML or a durable, visual, or shareable
-artifact. For HTML, hand the finished content and structure to `html` with this
-skill's `artifact-template.json`. HTML adds visual explanations by default;
+artifact. For HTML, load the `html` skill and apply it to the finished content and
+structure with this skill's `artifact-template.json`. HTML adds visual explanations by default;
 provide the flows, state changes, dependencies, and evidence needed to draw
 them accurately. Preserve any fixed template requirements.
 

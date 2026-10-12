@@ -1,16 +1,16 @@
-# Explain the Number
+# Explain the number
 
 A measured number is a claim about a system. Before you trust it, report it, or act on it, find what limits it and rule out that it measured something else.
 
-**Why:** A run that went wrong still prints a plausible number. Requests that failed, a cache that skipped the work, code that never ran, a side left on default settings, and run-to-run noise all produce results that look fine. If you cannot say why the number is not twice as good, you do not know what you measured.
+A run that went wrong still prints a plausible number. Requests that failed, a cache that skipped the work, code that never ran, a side left on default settings, and run-to-run noise all produce results that look fine. If you cannot say why the number is not twice as good, you do not know what you measured.
 
-**Pattern:**
+For every number:
 
 - **Ask "why not double?"** Name the resource or code path that bounds the result, such as a core, a lock, the disk, the network, or the load generator itself. Get it from a profile or from system counters taken during a run, then map it to source. A guess from reading the code is not a limiter.
 - **List what else the number could be measuring, and rule out each one with evidence.** The usual suspects are errors, skipped or cached work, an untuned side, noise, and a piece too small to matter end to end.
 - **Keep the evidence with the number.** Put the run count, the spread, and the limiter in the notes or a linked artifact, so a reader can check the claim.
 
-## Benchmark checklist
+## Quick ballpark
 
 For a quick ballpark the user asked for, one run is enough. Still check questions 4 and 7, and say that it is one run. Skip the rest unless that run looks wrong. A choice between options is never a ballpark.
 

@@ -3,7 +3,14 @@
 Use this format for an implementation plan, RFC, or proposal whose reader needs
 to understand the change and give feedback before work starts. For a simple
 procedure, use the ordinary visual overview and steps; a review form adds little.
-Preserve the caller's scope, decisions, and authorization to implement.
+Preserve the caller's scope, decisions, and authorization to implement. Build
+the page with the ordinary [page-module loop](page-modules.md#page-module-loop).
+
+## Contents
+
+- [Lead with the experience](#lead-with-the-experience)
+- [Decisions and feedback](#decisions-and-feedback)
+- [Build and review](#build-and-review)
 
 ## Lead with the experience
 
@@ -15,15 +22,14 @@ choices need their answer without opening a code block.
 Make the opening visual concrete enough to explain the experience: show a
 message, the time choice, and where it goes, or the equivalent in the supplied
 domain. A short `walkthrough()` can put the reader inside the experience,
-with a recognizable screen for each phase. Use real visual hierarchy in the
-concept: distinguish the message, chosen time, available actions, and result.
-Use the accent for the active choice and typography or spatial arrangement to
-show the relationship. A collection of paragraphs inside a border is still
-mostly prose. `mockup()` with custom content leaves spacing to that content;
-keep it compact and avoid padding another large frame around it.
+with a recognizable screen for each phase. Distinguish the message, chosen
+time, available actions, and result; use the accent for the active choice and
+typography or spatial arrangement to show the relationship. Paragraphs inside a
+border still read as prose. `mockup()` with custom content leaves spacing to
+that content; keep it compact and avoid padding another large frame around it.
 A row of generic phase labels can summarize execution but cannot replace
-that view. The walkthrough caption sits in the left margin on wide article layouts and above
-the panel on narrow screens. Keep this overview before review controls by placing it before the
+that view. The walkthrough caption sits in the left margin on wide article
+layouts and above the panel on narrow screens. Place the overview before the
 `review()` wrapper in `page()` when that improves the first screen.
 
 Organize the main body by observable behavior or guarantees, rather than files
@@ -46,8 +52,7 @@ relationships supported by the supplied material. Label UI as a concept and
 new code or file paths as proposed. Existing code references need real paths
 and line numbers from inspection. Keep diagrams legible on narrow screens;
 use HTML walkthrough panels for detailed screens instead of shrinking a whole
-window into an SVG. Prefer expressive layouts with one visual focal point,
-clear typography, and purposeful emphasis within the existing design tokens.
+window into an SVG.
 
 Keep enough detail to implement the plan. Preserve assumptions, boundary
 conditions, dependencies, implementation order, ownership where known,
@@ -56,8 +61,8 @@ do not invent an owner, observed file, effort estimate, or product decision.
 Explain engineering risks first as user consequences, then show the mechanism.
 For example: “A message must not arrive twice” before provider deduplication.
 
-Present the ordered work with `implementationSteps()`, not a bulleted list in a
-disclosure. Give each step a short title and at most one sentence of detail;
+Present the ordered work with `implementationSteps()` instead of a bulleted
+list in a disclosure. Give each step a short title and at most one sentence of detail;
 move long mechanics into a separate disclosure. Choose one layout:
 
 - `layout: "proof"` when every step has an observable completion check. Each
@@ -125,22 +130,13 @@ walkthrough, technical disclosures, and response workflow.
 
 ## Build and review
 
-Use the normal page-module loop and design system. Helpers automatically inline
-the review and walkthrough runtime; no CDN or separate server is required for
-the finished file. `page({tools:true}, ...)` optionally adds ordinary document
+Helpers inline the review and walkthrough runtime, so the finished file needs
+no CDN or separate server. `page({tools:true}, ...)` optionally adds ordinary document
 tools described in [interactivity.md](interactivity.md).
 
 Inspect the overview, every exhibit, technical disclosures, a changed decision,
 a comment, an edited proposal, and the exported response. Confirm that untouched
 decisions remain unanswered, explicit answers survive reload for the same
-version, and a revised plan does not reuse them. Check desktop and narrow layouts,
-keyboard focus, dark mode, reduced motion, and JavaScript off. Without JavaScript,
-the whole plan stays readable and the reader can send feedback in chat by heading.
-
-For a quick comparison, give independent agents the same raw task and different
-skills in separate scratch folders. Use the same model and source material;
-compare the actual rendered output and response behavior. Judge nontechnical
-understanding, visual expression, decision clarity, engineering completeness,
-accessibility, and effort needed to send feedback. Record observed limitations
-and iterate on the skill where those outputs show a problem. This is a formative
-check, not proof that all readers or all tasks will prefer the result.
+version, and a revised plan does not reuse them. Also check keyboard focus,
+dark mode, reduced motion, and JavaScript off. Without JavaScript, the whole
+plan stays readable and the reader can send feedback in chat by heading.

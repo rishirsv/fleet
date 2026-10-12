@@ -71,17 +71,11 @@ Do not timestamp every bullet when a section-level timestamp is enough.
 
 ## Adjust after the first draft
 
-Read the draft against the user's task and the transcript:
-
-1. Expand any conclusion whose reasoning, caveat, or next step is missing.
-2. Compress repeated points and sections that do not change understanding or
-   action.
-3. Check that the opening gives the answer or thesis at the selected depth.
-4. Check that source-derived points and agent-designed application are visibly
-   distinct.
-5. Check that important statements remain traceable to useful timestamps.
-6. Stop when additional detail would only make later lookup easier and would not
-   help the reader decide, learn, or act.
+Read the draft against the user's task and the transcript. Keep source-derived
+points visibly distinct from agent-designed application, and keep important
+statements traceable to useful timestamps. Expand a conclusion whose reasoning,
+caveat, or next step is missing; cut detail that would not help the reader
+decide, learn, or act.
 
 The summary is complete when it answers the user's actual task, preserves the
 video's material reasoning at the chosen depth, and can be used without first

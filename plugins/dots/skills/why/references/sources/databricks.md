@@ -1,4 +1,4 @@
-# Databricks Analytics & System Tables
+# Databricks analytics and system tables
 
 ## What this source contains
 
@@ -32,7 +32,7 @@ DESCRIBE TABLE <your_analytics_db>.<schema>.stg_<event>;
 - `properties_<name>`. Typed, underscore-cased event properties (`properties_entrypoint`, `properties_size_bytes`, …)
 - `context_team_id`, `context_client_version`, `context_country`, `context_client_os`. Pre-extracted client context
 
-### Useful Investigation Queries
+### Useful investigation queries
 
 Choose the table and columns that match the target:
 

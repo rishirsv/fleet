@@ -1,7 +1,13 @@
 # Coding prompts
 
 Add the code-specific distinctions the task needs. General composition and
-authorization decisions live in the entry point and [guidance.md](guidance.md).
+authorization decisions stay as `SKILL.md` sets them.
+
+Contents: [Base the change on the actual codebase](#base-the-change-on-the-actual-codebase) ·
+[Preserve meaning when improving presentation](#preserve-meaning-when-improving-presentation) ·
+[Match architectural detail to the actual risk](#match-architectural-detail-to-the-actual-risk) ·
+[Ask for proof that covers the delivered change](#ask-for-proof-that-covers-the-delivered-change) ·
+[Keep review and repair distinct](#keep-review-and-repair-distinct)
 
 ## Base the change on the actual codebase
 

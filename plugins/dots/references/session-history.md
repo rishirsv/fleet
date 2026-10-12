@@ -1,5 +1,12 @@
 # Session history
 
+Contents:
+
+- [Establish source coverage](#establish-source-coverage)
+- [Codex](#codex)
+- [Claude Code](#claude-code)
+- [Shared helper](#shared-helper)
+
 Use this reference only when a skill needs evidence from earlier Codex or Claude
 Code sessions. Prefer supported read-only interfaces. Local stores are a fallback
 for history or detail those interfaces do not expose.

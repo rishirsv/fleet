@@ -1,10 +1,10 @@
-# Visual Proof
+# Visual proof
 
 Shared checklist for any skill that must verify rendered output: web pages,
 HTML artifacts, app screens, charts, or simulator UI. To verify output, inspect the real rendered surface. Reading its source
 does not show how it renders.
 
-## Tool Order
+## Tool order
 
 - **Web/HTML**: follow the active browser skill and the user's browser choice.
   Default to the in-app browser. Its documented controls, including its
@@ -16,7 +16,7 @@ does not show how it renders.
 - **Charts**: render and inspect the real output; automated checks rarely catch
   geometry, scales, labels, legends, or collision problems.
 
-## Recurring Failures To Check When Relevant
+## Recurring failures to check when relevant
 
 1. **Local preview access.** Prefer an existing HTTP preview. If none exists
    and the browser can reach this machine, serve only the artifact directory
@@ -35,9 +35,10 @@ does not show how it renders.
    Flag unintended horizontal overflow; wide content should scroll inside its
    own container.
 
-## Proof Standard
+## Proof standard
 
 - A claim that something renders correctly requires a screenshot or an
-  in-browser inspection from this run — never inferred from code.
+  in-browser inspection from this run; code alone cannot show the rendered
+  result.
 - Name what was verified (URL/screen, viewport, state) and what was not.
 - Before sharing evidence, confirm screenshots and logs contain no secrets.

@@ -1,6 +1,6 @@
 ---
 name: architect
-description: "Design a new or changed code boundary before implementation when important requirements require decisions about ownership, lifecycle, contracts, atomicity, or state. Use for 'architect this,' new APIs or module boundaries, and changes whose types, ownership, or state model must be settled first."
+description: "Designs a new or changed code boundary and its types before implementation. Use when asked to architect a change, a new API, or a module boundary whose ownership, lifecycle, contracts, or state must be settled first."
 ---
 
 # Architect
@@ -14,18 +14,10 @@ function signatures, classes, and module boundaries. Select one design, then
 implement against it. If implementation repeatedly exposes a flaw in the design,
 discard it and redesign.
 
-Work through five phases:
-
-1. Understand
-2. Sketch
-3. Agree
-4. Implement
-5. Scrap
-
 ## Phase A: Understand the problem
 
-Understand every system that the new code affects. Trace its relevant callers,
-state, invariants, and connections to other systems. Identify what each
+Trace the callers, state, invariants, and connections to other systems that the
+change touches. Identify what each
 component does; a list of files does not establish this understanding. Use
 `$how` when the existing runtime path is non-obvious or a source-traced
 explanation would materially reduce design risk. Use `$why` when historical
@@ -37,29 +29,26 @@ to connect to.
 
 ## Phase B: Sketch
 
-Before sketching a new boundary, establish:
+Name the current requirement that needs a decision about ownership, lifecycle,
+contracts, atomicity, or state. If a local correction meets it, make or
+recommend that correction instead. A valid design can use only existing modules.
 
-- the current requirement that requires a decision about ownership, lifecycle,
-  contracts, atomicity, or state;
-- why the existing module most suited to the work cannot take responsibility;
-- the rule that only the new boundary would enforce and its current callers; and
-- the costs of maintaining the boundary and a scenario that would prove it
-  works.
-
-If this points to a local correction, make or recommend that correction instead.
-A valid design can use only existing modules.
-
-Read [the runner prompt](references/runner-prompt.md) and
-[rationale template](references/rationale-template.md).
+Read [the runner prompt](references/runner-prompt.md) for the design discipline
+and [the rationale template](references/rationale-template.md) for the package
+shape. The runner prompt links both files and
+[Design red flags](../../references/design-red-flags.md), so a runner subagent
+can load them itself.
 
 Start with Candidate A: the best complete design using existing owners and no
 new durable boundary. Write the caller's usage first, then derive its type
 sketch, function signatures, module map, and rationale.
 
 Produce Candidate B only when Candidate A cannot satisfy an important current
-requirement. State the requirement Candidate B satisfies, the boundary and rule
+requirement. State the requirement Candidate B satisfies, why the existing
+module best suited to the work cannot take responsibility, the boundary and rule
 that only it will enforce, its callers, what existing code or ownership it
-removes, and its lifecycle, migration, concurrency, and verification costs.
+removes, its lifecycle, migration, concurrency, and maintenance costs, and a
+scenario that would prove it works.
 
 When an independent candidate would materially improve the decision, give a
 fresh read-only `architect` agent the task, findings from Phase A, and [runner
@@ -68,7 +57,13 @@ satisfy the process. The runner loads its candidate references only; keep this
 coordinator workflow in the parent. Use `consultant` instead when only a focused
 decision or implementation plan needs a second opinion.
 
-Screen every candidate against [`references/design-red-flags.md`](references/design-red-flags.md) before synthesis. Assume the next contributor is an agent that sees only the files it opened, copies the nearest example, and takes the shortest path that compiles. Prefer the design where a change that looks right from one file is right for the whole repo.
+Screen every candidate against
+[Design red flags](../../references/design-red-flags.md) and
+[Engineering principles](../../references/engineering-principles.md) before
+synthesis.
+Prefer the design where a change that looks right from one file is right for
+the whole repository, because the next contributor may be an agent that sees
+only the files it opened and copies the nearest example.
 
 Compare viable candidates by how much complexity each interface handles for its
 callers. Prefer an interface that handles necessary complexity. Do not add a
@@ -84,11 +79,8 @@ For a design-only request, return the design package and stop before
 editing product source.
 
 When [Feature Development](../../references/feature-development.md) invokes
-Architect during its design step, return the
-selected design after this phase. Feature Development resumes with
-implementation and owns proof, review, and completion. A direct Architect
-request may continue through the remaining phases when implementation is
-authorized.
+Architect, return the selected design after this phase; Feature Development
+owns implementation, proof, review, and completion.
 
 Pause for approval when the user asks for a checkpoint or when an unresolved
 product, scope, compatibility, or costly implementation choice would materially
@@ -109,10 +101,6 @@ If implementation requires a change to the sketch, identify the cause. For
 example, if a function needs an unplanned parameter, determine whether the
 design is wrong, a requirement is missing, or the implementation exceeds the
 requirements. Report the cause before adding the parameter.
-
-Use the repository's own verification skills and commands while filling in the
-design. Architect does not replace repository-specific proof or final
-`$change-review`.
 
 ## Phase E: Scrap when the architecture is wrong
 
@@ -139,8 +127,7 @@ When scrapping a design:
    explanation would materially reduce uncertainty before redesigning.
 2. Redesign as if the new constraints had been assumptions from the start.
 3. Remove obsolete structure before adding to the replacement.
-4. Return to Phase B. Start with the best design using existing owners and add
-   another candidate only when it cannot satisfy the revised requirement.
+4. Return to Phase B with the revised requirement.
 
 ## Output
 

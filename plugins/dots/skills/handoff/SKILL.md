@@ -28,6 +28,12 @@ asks to continue earlier work, the work spans sessions, or the current state is
 unclear, and provide the relevant facts rather than reproducing the transcript.
 If a source is unavailable, note it under risks and continue.
 
+When the next agent may run on another machine or in a fresh checkout, list the
+state that exists only here: unpushed branches or commits, stashes, untracked
+or scratch files, local servers or processes, and local configuration the work
+depends on. The handoff is complete when the next agent would not need to ask
+a question this session already answered.
+
 Keep the facts that affect the next decisions. Keep settled decisions that
 constrain future work, current state, checks whose results still apply, current
 artifacts, unresolved questions, and the point where work should resume. Omit
@@ -44,10 +50,7 @@ thread and workspace actions happen only when explicitly requested and the
 platform provides the tool.
 
 For a fresh continuation, make the brief self-contained enough to execute
-without opening the source transcript. Point to authoritative files instead of
-copying them, state what changed since each artifact was written, and identify
-which existing verification remains reusable so the next agent does not repeat
-valid work.
+without opening the source transcript.
 
 ## Codex
 
@@ -66,9 +69,9 @@ For an explicit new-thread handoff, use `create_thread` (environment
 `fork_thread` for a child of this thread's history, then report the created
 or pending thread id with the required Codex thread directive.
 
-## Claude
+## Claude Code
 
-For Claude-style handoffs, keep the brief self-contained and file/path based.
+In Claude Code, keep the brief self-contained and based on files and paths.
 Reference repo instructions such as `CLAUDE.md` or `AGENTS.md` when they exist,
 but do not rely on Codex thread ids, rollout files, or Codex-only continuation
 tools.
@@ -78,7 +81,8 @@ tools.
 Summarize completed work, current state, decisions, and constraints; reference
 artifacts by path or URL and name what changed since they were written, instead
 of duplicating them; list next actions in execution order; name validation run
-and still needed; call out blockers, assumptions, and risks. Use the structure
+and still needed; call out blockers, assumptions, and risks. Identify which existing verification
+remains reusable so the next agent does not repeat valid work. Use the structure
 below as a guide, omitting empty or irrelevant sections. Keep unknowns that
 could affect the work. Distinguish checks that passed from checks still needed:
 
@@ -88,10 +92,10 @@ could affect the work. Distinguish checks that passed from checks still needed:
 ## Purpose
 <what the next agent should accomplish>
 
-## Current State
-<what is done, partially done, or unchanged>
+## Current state
+<what is done, partially done, or unchanged; machine-local state when it matters>
 
-## Key Decisions
+## Key decisions
 <decisions already made and why>
 
 ## Scope
@@ -101,7 +105,7 @@ could affect the work. Distinguish checks that passed from checks still needed:
 ## Artifacts
 - `<path or URL>` - <why it matters>
 
-## Next Actions
+## Next actions
 1. <concrete next step>
 
 ## Validation
@@ -109,11 +113,11 @@ could affect the work. Distinguish checks that passed from checks still needed:
 - Reusable evidence: <proof that still applies and under what checkout/configuration>
 - Still needed: <checks/manual review still needed>
 
-## Risks And Unknowns
+## Risks and unknowns
 - <risk or assumption>
 ```
 
 For a platform continuation, prepend one line: "Continue this task from the
 handoff below. Start by reading the referenced files and repo instructions,
-then proceed with the next actions." Never include secrets, tokens, or
-private keys in any handoff.
+then proceed with the next actions." Leave secrets, tokens, and private keys
+out of every handoff.

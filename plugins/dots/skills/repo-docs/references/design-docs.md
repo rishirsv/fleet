@@ -1,257 +1,141 @@
 # Design docs
 
-Identify costly mistakes before implementation. Explain decisions that are hard
-to reverse, risky to misunderstand, or necessary for people or systems to
-coordinate their work.
+A design doc identifies costly mistakes before implementation. It explains
+decisions that are hard to reverse, risky to misunderstand, or necessary for
+people or systems to coordinate.
 
-## When to use a design doc
+Contents:
 
-Prefer a design doc when one or more of these are true:
+- [Find the costly decisions](#find-the-costly-decisions)
+- [Core shape](#core-shape)
+- [Sections by project kind](#sections-by-project-kind)
+- [How to build it](#how-to-build-it)
+- [Level of detail](#level-of-detail)
+- [Open issues and alternatives](#open-issues-and-alternatives)
+- [Review checklist](#review-checklist)
 
-- Several people, teams, agents, services, or workstreams must coordinate.
-- The work will take sustained engineering effort rather than a small patch.
-- The result will run in production, become a lasting platform interface, or be
-  hard to remove later.
-- Goals, requirements, ownership, user behavior, or system boundaries are still
-  ambiguous.
-- The work crosses a trust boundary, data boundary, service boundary, repo
-  boundary, deployment boundary, or user-facing workflow.
-- A wrong decision could create security, privacy, legal, data-loss,
-  reliability, migration, compatibility, cost, or long-term maintenance risk.
+## Find the costly decisions
 
-Use a different document type when the job is narrower:
-
-- Use a PRD or feature spec for product intent: users, jobs, requirements,
-  acceptance criteria, and success measures.
-- Use an ADR for one durable decision and its alternatives.
-- Use a runbook for an operational procedure that will be repeated.
-- Use a how-to for a task the reader should complete.
-- Use a concept doc when the reader needs to understand a model but no design is
-  being proposed.
-
-## Identify costly decisions
-
-Before choosing sections, identify the expensive decisions:
+Before choosing sections, ask:
 
 - What would be painful to change after code ships?
 - What assumption could force rework if it is wrong?
 - What will other people or systems depend on?
-- What failure would be costly, embarrassing, unsafe, or hard to diagnose?
+- What failure would be costly, unsafe, or hard to diagnose?
 - What are reviewers most likely to challenge?
-- What choices look easy now but lock in a data model, protocol, vendor,
-  deployment topology, permission model, or user promise?
+- What looks easy now but locks in a data model, protocol, vendor, deployment
+  topology, permission model, or user promise?
 
-Document those areas deeply. Describe choices that are easy to change briefly,
-or leave them to implementation. For example, a database, public API, auth
-model, data retention rule, or migration strategy often belongs in the design
-doc. Button copy, minor layout choices, small helper functions, and easily
-swapped libraries usually do not unless they create meaningful risk.
+Document those areas deeply and leave easily changed choices brief or to
+implementation. A database, public API, auth model, retention rule, or
+migration strategy often belongs in the doc; button copy, small helpers, and
+easily swapped libraries usually do not unless they create real risk.
 
 ## Core shape
 
-Start with the smallest useful structure, then add sections based on the risks
-of the work.
+Start small and add sections for the risks of the work. Omit any section that
+does not change the reader's ability to review the design.
 
-Recommended default shape:
-
-- **Title**: short, distinctive, and stable enough for people to reference.
-- **Metadata**: only fields supported by the repository convention, such as
-  author, status, created date, owning team or repo, canonical URL or path, and
-  reviewers. Do not introduce generic status or date fields when local
-  documentation omits or forbids them.
-- **Objective**: one plain-language sentence explaining what the project will
-  make true.
-- **Background**: why this work exists, what problem it solves, relevant prior
-  attempts, and what context a reviewer needs before reacting to the design.
-- **Goals**: user, team, operational, or business outcomes after the change is
-  delivered.
-- **Non-goals**: explicit exclusions that prevent scope creep and wrong review
-  expectations.
-- **Scenarios**: concrete user, system, migration, failure, or operational flows
-  that reveal the required behavior.
-- **Proposed design**: the architecture, interfaces, data model, dependencies,
+- **Title**: short, distinctive, and stable enough to reference.
+- **Metadata**: only fields the repository convention supports, such as
+  author, status, owner, path, and reviewers.
+- **Objective**: one plain sentence saying what the project will make true.
+- **Background**: the problem, relevant prior attempts, and the context a
+  reviewer needs before reacting.
+- **Goals and non-goals**: outcomes after delivery, and specific exclusions
+  that stop scope creep and wrong review expectations.
+- **Scenarios**: concrete user, system, migration, failure, or operational
+  flows that reveal required behavior.
+- **Proposed design**: architecture, interfaces, data model, dependencies,
   ownership, and important mechanisms.
-- **How to build it**: the implementation path when build order, integration,
-  rollout, test strategy, or migration safety affects the design.
+- **How to build it**: when build order, integration, rollout, test strategy,
+  or migration safety affects the design.
 - **Risks and constraints**: security, privacy, reliability, legal, cost,
-  compatibility, performance, staffing, timeline, or platform constraints.
-- **Open issues**: unresolved decisions with options and immediate next steps.
-- **Resolved issues**: decisions made during review, preserving the original
-  question and the chosen resolution.
-- **Alternatives considered**: strong alternatives reviewers would naturally ask
-  about, with concise reasons they were rejected.
+  compatibility, performance, staffing, timeline, or platform limits.
+- **Open and resolved issues**, and **alternatives considered**.
 
-Do not force every section into every design doc. If a section does not change
-the reader's ability to review the design, omit it.
+## Sections by project kind
 
-## Section selection
-
-Choose sections for the kind of project.
-
-For user-facing apps and workflows, consider:
-
-- User roles and permissions.
-- Primary scenarios and edge cases.
-- UI states, navigation, notifications, accessibility assumptions, and supported
-  platforms.
-- User data lifecycle, account lifecycle, and support or admin flows.
-
-For services, backends, and integrations, consider:
-
-- Service boundaries, APIs, events, jobs, queues, CLI semantics, or file
-  formats.
-- Data flow, persistence, schema, migrations, idempotency, and retry behavior.
-- SLOs for availability, latency, throughput, scale, freshness, and error rates.
-- Monitoring, alerting, logging, dashboards, and operational ownership.
-- Deployment topology, environments, feature flags, rollout, rollback, and
-  compatibility with existing clients.
-
-For data-sensitive systems, consider:
-
-- Sensitive data handled, retention period, deletion semantics, access controls,
-  encryption, and backup behavior.
-- Trust boundaries, attack surface, abuse cases, auditability, and what must not
-  appear in logs.
-- Legal, contractual, regulatory, or licensing constraints.
-
-For migrations, imports, and compatibility work, consider:
-
-- Source and target formats, mapping rules, validation, partial-failure
-  handling, backfill order, cutover, rollback, and reconciliation.
-- Versioning, old-client behavior, deprecation, and data repair strategy.
-
-For libraries, tools, and repo-internal platforms, consider:
-
-- Public API or CLI contract, extension points, config surface, defaults,
-  compatibility promise, packaging, install/update path, and test harness.
+- **User-facing apps and workflows**: roles and permissions, primary scenarios
+  and edge cases, UI states, navigation, notifications, accessibility,
+  platforms, user data and account lifecycle, and support or admin flows.
+- **Services, backends, and integrations**: service boundaries, APIs, events,
+  jobs, queues, CLI semantics, or file formats; data flow, persistence,
+  schema, migrations, idempotency, and retries; SLOs; monitoring, alerting,
+  and operational ownership; deployment topology, flags, rollout, rollback,
+  and client compatibility.
+- **Data-sensitive systems**: sensitive data, retention, deletion, access
+  control, encryption, backups, trust boundaries, abuse cases, auditability,
+  what must stay out of logs, and legal, contractual, or licensing limits.
+- **Migrations and compatibility work**: source and target formats, mapping,
+  partial-failure handling, backfill order, cutover, rollback, reconciliation,
+  versioning, old-client behavior, deprecation, and data repair.
+- **Libraries, tools, and internal platforms**: public API or CLI contract,
+  extension points, configuration and defaults, compatibility promise,
+  packaging, install and update path, and test harness.
 
 ## How to build it
 
-Include a "How to build it", "Implementation plan", or "Build plan" section
-when implementation order is part of the design. This is common when the work
-needs staged rollout, migration safety, early feedback, cross-team coordination,
-or proof that the design can be built without a large risky launch.
+Include a build plan when implementation order is part of the design: staged
+rollout, migration safety, early feedback, cross-team coordination, or proof
+that the design can ship without a large risky launch. Keep the build strategy
+reviewers need to validate the design here; delivery order and task tracking
+belong in the roadmap, issue tracker, or pull request, following the
+repository's ownership model.
 
-Follow the repository's ownership model for sequencing. Keep design-dependent
-build strategy here; put delivery order in the roadmap, issue tracker, or pull
-request that manages execution.
+Useful parts are build order, integration points, interfaces to create or
+change, data and migration steps, rollout and rollback, validation, and
+sequencing across owners when coordination matters.
 
-Do not turn this section into a full task tracker. It should explain the build
-strategy reviewers need to validate the design.
-
-Useful subsections:
-
-- **Build order**: milestones that create useful intermediate states, rather
-  than only internal setup. Verify the riskiest assumptions early.
-- **Integration points**: where the new code connects to existing modules,
-  services, data stores, jobs, CLIs, APIs, files, or deployment systems.
-- **Interfaces to create or change**: public contracts, schemas, commands,
-  events, config fields, permissions, or environment variables.
-- **Data and migration steps**: schema changes, backfills, import/export,
-  compatibility windows, validation, repair, and rollback.
-- **Rollout and rollback**: flags, staged exposure, canaries, migration gates,
-  disable paths, and what happens if the rollout fails.
-- **Validation**: tests, fixtures, load checks, security review, privacy review,
-  migration dry runs, observability checks, and acceptance criteria.
-- **Ownership and sequencing**: who needs to do what first when coordination
-  matters.
-
-Good build-plan milestones describe a user-visible, operator-visible, or
-reviewer-visible capability:
+Milestones should describe a capability a user, operator, or reviewer can see,
+and should test the riskiest assumptions early:
 
 - "Serve a read-only mirror from hardcoded fixture data."
 - "Load real data in a test environment with writes disabled."
 - "Enable writes for internal users behind a feature flag."
-- "Run the migration dry-run and compare row counts and checksums."
 - "Roll out to 5% of traffic with rollback verified."
 
-Weak milestones only describe isolated implementation chores:
+Chores such as "create database tables" or "add tests" belong in the tracker;
+the doc explains why the sequence reduces risk.
 
-- "Create database tables."
-- "Write models."
-- "Implement frontend."
-- "Add tests."
+## Level of detail
 
-Those tasks can be part of an issue tracker, but a design doc should explain why
-the sequence reduces risk.
+Give reviewers enough to assess the design without reading the future code:
+interfaces, schemas, commands, and examples that others depend on; diagrams
+where they reduce ambiguity about flows, ownership, boundaries, or lifecycle;
+scenarios covering failures and permission boundaries; SLOs when performance
+or reliability shapes the architecture; and rationale for security, privacy,
+logging, retention, and legal decisions.
 
-## Design detail guidance
+Leave out implementation notes that will be stale by code review, cosmetic
+choices that encode no requirement, and rejected ideas no reviewer would ask
+about. Replace vague goals such as "fast" or "secure" with concrete criteria,
+and label an unknown target as an open issue instead of inventing precision.
 
-Use enough detail for reviewers to assess the design without reading the future
-code.
+## Open issues and alternatives
 
-Include:
+Each open issue states the question, why it matters, plausible options, the
+current recommendation, and the next step and owner when known. When it is
+resolved, move it to resolved issues with the decision, rationale, and
+follow-up implications, keeping the original question.
 
-- Interfaces, protocols, schemas, data shapes, commands, config fields, and
-  examples when other systems or users depend on them.
-- Diagrams when they reduce ambiguity around flows, ownership, boundaries, or
-  lifecycle. Avoid decorative diagrams.
-- Scenarios that cover happy path, important edge cases, failure paths, and
-  permission boundaries.
-- Constraints that materially limit possible designs.
-- SLOs or operational targets when performance, reliability, scale, or freshness
-  affects architecture.
-- Explicit rationale for security, privacy, logging, retention, and legal
-  decisions when the system handles sensitive data or externally constrained
-  behavior.
-
-Avoid:
-
-- Exhaustive implementation notes that will become stale before code review.
-- Cosmetic UI choices unless they encode a requirement or risk.
-- Long lists of rejected ideas that no reviewer would reasonably ask about.
-- Vague goals such as "easy", "fast", "robust", or "secure" without concrete
-  criteria.
-- Invented precision. If a target or requirement is unknown, label it as an open
-  issue.
-
-## Open and resolved issues
-
-Use open issues when the design has a real unresolved decision, rather than to
-collect unrelated thoughts.
-
-Each open issue should include:
-
-- The question or problem.
-- Why it matters.
-- Plausible options.
-- Current recommendation when one exists.
-- Immediate next step and owner when known.
-
-When the issue is resolved, move or copy it into resolved issues. Preserve the
-original question and add the decision, rationale, and follow-up implications.
-
-## Alternatives considered
-
-Include alternatives that reviewers are likely to ask about or that consumed
-meaningful investigation time.
-
-Keep each alternative concise:
-
-- What the alternative was.
-- What made it attractive.
-- Why the proposed design does not choose it.
-
-Do not document every rejected thought. The alternatives section should prevent
-repeat debate, not prove that the author explored every possibility.
+List alternatives reviewers are likely to ask about or that consumed real
+investigation: what it was, what made it attractive, and why the design does
+not choose it. The section exists to prevent repeat debate.
 
 ## Review checklist
 
-Before finalizing or reviewing a design doc, check:
-
-- The first page gives enough context for a reviewer who has not heard an
-  earlier verbal explanation.
-- Goals describe outcomes, while the proposed design describes implementation.
+- A reviewer who missed earlier conversations has enough context on the first
+  page.
+- Goals describe outcomes; the proposed design describes implementation.
 - Non-goals are specific enough to stop scope creep.
-- The doc spends the most detail on expensive or risky decisions.
+- The most detail goes to expensive or risky decisions.
 - Scenarios reveal behavior, permissions, failures, and edge cases.
-- "How to build it" explains risk-reducing build order when implementation
-  sequence matters.
+- The build plan explains a risk-reducing order when sequence matters.
 - Interfaces and data shapes are concrete enough for dependent systems.
-- Security, privacy, logging, retention, and legal sections exist when the
+- Security, privacy, logging, retention, and legal coverage exists when the
   system handles sensitive data or regulated behavior.
-- SLOs, monitoring, alerting, rollout, and rollback are covered when the system
-  has production reliability impact.
+- SLOs, monitoring, rollout, and rollback are covered when production
+  reliability is affected.
 - Open issues have next steps; resolved issues preserve decisions.
-- Alternatives answer the obvious "why not this?" questions without becoming an
-  exhaustive diary.
+- Alternatives answer the obvious "why not this?" questions.

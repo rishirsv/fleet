@@ -1,9 +1,9 @@
 ---
 name: ask-model
-description: "Run a named CLI model for repository advice, review, or implementation. Use when the user explicitly asks to involve that model."
+description: "Runs a named model through its Claude or Codex CLI for repository advice, review, or implementation. Use when the user explicitly asks to involve that model."
 ---
 
-# Ask Model
+# Ask model
 
 Run the named advisor through its command-line provider. This CLI workflow is
 separate from the `consultant` subagent. Read and follow
@@ -12,7 +12,7 @@ commands, and session handling.
 
 ## Set ownership and access
 
-Select and state one mode before launching:
+Select one mode before launching:
 
 - **Implementation:** the user asks the named model to implement, build, fix, or
   change something. The advisor owns the repository edits, required checks,
@@ -27,10 +27,9 @@ to consultation or take implementation back because local editing is
 convenient. Ask only when the request does not establish an owner and the answer
 would change the workflow.
 
-Before launching, state the task, initial assessment, mode, model, effort, and
-access. Honor the user's choices. Implementation normally needs workspace write;
-review and consultation default to read-only. State the actual permission
-boundary when bypass flags grant broader access.
+Honor the user's choices of model, effort, and access. Implementation normally
+needs workspace write; review and consultation default to read-only. State the
+actual permission boundary when bypass flags grant broader access.
 
 ## Write the prompt
 

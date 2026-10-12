@@ -1,4 +1,4 @@
-# Incident & Postmortem Context
+# Incident and postmortem context
 
 Use this guidance with each assigned source. It is not a separate evidence category. Incidents can motivate defensive code, such as "we added this check after the X outage." If the target has null checks, retries, timeouts, rate limits, or feature flags, search for incident history within the selected sources:
 

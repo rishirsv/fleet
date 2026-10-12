@@ -1,5 +1,13 @@
 # Guidance for composing prompts
 
+Contents: [A bounded deliverable needs little process](#a-bounded-deliverable-needs-little-process) ·
+[Unknown causes need investigation](#unknown-causes-need-investigation-not-a-predetermined-solution) ·
+[Exploration should serve a decision](#exploration-should-serve-a-decision) ·
+[Execution needs an endpoint and an honest boundary](#execution-needs-an-endpoint-and-an-honest-boundary) ·
+[Assign evidence gathering to the prompt recipient](#assign-evidence-gathering-to-the-prompt-recipient) ·
+[Revision preserves the requested substance](#revision-preserves-the-requested-substance) ·
+[Exact output contracts must name the actual artifact](#exact-output-contracts-must-name-the-actual-artifact)
+
 ## A bounded deliverable needs little process
 
 Name the result and preserve the constraints that distinguish it. Do not add

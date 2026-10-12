@@ -1,34 +1,33 @@
-# Synthesizer Prompt Template
+# Synthesizer prompt template
 
 Build the synthesizer's prompt from this template; fill in the placeholders.
+Supply `epistemics.md` and the output contract from `SKILL.md` with it.
 
 ---
 
 Answer a "why" question about code. Combine findings from investigators who searched source control, tickets, documents, team chat, observability, error tracking, product analytics, and code comments. Cite the evidence for each claim. State its confidence and identify what remains unknown.
 
-## The Question
+## The question
 
 > {QUESTION}
 
-## The Target Code And Its History
+## The target code and its history
 
 **Target files:** {FILES_WITH_LINE_RANGES}
 
 **Key symbols:** {SYMBOLS}
 
-## Investigator Findings
+## Investigator findings
 
 {ALL_INVESTIGATOR_FINDINGS}
 
-## Sources That Weren't Searched
+## Sources that weren't searched
 
 {SKIPPED_SOURCES_WITH_REASONS}
 
-## Epistemics Framework
-
-Follow the framework in `references/epistemics.md`. Read it in full before writing the output.
-
 ## Instructions
+
+Read the supplied `epistemics.md` in full before writing. It defines the confidence tiers, phrasing, and the calibration check to run before returning.
 
 1. **Read all investigator findings.** They gathered raw evidence, not conclusions. You weigh it.
 2. **Reconcile overlapping findings.** Multiple investigators may have cited the same PR, ticket, or doc. Combine these findings and cite the original record once.
@@ -37,91 +36,6 @@ Follow the framework in `references/epistemics.md`. Read it in full before writi
 5. **Verify citations by spot-checking.** You can read the codebase and query available source tools to verify citations; do not write files, commit, or modify external state. If you're uncertain a cited item exists or says what's claimed, check it. Correct citation errors before using them.
 6. **Don't overreach.** The user will act on your output. If the evidence does not answer a question, report that gap.
 
-## Output Format
+## Output
 
-Write the output for the user. Use this structure, omitting sections whose
-conditions below do not apply:
-
----
-
-### The Question
-
-Restate the user's question in one or two sentences so the reader knows what the answer covers.
-
-### The Code in Question
-
-File paths, line ranges, key symbols. Two or three lines to orient a reader without prior context.
-
-### What We Found
-
-**Claims with direct evidence**, one per bullet. Quote or paraphrase the source and cite precisely. Format each finding like:
-
-- **[Direct]** {Claim}. Source: PR #123 with its URL / ticket ID / file:line. {Brief quote or paraphrase.}
-- **[Supported]** {Claim}. Evidence: {list of items and what each contributes}.
-
-Use `[Direct]` for single-source, explicit evidence. Use `[Supported]` when multiple indirect items converge on a conclusion.
-
-### What We Can Reasonably Infer
-
-**Claims that aren't explicitly stated anywhere but are well-supported by indirect evidence.** Make the inference chain visible: "Given A and B, it's likely that C." Use hedged language ("appears to", "likely", "suggests", "is consistent with"). Format:
-
-- **[Inferred]** {Hedged claim}. Reasoning: {the specific evidence and the inference step}.
-
-If there's nothing to infer, skip this section.
-
-### Competing Hypotheses
-
-**If the evidence fits several explanations, present them.** Choose one only when the record supports it. For each hypothesis:
-
-- **Hypothesis:** {one-sentence statement}
-- **Evidence for:** {specific items}
-- **Evidence against or missing:** {what would need to be true but isn't, or what counter-signals exist}
-
-Skip this section if there's a single clear answer.
-
-### What We Don't Know
-
-Include this section only when a material question remains unanswered. Name
-specific gaps: questions the evidence did not answer, searches that returned
-nothing, unavailable sources, or people who would likely know but cannot be
-asked. "We searched the issue tracker for [query1], [query2], [query3] and found
-no issue discussing the rate-limit threshold" is useful; "We don't know why"
-is not. Do not invent a gap to satisfy the format.
-
-### Sources Consulted
-
-Bulleted list of what was actually searched, so the user can judge coverage and redirect. Format:
-
-- **Source control history**: {file paths}, {number of commits reviewed}, PRs #{numbers}, and code comments searched. Or "Not searched." State why the source was unavailable or would not change this focused investigation.
-- **Issue / ticket tracker**: {ticket IDs and keyword searches}. Or "Not searched. No matching MCP available in this environment."
-- **Long-form documents**: {page titles and search queries}. Or "Not searched. No matching MCP available in this environment."
-- **Real-time team chat**: {channels searched, date ranges, queries}. Or "Not searched. No matching MCP available in this environment."
-- **Infrastructure observability**: {dashboards, monitors, metrics, logs, traces, or incidents searched}. Or "Not searched. No matching MCP available in this environment."
-- **Error / exception tracking**: {issues, events, or releases searched}. Or "Not searched. No matching MCP available in this environment."
-- **Product analytics warehouse**: {fully-qualified tables queried, the time windows, and the numeric summaries (counts, percentiles, first/last-seen timestamps) that bore on the question}. Or "Not searched. No matching MCP available in this environment."
-
-### Confidence Summary
-
-One or two sentences summarizing your overall confidence. E.g.:
-
-> "The core rationale (A) is well-supported by direct PR and ticket evidence. The specific threshold value (100) is inferred from the surrounding context but not explicitly documented. The question of whether this was driven by a customer request could not be answered. No relevant issue tracker or long-form doc content surfaced, and real-time team chat search was unavailable."
-
----
-
-## Quality Check Before Returning
-
-Before finalizing, review your output against this checklist:
-
-1. Does every claim in "What We Found" have a citation? If not, add one or move the claim to "Inferred" or "Hypotheses."
-2. Is the phrasing tier-appropriate? (Direct claims can use "because"; Inferred claims cannot.)
-3. Did you surface any contradictions you noticed, or did you quietly pick one?
-4. Does the "What We Don't Know" section name each material gap? Omit it when
-   the scoped question has no material unanswered gap; do not invent one to
-   satisfy the format.
-5. If the user embedded a hypothesis in their question, did you check it against the evidence rather than assuming it is correct?
-6. Did you cite any code as evidence for its own intent? Remove those. Code shows behavior. It does not prove motivation.
-7. Is the overall tone calibrated? Do not state weakly supported claims with confidence.
-
-If any item fails, revise before returning.
-
-You may lightly edit for clarity or add context from the conversation, but **do not rewrite the confidence language**.
+Write the answer for the user in the supplied output contract's structure, omitting sections whose conditions do not apply. Run the calibration check from `epistemics.md` before returning.

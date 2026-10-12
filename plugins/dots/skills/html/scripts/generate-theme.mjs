@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 /**
- * generate-theme.mjs — compile DESIGN.md front-matter into assets/theme.css.
+ * generate-theme.mjs — compile assets/design-tokens.yaml into assets/theme.css.
  *
  * Usage:   node scripts/generate-theme.mjs [--check]
- * Inputs:  references/DESIGN.md (YAML front-matter; restricted subset —
- *          nested maps, scalars, and flat arrays only; no anchors or
- *          multi-line strings).
+ * Inputs:  assets/design-tokens.yaml (restricted YAML subset — nested maps,
+ *          scalars, and flat arrays only; no anchors or multi-line strings).
  * Output:  assets/theme.css (tokens + alpha ladder + base styles + motion).
  *          --check exits 1 if the committed theme.css is stale.
  *
- * DESIGN.md is the source; never edit theme.css by hand. The x-dark,
+ * design-tokens.yaml is the source; never edit theme.css by hand. The x-dark,
  * x-alpha-steps, x-motion, x-chart, and x-tones keys are generator-owned
- * extensions beyond the design.md alpha spec.
+ * extensions beyond the design.md alpha spec. references/DESIGN.md holds the
+ * prose rules for using these tokens.
+ *
+ * The CSS header keeps its "GENERATED from DESIGN.md" marker: catalog.mjs and
+ * the copies embedded in sample pages match that exact text.
  */
 
 import { readFileSync, writeFileSync } from "node:fs";
@@ -19,7 +22,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const designPath = join(root, "references", "DESIGN.md");
+const tokensPath = join(root, "assets", "design-tokens.yaml");
 const outPath = join(root, "assets", "theme.css");
 
 // ---------- minimal YAML subset parser (indentation maps + inline arrays) ----------
@@ -59,11 +62,6 @@ function stripQuotes(v) {
   return v.replace(/^["']|["']$/g, "");
 }
 
-function frontMatter(md) {
-  const m = md.match(/^---\n([\s\S]*?)\n---/);
-  if (!m) throw new Error("DESIGN.md has no front-matter block");
-  return parseYaml(m[1]);
-}
 
 // ---------- alpha ladder ----------
 
@@ -88,7 +86,7 @@ function colorVars(colors) {
 
 // ---------- emit ----------
 
-const design = frontMatter(readFileSync(designPath, "utf8"));
+const design = parseYaml(readFileSync(tokensPath, "utf8"));
 const { colors, typography, spacing, rounded } = design;
 const dark = design["x-dark"];
 const steps = design["x-alpha-steps"];
@@ -330,7 +328,7 @@ if (args.includes("--check")) {
     console.error("theme.css is stale — run: node scripts/generate-theme.mjs");
     process.exit(1);
   }
-  console.log("theme.css is up to date with DESIGN.md");
+  console.log("theme.css is up to date with design-tokens.yaml");
 } else {
   writeFileSync(outPath, css);
   console.log(`Wrote ${outPath} (${css.length} bytes)`);

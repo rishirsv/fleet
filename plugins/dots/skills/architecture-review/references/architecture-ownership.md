@@ -1,11 +1,9 @@
-# Architecture Ownership
-
-Read this when a refactor candidate involves where code should live, which layer owns a rule, or how to remove duplicate policy paths.
+# Architecture ownership
 
 Identify the module that should remain responsible for the rule. The layer where
 a bug appears may have a different responsibility.
 
-## Required Discovery
+## Required discovery
 
 Before deciding ownership:
 
@@ -19,7 +17,7 @@ When docs are incomplete:
 - state the assumption explicitly
 - keep the recommendation aligned to one canonical owner
 
-## Required Output
+## Required output
 
 When answering an ownership or placement question, name the single correct
 long-term owner. Explicitly separate:
@@ -32,7 +30,7 @@ long-term owner. Explicitly separate:
 Do not recommend a temporary first owner. If the current owner is wrong, the
 recommendation is the canonical owner and the cleanup path to get there.
 
-## Decision Order
+## Decision order
 
 1. Identify the runtime concern:
    - visible UI state
@@ -44,9 +42,11 @@ recommendation is the canonical owner and the cleanup path to get there.
 2. Name the layer where the wrong behavior currently happens.
 3. Decide the single canonical owner for the behavior.
 4. If the behavior is reusable product or business policy, move ownership out of the runtime orchestration layer.
-5. Remove duplicate policy, fallback logic, or dual paths once the canonical owner is clear.
+5. Once the canonical owner is clear, remove duplicate policy, fallback logic,
+   and competing paths. Keep compatibility only where persisted data or an
+   external contract requires it.
 
-## Layer Map
+## Layer map
 
 - `UI layer`
   - owns visible UI state, navigation, rendering, presentation-oriented derived
@@ -72,15 +72,22 @@ recommendation is the canonical owner and the cleanup path to get there.
 
 Translate these generic layers into the repo's actual module, package, crate, or service names before making a recommendation.
 
-## Hard-Cut Rules
+## Placement rules
 
-- Do not leave reusable domain policy in the runtime orchestration layer just because the wrong behavior currently happens there.
-- Do not put UI state, layout state, restore state, or user-facing presentation ownership in the runtime orchestration layer.
-- Do not put platform shell or native integration concerns in the domain or application layer.
-- Do not put cross-provider or cross-vendor product policy in adapter or integration layers.
-- Do not put pure validation, normalization, or capability logic in orchestration code when it can live in shared core or a narrow domain module.
+Each rule keeps a concern where every interface that needs it can reach one copy.
 
-## Common Judgments
+- Move reusable domain policy out of the runtime orchestration layer, even when
+  the wrong behavior currently happens there; other runtimes need the same policy.
+- Keep UI state, layout state, restore state, and user-facing presentation in the
+  UI layer, which owns what the user sees.
+- Keep platform shell and native integration concerns in the platform shell, so
+  the domain or application layer stays portable.
+- Put cross-provider or cross-vendor product policy in the domain or application
+  layer; an adapter sees only its own provider.
+- Put pure validation, normalization, and capability logic in shared core or a
+  narrow domain module, where every runtime can reuse it.
+
+## Common judgments
 
 - If the question is "who should decide this for all future interfaces?" the answer is usually the domain or application layer, a narrow domain package, or shared core, not the runtime orchestration layer.
 - If the question is "where should this behavior live after the fix?" answer with the canonical owner, not the easiest patch point.

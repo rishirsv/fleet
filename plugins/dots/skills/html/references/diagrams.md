@@ -1,8 +1,7 @@
 # Diagram vocabulary
 
-Read this when planning a substantive HTML page. Identify relationships,
-direction, hierarchy, and state that a figure can explain. Choose useful
-visual explanations by default, before drafting the detailed prose. For page modules, use the `flow`, `state`, `sequence`, or computed
+Use this to choose a diagram form and the helper or gallery figure that draws
+it. For page modules, use the `flow`, `state`, `sequence`, or computed
 `timeline` helper when it fits; `node scripts/catalog.mjs --help <helper>`
 shows the input shape. Use [the diagram gallery](../assets/diagrams.html) to
 compare visual forms. Hand-author a figure when the helpers cannot express the
@@ -34,12 +33,6 @@ relationship or the composition needs precise placement.
 Use a comparison table for a binary contrast when exact criteria matter.
 For a plan, use a flow for phases or decisions, a sequence or swimlane for
 owners and handoffs, or a timeline for supplied dates and dependencies.
-For an explainer, show the mechanism or state change. Add a separate view
-when it explains another part of the answer.
-
-A figure must reveal a relationship. If one box or arrow only repeats a
-sentence, use prose for that point. Do not omit useful diagrams merely
-because prose could also describe the relationship.
 
 ## Make the relationship clear
 
@@ -83,6 +76,6 @@ and its shared `.diagram-*` rules, then replace the example labels, values,
 connectors, and summary with the supplied material. Adjust geometry to fit the
 actual labels and relationships.
 
-Before delivery, inspect the diagram at its actual display width. A valid diagram has no
-overlapping labels, ambiguous crossings, clipped content, unreadable scaled
-text, or strong emphasis on more than two elements.
+Inspect each diagram at its actual display width. Fix overlapping labels,
+ambiguous crossings, clipped content, unreadable scaled text, and strong
+emphasis on more than two elements.

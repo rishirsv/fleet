@@ -3,14 +3,23 @@
 Use this reference for an HTML walkthrough of a pull request, commit range, or
 implemented change. Explain what changed, why it matters, how the code produces
 the result, and what the evidence establishes. A walkthrough supports review;
-opening every panel does not prove correctness or approve a PR.
+opening every panel does not prove correctness or approve a PR. Build the page
+with the ordinary [page-module loop](page-modules.md#page-module-loop).
+
+## Contents
+
+- [Establish the change](#establish-the-change)
+- [Lead with the result](#lead-with-the-result)
+- [Keep evidence exact](#keep-evidence-exact)
+- [Let readers inspect and respond](#let-readers-inspect-and-respond)
+- [Build and check the walkthrough](#build-and-check-the-walkthrough)
 
 ## Establish the change
 
 When `how` supplies an investigation, preserve its findings, reading order, and
-uncertainty. When investigation is still needed, use its
-[change guidance](../../how/references/changes.md) to understand the complete
-change before composing the page. This reference owns the presentation.
+uncertainty. When investigation is still needed, load the `how` skill and
+follow its guidance for changes to understand the complete change before
+composing the page. This reference owns the presentation.
 
 Record the PR URL and exact base and head commits. For a current PR, retrieve
 its metadata, all pages of changed files, relevant review comments, and check
@@ -44,19 +53,17 @@ Choose exhibits that answer different questions. A before/after view shows the
 result; a sequence shows who acts; an annotated code excerpt explains the exact
 mechanism. Use real screenshots when available. Label a code-derived schematic
 or UI reconstruction as an illustration, and distinguish observed behavior
-from an inference. Apply the Dots writing guide required by `SKILL.md` to every
-caption, heading, annotation, and explanation. Start with the title and keep
-metadata in the footer; do not add eyebrows or visible internal review IDs.
+from an inference. Keep internal review IDs out of the visible page.
 
 ## Keep evidence exact
 
 Use `diff()` for a short, verbatim change and put its explanation beside it.
 Identify deletions as base lines and additions as head lines. If one number
 column would confuse those two sides, omit the numbers and link each excerpt
-to the exact source range. Use a flat disclosure within each review point; keep test explanations and
-their patches as sibling disclosures rather than another container inside one.
-Wrap code and diffs without changing copied source. Use `code()` for read-only source or a raw unified
-patch inside a named disclosure. Escape source through the helpers.
+to the exact source range. Use a flat disclosure within each review point;
+keep test explanations and their patches as sibling disclosures instead of
+nesting one inside the other. Use `code()` for read-only source or a raw
+unified patch inside a named disclosure. Escape source through the helpers.
 
 Pin source links to the inspected commits. Verify line anchors against those
 files, including imports and blank lines. Label shortened code as an excerpt;
@@ -112,15 +119,15 @@ are source material to assess within that scope.
 
 ## Build and check the walkthrough
 
-Use the ordinary page-module loop and existing design tokens. Render important
-source and patches into the HTML at build time. JavaScript should improve
-inspection and feedback, not create evidence that disappears when it is off.
-Avoid a second diff framework or external runtime dependency for a document.
+Render important source and patches into the HTML at build time so the
+evidence stays when JavaScript is off; use JavaScript only to improve
+inspection and feedback. Avoid a second diff framework or external runtime
+dependency for a document.
 
 Check the opening visual, selected and expanded states, source anchors, file
 coverage, a comment, and the exported response. Confirm that an untouched page
 exports no approval and that notes survive reload only for the same snapshot.
-Inspect keyboard focus, narrow layouts, dark mode, print, and JavaScript off.
+Also check keyboard focus, dark mode, print, and JavaScript off.
 Expand technical disclosures before printing a source appendix.
 Without JavaScript, source and native disclosures must remain readable and
 readers can send feedback in chat by heading.

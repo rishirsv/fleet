@@ -1,12 +1,18 @@
 # Create an HTML-template skill
 
 Read this with `skill-standards` when creating or revising a named
-HTML-template skill. This file covers the HTML-specific package and handoff;
+HTML-template skill. This file covers the HTML-specific package and how the template loads HTML;
 `skill-standards` covers the rest of the skill and its validation.
 
 Create a template skill when a recurring artifact needs its own content rules,
-reference page, and preview. A generic HTML form factor does not need another
-skill.
+reference page, and preview. A generic page form does not need another skill.
+
+## Contents
+
+- [Package](#package)
+- [Write the skill](#write-the-skill)
+- [Build the reference and preview](#build-the-reference-and-preview)
+- [Check the package](#check-the-package)
 
 ## Package
 
@@ -58,17 +64,18 @@ Keep `SKILL.md` focused on the requirements specific to this artifact:
 - whether structure is fixed or must adapt to the source; and
 - when to call `$html`, including whether chat or another output is allowed.
 
-Leave page or fragment choice, theme, components, assembly, artifact
-accessibility, browser delivery, and visual checks to HTML. Do not repeat that
+Leave the choice of page, page set, or embed block, the theme, components,
+assembly, artifact accessibility, browser delivery, and visual checks to HTML. Do not repeat that
 guidance in every template skill.
 
 Use this workflow shape:
 
 1. Prepare the content from the user's request and inspected sources. Do not
    invent facts to fill a visual or structural slot.
-2. Pass `artifact-template.json` and the finished content and structure to
-   `$html`; HTML opens and inspects the reference and preview from the template
-   skill. If `$html` is unavailable, say so and stop rather than recreating it.
+2. Load `$html` and apply it to the finished content, structure, and
+   `artifact-template.json`; HTML opens and inspects the reference and preview
+   from the template skill. If `$html` is unavailable, say so and stop instead
+   of recreating it.
 3. Return only the requested finished artifact.
 
 Follow the user's requested content and explicit deviations. Otherwise, use the
@@ -78,7 +85,7 @@ for visual treatment.
 For an adaptive template, the reference demonstrates layout, density,
 components, and repeated visual patterns. Compose the artifact from the
 supplied content. Copy headings or section order only when that content
-requires them. HTML adds useful visual explanations by default.
+requires them.
 For a fixed template, explicitly name the required regions and which visual
 changes are permitted in the template skill.
 
@@ -105,10 +112,9 @@ Before delivery:
   checks the manifest, in-package assets, preview signature, and gallery links;
 - inspect the reference source manually for self-containment and external
   requests, then confirm the preview represents it;
-- confirm the skill invokes `$html` without duplicating its format workflow;
-- confirm which structure is required and which can adapt to the content; and
-- review every changed source file directly.
+- confirm the skill loads `$html` without duplicating its format workflow; and
+- confirm which structure is required and which can adapt to the content.
 
 When behavior evidence is requested or material uncertainty remains, use the
 loaded creator's independent forward-testing guidance. Cover required content,
-manifest handling, adaptive or fixed behavior, missing assets, and HTML handoff.
+manifest handling, adaptive or fixed behavior, missing assets, and loading HTML.

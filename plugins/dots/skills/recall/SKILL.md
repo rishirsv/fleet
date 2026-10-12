@@ -1,48 +1,52 @@
 ---
 name: recall
-description: "Use only when the user selects `$recall` to reconstruct recent working context, catch up, or find where work stopped. Reads the smallest relevant Codex or Claude task history, optional computer history, shared records, and live state; not for workflow audits or durable self-improvement."
+description: "Reconstructs recent working context from the smallest relevant Codex or Claude task history and live state. Use only when the user selects `$recall` to find where work stopped across sessions; use catch-up for this chat."
 ---
 
 # Recall
 
 Rebuild the user's recent working context and give them a brief account of where
-things stand and what to do next. Use Recall for “catch me up,” “what have I
-been working on?”, or “where did I leave off?”
+things stand and what to do next. Use Recall for “what have I been working
+on?” or “where did I leave off?” across sessions; use `$catch-up` for this chat.
 
-Start with agent task history. Use computer history or shared project records
-only when the question or a concrete gap makes them useful. Keep raw transcripts
-out of the answer.
+Start with agent task history through [Session
+history](../../references/session-history.md). Use shared project records only
+when the question or a concrete gap makes them useful. Keep raw transcripts out
+of the answer.
 
 ## Workflow
 
-1. **Classify the request.** Read one named task directly. Use `self-improve`
-   when the goal is a durable workflow change. Use a supplied summary of current
-   state instead of searching the same history again.
-2. **Set the scope.** Identify the topic, workspace, host, and time window.
+Read one named task directly. Use `$self-improve` when the goal is a durable
+workflow change. Use a supplied summary of current state instead of searching
+the same history again. Otherwise:
+
+1. **Set the scope.** Identify the topic, workspace, host, and time window.
    Treat “recent” as seven days unless context supports another range. Never
    narrow “all” or cross projects silently.
-3. **Read the smallest useful task history.** Read [Session
-   history](../../references/session-history.md), list candidates, and inspect
+2. **Read the smallest useful task history.** Follow Session history: list
+   candidates across the Codex and Claude stores in scope, and inspect
    only matching tasks and relevant regions. Order them by updated time, not
    task ID. Skip the current task and obvious tasks created only for subagent
    work, evaluations, or tests.
-4. **Recover the useful facts.** Capture the goal, decisions, open work,
+3. **Recover the useful facts.** Capture the goal, decisions, open work,
    corrections or failed approaches, and artifacts such as PRs, tickets,
    branches, plans, and reports. Keep the task ID with each finding.
-5. **Fill a real gap.** Use `computer-history` when outside-agent activity could
-   resolve the timeline or locate an artifact. Use `../why/SKILL.md` when a
-   specific unanswered question needs repository or product history.
-6. **Verify what is true now.** Check the branches, diffs, PRs, tickets, and
+4. **Verify what is true now.** Check the branches, diffs, PRs, tickets, and
    artifacts you found against their current state. A transcript says what
    happened, not what remains true.
 
+When a concrete gap remains, widen within Session history first: the other
+agent's store, or an authorized chat-history interface or export, labeled with
+its coverage. Use `$why` when a specific unanswered question needs repository
+or product history.
+
 ## Output contract
 
-Start with a brief summary of current state, called the capsule. Then give
+Start with a brief summary of current state. Then give
 thread status, recurring problems, and the next action. Put necessary detail
 after these items; omit detail that does not help the user continue.
 
-- **Capsule.** A short bulleted summary of what this work is and where it stands
+- **Summary.** A short bulleted summary of what this work is and where it stands
   overall.
 - **Threads.** One line each with a supported status: `[merged #N]`, `[open PR #N]`, `[in flight <branch>]`, `[verified, uncommitted]`, `[reverted #N]`, or
   `[planned, not started]`. Use `[blocked]`, `[complete, no PR]`, or `[status unverified]` when those are more accurate; absence of access is not evidence
@@ -53,10 +57,8 @@ after these items; omit detail that does not help the user continue.
 - **Next move.** The single most useful next action, concrete.
 
 An adjacent feature or ticket stays out unless it blocks this one. If the
-capsule and thread lines do not fit on one screen, remove detail before removing
-threads. Write the brief in plain spoken English, cite Codex findings by task
-id, computer-history findings by application and timestamp, and shared-record
+summary and thread lines do not fit on one screen, remove detail before removing
+threads. Write the brief in plain spoken English, cite task findings by agent
+and task id, and shared-record
 findings by their source (PR #, ticket ID, chat permalink, error-tracker issue).
 Sanitize private context before any public output.
-
-**Reply:** the brief, to the contract above.

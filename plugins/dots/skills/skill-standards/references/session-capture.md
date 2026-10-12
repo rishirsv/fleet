@@ -16,9 +16,9 @@ its stated result. A confident final message alone is not proof.
 ## Read only the relevant evidence
 
 Use the supplied transcript or supported read-only session tools to locate the
-named task. Do not scan unrelated history. Keep thread identifiers, timestamps,
-local paths, raw prompts, and private details in the working evidence record.
-Do not include them in the shipped skill.
+named task, and read only that task's history. Keep thread identifiers,
+timestamps, local paths, raw prompts, and private details in the working
+evidence record, outside the shipped skill.
 
 Extract:
 
@@ -46,7 +46,6 @@ Turn the evidence into instructions that future runs can follow:
 
 Ask only the questions needed to settle ownership, output, or a boundary that
 changes the requested action. Infer everything else from the evidence and mark
-uncertainty in the authoring note.
-
-Return to [standards.md](standards.md) to settle
-selection criteria, where instructions belong, and completion requirements before editing.
+uncertainty in the authoring note. Then settle selection criteria, where
+instructions belong, and completion requirements with the standards before
+editing.

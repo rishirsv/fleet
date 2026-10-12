@@ -21,11 +21,11 @@ finds no usable English captions, download audio and run local ASR in English.
 `--force-asr` skips both caption routes and metadata inspection. No GCP project,
 API key, translation setup, or browser is needed.
 
-Use a current yt-dlp build. Current YouTube support also requires external
+Keep yt-dlp up to date. YouTube support in yt-dlp also requires external
 JavaScript challenge solving. The official executable distributions include
 the EJS component; Python installations need `yt-dlp[default]` plus a supported
 runtime. Deno is the yt-dlp project's recommended runtime and is enabled by
-default. See the current [yt-dlp EJS setup guide](https://github.com/yt-dlp/yt-dlp/wiki/EJS)
+default. See the [yt-dlp EJS setup guide](https://github.com/yt-dlp/yt-dlp/wiki/EJS)
 instead of copying version floors into the skill.
 
 If yt-dlp reports login, region, bot/IP, PO-token, or unavailable-video errors,

@@ -4,7 +4,7 @@
  *
  * Authoring-time only: run it while building an artifact, paste the output,
  * never ship the script. Colors come exclusively from --chart-* tokens
- * (see references/DESIGN.md x-chart); markup matches the registry structure so
+ * (see assets/design-tokens.yaml x-chart); markup matches the registry structure so
  * output is indistinguishable from hand-authored catalog work and
  * machine-editable.
  *

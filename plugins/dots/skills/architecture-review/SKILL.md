@@ -1,16 +1,15 @@
 ---
 name: architecture-review
-description: "Audit a codebase or subsystem for structural refactors, misplaced ownership, duplicated policy, weak boundaries, and code to consolidate or delete. Use for broad architecture and cleanup reviews, not explanation-only requests or reviews limited to defects introduced by a selected change."
+description: "Audits a codebase or subsystem for structural refactors, misplaced ownership, duplicated policy, and code to consolidate or delete. Use for broad architecture or cleanup reviews; use change-review for defects in one change."
 ---
 
-# Architecture Review
+# Architecture review
 
 Review a codebase or subsystem to find changes that would improve its structure.
-Report proposed changes first; do not start a broad refactor until the user
-chooses a candidate or explicitly asks for implementation.
 
-By default, use one module responsible for each rule and one current code path,
-except where persisted data or an external contract requires compatibility.
+By default, use one module responsible for each rule and one current code path.
+[Hard-cut policy](../../references/hard-cut-policy.md) owns the compatibility
+exception.
 
 ## References
 
@@ -18,7 +17,7 @@ except where persisted data or an external contract requires compatibility.
 - Read [architecture-language.md](references/architecture-language.md) when terminology would clarify a structural finding or a candidate proposes deleting an abstraction. Preserve the repository's established vocabulary.
 - Read [architecture-ownership.md](references/architecture-ownership.md) when a finding involves code placement, runtime ownership, duplicate policy, or canonical long-term ownership.
 - Read [duplicate-ownership.md](../../references/duplicate-ownership.md) when a finding involves a second source of truth, copied policy, normalization, or competing rule owners.
-- Read [test-consolidation.md](references/test-consolidation.md) when a refactor changes test placement, duplicates tests, or creates a new test surface.
+- Read [test-consolidation.md](../../references/test-consolidation.md) when a refactor changes test placement, duplicates tests, or creates a new test surface.
 - Read [hard-cut-policy.md](../../references/hard-cut-policy.md) when a candidate replaces a schema, contract, persisted shape, or current path. It defines the exception rule and cleanup checklist.
 - Read [interface-design.md](references/interface-design.md) only after the user selects a candidate and wants alternative interface designs.
 
@@ -28,11 +27,9 @@ Start by clarifying the review target from the user request, current branch,
 touched subsystem, or named files. If the user asks for a broad scan, map the
 top-level repository structure before inspecting a subsystem in detail.
 
-Read applicable `AGENTS.md` and other review guidance before recommending changes: architecture docs, ADRs/design docs, ownership docs, module READMEs, and relevant tests.
-
-Keep only repo guidance that changes the recommendation; higher-priority instructions still win.
-
-If docs are incomplete, infer the current layer model from the code and state the assumption.
+Read the architecture docs, ADRs or design docs, ownership docs, module READMEs,
+and relevant tests that bear on the target. If they are incomplete, infer the
+current layer model from the code and state the assumption.
 
 Find structural problems across the requested codebase or subsystem, including
 existing problems outside recent changes. Stay within that target; a structural
@@ -52,8 +49,8 @@ to understand or change:
 - runtime orchestration owns product policy that belongs in a domain,
   application, or shared core layer
 - tests assert the same invariant in several places or test past the interface
-- compatibility, fallback, migration, or dual-shape code persists without a real
-  external boundary
+- compatibility, fallback, migration, or dual-shape code that
+  [Hard-cut policy](../../references/hard-cut-policy.md) would delete
 
 For broad scans, add evidence from recent change patterns when it is cheap to
 inspect: frequent changes to the same modules, repeated edits to the same
@@ -65,7 +62,7 @@ independently and the benefit exceeds coordination cost. Give each a bounded
 question and the guidance needed to answer it; repository size alone does not
 justify delegation. The parent integrates the findings and owns the recommendation.
 
-## Candidate Bar
+## Candidate bar
 
 For each proposed refactor, explain which changes would become easier to make,
 test, or trace through the code. Prefer changes that remove unnecessary
@@ -100,7 +97,7 @@ within that scope. Choose one candidate only when the user asked for one; a
 request to fix all supported findings is not limited to the highest-ranked item.
 Ask only when a remaining product or scope decision changes the work.
 
-## Candidate Loop
+## Candidate loop
 
 For each candidate selected by the user or covered by the implementation request:
 
@@ -117,10 +114,5 @@ For each candidate selected by the user or covered by the implementation request
 4. Compare designs by depth, locality, seam placement, adapter need, and test
    surface.
 5. Recommend one path. Be opinionated.
-6. Only then implement, and only inside the approved candidate scope.
-
-## Boundaries
-
-- For a review-only request, report findings before changing code.
-- Design replacement interfaces only for selected candidates or an authorized
-  implementation scope.
+6. When the request authorized implementation, implement the recommended path
+   within that scope. Otherwise, stop with the recommendation.

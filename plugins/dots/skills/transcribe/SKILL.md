@@ -1,6 +1,6 @@
 ---
 name: transcribe
-description: "Transcribes local media and YouTube videos into Markdown, text, JSON, SRT, or VTT, then creates YouTube summaries suited to the user's task when requested. Uses captions first and free local speech recognition otherwise. Use for recorded-media transcripts, subtitles, or YouTube summaries; not live capture or paid/cloud transcription."
+description: "Transcribes local media and YouTube videos into Markdown, text, JSON, SRT, or VTT, and summarizes YouTube videos on request. Use for transcripts, subtitles, or YouTube summaries of recorded media; not live capture or paid transcription."
 ---
 
 # Transcribe

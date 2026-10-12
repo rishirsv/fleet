@@ -1,223 +1,116 @@
 ---
 name: shape-idea
-description: "Use only when the user selects `$shape-idea` to be interviewed, challenged, or helped settle a fuzzy plan, decision, or idea before planning or implementation; not for minimal requirements clarification."
+description: "Interviews the user through every branch of an idea's decision tree, surfacing known and unknown unknowns, and can split the result into tickets or specifications. Use only when the user selects `$shape-idea`."
 ---
 
 # Shape Idea
 
-Help the user settle an unclear plan, decision, or idea. Resolve important
-choices before producing a plan or implementation that depends on them.
+Help the user settle an open plan, decision, or idea by working its decision
+tree until no consequential choice is left unasked or silently assumed.
 
 ## Start with what is known
 
-Before asking a question, extract the desired result, constraints, preferences,
-examples, accepted references, and decisions the user has already supplied.
-Treat them as settled. Ask only about missing information that could change the
-direction, architecture, ownership, scope, or another important decision.
+Extract the desired result, constraints, preferences, examples, accepted
+references, and decisions the user has already supplied, and treat them as
+settled. An accepted reference or stated direction governs intent; when the
+current product, code, or documentation conflicts with it, explain the
+difference and ask which should govern.
 
-When a word remains ambiguous, state your interpretation and let the user
-correct it. When a proposed rule is vague, test it with a concrete case: “What
-should happen when…?”
+Look for earlier attempts at the same idea, such as half-built, reverted, or
+abandoned work in the repository or its history, and learn why they stopped.
+Those reasons often name the hardest decisions.
 
-Treat an accepted reference, source, fork, or stated direction as the source of
-truth for intent. If the current product, code, or documentation conflicts with
-it, explain the difference and ask which should govern.
+## Find the unknowns
 
-## Work the decision tree
+Map the idea as a **decision tree**: each decision connects to the later
+decisions that depend on it. Fill it from two directions:
 
-Map this as a **design tree**: each decision connects to the later decisions
-that depend on it. Call the questions ready to ask now the **frontier**. A
-question is on the frontier only when the settled context is enough to answer it
-and its answer does not depend on another open decision or pending finding.
+- **Known unknowns:** open choices the user has named or the request implies.
+- **Unknown unknowns:** consequential questions the user has not raised, such
+  as failure and edge cases, who else is affected, data and state that must
+  survive, operation and rollout, cost, and what the idea should refuse to
+  become.
 
-Work the tree in rounds. Ask two or three frontier questions by default. Use
-four when they are short, independent, and easy to answer together. Ask one
-when it unlocks what follows or deserves focused deliberation. A question that
-depends on another question in the current round belongs in a later round.
+Challenge assumptions that do not serve the user's goal, and prefer a simple,
+coherent idea over accumulated complexity. When a word is ambiguous, state your
+interpretation and let the user correct it. Test a vague rule with a concrete
+case: "What should happen when…?"
 
-Number each question and give a recommended answer. Use the text format below
-when prose is enough; adapt the presentation when the choice needs an exhibit.
-Keep the common case compact. Use one meaningful emoji in the question heading
-and one in the recommendation label when they improve scanning; otherwise leave
-them out. Let the subject choose the emojis rather than using a fixed vocabulary.
+## Ask the frontier in rounds
 
-```md
-<question emoji> **Q1 · <plain-language decision>**
+The **frontier** is every decision whose prerequisites are settled: the
+questions answerable now without guessing at answers not yet given. Ask the
+frontier together in one round. When it holds more than about five questions,
+ask the most consequential first and keep the rest for the next round, because
+long rounds get skimmed. Ask a question alone when it unlocks much of the tree
+or needs focused deliberation. A question that depends on another question in
+the same round belongs to a later round.
 
-<Why this matters and what changes based on the answer.>
-
-- **A · <plain-language option>** — <What it means in practice, its strongest
-  benefit, and its main cost.>
-- **B · <plain-language option>** — <What it means in practice, its strongest
-  benefit, and its main cost.>
-
-<recommendation emoji> **Recommendation: <option>** — <Why it best fits the
-direction so far and which tradeoff makes it preferable.>
-```
-
-Put the question first. Then give only the context the user needs to answer it:
-why the decision matters, what would change, and the real tradeoff.
-
-Teach only what the user needs to make the decision. When a concept may be
-unfamiliar, explain it through its practical consequences rather than turning
-the response into a lesson or glossary. Do not explain concepts the user has
-already used confidently or that the conversation has made clear.
-
-When a choice requires knowledge the user may not have, add this below the
-recommendation:
+Number each question, put the decision first, and recommend an answer worded
+so that "yes" accepts it:
 
 ```md
-**What these mean**
+**Q1 · <plain-language decision>**
 
-- **<unfamiliar concept or choice>** — <What it means in plain language, what
-  choosing it commits the user to, and how to tell whether it fits.>
+<Why it matters and what changes with the answer.>
+
+- **A · <option>**: <what it means in practice, its strongest benefit, and its
+  main cost.>
+- **B · <option>**: <same.>
+
+**Recommendation: A.** <Why it fits the direction so far and which tradeoff
+makes it preferable.> Reply "yes" to accept.
 ```
 
-Cover only the choices where this genuinely helps; omit the block for a choice
-the user already understands. Keep each explanation to one or two sentences and
-do not repeat the option's stated benefit and cost. If several concepts need
-real teaching, ask that question alone instead of adding it to a batch.
+Ask a simple preference or open judgment directly, without a choice list. Frame
+questions in the user's terms: what they would see or do for product work;
+behavior, ownership, and boundaries for code, leaving implementation details to
+a later plan; and the decision supported, audience, definitions, and evidence
+for analytical work.
 
-If the user is unfamiliar with the subject, explain the terms, success criteria,
-and common problems needed to answer the current question. If you identify a
-possible gap in their understanding, ask about it before treating it as fact.
+Teach only what the decision needs. When an option involves a concept the user
+may not know, add a short **What these mean** list below the recommendation
+that says, in a sentence or two each, what the option commits them to and how
+to tell whether it fits. Skip concepts the user already uses confidently. When
+several concepts need real teaching, ask that question alone.
 
-When the user is choosing among distinct options:
+When the user cannot judge a choice from prose, show an exhibit. Read
+[Exhibits](references/exhibits.md) to choose and prepare one, and follow
+[Visual proof](../../references/visual-proof.md) to confirm it renders before
+asking for a judgment.
 
-- describe each option in language they can answer without translating
-  technical concepts;
-- explain the strongest benefit and main cost of each;
-- recommend the option that best fits the direction settled so far; and
-- leave the choice genuinely open.
+## Keep facts and decisions apart
 
-Do not force options onto a simple preference or open-ended judgment. Ask it
-directly and omit the choice list.
+Facts are your job; decisions are the user's. Look up anything the repository,
+tools, or external sources can answer instead of asking. Inspect directly for a
+focused lookup, and dispatch a subagent when independent research, fresh
+alternatives, or a small prototype would improve coverage or time. A pending
+lookup blocks only the questions downstream of it, so keep asking the rest of
+the frontier while it runs. Bring back what a finding means for the choice
+along with its source and uncertainty.
 
-Match the question to the work:
+When answers form a clear pattern, offer once to answer the remaining questions
+that match it on the user's behalf. If they accept, show each answer you chose
+and mark it as yours in the snapshot so the user can reverse it.
 
-- **Product or design:** describe what the user would see, do, or feel.
-- **Code or architecture:** focus on intended behavior, ownership, boundaries,
-  and tradeoffs, not implementation details a later plan should decide.
-- **Knowledge or analytical work:** focus on the decision the result supports,
-  its audience, definitions, evidence, assumptions, and required output.
+## Update the tree after each reply
 
-Before asking, check whether the user can reasonably answer from what is shown.
-Choose the smallest representation that lets the user judge the consequential
-difference:
+Record newly settled decisions, recompute the frontier, and briefly name the
+consequential choices still open. Keep a skipped question open and ask it again
+when it returns to the frontier. Reopen a settled choice only when new evidence
+changes or contradicts it. A request to plan or build accepts the settled
+direction; it does not answer a skipped question that could change the work, so
+show what remains and keep shaping.
 
-- **Appearance:** show labeled alternatives in context. For a border-gray
-  choice, show the same component on the same background with only the border
-  changed; color names or hex values alone are insufficient.
-- **Structure:** show a small architecture, data-flow, or state diagram when
-  relationships are hard to follow in prose.
-- **Behavior:** provide a tiny interactive example when clicking, timing, or
-  transitions determine the answer. Use a static comparison when it suffices.
+## Finish when the frontier is empty
 
-Keep the question, exhibit, and recommendation together, with matching option
-labels so the user can answer “B, but subtler.” Confirm the exhibit renders in
-the available surface before asking for a judgment. If it cannot be shown,
-explain the limitation and defer the visual choice or ask about the intended
-effect; do not treat that answer as approval of an unseen design.
+The session ends when every consequential decision is answered, rejected, or
+explicitly deferred and no pending finding could change the direction. Return
+an Idea Snapshot using [the snapshot template](references/snapshot.md) so the
+next workflow can continue without reopening the interview.
 
-Keep preparation proportional to the question: reuse existing artifacts and
-rendering tools, build only for the current frontier, and vary only what the
-question tests. Use inline text, tables, or diagrams where sufficient; load
-visual tooling only when needed. Keep artifact source outside the conversation
-and retain the choice, reason, and artifact link instead of repeating previews
-or the full history. Leave incidental styling to later design work unless it
-changes the direction or the user explicitly wants to settle it now.
+When the user wants the work split up, also turn the settled tree into tickets
+or specifications using [Breakdown](references/breakdown.md).
 
-After each reply, record the newly settled decisions, preserve unanswered
-questions, and identify which questions can now be answered. If the user answers
-only part of a round, ask each skipped important question again when it returns
-to the frontier or keep it open in the Idea Snapshot. Reopen an earlier choice
-only when new evidence changes or contradicts it.
-
-As the interview grows, briefly name the consequential choices still open so
-the user can see what remains. Do not repeat the whole decision tree each round.
-
-## Use research and prototypes when they settle a choice
-
-Facts are your responsibility; decisions stay with the user. Inspect the
-repository or external sources directly for a focused lookup. Delegate only when
-independent work materially improves coverage or time to completion. A pending
-lookup blocks only the questions that depend on it; keep working the rest of the
-frontier.
-
-- **Factual research:** ask for facts that could change the decision, their
-  sources, and meaningful uncertainty. Bring back what they mean for the
-  choice, not a research report.
-- **Options:** use a fresh agent when the user needs credible alternatives or
-  the current options are too similar. Give it the settled goal, constraints,
-  accepted references, and prior rejections.
-- **Prototypes:** build a small number of meaningfully different versions when
-  seeing or trying the choice will settle it better than more discussion.
-
-Continue the interview while independent support runs when useful.
-
-## Voice
-
-Be a thinking partner with strong product judgment and taste. Make the important
-distinction visible, challenge assumptions that do not support the user's goal,
-and prefer a simple, coherent idea over accumulated complexity.
-
-Translate technical considerations into what they mean for the user: what they
-will experience, what becomes possible, and what tradeoff they are accepting.
-Use plain, concrete language. State a clear recommendation without pretending
-the decision is already made.
-
-## Finish with an Idea Snapshot
-
-Before finishing, identify which questions can now be answered and check pending
-research. If the user asks to plan, build, or proceed while an open decision
-could change the later work, show what remains and keep shaping. A request to
-proceed accepts the settled direction; it does not answer a question the user
-skipped.
-
-Finish when every important decision is answered, rejected, or explicitly
-deferred and no pending finding could change the direction. Return this
-self-contained contract so the next workflow can continue without reopening the
-interview:
-
-```md
-**Idea Snapshot**
-
-**Shared understanding**
-
-<In two to four sentences, state what you believe the user means. Preserve
-the user's language where it matters.>
-
-**Decisions**
-
-- **<plain-language decision>** — <the user's answer>. <Why it won and the
-  tradeoff the user accepted.>
-
-**Guardrails**
-
-- **Non-negotiables:** <exact constraints, or "None surfaced">
-- **Non-goals:** <what this should not become, or "None surfaced">
-- **Rejected branches:** <important paths not chosen and why, or "None">
-- **Assumption to test:** <the riskiest remaining assumption, or "None surfaced">
-
-**Open or deferred**
-
-- **<decision>** — <open or deferred>. Depends on <evidence or event>; blocks
-  <what cannot safely proceed>.
-
-Write `None` instead when the frontier is empty with nothing deferred.
-
-**What shaped it**
-
-<Include only direction-changing user input, research with citations, or
-prototype reactions with artifact links. Omit this section when none applied.>
-
-**Next mode**
-
-<stop, research, plan, design, document, or build> — <why the result is ready
-for that mode and what context must carry forward.>
-```
-
-If the user has not already accepted the direction, ask them to confirm the
-snapshot, correct one part, or reopen the frontier. When they have accepted it
-or already told you to proceed, do not add another confirmation pause; hand the
-snapshot to the requested next workflow.
+If the user has already authorized the next step, continue into it. Otherwise
+state the next mode in the snapshot and ask before acting on the result.

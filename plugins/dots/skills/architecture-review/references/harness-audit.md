@@ -1,4 +1,10 @@
-# Harness Audit
+# Harness audit
+
+Contents:
+
+- [Map and measure](#map-and-measure)
+- [Inspect the likely sources of waste](#inspect-the-likely-sources-of-waste)
+- [Rank and validate candidates](#rank-and-validate-candidates)
 
 Review the software around an AI model for avoidable cost, missing context, and
 duplicated policy. Aim to lower price-weighted token cost per completed task

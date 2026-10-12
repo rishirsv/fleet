@@ -4,9 +4,18 @@ Use this reference when choosing or editing a chart. For a page module, find
 the supported helper with `node scripts/catalog.mjs --list` and read its
 signature with `--help <helper>`.
 
+## Contents
+
+- [Generate supported charts, build others](#generate-supported-charts-build-others)
+- [Choose the chart from the reader's question](#choose-the-chart-from-the-readers-question)
+- [Explain the supplied data](#explain-the-supplied-data)
+- [Color by purpose, from tokens only](#color-by-purpose-from-tokens-only)
+- [Fixed sizes](#fixed-sizes)
+- [Accessibility](#accessibility)
+
 ## Generate supported charts, build others
 
-Use the report helpers, or `scripts/chart.mjs` for a hand-written body, to
+Use the page helpers, or `scripts/chart.mjs` for a hand-written body, to
 build bar, line, stacked, and sparkline charts. The script computes
 coordinates and emits a chart fragment with its input spec embedded as a
 `<!-- chart-spec {...} -->` comment. Chart text cannot contain `--`, which
@@ -21,11 +30,10 @@ echo '{"title":"Spend by team, $k",
 Forms: `bar` for ranked magnitudes; `line` for ordered `[label, value]` points;
 `stacked` for `[label, ...values]` rows with named `series`; and `sparkline`
 for an inline trend with visible `value` text. Bar spec keys include `emphasis`,
-`sort`, and `limit`. Bar and stacked values must be non-negative. Use the
-catalog's `--help` for the exact helper signatures.
+`sort`, and `limit`. Bar and stacked values must be non-negative.
 Line and stacked fragments print every value in adjacent text so readers can
 recover exact numbers without hovering over marks. A `source` supplied through
-the report helper is also stored in the embedded spec, so regenerating the
+the page helper is also stored in the embedded spec, so regenerating the
 chart preserves its source attribution.
 
 To edit a generated chart, change its `chart-spec` comment and run
@@ -35,7 +43,7 @@ place, preserving the rest of the file, including when `<file>` is a full page.
 
 Build chart types the script does not support when they make the data easier to
 understand. Follow the mark specs and accessibility rules below, use only
-the `x-chart` roles in [DESIGN.md](DESIGN.md), and preserve the closest registry
+the `x-chart` roles described in [DESIGN.md](DESIGN.md#components), and preserve the closest registry
 component's structure where it applies.
 
 For a hand-written body, add the matching registry component CSS. Colors flow
@@ -51,14 +59,14 @@ through the `--chart-*` tokens so themes work without changing the chart data.
 | See parts of a whole | Stacked bar — one bar, labeled segments |
 | Compare several measures or distributions | Shared-scale small multiples |
 | Show parallel work over time | Aligned lanes on one shared time axis |
-| Absorb one headline number | Not a chart — `stat-tiles` |
-| Scan many attributes per item | Not a chart — `data-table` |
+| Absorb one headline number | `stat-tiles` instead of a chart |
+| Scan many attributes per item | `data-table` instead of a chart |
 
 Use a chart when magnitude, direction, or shape is easier to see than read.
 Prefer prose or a table when visual encoding adds no decision value; dataset
 size alone is not the deciding rule.
 
-## Explain The Supplied Data
+## Explain the supplied data
 
 For a named numeric dataset or single analysis, start with the chart. Put the
 important values and takeaway on its marks, axis, or annotations when space
@@ -80,7 +88,7 @@ cards above the plot.
 - Non-emphasized series: alpha steps (`--a20`/`--a40`/`--a70`) — lightness
   separates them in both modes and survives color-vision deficiency.
 - Good/bad polarity: `--warning-*`/`--danger-*` inks only when the data is
-  a warning, never as a second decorative hue.
+  a warning.
 
 Never introduce raw hex in a chart. If two series can't be told apart with
 the ladder, split the chart into small multiples. Do not add another color.

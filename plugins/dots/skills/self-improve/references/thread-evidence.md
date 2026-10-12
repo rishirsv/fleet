@@ -1,8 +1,7 @@
-# Thread Evidence
+# Thread evidence
 
-Use this common method after selecting the platform-specific session source.
-The helper narrows the read set; the agent verifies the evidence and decides
-whether it supports a durable change.
+The helper narrows the read set; you verify the evidence and decide whether it
+supports a durable change.
 
 ## Evidence record
 
@@ -31,7 +30,7 @@ For recurring repository mistakes, read relevant recent commits, reverts,
 review comments, agent instruction files, and comments that explain workarounds
 alongside the session evidence. Group the mistakes into classes. Count
 independent occurrences of the same failure, not repeated discussion of one
-incident. Apply the generalization gate below before proposing a shared rule.
+incident.
 
 Before generalizing beyond the task:
 
@@ -84,17 +83,9 @@ from threads that develop the skill itself.
 
 ## Proposal destinations
 
-Choose one primary destination:
-
-- existing skill;
-- new skill;
-- project instructions;
-- personal instructions;
-- memory note;
-- repository documentation;
-- script or harness;
-- validation check;
-- conflict resolution or deletion.
+Choose one primary destination: an existing or new skill, project or personal
+instructions, a memory note, repository documentation, a script or harness, a
+validation check, or a conflict resolution or deletion.
 
 Choose the place that can maintain the rule with the least unnecessary work.
 Mechanical requirements belong in checks; judgment that must load every session

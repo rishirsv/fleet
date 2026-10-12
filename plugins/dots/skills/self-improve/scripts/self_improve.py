@@ -165,6 +165,7 @@ SELF_REFERENTIAL_MARKERS = (
     "respond with only a valid json object",
     "self_improve.py",
     "self-improve insights",
+    "usage-insights",
     "agent usage review",
 )
 

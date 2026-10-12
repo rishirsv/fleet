@@ -1,0 +1,118 @@
+# Design tokens for Dots HTML pages. scripts/generate-theme.mjs compiles this
+# file into assets/theme.css; edit tokens here and rerun the script. Supported
+# YAML subset: nested maps, scalars, and flat inline arrays.
+version: alpha
+name: dots
+description: Visual style for Dots HTML pages.
+colors:
+  background: "#fbfbfa"
+  foreground: "#0d0d0d"
+  accent: "#1f5eff"
+  accent-deep: "#12379e"
+  warning-ink: "#6b4c00"
+  warning-line: "rgba(180,130,0,0.35)"
+  warning-bg: "rgba(255,178,0,0.06)"
+  danger-ink: "#8c1d18"
+  danger-line: "rgba(200,60,50,0.35)"
+  danger-bg: "rgba(220,70,60,0.05)"
+  code-surface: "#0d0d0d"
+  code-ink: "#ededed"
+typography:
+  h1:
+    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontSize: 40px
+    mobileFontSize: 32px
+    fontWeight: 600
+    lineHeight: 48px
+    mobileLineHeight: 38px
+    letterSpacing: -2.4px
+    mobileLetterSpacing: -1.5px
+  h2:
+    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontSize: 24px
+    fontWeight: 600
+    lineHeight: 32px
+    letterSpacing: -0.96px
+  h3:
+    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontSize: 16px
+    fontWeight: 600
+    lineHeight: 24px
+    letterSpacing: -0.32px
+  body:
+    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    fontSize: 15px
+    fontWeight: 400
+    lineHeight: 1.7
+  display:
+    fontFamily: -apple-system, Helvetica Neue, Arial, sans-serif
+    tracking: 1
+  mono:
+    fontFamily: ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace
+    fontSize: 13px
+    fontWeight: 400
+    lineHeight: 20px
+spacing:
+  unit: 4px
+  article: 900px
+  wide: 1040px
+  canvas: 1440px
+  section: 48px
+  block: 16px
+rounded:
+  card: 6px
+  code: 6px
+  inline: 4px
+  pill: 6px
+  bubble: 18px
+x-dark:
+  background: "#0f0f0e"
+  foreground: "#f5f5f4"
+  accent: "#6f94ff"
+  accent-deep: "#b7c9ff"
+  warning-ink: "#f2c14e"
+  warning-line: "rgba(255,193,77,0.35)"
+  warning-bg: "rgba(255,193,77,0.08)"
+  danger-ink: "#ff8a80"
+  danger-line: "rgba(255,120,110,0.35)"
+  danger-bg: "rgba(255,120,110,0.07)"
+  code-surface: "#161615"
+  code-ink: "#ededed"
+x-alpha-steps: [4, 8, 12, 20, 40, 55, 60, 70]
+x-tones:
+  personal:
+    colors:
+      background: "#f7f2ec"
+      foreground: "#2b2320"
+      accent: "#0866d6"
+      accent-deep: "#0a4fa3"
+      danger-ink: "#9c3148"
+      danger-line: "rgba(180,72,93,0.30)"
+      danger-bg: "rgba(180,72,93,0.06)"
+    dark:
+      background: "#171412"
+      foreground: "#f2ebe4"
+      accent: "#4ea1ff"
+      accent-deep: "#a9d0ff"
+      danger-ink: "#ea8a9b"
+      danger-line: "rgba(234,138,155,0.30)"
+      danger-bg: "rgba(234,138,155,0.08)"
+    display-font: New York, Iowan Old Style, ui-serif, Georgia, serif
+    display-tracking: 0.35
+    card-radius: 14px
+    text-muted-step: 70
+x-chart:
+  emphasis: var(--accent)
+  value-emphasis: var(--accent-deep)
+  pos: var(--a40)
+  neg: var(--a20)
+  mark: var(--a20)
+  track: var(--a4)
+  grid: var(--a12)
+  label: var(--text-muted)
+  value: var(--text-muted)
+x-motion:
+  duration-fast: 150ms
+  duration-reveal: 400ms
+  ease: cubic-bezier(0.2, 0, 0, 1)
+  stagger-step: 60ms

@@ -1,6 +1,11 @@
-# Interface Design
+# Interface design
 
-Read this only after the user selects a refactor candidate and wants alternative interface designs.
+Contents:
+
+- [Process](#process)
+- [Dependency categories](#dependency-categories)
+- [Schemas before hand-rolled guards](#schemas-before-hand-rolled-guards)
+- [Seam and test discipline](#seam-and-test-discipline)
 
 Generate alternative interface designs when the first plausible interface is
 unlikely to be the best one. Use subagents for high-impact or non-obvious seams
@@ -19,7 +24,7 @@ Before spawning subagents, write a user-facing explanation of the selected candi
 
 This sketch is not the proposal. It helps the user and subagents reason about the same problem.
 
-### 2. Generate Alternative Designs
+### 2. Generate alternative designs
 
 Produce two to four meaningfully different interfaces for the deepened module.
 For high-impact seams, spawn parallel subagents when available; otherwise create
@@ -46,7 +51,7 @@ Each design outputs:
 5. Trade-offs: which capabilities callers can use easily and which require more
    work
 
-### 3. Present And Compare
+### 3. Present and compare
 
 Present designs sequentially, then compare them in prose. Contrast by:
 
@@ -59,25 +64,25 @@ Present designs sequentially, then compare them in prose. Contrast by:
 Finish with a recommendation. If elements from different designs combine well,
 propose a hybrid. State which design you recommend and why.
 
-## Dependency Categories
+## Dependency categories
 
 Classify dependencies before recommending a deepened module. The category
 determines how the module is tested across its seam.
 
-### 1. In-Process
+### 1. In-process
 
 Pure computation, in-memory state, no I/O. These modules can always be combined
 behind a simpler interface. Merge the modules and test through the new interface
 directly. No adapter needed.
 
-### 2. Local-Substitutable
+### 2. Local substitutable
 
 Dependencies that have local test stand-ins such as an in-memory filesystem or
 local database substitute. Combine the modules behind a simpler interface if the
 stand-in exists. The module is tested with the stand-in running in the test
 suite. The seam is internal; no port at the module's external interface.
 
-### 3. Remote But Owned
+### 3. Remote but owned
 
 Owned services across a network boundary. Define a port at the seam. The module
 owns the logic; the transport is injected as an adapter. Tests use an in-memory
@@ -87,7 +92,7 @@ Recommendation shape:
 
 > Define a port at the seam, implement a production adapter and an in-memory adapter for testing, so the logic sits in one deep module even though it is deployed across a network.
 
-### 4. True External
+### 4. True external
 
 Third-party services the codebase does not control. The module takes the
 external dependency as an injected port; tests provide a mock adapter.
@@ -130,10 +135,9 @@ const userSchema: z.ZodType<User> = z.object({ id: z.string(), name: z.string() 
 
 - Untyped boundary: parse with the schema that owns the shape. Add a schema only where none exists.
 
-## Seam And Test Discipline
+## Seam and test discipline
 
-- One adapter means a hypothetical seam. Two adapters means a real one. Do not
-  introduce a port unless at least two adapters are justified, typically
+- Introduce a port only when at least two adapters are justified, typically
   production plus test. With only one justified adapter, the boundary adds an
   unnecessary layer.
 - A deep module can have internal seams private to its implementation and used

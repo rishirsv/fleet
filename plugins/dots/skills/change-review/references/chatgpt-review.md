@@ -7,7 +7,7 @@ a local subagent or an API model for a requested ChatGPT Pro review.
 
 ## Ensure repository access
 
-Before every handoff, load [dots-tunnel](../../dots-tunnel/SKILL.md) and run its
+Before every handoff, apply `$dots-tunnel` and run its
 local `runtime.py start` command once, using the account alias the user selected.
 Require `ready: true`. This command already checks status and reuses a ready
 runtime with one client call; do not precede it with `status`, restart a healthy
