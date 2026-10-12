@@ -99,6 +99,8 @@ a simple request simple.
 
 ## Check the prompt, then return it
 
+Write the prompt with [Writing style](../../references/writing-style.md).
+
 Compare the draft with the supplied source for omissions, invented commitments,
 unsupported facts, and contradictory instructions. Cut redundant sections before
 compressing sentences. Distinguish the recipient's output format from this skill's

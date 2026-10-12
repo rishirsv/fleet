@@ -67,6 +67,8 @@ rules allow it.
 
 ## Handle changes
 
+Write replies to reviewers and status updates with [Writing style](../../references/writing-style.md).
+
 - For a failed GitHub Actions check, inspect only the failed run and relevant
   log lines. Confirm the failure comes from the pull request before changing
   code. If an external check provider's logs are unavailable, report its failure

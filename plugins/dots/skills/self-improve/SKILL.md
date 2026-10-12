@@ -59,6 +59,8 @@ the highest level that works.
 
 ## Propose or apply improvements
 
+Write proposals, edited instructions, and the report with [Writing style](../../references/writing-style.md).
+
 For a durable change, name the behavior, the component most directly responsible
 for it, the smallest change, and how to verify it. For each mistake class,
 include its evidence, the enforcement level you picked, and why a higher level

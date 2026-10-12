@@ -77,19 +77,12 @@ Use the smallest depth likely to answer the question:
   high-stakes decision, or when focused searches still support different
   explanations that would change the conclusion.
 
-Read the source file for each category the depth selects. Each file gives
-concrete queries for one common tool; adapt it when another tool holds the same
-kind of record.
-
-| Category | What it explains | Source file |
-|---|---|---|
-| Source control | Implementation-time rationale in commits, PRs, comments, and tests | [code-archaeology.md](references/sources/code-archaeology.md) (git, `gh`) |
-| Tickets | Customer, product, compliance, or scheduling pressure | [linear.md](references/sources/linear.md) (adapt for Jira, GitHub Issues, Plane, Shortcut) |
-| Long-form documents | RFCs, ADRs, PRDs, design alternatives, and postmortems | [notion.md](references/sources/notion.md) (adapt for Confluence, Google Docs, Coda) |
-| Team chat | Real-time decisions that never reached a durable doc | [slack.md](references/sources/slack.md) (adapt for Discord, Teams, Mattermost) |
-| Observability | Thresholds and defensive code tied to runtime behavior and incidents | [datadog.md](references/sources/datadog.md) (adapt for New Relic, Honeycomb, Grafana, Splunk) |
-| Error tracking | Corrective code tied to specific exceptions and releases | [sentry.md](references/sources/sentry.md) (adapt for Rollbar, Bugsnag, Airbrake) |
-| Product analytics | Limits, experiments, migrations, and usage assumptions | [databricks.md](references/sources/databricks.md) (adapt for Snowflake, BigQuery, ClickHouse, dbt) |
+Start with source control: read
+[code-archaeology.md](references/sources/code-archaeology.md) for the git and
+`gh` queries that recover implementation-time rationale from commits, PRs,
+review comments, and tests. Search other records, such as tickets, design
+documents, chat, or monitoring, only when the user names one or a connected
+tool holds it; apply the same evidence rules and cite each item.
 
 If the target has null checks, retries, timeouts, rate limits, feature flags,
 egress guards, or OOM handlers, also read
@@ -127,6 +120,8 @@ answer, you may lightly edit for clarity or add context from the conversation;
 keep its confidence language.
 
 ## Output contract
+
+Write the answer with [Writing style](../../references/writing-style.md).
 
 Adapt the headings to the question, but keep the confidence separation:
 

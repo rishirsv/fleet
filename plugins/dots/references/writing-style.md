@@ -301,23 +301,17 @@ Do not delete useful background merely because other readers also need it.
 
 ## Review before delivery
 
-1. Check the structure against the reader's task or question and the source
-   material. Identify claims, caveats, examples, commands, and links that must
-   stay accurate.
-2. Check meaning before style. For each instruction, identify the action,
-   responsible actor, object, condition, and expected result where each matters.
-   For an explanation, check whether the reader can follow the claim and its
-   support without guessing a missing connection.
-3. Remove unsupported claims, repetition, filler, and artificial patterns.
-   Check that every procedure retains its prerequisites, sequence, expected
-   result, and relevant failure behavior. Keep evidence beside the claims it
-   supports.
-4. Read the prose aloud. Revise any passage that forces the reader to backtrack
-   or guess the connection between ideas.
-5. Compare the revision with the source. Preserve its meaning, evidence,
-   uncertainty, and intended voice. For instructions, preserve triggers,
-   permissions, required steps, exceptions, examples, output fields, and
-   completion conditions. Keep every technical detail needed for the task.
+1. Check the structure against the reader's task and the source. Note the
+   claims, caveats, examples, commands, and links that must stay accurate.
+2. Check meaning before style: for each instruction, the action, actor,
+   object, condition, and expected result; for an explanation, whether the
+   reader can follow the claim and its support without guessing.
+3. Remove unsupported claims, repetition, filler, and artificial patterns, and
+   keep each procedure's prerequisites, sequence, result, and failure behavior.
+4. Read it aloud and revise any passage that makes the reader backtrack.
+5. Compare with the source. Keep its meaning, evidence, uncertainty, voice,
+   and, for instructions, its triggers, permissions, exceptions, outputs, and
+   completion conditions.
 
 ### Report a prose finding
 
@@ -332,14 +326,7 @@ what must be true at completion.
 
 ## Relationship to full STE
 
-Full ASD-STE100 compliance also controls approved vocabulary, word meanings,
-parts of speech, grammar, technical terms, and sentence length. Dots uses the
-clarity principles above without enforcing that dictionary or fixed word
-limits. For example, Dots permits the ordinary verb "check."
-
-If the user requests full compliance, use the current official standard and
-review the applicable rules and dictionary entries. Do not label a plain-English
-rewrite compliant merely because its sentences are short.
-
-Sources: [ASD's overview](https://www.asd-ste100.org/about_STE.html) and
-[official standard access](https://www.asd-ste100.org/STE_downloads.html).
+Dots borrows STE's clarity rules without its controlled dictionary or fixed
+sentence limits. If the user asks for full ASD-STE100 compliance, apply the
+current official standard, and do not call a plain-English rewrite compliant
+because its sentences are short.

@@ -223,6 +223,8 @@ the user asks or the repairs materially change the original review scope.
 
 ## Report the result
 
+Write findings and the summary with [Writing style](../../references/writing-style.md).
+
 Present findings first, ordered by severity, marking each as repaired or
 unresolved when repairs were requested or applied by default. Use one entry per
 issue in this form:

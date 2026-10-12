@@ -78,5 +78,7 @@ Edit only the verification skill's own files during a refresh.
 
 ## Finish
 
+Write the generated skill and this report with [Writing style](../../references/writing-style.md).
+
 Report the skill's location, the feature exercised and its evidence path, and
 any startup or harness limits a future agent should know.

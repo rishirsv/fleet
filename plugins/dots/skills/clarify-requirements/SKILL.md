@@ -12,6 +12,8 @@ shared understanding.
 
 ## Workflow
 
+Write questions and the summary with [Writing style](../../references/writing-style.md).
+
 ### 1. Inspect before asking
 
 Read the request, relevant repository guidance, configuration, accepted

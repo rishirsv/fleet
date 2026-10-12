@@ -76,6 +76,8 @@ have to reconstruct the behavior from search notes or file lists.
 
 ## Output contract
 
+Write the explanation with [Writing style](../../references/writing-style.md).
+
 Adapt these sections to the question. Do not include an empty section merely
 because it appears here.
 

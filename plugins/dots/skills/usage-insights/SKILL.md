@@ -16,6 +16,8 @@ as a lead and offer to run `$self-improve` on it.
 
 ## Choose the report
 
+Write the report with [Writing style](../../references/writing-style.md).
+
 - **Coaching or rating.** The user wants a reflection on, evaluation of, or
   rating for how they prompt, reason, steer, decide, or work with agents. Read
   [coaching.md](references/coaching.md).

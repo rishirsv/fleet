@@ -131,6 +131,8 @@ When scrapping a design:
 
 ## Output
 
+Write the design package with [Writing style](../../references/writing-style.md).
+
 Write the caller's usage first and derive the type sketch from it. Use one file
 with new types and signatures for a small change; use a module map plus type
 definitions for larger work. Shape the rationale with

@@ -36,6 +36,8 @@ independently useful findings when some evidence is missing.
 
 ## Report
 
+Write findings with [Writing style](../../references/writing-style.md).
+
 Lead with the overall assessment and the highest-impact changes. Each finding
 gives its location or journey step, evidence, user impact, proposed correction,
 and the verification it needs. Prioritize by consequence; structural and

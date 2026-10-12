@@ -78,6 +78,8 @@ For a candidate that deletes an abstraction, apply the deletion test in
 
 ## Output
 
+Write the report with [Writing style](../../references/writing-style.md).
+
 Default to a ranked candidate report in chat unless the user asks for a file or the candidate set needs diagrams. Shape the report however best serves the candidates found; a useful report covers three things per candidate:
 
 1. **The problem:** which problems the current architecture causes, where they

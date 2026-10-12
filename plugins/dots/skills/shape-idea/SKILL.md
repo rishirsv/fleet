@@ -104,6 +104,8 @@ show what remains and keep shaping.
 
 ## Finish when the frontier is empty
 
+Write questions, recommendations, and the snapshot with [Writing style](../../references/writing-style.md).
+
 The session ends when every consequential decision is answered, rejected, or
 explicitly deferred and no pending finding could change the direction. Return
 an Idea Snapshot using [the snapshot template](references/snapshot.md) so the

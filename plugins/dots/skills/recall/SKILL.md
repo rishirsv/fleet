@@ -42,6 +42,8 @@ or product history.
 
 ## Output contract
 
+Write the brief with [Writing style](../../references/writing-style.md).
+
 Start with a brief summary of current state. Then give
 thread status, recurring problems, and the next action. Put necessary detail
 after these items; omit detail that does not help the user continue.

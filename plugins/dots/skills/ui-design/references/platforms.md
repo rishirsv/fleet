@@ -5,7 +5,6 @@
 - [Apple interfaces](#apple-interfaces)
 - [App icons](#app-icons)
 - [Lazy SwiftUI collections](#lazy-swiftui-collections)
-- [Spatial experiences](#spatial-experiences)
 
 ## Apple interfaces
 
@@ -56,25 +55,3 @@ virtualization does not remove content that still appears on screen.
 
 Test scrolling away and back, resizing, mixed row sizes, and navigation to a
 distant item. Confirm API availability in the target SDK.
-
-## Spatial experiences
-
-Establish the activity, primary viewpoint, and surrounding scene before asset
-production. Gather references that resolve lighting, scale, and depth. Plan
-foreground, middle distance, and background together, leaving room for the
-task.
-
-Compare the assembled scene with its reference after texture transfer. Check
-parallax, occluded regions, consistent sharpness, and lighting. Coordinate sound
-and motion with their visible causes, and measure the real-time rendering cost.
-A flat preview does not establish spatial quality.
-
-Keep named parts and assemblies in the asset hierarchy. Define whether a gesture
-moves the whole object or one part, and keep a way to restore the assembly.
-When controls edit geometry, keep them synchronized with model state. Convert
-gesture coordinates into the model's coordinate space. For shared inspection,
-verify that collaborators see consistent state.
-
-Tune reach, drag response, and release behavior on the intended device when
-available. Keep tunable values explicit during exploration. State when device
-inspection is unavailable; a desktop simulation cannot prove physical comfort.

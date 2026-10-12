@@ -71,6 +71,8 @@ or report the decision as unresolved.
 
 ## Return the answer
 
+Write the answer with [Writing style](../../references/writing-style.md).
+
 Report the question, variants, observations, tradeoffs, recommendation, and
 scratch path. Say plainly that the artifact is throwaway. Apply the selected
 decision in the calling workflow only when the original request also

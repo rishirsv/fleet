@@ -51,7 +51,7 @@ and corrects the build. Judging whether a design itself is good belongs to
 | Timing, choreography, gesture motion | [Motion](references/motion.md) | [Motion recipes](references/recipes/motion.md) |
 | Radii, optical alignment, depth, image edges, texture | Treatments below | [Surface recipes](references/recipes/surfaces.md) |
 | Icon weight, states, size, direction | [Icons](references/icons.md) | [Icon swap](references/recipes/motion.md#icon-swap) |
-| Native Apple controls, app icons, lazy SwiftUI lists, spatial scenes | [Platforms](references/platforms.md) | |
+| Native Apple controls, app icons, lazy SwiftUI lists | [Platforms](references/platforms.md) | |
 
 Use surface treatments only when they fit the accepted visual system. Preserve
 structural, selection, and focus boundaries, and use system components and
@@ -74,6 +74,8 @@ the interface renders or behaves. Inspect the states the change affects:
   intermediate frames when continuity is in question.
 
 ## Explain the result
+
+Write design explanations with [Writing style](../../references/writing-style.md); interface copy follows [Interaction](references/interaction.md).
 
 Lead with the visible result, design decision, or blocker. Support judgments
 with specific observations. Name the element, quote the copy, or describe which
