@@ -1,11 +1,16 @@
 # Icons
 
-Choose icon weight, states, size, and direction to fit the interface.
+Choose icon weight, states, size, and direction to fit the interface. Platform
+conventions and supplied brand artwork govern meaning. Apply stroke and fill
+rules only to icon families that offer those variants.
 
-Use the web examples within the chosen icon system. Platform conventions and
-supplied brand artwork govern meaning; do not force every icon family to expose
-stroke or filled variants. For native app icons, read [app
-icons](platforms/app-icons.md).
+## Contents
+
+- [Match icon stroke to text weight](#match-icon-stroke-to-text-weight)
+- [One SVG, recolored per state](#one-svg-recolored-per-state)
+- [Outline default, fill active](#outline-default-fill-active)
+- [Design at render size](#design-at-render-size)
+- [Icons in RTL](#icons-in-rtl)
 
 ## Match icon stroke to text weight
 
@@ -15,7 +20,7 @@ regular text can draw too much attention.
 | Adjacent text | Icon stroke width (24px grid) |
 | --- | --- |
 | Regular (400), 14–16px | `1.5px` |
-| Medium/Semibold (500–600) | `2px` |
+| Medium or semibold (500–600) | `2px` |
 | Bold (700), or emphasized standalone | `2.5px` |
 
 ```html
@@ -24,18 +29,12 @@ regular text can draw too much attention.
   <PlusIcon stroke-width="2" class="size-4" />
   New project
 </button>
-
-<!-- Bad: default 1.5px stroke against a bold label -->
-<button class="flex items-center gap-2 font-bold">
-  <PlusIcon stroke-width="1.5" class="size-4" />
-  New project
-</button>
 ```
 
-Two related consistency rules:
-
-- **Use consistent icon weights within each interface region.** Never mix icon libraries with incompatible stroke conventions on one toolbar. Where the library supports stroke variants, match them to adjacent text as above; otherwise keep the set's native stroke and use size or color for emphasis.
-- **Size icons relative to the text's cap height**, typically `1em`–`1.25em` when inline with text, so the pair scales together.
+Keep icon weights consistent within each interface region, and use one library
+per toolbar. Where the library has no stroke variants, keep its native stroke
+and use size or color for emphasis. Size inline icons relative to the text's cap
+height, typically `1em`–`1.25em`, so the pair scales together.
 
 ## One SVG, recolored per state
 
@@ -43,7 +42,6 @@ When states differ only in color, use one SVG drawn with `currentColor` and let
 CSS state drive the color:
 
 ```html
-<!-- Good: one asset, states are CSS -->
 <svg fill="none" stroke="currentColor" stroke-width="2">…</svg>
 ```
 
@@ -61,18 +59,17 @@ CSS state drive the color:
 </button>
 ```
 
-Hardcoded fills inside a monochrome SVG, such as `fill="#666"`, break this. Use
-`currentColor` for those glyphs; preserve intentional multicolor artwork.
+Replace hardcoded fills inside a monochrome glyph, such as `fill="#666"`, with
+`currentColor`; preserve intentional multicolor artwork.
 
 ## Outline default, fill active
 
-Where an icon set offers outline and filled variants, use them as a state pair,
-never interchangeably:
+Where an icon set offers outline and filled variants, use them as a state pair:
 
 | Variant | Use for |
 | --- | --- |
 | Outline | Default state: toolbars, list rows, inline with text |
-| Fill | Selected/active state: the active tab, a toggled bookmark, a liked heart |
+| Fill | Selected or active state: the active tab, a toggled bookmark, a liked heart |
 
 ```tsx
 // Good: variant communicates state
@@ -82,34 +79,35 @@ never interchangeably:
 <TabIcon variant="solid" />
 ```
 
-When animation helps communicate a variant change, read [icon
-transitions](recipes/icon-transitions.md). Keep a static swap when motion adds
-no information.
+Animate a variant change only when motion adds information; otherwise swap
+statically.
 
 ## Design at render size
 
-An icon that is clear at 48px can lose detail at 16px. Thin interior lines,
-tight counters and fine texture all blur or alias when small.
+An icon that is clear at 48px can lose detail at 16px: thin interior lines,
+tight counters, and fine texture blur or alias.
 
-- Test every icon at the smallest size it will render, often `16px`. It must stay recognizable there.
-- Prefer simplified glyphs for small contexts over scaling down detailed artwork.
-- Keep icons on the pixel grid at their render size. A 16px icon drawn on a 24px grid with fractional scaling can appear blurred, so use the set's native grid sizes (`16`, `20`, `24`) rather than arbitrary scales.
-- Prefer SVG for ordinary web interface glyphs. Preserve intentional raster artwork and native symbol assets when those are the appropriate source formats.
+- Test every icon at the smallest size it will render, often `16px`.
+- Use simplified glyphs for small contexts in place of scaled-down detailed
+  artwork.
+- Use the set's native grid sizes (`16`, `20`, `24`). A 16px icon drawn on a
+  24px grid with fractional scaling can blur.
+- Prefer SVG for ordinary web interface glyphs. Keep intentional raster artwork
+  and native symbol assets in their source formats.
 
 ## Icons in RTL
 
-Under `dir="rtl"`, flip icons whose meaning is tied to reading direction, and
-leave the rest alone:
+Under `dir="rtl"`, flip icons whose meaning follows reading direction and leave
+the rest alone:
 
-| Flip | Don't flip |
+| Flip | Keep |
 | --- | --- |
-| Back/forward arrows, chevrons in navigation | Logos and brand marks |
+| Back and forward arrows, navigation chevrons | Logos and brand marks |
 | Text-block glyphs (alignment, lists, indent) | Checkmarks |
-| Speaker/volume waves (emanate in reading direction) | Physical objects: clocks, cups, pencils |
-| "Send" style directional glyphs | Media playback (play/rewind refer to tape direction, convention keeps them LTR) |
+| Speaker and volume waves | Physical objects: clocks, cups, pencils |
+| "Send" style directional glyphs | Media playback (play and rewind stay LTR by convention) |
 
 ```css
-/* Good: mirror only direction-dependent icons */
 [dir="rtl"] .icon-directional {
   scale: -1 1;
 }
@@ -120,6 +118,5 @@ leave the rest alone:
 <ChevronRightIcon class="icon-directional rtl:-scale-x-100" />
 ```
 
-Analyze composite icons part by part. A badge or slash overlay may keep its
-position even when the base glyph flips. Give icon-only buttons accessible names
-and test them through [interaction.md](interaction.md).
+Analyze composite icons part by part; a badge or slash overlay may keep its
+position when the base glyph flips. Give icon-only buttons accessible names.

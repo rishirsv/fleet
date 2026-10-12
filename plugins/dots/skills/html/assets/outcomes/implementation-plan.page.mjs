@@ -2,7 +2,7 @@ export const kit = "report";
 
 export default function(h) {
   const {page,section,html,review,reviewPoint,decision,editableCode,disclosure,
-    implementationSteps,walkthrough,mockup,table,callout,sequence,code} = h;
+    implementationSteps,walkthrough,mockup,table,callout,sequence,code,raw,flowDiagram} = h;
   const p = text => html`<p>${text}</p>`;
   const list = items => html`<ul>${items.map(item=>html`<li>${item}</li>`)}</ul>`;
   const screen = (name, label, content) => mockup({
@@ -14,7 +14,7 @@ export default function(h) {
     title:"Send Later for PostBox",
     context:"PostBox / implementation proposal",
     dek:"Choose when a message should leave, manage it in Scheduled, and recover clearly if sending fails.",
-    layout:"article", tools:true,
+    layout:"article", tools:true, behavior:true,
     footer:"Proposal based on the requested behavior. No PostBox repository was supplied; all contracts and module boundaries below are proposed."
   },[
     html`<style>
@@ -183,6 +183,7 @@ Provider deduplication key stays stable across every delivery attempt.`}),
           ["Keyboard and assistive technology","The picker, Scheduled actions, conflict errors and status updates remain operable and announced."]
         ]}),
         ]),
+        flowDiagram({viewBox:"0 0 840 120",minWidth:840,content:raw(`<defs><marker id="plan-phases-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs><rect class="diagram-node" x="0" y="20" width="192" height="52" rx="6"/><text class="diagram-label" x="96.0" y="40">confirm dependencies</text><text class="diagram-label is-small" x="96.0" y="56">server · storage</text><path class="diagram-edge" d="M96 72 L96 88"/><text class="diagram-tag is-middle" x="96" y="100">CHOICES SETTLED</text><path class="diagram-edge" d="M192 46 L214 46" marker-end="url(#plan-phases-arrow)"/><rect class="diagram-node is-focal" x="216" y="20" width="192" height="52" rx="6"/><text class="diagram-label is-focal" x="312.0" y="40">durable path</text><text class="diagram-label is-small" x="312.0" y="56">claim · send</text><path class="diagram-edge" d="M312 72 L312 88"/><text class="diagram-tag is-middle is-focal" x="312" y="100">CRASH TESTS PASS</text><path class="diagram-edge" d="M408 46 L430 46" marker-end="url(#plan-phases-arrow)"/><rect class="diagram-node" x="432" y="20" width="192" height="52" rx="6"/><text class="diagram-label" x="528.0" y="40">experience</text><text class="diagram-label is-small" x="528.0" y="56">picker · list</text><path class="diagram-edge" d="M528 72 L528 88"/><text class="diagram-tag is-middle" x="528" y="100">END TO END PASSES</text><path class="diagram-edge" d="M624 46 L646 46" marker-end="url(#plan-phases-arrow)"/><rect class="diagram-node" x="648" y="20" width="192" height="52" rx="6"/><text class="diagram-label" x="744.0" y="40">gradual release</text><text class="diagram-label is-small" x="744.0" y="56">internal → all</text><path class="diagram-edge" d="M744 72 L744 88"/><text class="diagram-tag is-middle" x="744" y="100">COHORTS HOLD</text>`),caption:"Four phases ship in order. Each gate must hold before the next phase starts; the durable path carries the most risk."}),
         implementationSteps({title:"Implementation order",layout:"proof",steps:[
           {title:"Confirm dependencies",detail:"Inspect the real code and mail provider, and resolve the three product choices.",done:"Server dispatch, durable storage and provider recovery are verified."},
           {title:"Build the durable path",detail:"Add storage and authenticated actions, then claim, send and reconciliation.",done:"Focused concurrency and crash tests pass before scheduling is exposed."},

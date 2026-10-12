@@ -3,6 +3,7 @@ export const kit = "report";
 export default ({ page, section, stats, timeline, callout, recommendation }) =>
   page({
     title: "Release workflow is one boundary from ready",
+    behavior: true,
     context: "sample / status report",
     dek: "The duplicated validation path is removed. One owner decision remains before the release path can be exercised end to end.",
     footer: "Illustrative reference: replace all sample claims, dates, metrics, paths, and decisions with grounded source material.",

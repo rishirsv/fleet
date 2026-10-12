@@ -1,4 +1,4 @@
-# Explorer Prompt Template
+# Explorer prompt template
 
 Build each explorer subagent's prompt from this template. Fill in the placeholders.
 
@@ -12,13 +12,13 @@ Other explorers investigate different parts of the same subsystem in parallel. F
 
 > {QUESTION}
 
-## Your Exploration Angle
+## Your exploration angle
 
 {EXPLORATION_ANGLE}
 
-## Exploration Instructions
+## Exploration instructions
 
-Start by finding the relevant code. Use `rg --files` to find files and `rg` to find key symbols, then read the actual implementation. Don't guess from names. Read the code.
+Start by finding the relevant code. Use `rg --files` to find files and `rg` to find key symbols, then read the actual implementation.
 
 Find where the behavior starts (a user action, API call, or scheduled job),
 follow the call chain and the data it transforms through the central types and
@@ -38,20 +38,20 @@ specifically named gap. If you hit a part you can't trace, say so explicitly.
 
 Return your findings in this structure. Be factual and specific. Reference exact file paths, function names, type names, and line numbers where relevant.
 
-### Components Found
+### Components found
 The key types, services, classes, and abstractions. For each: name, file path, and a one-sentence description of what it does.
 
 ### Flow
 The execution flow step by step. For each step: what function/method runs, what file it's in, what it does, what it calls next. Include the data that flows between steps.
 
-### Files Read
+### Files read
 Every file you read during exploration, so the explainer can reference them.
 
 ### Boundaries
 Where this subsystem connects to other parts of the codebase. The inputs and outputs.
 
-### Non-Obvious Things
+### Non-obvious things
 Anything surprising, historically motivated, or easy to get wrong. Things that look like they should work one way but actually work another.
 
-### Open Questions
+### Open questions
 Anything you couldn't fully trace or understand. Be honest about gaps.

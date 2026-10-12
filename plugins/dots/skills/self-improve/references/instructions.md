@@ -1,10 +1,4 @@
-# Instruction Files
-
-Use this reference when a proposal targets agent instructions or review
-standards, or when a correction repeats an existing rule. Apply the edit
-authorization in Self-Improve's parent skill: an explicit request to audit and
-implement instruction changes already authorizes supported edits in that scope.
-For proposal-only work, obtain approval of the exact rule and target before editing.
+# Instruction files
 
 ## Choose the instruction file for the platform
 
@@ -16,10 +10,6 @@ For proposal-only work, obtain approval of the exact rule and target before edit
 Claude Code does not load `AGENTS.md` directly. When a repository uses shared
 instructions, prefer a small `CLAUDE.md` containing `@AGENTS.md`, with only
 genuinely Claude-specific guidance below it. Do not duplicate the shared rules.
-
-Generated memory is not an instruction file. Propose memory additions or
-deletions for the user to review; do not silently rewrite auto-memory or Codex
-memory stores.
 
 ## Choose the closest scope
 
@@ -50,13 +40,12 @@ Reserve `CODING_STANDARDS.md`, or the repository's existing review standards,
 for genuine judgment calls (cross-file consistency, "matches the surrounding
 style," anything no guardrail could ever substitute for). Mechanical violations
 (a fixed syntactic pattern, a banned API, an import shape, a file-location rule)
-belong in a deterministic check. Use the enforcement order in the parent skill.
+belong in a deterministic check.
 
-Look for instructions in steering files that don't modify the agent's behavior.
-Use when the steering files are large and unwieldy. Move review-only criteria
-to review standards, replace duplicated procedures with a pointer to their
-owner, and remove instructions that change no behavior. Preserve guidance that
-affects a decision even when it looks obvious in isolation.
+When instruction files grow large, remove instructions that change no behavior,
+move review-only criteria to review standards, and replace duplicated
+procedures with a pointer to their owner. Preserve guidance that affects a
+decision even when it looks obvious in isolation.
 
 ### Handle corrections to existing rules
 
@@ -91,12 +80,10 @@ Source: approved thread, review, or decision
 Short commands and settled conventions can remain one line. Delete or replace
 stale text instead of appending another layer.
 
-## Evidence and edit gate
+## Proposal checklist
 
-Use the generalization gate in [thread-evidence.md](thread-evidence.md) for
-claims about repeated behavior. A source-visible contradiction can support a
-narrow correction without inventing a history of failures; one task can also
-support an exact durable behavior the user explicitly requests.
+A source-visible contradiction can support a narrow correction without
+inventing a history of failures.
 
 For every proposal:
 
@@ -105,9 +92,5 @@ For every proposal:
 2. Show the exact rule and target file.
 3. Explain why a check, skill, doc, or memory note is not the more suitable
    place for the rule.
-4. Check whether the request already authorizes the rule and target scope. Wait
-   for approval only when that authority is missing or a material decision
-   remains unresolved.
-5. Re-read the current file, apply the smallest edit, and check the combined
+4. Re-read the current file, apply the smallest edit, and check the combined
    instructions that the agent will load for contradictions.
-6. Run the relevant repository checks and report what they prove.

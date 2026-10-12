@@ -13,15 +13,41 @@ gotchas: Use a full thin border and a faint tint. Do not add a left accent
 -->
 <style>
   .callout {
+    position: relative;
     border: 1px solid var(--a12);
     border-radius: var(--r-card);
-    padding: 14px 16px;
-    font-size: 14px;
+    background: var(--surface);
+    padding: 14px 18px 14px 46px;
+    font-size: 14.5px;
     line-height: 1.6;
+  }
+  .callout::before {
+    /* status glyph drawn in CSS so the callout stays one self-contained block */
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 15.5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: currentColor;
+    color: var(--a40);
+  }
+  .callout::after {
+    content: "i" / "";
+    position: absolute;
+    left: 16px;
+    top: 15.5px;
+    width: 18px;
+    height: 18px;
+    color: var(--surface);
+    font: 700 12px/18px var(--font-sans);
+    font-style: normal;
+    text-align: center;
   }
   .callout p { margin: 0; }
   .callout p + p { margin-top: 6px; }
-  .callout strong { font-weight: 700; }
+  .callout strong { font-weight: 650; }
   .callout.warn {
     background: var(--warning-bg);
     border-color: var(--warning-line);
@@ -32,6 +58,8 @@ gotchas: Use a full thin border and a faint tint. Do not add a left accent
     border-color: var(--danger-line);
     color: var(--danger-ink);
   }
+  .callout.warn::before, .callout.danger::before { color: inherit; }
+  .callout.warn::after, .callout.danger::after { content: "!" / ""; color: var(--background); }
   .callout-stack { display: flex; flex-direction: column; gap: 10px; }
 </style>
 

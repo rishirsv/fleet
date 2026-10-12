@@ -1,14 +1,21 @@
-# Feature Development
+# Feature development
 
-Use this playbook only when the user explicitly selects Dots, `$index`, or
-Dots Feature Development for software planning or implementation. An ordinary
-feature, bug-fix, refactor, or planning request does not select this workflow;
-handle it directly with any applicable focused skills.
+Contents:
 
-Once selected, use this playbook for features, bug fixes, refactors, measured
-performance work, and configuration changes that affect behavior. Keep one compact working record in the active task with the
-outcome, non-goals, settled decisions, responsible code, chosen direction,
-current route, and proof status.
+- [Choose the route](#choose-the-route)
+- [Performance hypotheses](#performance-hypotheses)
+- [Follow the common workflow](#follow-the-common-workflow)
+- [Stop at a planning handoff when requested](#stop-at-a-planning-handoff-when-requested)
+- [Completion](#completion)
+
+Use this playbook when the user explicitly selects Dots, `$index`, or Dots
+Feature Development for features, bug fixes, refactors, measured performance
+work, configuration changes that affect behavior, or their plans. Handle
+ordinary requests directly with any applicable focused skills.
+
+Keep one compact working record in the active task with the outcome, non-goals,
+settled decisions, responsible code, chosen direction, current route, and proof
+status.
 
 For work spanning sessions or several implementation passes, save the working
 record in the repository's established plan location when one exists. Otherwise,
@@ -24,50 +31,48 @@ instructions rather than appending another status summary.
 - **Bug fix:** reproduce the reported symptom where it occurs before
   changing code. Form competing hypotheses, run checks that distinguish them,
   and confirm the cause supported by those checks. The original reproduction must pass
-  after the fix.
+  after the fix. When two fixes have failed and both rested on the same
+  assumption, test that assumption directly before trying a third.
 - **Refactor:** record the behavior that must remain stable, name the target
   ownership or structure, migrate every caller, and remove the replaced path in
-  the same change unless the repository requires a staged rollout.
+  the same change under [Hard-cut policy](hard-cut-policy.md) unless the
+  repository requires a staged rollout.
 - **Performance:** freeze a representative input and baseline, locate the
   measured cause with a trace or profile, and compare the same measurement
   after each candidate change. Keep measured improvements that preserve the required behavior. Remove
   experiments that do not improve the target or violate those requirements.
 
-If no route fits, use the common workflow below. State what evidence will
-show that the requested task succeeded. Do not add a permanent playbook for
-one unusual task.
+If no route fits, use the common workflow below and state what evidence will
+show that the requested task succeeded.
 
-Running a benchmark, measuring perf yourself, or reporting a speedup or regression you measured → [Performance measurement](performance-measurement.md) before you report or act on the number.
+Before you report or act on a benchmark, speedup, or regression you measured,
+apply [Performance measurement](performance-measurement.md).
 
 ## Performance hypotheses
 
-Try the performance mantras in order, cheapest first:
-1. Don't do it. Stop work whose result nothing uses rather than cheapening it.
-2. Do it, but don't do it again.
-3. Do it less.
-4. Do it later.
-5. Do it when they're not looking.
-6. Do it concurrently.
-7. Do it cheaper.
-
-When an earlier mantra meets the target, stop.
+Prefer the cheapest change that meets the target, and stop once one does. The
+usual order from cheapest is: stop work whose result nothing uses; avoid
+repeating work; do less of it; defer it; move it off the path the user waits
+on; run it concurrently; and make the remaining work cheaper. Skip an option
+when the measured cause rules it out.
 
 ## Follow the common workflow
 
-1. **Discover.** Read the request and repository instructions. Identify the
-   intended result, what must stay true, and what would prove completion.
-2. **Explore.** Trace the current path, owners, state, side effects, analogous
-   patterns, tests, and the place where behavior can be verified. Verify facts that determine
-   ownership, interfaces, constraints, sequencing, or proof. Leave ordinary
-   local discovery to implementation. Use read-only investigators only when
-   separate investigations would make the work faster or cover more relevant evidence.
-3. **Settle decisions.** Answer repository-owned questions from source. Use a
+The steps describe the contract between phases; adapt their depth to the task.
+
+1. **Understand.** Identify the intended result, what must stay true, and what
+   would prove completion. Before choosing a design, confirm the facts that
+   determine ownership, interfaces, constraints, sequencing, or proof; leave
+   ordinary local discovery to implementation. Use read-only investigators only
+   when separate investigations would make the work faster or cover more
+   relevant evidence.
+2. **Settle decisions.** Answer repository-owned questions from source. Use a
    focused probe when observation can resolve a consequential uncertainty;
    apply `$prototype` when an isolated experiment is needed. Make reasonable
    assumptions for routine choices within the requested scope. Ask the user
    for product choices, preferences, authority, or information that would
    materially change the result, and continue work independent of the answer.
-4. **Choose the design.** Select the smallest coherent approach that fits the
+3. **Choose the design.** Select the smallest coherent approach that fits the
    existing system. Apply `$architect` when a consequential new or changed
    boundary needs its caller experience, public contract, data or state shape,
    responsible module, or place to test behavior settled before implementation.
@@ -75,43 +80,47 @@ When an earlier mantra meets the target, stop.
    proof, review, and completion.
    Apply `$ui-design` when visible product UI needs design guidance, then return
    here.
-5. **Implement.** Build the complete authorized change in checkable units.
-   Verify each meaningful unit before depending on it. A unit with a clear scope,
-   defined behavior, source locations, and an executable check may go to a
-   cheaper worker; the coordinator retains design decisions, integration,
-   review, and final proof. Return to step 4 when repeated implementation problems show that the
-   selected module boundary or data shape is wrong.
+4. **Implement.** Build the complete authorized change in checkable units. A
+   unit with a clear scope, defined behavior, source locations, and an
+   executable check may go to a cheaper worker; the coordinator retains design
+   decisions, integration, review, and final proof. Return to step 3 when
+   repeated implementation problems show that the selected module boundary or
+   data shape is wrong.
+   For a repetitive edit across many sites, make the first one by hand, then
+   script the rest and confirm the script reproduces the manual edit.
    Record consequential decisions made during implementation that the request
    or plan left open. Include the reason, tradeoff, and whether the decision is
    provisional. Reopen a settled decision only when new evidence changes it.
-6. **Prove it.** Run focused repository checks and exercise the real product
-   path when one exists. A build or unit test does not by itself prove an
-   integration or visible behavior. Bugs use the original reproduction;
+5. **Prove it.** Exercise the real product path when one exists. A build or
+   unit test does not by itself prove an integration or visible behavior; verify visible output with
+   [Visual proof](visual-proof.md). Bugs use the original reproduction;
    refactors compare behavior with the recorded baseline; performance work
-   repeats the same measurement on the fixed input.
+   repeats the same measurement on the fixed input. When the repository has a
+   `verify-<app>` skill, drive the change with it and fix its feature map if
+   the change made the map wrong.
+   Place new or moved tests with [Test consolidation](test-consolidation.md).
    When adding or repairing a regression test, confirm that it fails for the
    intended reason on the broken behavior and passes after the fix. If written
    after the fix, demonstrate the failure using an isolated copy or reversible
    change that preserves unrelated work. Report any missing failing control.
-7. **Review and finish.** Inspect the final diff against the requested outcome.
+6. **Review and finish.** Inspect the final diff against the requested outcome.
    Before finishing, reconcile every requirement and consequential recorded
    decision with the final implementation. Each must be implemented and
    supported by appropriate evidence, explicitly require no code, or remain
    identified as an unresolved gap.
    Apply `$change-review` when the user requests a review, repository
-   policy requires it, or consequential behavior needs independent challenge.
-   Give the reviewer the task's diff and intended behavior. During implementation,
-   repair supported defects caused by the change within the authorized scope.
-   Rerun affected checks and finish the requested work.
-   Follow `$change-review` for its review and repair mode; preserve an
-   explicit review-only request. Report the result, evidence, and important
-   remaining gaps. Apply
+   policy requires it, or consequential behavior needs independent challenge;
+   it owns review scope, reviewer handoff, findings, repair, and review-only
+   requests. Add `$ui-review` when that review covers visible UI.
+   Report the result, evidence, and important remaining gaps. List the
+   decisions you made that the request did not cover, least confident first,
+   each with how to reverse it. Apply
    [Evidence in claims](writing-style.md#evidence-in-claims)
    when writing the completion report.
 
 ## Stop at a planning handoff when requested
 
-When the user asks only for a plan, stop after step 4. Do not edit product
+When the user asks only for a plan, stop after step 3. Do not edit product
 source. Return a brief that another capable agent can use without guessing the
 outcome, responsible code, order of work, or verification. Include:
 
@@ -131,8 +140,7 @@ with a visual explanation of its sequence, dependencies, or decisions. Keep
 the full steps and verification details after that explanation. Do not make a durable artifact for a localized change
 whose handoff fits clearly in chat.
 
-`$change-review` owns review scope, subagent strategy, findings, and the
-optional repair path. Do not recreate that procedure here.
+## Completion
 
 The playbook is complete when the requested behavior works through its real
 path, proof supports the result, the final diff has been inspected and any

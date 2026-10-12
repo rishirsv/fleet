@@ -1,331 +1,234 @@
-# Skill Standards
+# Skill standards
 
 Use this standard to create, update, or review Dots skills. The environment's
-`skill-creator` provides authoring and validation instructions. This reference
-adds requirements for clear prose and behavior preservation.
+default `skill-creator` and `plugin-creator` own schemas, initial files,
+packaging, installation, and validation commands. This reference adds what
+those tools do not cover: clear instructions and preserved behavior.
 
-Follow the host's requirements for valid skills. Use its default `skill-creator`
-or `plugin-creator` for schemas, initial files, packaging, installation, and
-validation commands.
+Contents:
 
-## How to use this reference
+- [How to apply this standard](#how-to-apply-this-standard)
+- [Discovery](#discovery)
+- [Structure and loading](#structure-and-loading)
+- [Instructions that change behavior](#instructions-that-change-behavior)
+- [Authority and stops](#authority-and-stops)
+- [Revise an existing skill](#revise-an-existing-skill)
+- [Completion and evidence](#completion-and-evidence)
 
-The two parts below have different force:
+## How to apply this standard
 
-- **Guidelines are judgment.** Follow them by default. Adapt them when the job,
-  evidence, or target environment calls for a different shape.
-- **Rules are requirements.** Do not waive them for convenience or a smaller
-  file. Only a higher-authority constraint, such as host validity, repository
-  instructions, or an explicit user decision, can override them.
+Apply the sections the job needs to the skill being authored or reviewed,
+including every reference and prompt its future runs load. Encode task-specific
+decisions in that skill; this reference is not a template, checklist, or
+scoring system.
 
-Apply these standards to the skill being authored or reviewed, including the
-instructions its future users will load. Encode task-specific decisions in that
-skill; do not copy this reference wholesale. Apply only relevant sections.
-This reference is not a fixed template, checklist, or scoring system.
+Most guidance here is judgment: follow it by default and adapt it when the
+job, evidence, or target environment calls for a different shape. Items marked
+**Requirement** hold unless host validity, repository instructions, or an
+explicit user decision overrides them.
 
-## Guidelines
+Apply the shared writing style to every description, instruction, reference,
+and embedded prompt while drafting, not only at the end. Exact meaning and
+required formats take priority over stylistic preferences.
 
-### Make discovery sound like the request
+## Discovery
 
-- **Describe when the skill applies.** Metadata must identify the work and the
-  requests that should load the skill. The agent cannot use the skill body to
-  correct an unclear description before that body has loaded.
-- **Keep descriptions brief and specific.** Name the job and its trigger in
-  words people naturally use. Remove broad claims about related topics and
-  repeated capabilities. Long descriptions may be shortened before selection.
-- **Distinguish related skills when needed.** Add an exclusion only when it
-  prevents the agent from choosing the wrong skill.
-- **Check description changes.** Compare a request that should select the
-  skill, a similar request that should not, and a request for a related skill.
+The skill body loads only after selection, so it cannot correct a vague or
+overlapping description. **Requirement:** state the complete selection
+criteria in metadata.
+
+- **Write short, narrow descriptions.** Use the form "<Does X>. Use when …"
+  in the third person, in about 250 characters or fewer. Name the job and its
+  trigger in words people naturally use. Hosts may truncate long descriptions
+  before selection, and broad trigger lists load the skill for unrelated work.
+- **Give each trigger one strong phrase.** Collapse synonyms instead of
+  listing every way to ask for the same thing.
+- **Add an exclusion only when it prevents a wrong choice** between this skill
+  and a related one.
+- **Treat description edits as behavior changes.** Recheck a request that
+  should select the skill, a similar request that should not, a request for a
+  related skill, and the invocation mode.
 - **Follow the host invocation policy.** Let the default skill creator govern
-  invocation settings; preserve existing user choices.
-- **Collapse synonyms.** Give each distinct trigger branch one strong phrase
-  instead of listing every way to say the same thing.
+  invocation settings and preserve existing user choices.
 
 For a pull-request publishing skill:
 
-- **Before:** “Publish a pull request. Use for code changes, Git, or GitHub work.”
-- **After:** “Publish finished changes as a pull request. Use when the user asks
-  to open or update a PR for review.”
+- **Before:** "Publish a pull request. Use for code changes, Git, or GitHub work."
+- **After:** "Publishes finished changes as a pull request. Use when the user
+  asks to open or update a PR for review."
 
-The narrower trigger avoids loading the publishing workflow for ordinary code
-edits or Git questions.
+The narrower trigger keeps the publishing workflow out of ordinary code edits
+and Git questions.
 
-### Load only what the task needs
+## Structure and loading
 
-Keep the purpose, essential constraints, and choice of workflow in `SKILL.md`.
-When a skill has several substantial modes, link each reference where its
-content is needed. State when to read it. A simple skill can stay in one file.
-Check whether the common workflow loads unrelated modes, manuals, or repository
-maps. Load those resources only when the task needs them.
+- **Keep the root `SKILL.md` a router.** It holds the purpose, essential
+  constraints, the choice of workflow, and a pointer to each supporting file
+  with the condition for reading it. A simple skill can stay in one file.
+- **Point to references where they apply.** "Read the review reference for a
+  source audit" lets a description edit skip the review method. A mandatory
+  "read these files before every task" loads unrelated modes and manuals.
+- **Keep references one level deep.** Link every reference directly from
+  `SKILL.md`. A reference should not send the reader on to another reference;
+  link shared files, such as `plugins/dots/references/*.md`, from `SKILL.md`
+  with their loading condition. Agents follow nested links unreliably and may
+  read only part of a chained file.
+- **Start references over 100 lines with a short Contents list** so the agent
+  can find the section it needs from a partial read.
+- **Make each resource reachable.** Remove empty folders, placeholder files,
+  broken links, unused scripts, and assets that no workflow uses.
+- **Use real component names.** Document only skills, agents, tools, apps, and
+  connectors the target package provides.
+- **Describe composition accurately.** Loading another skill adds its
+  instructions to the current agent, so say read, load, or apply. Reserve
+  handoff, pass, and give for a real change of owner or context, such as a
+  subagent, another task, or an external system.
+- **Keep one owner for each instruction.** Link to the owner instead of
+  copying a second version that can drift.
+- **Keep development records outside the shipped skill.** Plans, research
+  notes, rejected drafts, source collections, run history, and private
+  examples belong with the maintainer's working files.
+- **Keep secrets and local state out of skills.** Use the host's supported
+  authentication, configuration, or state mechanism.
+- **Enforce checkable rules with checks.** When a script, schema, or validator
+  can enforce a rule, prefer it to prose and keep the prose for why and when.
+  Put lookups, scoring arithmetic, and fixed formatting in data files or
+  scripts, and leave the agent the judgment.
 
-For a skill that authors and reviews other skills:
+## Instructions that change behavior
 
-- **Before:** “Before every task, read the review and session-capture references.”
-- **After:** “Read the review reference for a source audit, session capture when
-  turning a completed task into a skill.”
+The writing style covers general prose. These points are specific to
+instructions an agent will execute.
 
-A description edit can proceed without loading those unrelated methods. These
-examples are illustrations, not required wording for generated skills.
-
-### Write instructions that change behavior
-
+- **Keep a sentence when it changes an action,** clarifies a decision or
+  limit, or gives understanding the agent lacks. The target model is capable;
+  add only the context it does not already have.
 - **Leave room for judgment.** Specify the outcome, relevant context, and
   decision criteria. Prescribe an exact sequence only when order protects a
-  concrete dependency, permission boundary, or fragile operation. Avoid
-  recipes that merely rehearse work the target model already handles.
-- **Specify output needs.** When tone, length, or format affects usefulness,
-  describe the audience and required result. Avoid imposing elaborate headings
-  or recurring phrases on every response.
-- **Frame length by the reader.** Prefer “answer only what the reader asked”
-  to word counts. Keep an exact limit only when the deliverable or a consumer
-  sets one.
-- **Make delegation conditional.** When parallel work benefits the recurring
-  job, state which independent work can be delegated and who integrates it.
-  Respect the host's available agents and authorization; keep simple work local.
-- **Write for the agent's decisions.** Keep a sentence when it changes an
-  action, clarifies a decision or limit, or provides useful understanding.
-- **Open with the work, not an aspiration.** Name what the agent inspects,
-  creates, changes, decides, or verifies. A promise about quality, confidence,
-  or impact does not replace the work that produces it.
+  concrete dependency, permission boundary, or fragile operation. Detailed
+  itineraries for work the model already handles can make strong models worse.
+- **Open with the work.** Name what the agent inspects, creates, changes, or
+  decides. A promise about quality, confidence, or impact does not produce
+  that property; state the mechanism that does, or remove the sentence.
 - **Make the work concrete before making it shorter.** Write the actions,
-  artifacts, roles, and decisions plainly. Then remove repetition without
-  replacing those details with umbrella nouns or compressed policy language.
-- **Apply the shared prose rules.** Use [Writing style](../../../references/writing-style.md)
-  while drafting, not only after the skill is complete. Keep specialized terms
-  when they express a precise concept the reader needs. Define unfamiliar terms
-  before relying on them.
-- **Say what it does, not how it feels.** Prefer a concrete instruction,
-  mechanism, fact, or observable consequence. If a sentence only says that the
-  result should be rigorous, trustworthy, useful, or high quality, state what
-  produces that property or remove the sentence.
-- **Use a clear actor, verb, and object.** “The grader compares each output with
-  the approved criteria” is easier to execute than “Ensure robust assessment.”
-  Prefer ordinary verbs such as `read`, `inspect`, `compare`, `write`, `run`,
-  `check`, and `stop`.
+  artifacts, roles, and decisions plainly, then remove repetition without
+  substituting umbrella nouns or compressed policy language.
 - **Use familiar terms only when they carry stable behavior.** A word such as
   `audit` can replace repeated explanation when it reliably activates the same
-  method. Do not use `evidence`, `confidence`, `quality`, or another broad noun
-  as a substitute for naming the method.
-- **State the positive behavior.** Use prohibitions for real guardrails and
-  pair them with what the agent should do instead.
-- **Write at normal volume.** State requirements plainly. Reserve capitals,
-  `CRITICAL`, or stacked `must` for an instruction that an observed failure
-  shows is underweighted, and put the reason beside it. When several lines are
-  all marked critical, the markers stop carrying information. Write a real
-  requirement as a requirement: `try to`, `if possible`, and `ideally` read as
-  permission to skip it.
+  method. Broad nouns such as evidence, confidence, or quality do not name a
+  method.
+- **Pair each prohibition with the behavior to use instead,** and keep
+  prohibitions for real guardrails.
+- **Write at normal volume.** Reserve capitals, `CRITICAL`, or stacked `must`
+  for an instruction that an observed failure shows is underweighted, and put
+  the reason beside it. Current models overreact to emphatic language, and
+  when several lines are critical the markers stop carrying information. Write
+  a real requirement as a requirement: `try to`, `if possible`, and `ideally`
+  read as permission to skip it.
+- **Attach the reason to the rule** when it helps the agent choose between
+  plausible actions or understand a non-obvious constraint. The model
+  generalizes from the reason. A bare list makes every rule look equally
+  important, and its format may be copied into the output. Leave out reasons
+  that only advertise the value of following the instruction.
+- **Give one default.** Name the default path and when to depart from it
+  instead of offering equal alternatives.
+- **State each requirement directly.** Replace "you will be graded on" with
+  the requirements the grader checks.
+- **Specify output needs by audience.** When tone, length, or format affects
+  usefulness, describe the reader and the required result. Prefer "answer only
+  what the reader asked" to word counts, and keep an exact limit only when the
+  deliverable or a consumer sets one.
 - **Keep examples from becoming templates.** The target copies an example's
   length, tone, and structure. When an example teaches judgment, show
   contrasting cases and label them illustrative. Use a single exact example
   only when it pins a required format.
-- **Give one default.** Name the default path and when to depart from it
-  instead of offering a menu of equal alternatives.
-- **State the requirement, not the grader.** Replace “you will be graded on”
-  with each requirement the grader checks.
-- **Keep reasons attached to rules.** Explain why a rule matters when the
-  reason affects judgment. Make its priority clear. A bare list can make all
-  rules seem equally important, and its format may be copied into the output.
-  Use lists and tables for reference data, options, and checks. A behavioral
-  rule can use a bullet when the rule and its reason stay together.
-- **Explain why when it changes judgment.** Keep the reason when it helps the
-  agent choose between plausible actions, understand a non-obvious constraint,
-  or remember the method. Do not add reasons that merely advertise the value
-  of following the instruction.
-- **Check whether the sentence belongs here.** If it could appear unchanged
-  in unrelated skills, check whether it gives guidance this job needs. Make
-  the guidance specific or remove it when it adds nothing.
-- **Keep a natural voice.** Vary sentence rhythm and use examples for real
-  distinctions. Read changed prose aloud. If it sounds like rubric labels,
-  product copy, or institutional policy, rewrite the instruction rather than
-  decorating it.
+- **Make delegation conditional.** When parallel work benefits the recurring
+  job, state which independent work can go to subagents, how much, and who
+  integrates it. Keep simple work local and respect the host's agents and
+  authorization.
 
-### Prune without flattening the skill
+## Authority and stops
 
-- **Check what a sentence changes.** Ask what the agent would do differently
-  because it exists. Delete it only when it changes nothing and its removal
-  loses no useful explanation, emphasis, voice, or navigation.
-- **Account for the target model.** A workaround for an older model may now
-  constrain useful judgment. Preserve operational invariants; treat uncertain
-  behavioral benefits as hypotheses. Use a focused trial only when it would
-  materially change the decision and the active workflow permits it.
+- **Let user instructions override the skill.** Write requirements so the
+  user's explicit request wins. When a stop or limit protects something, name
+  what it protects, so an agent that must diverge from the request can name
+  the skill file, quote the instruction, and explain how it applies.
+- **Keep authorization concrete.** Continue work the request and session
+  already authorize. Ask only for missing decisions that materially affect the
+  result or for actions outside that scope, and prepare independent work
+  first. Avoid "stop for review after the first implementation" and approval
+  gates for reversible work.
+- **State what happens when the task cannot proceed normally.** Say whether
+  the agent asks, makes an assumption, preserves partial work, reports that it
+  found nothing, or stops.
+- **Leave routine verification to the agent.** Agents run relevant tests and
+  checks unprompted, and instructions to verify cause repeated testing. Name a
+  check only when the agent could not infer it: a specific script, a
+  known-fail case, or a required receipt. Keep explicit permission for
+  known-safe workflows the agent might otherwise hesitate to run.
+
+## Revise an existing skill
+
+Ask what the agent would do differently because a sentence exists. Delete it
+in full only when it changes nothing and its removal loses no useful
+explanation, emphasis, voice, or navigation. **Requirement:** compare the
+revision with the original and keep its selection criteria, permissions,
+required actions, exceptions, examples, output fields, and completion
+conditions. If the original meaning is unclear, resolve it from source or
+report the uncertainty; a paraphrase must not create new policy.
+
+- **Shorten structurally first.** Remove obsolete branches, duplicated
+  procedures, unnecessary templates, and unconditional ceremony before
+  rewriting good local prose. Leave clear prose and wording the user asked to
+  keep alone.
 - **Keep context only the author has.** Audience, environment facts, tool and
   script contracts, the quality bar, hard judgment calls, and the reasons
   behind constraints are not pruning targets. Prune restatements of what the
-  agent already does unprompted.
-- **Write current rules, not history.** Remove incident IDs, PR numbers,
-  past-tense narratives, and relative phrasing such as “now”, “no longer”, or
-  “also counts”; the agent never saw the earlier version. Keep a pinned
-  version, path, or flag only when the job depends on it, and check it against
-  the current environment.
+  agent already does.
+- **Account for the target model.** A workaround for an older model may now
+  constrain useful judgment. Preserve operational invariants and treat
+  uncertain behavioral benefits as hypotheses. Use a focused trial only when it
+  would change the decision and the active workflow permits it.
+- **Write current rules.** Remove incident IDs, PR numbers, past-tense
+  narratives, and relative phrasing such as "now", "no longer", or "also
+  counts"; the agent never saw the earlier version. Keep a pinned version,
+  path, or flag only when the job depends on it, and check it against the
+  current environment.
 - **Combine rules that address the same cause.** When several conditions each
-  address one past incident, state their shared principle or add the missing
-  context. Check that the revised rule still handles each original case.
-- **Delete unnecessary sentences in full.** Do not replace an unnecessary
-  sentence with a shorter, more abstract version.
-- **Preserve the method while pruning.** Keep the actions, artifacts, decision
-  rules, examples, and completion conditions that make the workflow
-  executable.
-- **Shorten structurally first.** Remove obsolete branches, duplicated
-  procedures, unnecessary templates, and unconditional ceremony before
-  rewriting good local prose.
-- **Do not use length as evidence.** A shorter skill is better only when it
-  preserves or improves the behavior, judgment, and writing quality that the
-  job requires.
+  answer one past incident, state their shared principle or add the missing
+  context, then check that the revised rule still handles each case.
 - **Use the environment as the source of truth.** Point to cheap authoritative
   sources such as configuration, schemas, directory structure, and `--help`.
   Keep the reason, convention, or failure pattern the environment cannot show.
+- **Account for every removal.** Before finishing, list each removed mode,
+  branch, decision rule, example, output field, and accepted passage, and
+  search the package and repository for references to it, including tests,
+  evaluations, docs, other skills, and scripts, then update or remove each one.
+- **Judge by behavior.** **Requirement:** a shorter skill counts as better
+  only when it preserves or improves capability, judgment, and writing
+  quality. Line count alone is not evidence.
 
-### Define what done means
+## Completion and evidence
 
-- **Define the finished result.** Specify the deliverable and necessary checks
-  without turning every routine action into a separate gate.
-- **Make completion clear and demanding.** The agent must be able to tell done
-  from not-done, and the condition should require all important work. “Every
-  changed caller is accounted for” drives more useful work than “review the
-  callers.”
+- **Define done up front.** Specify the deliverable so the agent can tell done
+  from not done, and make the condition cover all important work. "Every
+  changed caller is accounted for" drives more useful work than "review the
+  callers." For broad work, name the set that must be covered, such as every
+  selected file, finding, caller, or required field.
 - **Match proof to risk.** Open-ended work needs an outcome and decision
   criteria. Fragile work may need exact checks, scripts, or known-fail cases.
-- **Make broad work exhaustive where it matters.** Name the relevant set that
-  must be accounted for, such as every selected file, finding, caller, or
-  required field.
-- **State what happens when the task cannot proceed normally.** Say whether
-  the agent asks a question, makes an assumption, preserves partial work,
-  reports that it found nothing, or stops.
-- **Keep authorization concrete.** Continue work already authorized by the
-  request and session. Ask only for missing decisions that materially affect
-  the result or actions outside that scope; prepare independent work first.
-- **Bound verification.** Keep required checks and checks for meaningful risks.
-  After they pass, broaden or repeat them only for a new change, failure, or
-  unresolved concern.
-
-### Ground important decisions in evidence
-
-- **Trace important rules.** Support them with an explicit user requirement,
-  repository contract, accepted output, observed failure, or credible domain
-  source.
-- **Treat weak evidence as provisional.** A generated example or one unexplained
-  failure is usually a hypothesis, not a universal rule.
-- **Generalize only as far as the evidence allows.** Keep a narrow correction
-  narrow until repeated evidence supports a broader standard.
-- **Enforce checkable rules with checks.** When a script, schema, or validator
-  can enforce a rule, prefer it to prose; keep the prose for why and when.
-  Put lookups, scoring arithmetic, and fixed formatting in data files or
-  scripts, and leave the agent the judgment.
-- **Use checks that can catch a plausible error.** A failed check must change
-  the next action or the reported status.
-
-### Write knowledge-worker skills for the deliverable
-
-- **Start with the audience and decision.** Identify who will use the result,
-  what they need to decide or understand, and which sources control the answer.
-- **Keep setup proportional.** A knowledge worker should receive a trustworthy
-  result, not a report about the agent's process.
-- **Separate kinds of claims.** Distinguish sourced facts, calculations,
-  interpretations, assumptions, estimates, and unresolved gaps.
-- **Make important claims traceable.** Point to a source location, calculation,
-  or artifact a reader can inspect.
-- **State limitations that change the decision.** Omit generic disclaimers that
-  do not affect how the result should be used.
-
-## Rules
-
-### Write and review clear instructions
-
-Apply [Writing style](../../../references/writing-style.md) to every skill's
-instructions, descriptions, supporting references, and embedded prompts.
-Use its rules for procedures, evidence, explanation, and voice as the content
-requires. Exact meaning and required formats take priority over stylistic
-preferences.
-
-Before completion, review the prose as well as the skill's structure. Identify
-ambiguous actors, conditions, pronouns, term changes, hidden actions, and dense
-noun groups. For each defect, quote the wording, describe the possible
-misreading, and supply a concrete replacement. Do not accept a skill merely
-because it avoids a list of words or uses short sentences.
-
-Compare revised instructions with the originals. Preserve selection criteria,
-permissions, required actions, exceptions, examples, output fields, and
-completion conditions. If the original meaning is unclear, resolve it from
-source or report the uncertainty. Do not create policy through paraphrase.
-
-For a collection-wide rewrite, record every instructional file inspected and
-whether it changed, remained clear, or needs follow-up. Include supporting
-references and prompts outside `SKILL.md`. Keep this coverage record with the
-work's development evidence, outside the shipped skill.
-
-### Preserve existing skills deliberately
-
-- **Preserve accepted wording.** Keep language the user praised or asked to
-  retain exactly unless the requested behavior requires a change.
-- **Limit edits to the requested change.** Preserve unrelated behavior,
-  judgment, explanations, examples, output quality, and authorization limits.
-- **Account for every removal.** Before finishing, compare old and new source
-  and identify every removed mode, branch, decision rule, example, output field,
-  and accepted passage.
-- **Remove dependents with the text.** When removing an instruction, mode, or
-  name, search the package and repository for references to it, including
-  tests, evaluations, docs, other skills, and scripts that match its wording.
-  Update or remove each one.
-- **Do not use line count as evidence.** A shorter file is not better unless it
-  preserves or improves capability, judgment, and writing quality.
-- **Do not paraphrase for uniformity.** Leave clear prose alone when the edit
-  does not require it to change.
-
-### Keep discovery complete
-
-- **State the complete selection criteria in metadata.** The skill body
-  loads after selection, so it cannot correct a vague description or one that
-  overlaps another skill.
-- **Treat description edits as behavior changes.** Recheck matching requests,
-  similar requests that should not match, invocation mode, and related skills
-  whenever the description changes.
-- **Use real component names.** Do not document a skill, agent, tool, app, or
-  connector that the target package does not provide.
-
-### Keep one owner for each instruction
-
-- **Do not duplicate authoritative rules.** Link to the owner instead of
-  copying a second version that can drift.
-- **Make each resource reachable when needed.** Remove empty folders,
-  placeholder files, broken references, unused scripts, and assets that no
-  workflow uses.
-- **Keep development records outside the shipped skill.** Plans, research
-  notes, rejected drafts, source collections, run history, and private examples
-  belong with the maintainer's working files.
-- **Keep secrets and local state out of skills.** Use the host's supported
-  authentication, configuration, or state mechanism.
-- **Describe composition accurately.** Loading another skill adds instructions
-  to the current agent. Say to read, load, or apply that skill. Reserve
-  `handoff`, `pass`, and `give` for a real change of owner or context, such as a
-  subagent, another task, or an external system.
-
-### Prove the result honestly
-
-- **Verify the required result.** Creating a file or calling a tool alone
-  does not prove completion. Finish the remaining authorized work before
-  reporting success.
-- **Do not present structural validation as behavioral proof.** Syntax, file
-  existence, and schema checks prove structure only.
-- **Do not treat self-report as evidence.** Asking a model whether it needs an
-  instruction does not show what the instruction does. Use a behavioral trial
-  when a removal's effect is contested. If a removal regresses, restore the
-  minimal form rather than the verbose original.
-- **Test meaningful failures when they matter.** Run valid and failing inputs
-  for scripts or workflows whose failure handling is part of the contract.
-- **Act on validation results.** A failed check must change the next action
-  or the reported status.
-- **State remaining uncertainty.** Do not turn missing evidence into a confident
-  success claim.
-
-### Preserve user artifacts
-
-- **Keep original files unless the user requests in-place editing.** Work on a
-  copy when the artifact format or repository policy calls for one.
-- **Preserve unrequested structure.** Keep formulas, links, validations,
-  relationships, numbering, layouts, styles, fields, and editable objects
-  outside the requested change.
-- **Do not invent missing source material.** Ask, leave an explicit gap, or use
-  an authorized assumption.
-- **Inspect the actual deliverable.** Check content and non-visible structure.
-  Render and inspect visual artifacts when layout affects correctness.
+  For scripts or workflows whose failure handling is part of the contract,
+  exercise both valid and failing inputs.
+- **Requirement: report the result honestly.** Creating a file or calling a
+  tool does not prove completion. Syntax, file existence, and schema checks
+  prove structure only. A failed check must change the next action or the
+  reported status. State remaining uncertainty instead of turning missing
+  evidence into a success claim.
+- **Use behavior as evidence.** Asking a model whether it needs an instruction
+  does not show what the instruction does. Use a behavioral trial when a
+  removal's effect is contested; if it regresses, restore the minimal form
+  rather than the verbose original.
+- **Trace important rules** to an explicit user requirement, repository
+  contract, accepted output, observed failure, or credible domain source. Treat
+  a generated example or one unexplained failure as a hypothesis, and keep a
+  narrow correction narrow until repeated evidence supports a broader rule.

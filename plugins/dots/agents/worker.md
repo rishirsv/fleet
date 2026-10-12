@@ -1,6 +1,6 @@
 ---
 name: worker
-description: "Implement work within the assigned scope."
+description: "Implements a well-specified change within an assigned scope at medium effort. Use for routine edits and mechanical follow-through; use luna for hard or ambiguous work."
 model: inherit
 effort: medium
 disallowedTools: Agent

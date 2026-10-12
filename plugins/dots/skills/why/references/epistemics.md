@@ -2,9 +2,11 @@
 
 Use these rules to assess and communicate confidence in historical evidence. Keep uncertainty visible when records are incomplete or contradictory.
 
+Contents: [Confidence tiers](#confidence-tiers) · [Phrasing guide](#phrasing-guide) · [Check the user's hypothesis](#check-the-users-hypothesis) · [When evidence contradicts](#when-evidence-contradicts) · [When evidence is missing](#when-evidence-is-missing) · [Calibration check before finalizing](#calibration-check-before-finalizing)
+
 Code shows what it does. To establish why it exists, inspect commits, PRs, tickets, documents, and conversations. Those records can be incomplete, biased, or missing. Do not present an interpretation of code as recorded intent.
 
-## Confidence Tiers
+## Confidence tiers
 
 Every claim in the final output must have one of these confidence tiers. The tier determines which output section the claim goes in and how it's phrased.
 
@@ -50,7 +52,7 @@ Examples:
 - "This might be a workaround for a browser bug that's since been fixed, but we found no contemporary evidence of that."
 - "It's possible this threshold was chosen to match an SLA commitment, but no SLA doc references it."
 
-Phrasing: explicitly speculative. "One possibility is X, but we have no direct evidence." Usually lives in the "Competing Hypotheses" section alongside other possibilities.
+Phrasing: explicitly speculative. "One possibility is X, but we have no direct evidence." Usually lives in the "Competing hypotheses" section alongside other possibilities.
 
 ### 5. Unknown
 
@@ -58,7 +60,7 @@ You looked and couldn't find out. A valid and important outcome. Document it.
 
 Phrasing: "We searched X, Y, and Z and found no evidence of why." Be specific about *what* you searched. "We couldn't find out" is less useful than "we searched the ticket tracker with keywords A and B, scanned the 6 PRs that touched this file since 2023, and grep'd the repo for string literals matching the threshold; none surfaced a rationale."
 
-## Phrasing Guide
+## Phrasing guide
 
 ### Words that carry confidence. Use carefully
 
@@ -84,7 +86,7 @@ If you're using these, you should have a citation immediately adjacent.
 - "may have been"
 - "the evidence points toward"
 
-These signal that you're interpreting, not reporting. Use the phrase that matches the evidence in the "What We Can Reasonably Infer" section.
+These signal that you're interpreting, not reporting. Use the phrase that matches the evidence in the "What we can reasonably infer" section.
 
 ### Words to avoid
 
@@ -103,13 +105,13 @@ Do not:
 - Assume a consistent pattern across the codebase was intentional when it might be copy-paste
 - Turn an absence of evidence into evidence of absence ("no one mentioned security concerns, so it must not have been a concern")
 
-## Check The User's Hypothesis
+## Check the user's hypothesis
 
 Users often phrase `why` questions with an embedded hypothesis: "Why do we do it this way, I assume it's for performance?" Check that hypothesis against the evidence. Treat it as one candidate among others and check the evidence independently. If the evidence supports it, say so with citations; if not, say so and present what the evidence *does* support.
 
-The user's guess is a prompt for investigation, not a conclusion to validate.
+Treat the user's guess as a prompt for investigation.
 
-## When Evidence Contradicts
+## When evidence contradicts
 
 If two sources disagree (the PR description says one thing, the ticket says another), surface both. Do not discard a source because it conflicts with the proposed explanation. A typical pattern:
 
@@ -118,7 +120,7 @@ If two sources disagree (the PR description says one thing, the ticket says anot
 
 Both may be true (the ticket motivated the work, the PR is the author's framing of it), or one may be wrong. Present both with their citations so the user can assess the conflict.
 
-## When Evidence Is Missing
+## When evidence is missing
 
 An honest "we don't know" is one of the most valuable outputs this skill can produce. The user now knows:
 
@@ -134,11 +136,15 @@ When you hit a gap, name it concretely:
 - What you searched for in each
 - What you found (nothing, or only tangentially related material)
 
-## Calibration Check Before Finalizing
+## Calibration check before finalizing
 
-Before delivering the output, the synthesizer should review every claim in "What We Found" and "What We Can Reasonably Infer" and ask:
+Whoever writes the final answer, directly or as the synthesizer, reviews every claim in "What we found" and "What we can reasonably infer" before returning it:
 
-1. Does this claim have a citation? If not, either add one or move it to "Inferred" / "Hypotheses".
-2. Is the phrasing calibrated to the tier? (A Direct claim can use "because"; an Inferred claim cannot.)
-3. Am I treating the code itself as evidence for its own intent? If so, that's not evidence. Remove or reclassify.
-4. Does the output include a "What We Don't Know" section? If no gaps are mentioned, verify that the searched evidence answers every material question. Omit the section only when no material gap remains.
+1. Does this claim have a citation? If not, add one or move it to "Inferred" or "Competing hypotheses".
+2. Is the phrasing calibrated to the tier? A Direct claim can use "because"; an Inferred claim cannot. Do not state weakly supported claims with confidence.
+3. Does the answer treat the code itself as evidence for its own intent? Code shows behavior; it does not prove motivation. Remove or reclassify the claim.
+4. Are contradictions shown with both citations, instead of one side being quietly chosen?
+5. If the user embedded a hypothesis in the question, was it checked against the evidence?
+6. Does "What we do not know" name each material gap? Omit the section only when the searched evidence answers every material question; do not invent a gap to fill it.
+
+If any item fails, revise before returning.

@@ -1,6 +1,6 @@
 ---
 name: luna
-description: "Luna agent for independent work within an assigned scope. Does not delegate or coordinate other agents."
+description: "Works through a hard or ambiguous assigned task at maximum reasoning effort without delegating. Use for deep investigation or complex changes that need judgment; use worker for well-specified edits."
 model: inherit
 effort: max
 disallowedTools: Agent

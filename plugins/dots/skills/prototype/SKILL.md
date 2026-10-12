@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: "Builds an isolated throwaway prototype to resolve a specific behavioral, technical, interaction, timing, or visual choice through observation; not for production implementation or settled static HTML work."
+description: "Builds an isolated throwaway prototype that settles one behavioral, technical, interaction, timing, or visual choice by observation. Use when a choice needs evidence before production work; not for static HTML or open-ended UI direction."
 ---
 
 # Prototype
@@ -11,10 +11,9 @@ prototype code separate from code to merge.
 
 ## Name the decision
 
-State the question before building. Name the alternatives and what observation
-would distinguish them. If there is no choice that affects the work, return to Feature
-Development or `$ui-design`; a demonstration without a decision is not a
-prototype.
+Build a prototype only for a named decision. State the question before
+building, the alternatives, and the observation that would distinguish them. If
+no choice affects the work, return to Feature Development or `$ui-design`.
 
 Use a prototype instead of asking the user for a fact that can be observed by
 running or viewing something. The user still owns preferences and product
@@ -24,7 +23,7 @@ If the visual direction is undecided, inspect product references or earlier
 designs to identify different approaches. If the user or an accepted design
 source already fixes the direction, start building.
 
-## Choose The Smallest Experiment That Tests The Choice
+## Choose the smallest experiment that tests the choice
 
 - For state, logic, timing, algorithms, or an API shape, build the smallest
   script or interactive harness that exposes the relevant inputs, transitions,
@@ -42,17 +41,10 @@ For a technical interface, data shape, or module boundary, first identify the af
 and the rules the interface must preserve. Write two or three realistic
 caller examples before sketching types or signatures, then adjust the interface
 to support those examples. Exercise each viable candidate with the type checker or a
-minimal runnable caller when available. Compare each complete interface on:
-
-- how much complexity the public interface hides;
-- whether one component enforces each required rule and hides external
-  formats from its callers;
-- whether types prevent invalid states and retries reach a safe result;
-- how concurrent actors avoid unnecessary shared writes; and
-- how many layers a maintainer must cross to trace the behavior.
-
-Reject a candidate that mainly adds pass-through methods, exposes internal
-stages to callers, or splits one domain decision across modules. These checks
+minimal runnable caller when available. Reject a candidate that fails
+[Design red flags](../../references/design-red-flags.md). Also compare whether
+types prevent invalid states, retries reach a safe result, and concurrent
+actors avoid unnecessary shared writes. These checks
 apply only when the prototype is choosing a technical interface; do not impose an
 architecture exercise on a visual or timing question.
 
@@ -60,15 +52,14 @@ Place the work in the user-specified location or the repository's established
 prototype location. If neither exists, use a dedicated directory outside the
 repository. Keep it separate from production source. Use the lightest available
 stack, in-memory or disposable state, and only enough error handling to make
-the experiment reliable. Do not
-add production abstractions, compatibility layers, or tests for code meant to
-be discarded.
+the experiment reliable.
 
 ## Observe the decision
 
 Run the prototype on the surface that exposes the choice:
 
-- drive the interaction and capture each visual state;
+- drive the interaction and capture each visual state, following
+  [Visual proof](../../references/visual-proof.md);
 - print transitions and final state for behavioral questions;
 - measure the same fixed input for timing questions; or
 - exercise the caller for an interface or data-shape question.
@@ -79,6 +70,8 @@ the alternatives. If the experiment cannot distinguish them, change the experime
 or report the decision as unresolved.
 
 ## Return the answer
+
+Write the answer with [Writing style](../../references/writing-style.md).
 
 Report the question, variants, observations, tradeoffs, recommendation, and
 scratch path. Say plainly that the artifact is throwaway. Apply the selected

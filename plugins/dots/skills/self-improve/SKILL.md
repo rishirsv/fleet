@@ -1,13 +1,14 @@
 ---
 name: self-improve
-description: "Use only when the user selects `$self-improve` to learn from agent work, diagnose problems in workflows or agent tools, evaluate how they work with agents, or find durable improvements across Codex or Claude sessions. Not for static skill review, product fixes, or reconstructing context without improvement."
+description: "Diagnoses friction in agent work, workflows, skills, or instructions from Codex or Claude session evidence and proposes the smallest durable fix. Use only when the user selects `$self-improve`; not for usage reports."
 ---
 
-# Self-Improve
+# Self-improve
 
 Learn from agent work and turn supported findings into the smallest useful
 improvement. Use counts and helper output to find work that needs inspection;
 base conclusions on the conversation, tool calls, files, and observed outcome.
+For a report on how the user works with agents, use `$usage-insights`.
 
 ## Choose the route
 
@@ -21,10 +22,6 @@ history. Load only the selected branch:
 - **Repeated work or a named skill.** Read
   [thread-evidence.md](references/thread-evidence.md). For a named skill also
   read [skill-analytics.md](references/skill-analytics.md).
-- **User coaching or rating.** Read
-  [user-coaching.md](references/user-coaching.md). This route is report-only.
-- **Usage insights.** Read [insights-report.md](references/insights-report.md).
-  This route is report-only.
 
 When a route needs earlier tasks, read
 [Session history](../../references/session-history.md). Use the current host
@@ -42,9 +39,9 @@ the requested host differs from the current one.
    proof by itself.
 2. Separate observed causes from plausible explanations. Keep uncertainty when
    the evidence does not establish causation.
-3. Require repeated evidence only when generalizing beyond the task. One task
-   can support a narrow correction to that task or an exact durable behavior the
-   user explicitly requests.
+3. Before generalizing beyond one task, read
+   [thread-evidence.md](references/thread-evidence.md) and apply its
+   generalization gate.
 
 Compare the actual actions with the shortest sequence the available evidence
 justifies while preserving discoveries that affected the result. State what
@@ -53,48 +50,31 @@ useful next action. A valid result may find no reusable lesson.
 
 For repeated work, choose a fixed set of sessions before reviewing them.
 Deduplicate retries and delegated children under the parent session, inspect
-examples of success and problems, preserve contradictions, and use the
-generalization gate in [thread-evidence.md](references/thread-evidence.md).
+examples of success and problems, and preserve contradictions.
 
-For a supported recurring code or harness mistake, use the enforcement order
-below. Keep the evidence requirements above and edit authorization below.
-
-## Fix each class at the highest level that works
-
-Read the repo's own check command first (its `package.json`/build-tool
-`lint`/`check` scripts, its CI workflow), so a check that already exists but sits
-unwired or silently broken is the finding, not a reinvention. Inspect pre-commit
-hooks too. Distinguish a missing or broken check from an agent failing to run an
-available check, and repair existing enforcement before adding another check.
-
-A repo with no guardrail (no pre-commit hook and no CI job running its
-lint/typecheck/test command) is itself a finding. Report that missing protection
-without claiming it caused a failure the evidence does not establish.
-
-1. **Eliminate it with architecture.** Give each piece of state one owner and each task one supported way. Hide internals so the wrong import fails. Replace hand-synced lists with one source of truth. Delete old ways and dead code an agent would copy.
-2. **Enforce it with types so the bad state can't be written.** If bad code still compiles, add a lint or CI check whose error names the file, type, or function to use instead. If the pattern is already common, fail only when a change adds more.
-3. **Test the behavior.** Fix or delete any test that would still pass if every function it calls returned nothing.
-4. **Write docs or agent rules last, only for judgment calls.** Nothing fails when an agent skips them.
-
-Prove each new check fails on a real past mistake. Run the same command locally and in CI.
+For a supported recurring code or harness mistake, read
+[enforcement.md](references/enforcement.md) and
+[Design red flags](../../references/design-red-flags.md), then fix the class at
+the highest level that works.
 
 ## Propose or apply improvements
+
+Write proposals, edited instructions, and the report with [Writing style](../../references/writing-style.md).
 
 For a durable change, name the behavior, the component most directly responsible
 for it, the smallest change, and how to verify it. For each mistake class,
 include its evidence, the enforcement level you picked, and why a higher level
 didn't work or would require disproportionate change. Present candidates in
 order of severity, using recurrence and strength of evidence to prioritize
-findings with similar impact. Include a counterexample or
-uncertainty only when it could change the decision. Read
-[instructions.md](references/instructions.md) only for proposals targeting
-`AGENTS.md`, `CLAUDE.md`, `.claude/rules/*.md`, or review standards, or when a
-correction repeats an existing rule.
+findings with similar impact. Include a counterexample or uncertainty only when
+it could change the decision. Read [instructions.md](references/instructions.md)
+only for proposals targeting `AGENTS.md`, `CLAUDE.md`, `.claude/rules/*.md`, or
+review standards, or when a correction repeats an existing rule.
 
-Do not edit until the user approves a concrete proposal unless the original
-request already authorized implementation. Approval does not expand ownership:
-apply changes through the owning workflow. Report-only routes never edit, and
-generated memory stores are never edited directly.
+When the request already asks for fixes, apply supported changes within that
+scope. Otherwise present the concrete proposal and apply it once the user
+agrees. Make changes through the owning workflow, and propose generated-memory
+changes for the user to review instead of editing memory stores directly.
 
 Lead with the conclusion. Include only the evidence and coverage needed to
 judge it.

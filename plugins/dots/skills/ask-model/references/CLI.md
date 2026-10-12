@@ -5,6 +5,11 @@ the configured model at medium effort. Pass a prompt that contains all necessary
 task context as the final argument. For a long or multiline prompt, write it to
 a temporary `.txt` file outside the repository and pass it on stdin.
 
+Contents: [Models and effort](#models-and-effort) ·
+[Session lifecycle](#session-lifecycle) · [Claude](#claude) · [Codex](#codex) ·
+[Muse Spark profile](#muse-spark-profile) · [Prompt files](#prompt-files) ·
+[Follow up](#follow-up)
+
 ## Models and effort
 
 | Request | CLI model | Effort levels |
@@ -55,23 +60,24 @@ follow-up.
 ```sh
 codex exec -C /absolute/path/to/repo -m gpt-6-astra \
   -c 'model_reasoning_effort="medium"' -c 'approval_policy="never"' \
-  --sandbox workspace-write --json "<self-contained prompt>"
+  --sandbox workspace-write --json "<self-contained prompt>" < /dev/null
 ```
 
 Use `--sandbox read-only --ephemeral` for review and consultation. For
 unrestricted execution, replace the sandbox and approval settings with
 `--dangerously-bypass-approvals-and-sandbox` and disclose the broader access.
 The `thread.started.thread_id` event contains the exact session ID; the final
-response is the `agent_message` item. Resume it explicitly and restate the
-original model, effort, approval, and sandbox configuration:
+response is the `agent_message` item.
 
-```sh
-cd /absolute/path/to/repo
-codex exec resume -m gpt-6-astra \
-  -c 'model_reasoning_effort="medium"' -c 'approval_policy="never"' \
-  -c 'sandbox_mode="workspace-write"' --json <session-id> \
-  "<focused follow-up prompt>"
-```
+`codex exec` also reads stdin when it is not a terminal, so a positional-prompt
+launch from a background shell can block on "Reading additional input from
+stdin". Redirect stdin from `/dev/null` as shown, or from the prompt file. A
+headless run in a directory Codex has not trusted, such as a new worktree, can
+wait on a trust prompt nobody sees; trust the path first under
+`[projects."<path>"]` with `trust_level = "trusted"` in
+`$CODEX_HOME/config.toml`. If a background run emits no `thread.started` event
+within about three minutes, treat it as stalled: stop it, fix stdin or trust,
+and relaunch.
 
 ## Muse Spark profile
 
@@ -83,25 +89,12 @@ profile provides valid settings that disable MCP transports, so no extra `-c mcp
 ```sh
 codex -p muse exec --ephemeral -C /absolute/path/to/repo \
   -c 'model_reasoning_effort="xhigh"' -c 'approval_policy="never"' \
-  --sandbox read-only --json "<self-contained prompt>"
+  --sandbox read-only --json "<self-contained prompt>" < /dev/null
 ```
 
 For implementation, drop `--ephemeral` and change `--sandbox` to
-`workspace-write`. Record `thread.started.thread_id` from the launch. Because
-`exec resume` does not accept `-C`, change to the same repository and invoke the
-same profile under the same `CODEX_HOME` with that explicit ID:
-
-```sh
-cd /absolute/path/to/repo
-codex -p muse exec resume \
-  -c 'model_reasoning_effort="xhigh"' -c 'approval_policy="never"' \
-  -c 'sandbox_mode="workspace-write"' --json <session-id> \
-  "<focused follow-up prompt>"
-```
-
-Keep `-p muse` before `exec` and do not use `--last`. A successful resume emits
-the requested ID again in `thread.started.thread_id`. Archive it when done with
-`codex -p muse archive <session-id>`.
+`workspace-write`. Keep `-p muse` before `exec` on every launch, resume, and
+archive.
 
 ## Prompt files
 
@@ -111,14 +104,33 @@ For a long prompt, keep the selected flags and redirect stdin. Claude uses
 ## Follow up
 
 Resume the original session when implementation is incomplete or a focused
-correction is required. Preserve its model, effort, access, profile, home, and
-repository. For a Fable implementation launched above:
+correction is required. Resume by the explicit session ID, never `--last`, and
+restate the original model, effort, access, profile, `CODEX_HOME`, and
+repository. `codex exec resume` does not accept `-C`, so change to the same
+repository first. A successful Codex resume emits the requested ID again in
+`thread.started.thread_id`.
 
 ```sh
+cd /absolute/path/to/repo
+
+# Claude (Fable implementation launched above)
 claude -p --resume <session-id> --model fable --effort medium \
   --dangerously-skip-permissions --output-format json \
   "<focused follow-up prompt>"
+
+# Codex
+codex exec resume -m gpt-6-astra \
+  -c 'model_reasoning_effort="medium"' -c 'approval_policy="never"' \
+  -c 'sandbox_mode="workspace-write"' --json <session-id> \
+  "<focused follow-up prompt>" < /dev/null
+
+# Muse Spark
+codex -p muse exec resume \
+  -c 'model_reasoning_effort="xhigh"' -c 'approval_policy="never"' \
+  -c 'sandbox_mode="workspace-write"' --json <session-id> \
+  "<focused follow-up prompt>" < /dev/null
 ```
 
 A persisted read-only Claude run repeats its original `--tools` restriction
-instead of the bypass flag.
+instead of the bypass flag. Archive a finished Muse run with
+`codex -p muse archive <session-id>`.

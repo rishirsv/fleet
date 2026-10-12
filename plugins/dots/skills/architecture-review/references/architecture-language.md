@@ -1,6 +1,6 @@
-# Architecture Language
+# Architecture language
 
-Read this before naming architecture problems or recommendations. Use these
+Use these
 terms when they make a finding more precise. Preserve repository-native words
 such as component, service, API, package, crate, or boundary when those are the
 names maintainers already use; explain the relationship to the terms below

@@ -1,8 +1,9 @@
-# Workflow and Harness Audit
+# Workflow and harness audit
 
-Read this when the user asks about workflow friction, slow testing, a better
-route through the work, agent-experienced friction, or harness engineering.
-Inspect only the aspects selected by the prompt.
+Contents: cost of the actual path, testing and validation cost, actual versus
+better path, agent-experienced friction, harness engineering, finding contract.
+
+Inspect only the aspects the prompt selects.
 
 ## Compare the cost of the actual path
 
@@ -82,7 +83,6 @@ information access:
 
 Add a focused pointer when the information exists but is hard to find. Propose
 logs, diagnostics, or read access when the environment does not expose it.
-Apply the parent skill's edit authorization before changing access or tooling.
 
 Separate two claim types:
 

@@ -11,44 +11,49 @@
 
 :root {
   --background: #fbfbfa;
-  --foreground: #0d0d0d;
-  --accent: #1f5eff;
-  --accent-deep: #12379e;
+  --foreground: #111113;
+  --surface: #ffffff;
+  --accent: #2459f5;
+  --accent-deep: #163aa8;
+  --accent-soft: rgba(36,89,245,0.05);
+  --accent-line: rgba(36,89,245,0.26);
   --warning-ink: #6b4c00;
   --warning-line: rgba(180,130,0,0.35);
   --warning-bg: rgba(255,178,0,0.06);
   --danger-ink: #8c1d18;
   --danger-line: rgba(200,60,50,0.35);
   --danger-bg: rgba(220,70,60,0.05);
-  --code-surface: #0d0d0d;
-  --code-ink: #ededed;
-  --a4: rgba(13, 13, 13, 0.04);
-  --a8: rgba(13, 13, 13, 0.08);
-  --a12: rgba(13, 13, 13, 0.12);
-  --a20: rgba(13, 13, 13, 0.20);
-  --a40: rgba(13, 13, 13, 0.40);
-  --a55: rgba(13, 13, 13, 0.55);
-  --a60: rgba(13, 13, 13, 0.60);
-  --a70: rgba(13, 13, 13, 0.70);
+  --code-surface: #121214;
+  --code-ink: #e8e8ea;
+  --shadow-sm: 0 1px 2px rgba(17,17,19,0.04), 0 1px 1px rgba(17,17,19,0.03);
+  --shadow-md: 0 1px 2px rgba(17,17,19,0.05), 0 6px 16px -4px rgba(17,17,19,0.10);
+  --a4: rgba(17, 17, 19, 0.04);
+  --a8: rgba(17, 17, 19, 0.08);
+  --a12: rgba(17, 17, 19, 0.12);
+  --a20: rgba(17, 17, 19, 0.20);
+  --a40: rgba(17, 17, 19, 0.40);
+  --a55: rgba(17, 17, 19, 0.55);
+  --a60: rgba(17, 17, 19, 0.60);
+  --a70: rgba(17, 17, 19, 0.70);
   --text-muted: var(--a60);
-  --font-sans: -apple-system, Helvetica Neue, Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, SF Mono, Menlo, monospace;
-  --font-display: -apple-system, Helvetica Neue, Arial, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, Segoe UI Variable Text, Segoe UI, Helvetica Neue, Arial, sans-serif;
+  --font-mono: ui-monospace, SF Mono, SFMono-Regular, JetBrains Mono, Menlo, Consolas, monospace;
+  --font-display: -apple-system, BlinkMacSystemFont, Segoe UI Variable Display, Segoe UI, Helvetica Neue, Arial, sans-serif;
   --display-tracking: 1;
   --article: 900px;
   --wide: 1040px;
   --canvas: 1440px;
   --section: 48px;
   --block: 16px;
-  --r-card: 6px;
-  --r-code: 6px;
-  --r-inline: 4px;
-  --r-pill: 6px;
+  --r-card: 10px;
+  --r-code: 10px;
+  --r-inline: 5px;
+  --r-pill: 999px;
   --r-bubble: 18px;
-  --dur-fast: 150ms;
-  --dur-reveal: 400ms;
-  --ease: cubic-bezier(0.2, 0, 0, 1);
-  --stagger: 60ms;
+  --dur-fast: 180ms;
+  --dur-reveal: 640ms;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --stagger: 55ms;
   --chart-emphasis: var(--accent);
   --chart-value-emphasis: var(--accent-deep);
   --chart-pos: var(--a40);
@@ -62,9 +67,12 @@
 
 [data-theme="dark"] {
   --background: #0f0f0e;
-  --foreground: #f5f5f4;
-  --accent: #6f94ff;
-  --accent-deep: #b7c9ff;
+  --foreground: #f3f3f1;
+  --surface: #171716;
+  --accent: #7c9dff;
+  --accent-deep: #bccbff;
+  --accent-soft: rgba(124,157,255,0.10);
+  --accent-line: rgba(124,157,255,0.38);
   --warning-ink: #f2c14e;
   --warning-line: rgba(255,193,77,0.35);
   --warning-bg: rgba(255,193,77,0.08);
@@ -72,23 +80,28 @@
   --danger-line: rgba(255,120,110,0.35);
   --danger-bg: rgba(255,120,110,0.07);
   --code-surface: #161615;
-  --code-ink: #ededed;
-  --a4: rgba(245, 245, 244, 0.04);
-  --a8: rgba(245, 245, 244, 0.08);
-  --a12: rgba(245, 245, 244, 0.12);
-  --a20: rgba(245, 245, 244, 0.20);
-  --a40: rgba(245, 245, 244, 0.40);
-  --a55: rgba(245, 245, 244, 0.55);
-  --a60: rgba(245, 245, 244, 0.60);
-  --a70: rgba(245, 245, 244, 0.70);
+  --code-ink: #e8e8ea;
+  --shadow-sm: 0 0 0 1px rgba(255,255,255,0.02);
+  --shadow-md: 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px -8px rgba(0,0,0,0.6);
+  --a4: rgba(243, 243, 241, 0.04);
+  --a8: rgba(243, 243, 241, 0.08);
+  --a12: rgba(243, 243, 241, 0.12);
+  --a20: rgba(243, 243, 241, 0.20);
+  --a40: rgba(243, 243, 241, 0.40);
+  --a55: rgba(243, 243, 241, 0.55);
+  --a60: rgba(243, 243, 241, 0.60);
+  --a70: rgba(243, 243, 241, 0.70);
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme]) {
     --background: #0f0f0e;
-    --foreground: #f5f5f4;
-    --accent: #6f94ff;
-    --accent-deep: #b7c9ff;
+    --foreground: #f3f3f1;
+    --surface: #171716;
+    --accent: #7c9dff;
+    --accent-deep: #bccbff;
+    --accent-soft: rgba(124,157,255,0.10);
+    --accent-line: rgba(124,157,255,0.38);
     --warning-ink: #f2c14e;
     --warning-line: rgba(255,193,77,0.35);
     --warning-bg: rgba(255,193,77,0.08);
@@ -96,15 +109,17 @@
     --danger-line: rgba(255,120,110,0.35);
     --danger-bg: rgba(255,120,110,0.07);
     --code-surface: #161615;
-    --code-ink: #ededed;
-    --a4: rgba(245, 245, 244, 0.04);
-    --a8: rgba(245, 245, 244, 0.08);
-    --a12: rgba(245, 245, 244, 0.12);
-    --a20: rgba(245, 245, 244, 0.20);
-    --a40: rgba(245, 245, 244, 0.40);
-    --a55: rgba(245, 245, 244, 0.55);
-    --a60: rgba(245, 245, 244, 0.60);
-    --a70: rgba(245, 245, 244, 0.70);
+    --code-ink: #e8e8ea;
+    --shadow-sm: 0 0 0 1px rgba(255,255,255,0.02);
+    --shadow-md: 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px -8px rgba(0,0,0,0.6);
+    --a4: rgba(243, 243, 241, 0.04);
+    --a8: rgba(243, 243, 241, 0.08);
+    --a12: rgba(243, 243, 241, 0.12);
+    --a20: rgba(243, 243, 241, 0.20);
+    --a40: rgba(243, 243, 241, 0.40);
+    --a55: rgba(243, 243, 241, 0.55);
+    --a60: rgba(243, 243, 241, 0.60);
+    --a70: rgba(243, 243, 241, 0.70);
   }
 }
 
@@ -112,16 +127,21 @@
 [data-tone="personal"] {
   --background: #f7f2ec;
   --foreground: #2b2320;
+  --surface: #fffcf8;
   --accent: #0866d6;
   --accent-deep: #0a4fa3;
+  --accent-soft: rgba(8,102,214,0.05);
+  --accent-line: rgba(8,102,214,0.30);
   --warning-ink: #6b4c00;
   --warning-line: rgba(180,130,0,0.35);
   --warning-bg: rgba(255,178,0,0.06);
   --danger-ink: #9c3148;
   --danger-line: rgba(180,72,93,0.30);
   --danger-bg: rgba(180,72,93,0.06);
-  --code-surface: #0d0d0d;
-  --code-ink: #ededed;
+  --code-surface: #121214;
+  --code-ink: #e8e8ea;
+  --shadow-sm: 0 1px 2px rgba(17,17,19,0.04), 0 1px 1px rgba(17,17,19,0.03);
+  --shadow-md: 0 1px 2px rgba(17,17,19,0.05), 0 6px 16px -4px rgba(17,17,19,0.10);
   --a4: rgba(43, 35, 32, 0.04);
   --a8: rgba(43, 35, 32, 0.08);
   --a12: rgba(43, 35, 32, 0.12);
@@ -139,8 +159,11 @@
 [data-tone="personal"][data-theme="dark"] {
   --background: #171412;
   --foreground: #f2ebe4;
+  --surface: #1e1a17;
   --accent: #4ea1ff;
   --accent-deep: #a9d0ff;
+  --accent-soft: rgba(78,161,255,0.10);
+  --accent-line: rgba(78,161,255,0.38);
   --warning-ink: #f2c14e;
   --warning-line: rgba(255,193,77,0.35);
   --warning-bg: rgba(255,193,77,0.08);
@@ -148,7 +171,9 @@
   --danger-line: rgba(234,138,155,0.30);
   --danger-bg: rgba(234,138,155,0.08);
   --code-surface: #161615;
-  --code-ink: #ededed;
+  --code-ink: #e8e8ea;
+  --shadow-sm: 0 0 0 1px rgba(255,255,255,0.02);
+  --shadow-md: 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px -8px rgba(0,0,0,0.6);
   --a4: rgba(242, 235, 228, 0.04);
   --a8: rgba(242, 235, 228, 0.08);
   --a12: rgba(242, 235, 228, 0.12);
@@ -163,8 +188,11 @@
   :root[data-tone="personal"]:not([data-theme]) {
     --background: #171412;
     --foreground: #f2ebe4;
+    --surface: #1e1a17;
     --accent: #4ea1ff;
     --accent-deep: #a9d0ff;
+    --accent-soft: rgba(78,161,255,0.10);
+    --accent-line: rgba(78,161,255,0.38);
     --warning-ink: #f2c14e;
     --warning-line: rgba(255,193,77,0.35);
     --warning-bg: rgba(255,193,77,0.08);
@@ -172,7 +200,9 @@
     --danger-line: rgba(234,138,155,0.30);
     --danger-bg: rgba(234,138,155,0.08);
     --code-surface: #161615;
-    --code-ink: #ededed;
+    --code-ink: #e8e8ea;
+    --shadow-sm: 0 0 0 1px rgba(255,255,255,0.02);
+    --shadow-md: 0 0 0 1px rgba(255,255,255,0.03), 0 8px 24px -8px rgba(0,0,0,0.6);
     --a4: rgba(242, 235, 228, 0.04);
     --a8: rgba(242, 235, 228, 0.08);
     --a12: rgba(242, 235, 228, 0.12);
@@ -190,17 +220,28 @@
 
 html, body { margin: 0; padding: 0; overflow-x: clip; }
 
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   font-size: 15px;
-  line-height: 1.7;
+  line-height: 1.65;
+  font-optical-sizing: auto;
+  font-kerning: normal;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+  text-decoration-color: transparent;
+}
+a:hover { text-decoration-color: currentColor; }
 
 :focus-visible {
   outline: 2px solid var(--accent);
@@ -208,14 +249,14 @@ a:hover { text-decoration: underline; }
   border-radius: var(--r-inline);
 }
 
-::selection { background: var(--a12); }
+::selection { background: var(--accent-soft); background: color-mix(in srgb, var(--accent) 22%, transparent); }
 
 h1 {
   font-family: var(--font-display);
-  font-size: 40px;
+  font-size: 42px;
   line-height: 48px;
-  letter-spacing: calc(-2.4px * var(--display-tracking));
-  font-weight: 600;
+  letter-spacing: calc(-1.35px * var(--display-tracking));
+  font-weight: 650;
   margin: 0;
   text-wrap: balance;
 }
@@ -224,7 +265,7 @@ h1 {
   h1 {
     font-size: 32px;
     line-height: 38px;
-    letter-spacing: calc(-1.5px * var(--display-tracking));
+    letter-spacing: calc(-0.9px * var(--display-tracking));
   }
 }
 
@@ -232,9 +273,9 @@ h2 {
   font-family: var(--font-display);
   font-size: 24px;
   line-height: 32px;
-  letter-spacing: calc(-0.96px * var(--display-tracking));
-  font-weight: 600;
-  margin: 0 0 16px;
+  letter-spacing: calc(-0.55px * var(--display-tracking));
+  font-weight: 620;
+  margin: 0 0 14px;
   text-wrap: balance;
 }
 
@@ -242,49 +283,71 @@ h3 {
   font-family: var(--font-display);
   font-size: 16px;
   line-height: 24px;
-  letter-spacing: calc(-0.32px * var(--display-tracking));
+  letter-spacing: calc(-0.18px * var(--display-tracking));
   font-weight: 600;
-  margin: 0 0 12px;
+  margin: 0 0 10px;
+  text-wrap: balance;
 }
 
-p { margin: 0 0 var(--block); }
+p { margin: 0 0 var(--block); text-wrap: pretty; }
 p:last-child { margin-bottom: 0; }
 
-section { margin-bottom: var(--section); }
+strong, b { font-weight: 620; }
+
+section { margin-bottom: var(--section); scroll-margin-top: 24px; }
 
 code {
   font-family: var(--font-mono);
-  font-size: 13px;
+  font-size: 0.87em;
   background: var(--a4);
+  box-shadow: inset 0 0 0 1px var(--a8);
   border-radius: var(--r-inline);
-  padding: 1px 5px;
+  padding: 0.1em 0.38em;
+}
+
+kbd {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  padding: 0.08em 0.42em;
+  border-radius: var(--r-inline);
+  background: var(--surface);
+  box-shadow: inset 0 -1px 0 var(--a20), 0 0 0 1px var(--a12);
 }
 
 pre { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 100%; }
-pre code { background: none; padding: 0; white-space: inherit; overflow-wrap: inherit; }
+pre code { background: none; box-shadow: none; padding: 0; font-size: inherit; white-space: inherit; overflow-wrap: inherit; }
+
+hr { border: 0; border-top: 1px solid var(--a12); margin: var(--section) 0; }
 
 table {
   width: 100%;
   border-collapse: collapse;
   font-size: 14px;
-  border-top: 1px solid var(--a20);
+  font-variant-numeric: tabular-nums;
 }
 
 th, td {
   text-align: left;
-  padding: 12px 4px;
-  border-bottom: 1px solid var(--a12);
+  padding: 11px 12px;
+  border-bottom: 1px solid var(--a8);
   vertical-align: top;
 }
 
+th:first-child, td:first-child { padding-left: 4px; }
+th:last-child, td:last-child { padding-right: 4px; }
+
 thead th {
   font-size: 12px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 560;
+  border-bottom: 1px solid var(--a20);
+  white-space: nowrap;
 }
 
-tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
+tbody tr { transition: background-color var(--dur-fast) var(--ease); }
+tbody tr:hover { background: var(--a4); }
+tbody tr:last-child td { border-bottom: 1px solid var(--a12); }
 
 .num { font-variant-numeric: tabular-nums; }
 
@@ -296,40 +359,59 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
 @media (prefers-reduced-motion: no-preference) {
   html.js-motion .stagger > * {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(10px);
+    filter: blur(4px);
     animation: rise var(--dur-reveal) var(--ease) forwards;
   }
-  html.js-motion .stagger > *:nth-child(1) { animation-delay: 0ms; }
   html.js-motion .stagger > *:nth-child(2) { animation-delay: var(--stagger); }
   html.js-motion .stagger > *:nth-child(3) { animation-delay: calc(var(--stagger) * 2); }
   html.js-motion .stagger > *:nth-child(4) { animation-delay: calc(var(--stagger) * 3); }
   html.js-motion .stagger > *:nth-child(5) { animation-delay: calc(var(--stagger) * 4); }
+  html.js-motion .stagger > *:nth-child(6) { animation-delay: calc(var(--stagger) * 5); }
+  html.js-motion .stagger > *:nth-child(n+7) { animation-delay: calc(var(--stagger) * 6); }
 
   html.js-motion .reveal {
     opacity: 0;
-    transform: translateY(8px);
-    transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
+    transform: translateY(12px);
+    filter: blur(4px);
+    transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease), filter var(--dur-reveal) var(--ease);
   }
-  html.js-motion .reveal.is-in { opacity: 1; transform: none; }
+  html.js-motion .reveal.is-in { opacity: 1; transform: none; filter: none; }
 
   html.js-motion .reveal .bar-fill {
     transform: scaleX(0);
     transform-origin: left;
-    transition: transform calc(var(--dur-reveal) * 1.5) var(--ease) 120ms;
+    transition: transform calc(var(--dur-reveal) * 1.6) var(--ease) 140ms;
   }
   html.js-motion .reveal.is-in .bar-fill { transform: scaleX(1); }
 
-  a, summary, button { transition: color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease); }
+  a, summary, button, select, input, textarea {
+    transition: color var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease),
+      text-decoration-color var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);
+  }
+  button:active:not(:disabled) { transform: scale(0.97); }
+
+  /* Smoothly open native disclosures where the browser supports it. */
+  :root { interpolate-size: allow-keywords; }
+  details::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition: block-size var(--dur-reveal) var(--ease), content-visibility var(--dur-reveal) allow-discrete;
+  }
+  details[open]::details-content { block-size: auto; }
+
+  ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 320ms; }
 }
 
 @keyframes rise {
-  to { opacity: 1; transform: none; }
+  to { opacity: 1; transform: none; filter: none; }
 }
 
 .page {
     max-width: var(--article);
     margin: 0 auto;
-    padding: 64px 24px 96px;
+    padding: 72px 24px 104px;
   }
   .page[data-layout="wide"] { max-width: var(--wide); }
   .page[data-layout="canvas"] { max-width: var(--canvas); }
@@ -337,19 +419,29 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
   .page[data-layout="article"] .reading-column,
   .page[data-layout="wide"] .reading-column { margin-right: auto; }
   .page[data-layout="canvas"] .reading-column { margin-left: auto; margin-right: auto; }
-  .page > header { margin-bottom: var(--section); }
-  .title-row {
-    margin-bottom: 8px;
+  .page > header { margin-bottom: calc(var(--section) + 8px); }
+  .title-row { margin-bottom: 14px; }
+  .page section > p { max-width: 72ch; }
+  .dek {
+    font-size: 18px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    color: var(--a70);
+    margin: 0;
+    max-width: 60ch;
+    text-wrap: pretty;
   }
-  .page section > p { max-width: 75ch; }
-  .dek { font-size: 16px; color: var(--text-muted); margin: 0; max-width: 62ch; }
   footer.sources {
-    margin-top: 64px; padding-top: 24px; border-top: 1px solid var(--a12);
-    font-size: 12px; color: var(--text-muted); line-height: 1.7;
+    margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--a12);
+    font-size: 12.5px; color: var(--text-muted); line-height: 1.7;
   }
-  footer.sources a { color: var(--text-muted); }
+  footer.sources ul, footer.sources ol { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 4px 16px; }
+  footer.sources p { margin-bottom: 6px; }
+  footer.sources a { color: var(--text-muted); text-decoration-color: var(--a20); }
+  footer.sources a:hover { color: var(--foreground); text-decoration-color: currentColor; }
   @media (max-width: 680px) {
-    .page { padding: 40px 24px 72px; }
+    .page { padding: 44px 20px 80px; }
+    .dek { font-size: 16.5px; }
   }
 
 .doc-tools { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-block: 12px; }
@@ -425,34 +517,36 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
 .plan-review .review-toolbar button { font-size: 13px; padding: 8px 12px; min-height: 44px; }
 .review-toolbar [data-review-response] { display: flex; align-items: center; gap: 8px; }
 .review-toolbar [data-review-count] { font-size: 11px; line-height: 1; padding: 4px 6px; border-radius: var(--r-inline); background: var(--a12); }
-.plan-review button, .plan-review select { font: inherit; font-size: 14px; color: var(--foreground); background: var(--background); border: 1px solid var(--a20); border-radius: var(--r-card); padding: 10px 14px; min-height: 44px; cursor: pointer; }
-.plan-review button:hover { background: var(--a4); }
-.plan-review [data-review-response], .plan-review [data-review-copy] { background: var(--accent); border-color: var(--accent); color: var(--background); }
+.plan-review button, .plan-review select { font: inherit; font-size: 14px; font-weight: 500; color: var(--foreground); background: var(--surface); border: 1px solid var(--a20); border-radius: var(--r-card); padding: 10px 14px; min-height: 44px; cursor: pointer; box-shadow: var(--shadow-sm); }
+.plan-review button:hover { background: var(--a4); border-color: var(--a40); }
+.plan-review [data-review-response], .plan-review [data-review-copy] { background: var(--accent); border-color: var(--accent); color: var(--background); box-shadow: var(--shadow-md); }
+.plan-review [data-review-response]:hover, .plan-review [data-review-copy]:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
 .plan-review :is(button,input,textarea,select,summary):focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .plan-review label { display: block; font-size: 14px; font-weight: 500; }
 .plan-review textarea, .plan-review select { display: block; width: 100%; margin-block: 8px 16px; box-sizing: border-box; }
-.plan-review textarea { padding: 12px; border: 1px solid var(--a20); border-radius: var(--r-card); background: var(--background); color: var(--foreground); font: inherit; font-size: 15px; line-height: 1.5; resize: vertical; }
-.review-save { font-size: 13px; color: var(--text-muted); min-height: 1em; }
+.plan-review textarea { padding: 12px; border: 1px solid var(--a20); border-radius: var(--r-card); background: var(--surface); color: var(--foreground); font: inherit; font-size: 15px; line-height: 1.5; resize: vertical; }
+.review-save { font-size: 13px; color: var(--text-muted); min-height: 1em; margin: 10px 0 var(--block); }
 .review-point { margin-block: var(--review-gap); padding: 24px 0; border: 0; border-top: 1px solid var(--a12); scroll-margin-top: 100px; }
-.review-point > h3 { font-size: 24px; letter-spacing: -.03em; margin: 0; }
+.review-point > h3 { font-size: 24px; letter-spacing: -.02em; margin: 0 0 10px; }
 .review-point > p { max-width: 75ch; }
 .review-summary { font-size: 18px; line-height: 1.5; max-width: 62ch; }
 .review-notes { border-top: 1px solid var(--a12); padding-top: 12px; margin-top: 24px; }
 .review-notes summary { cursor: pointer; font-size: 14px; min-height: 32px; }
 .review-notes[open] summary { margin-bottom: 12px; }
-.review-decision { min-width: 0; padding: 20px; border: 1px solid var(--accent); border-radius: var(--r-card); background: var(--a4); margin-block: 24px; scroll-margin-top: 110px; }
+.review-decision { min-width: 0; padding: 20px; border: 1px solid var(--accent-line); border-radius: var(--r-card); background: var(--accent-soft); margin-block: 24px; scroll-margin-top: 110px; }
 .review-decision legend { font-size: 19px; font-weight: 600; padding-inline: 6px; }
 .decision-state { color: var(--text-muted); font-size: 13px; margin-top: 0; }
 .decision-options { display: grid; gap: 10px; }
-.plan-review .decision-option { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid var(--a12); border-radius: var(--r-card); background: var(--background); cursor: pointer; }
-.decision-option:has(input:checked) { border-color: var(--accent); background: var(--a4); }
+.plan-review .decision-option { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border: 1px solid var(--a12); border-radius: var(--r-card); background: var(--surface); box-shadow: var(--shadow-sm); cursor: pointer; transition: border-color var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease); }
+.plan-review .decision-option:hover { border-color: var(--a40); }
+.decision-option:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow-md); }
 .decision-option input { margin: 3px 0 0; width: 20px; height: 20px; accent-color: var(--accent); flex-shrink: 0; }
 .decision-option small { display: block; font-size: 14px; font-weight: 400; line-height: 1.5; margin-top: 6px; color: var(--text-muted); }
-.decision-recommended { display: inline-block; font-size: 11px; font-weight: 600; color: var(--accent-deep); margin-left: 10px; }
+.decision-recommended { display: inline-block; font-size: 11.5px; font-weight: 600; line-height: 20px; padding: 0 8px; border-radius: var(--r-pill); color: var(--accent-deep); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent-line); margin-left: 10px; vertical-align: 1px; }
 .decision-note { margin-top: 16px; }
 .review-code { margin-block: 24px; }
 .review-code textarea[data-review-field$=":code"] { font: 13px/1.7 var(--font-mono); background: var(--code-surface); color: var(--code-ink); white-space: pre-wrap; overflow-wrap: anywhere; }
-.review-dialog { background: var(--background); color: var(--foreground); border: 1px solid var(--a20); border-radius: var(--r-card); width: min(760px, calc(100vw - 48px)); max-height: 85vh; box-sizing: border-box; padding: 24px; }
+.review-dialog { background: var(--surface); color: var(--foreground); border: 1px solid var(--a20); border-radius: calc(var(--r-card) + 4px); box-shadow: var(--shadow-md); width: min(760px, calc(100vw - 48px)); max-height: 85vh; box-sizing: border-box; padding: 24px; }
 .review-dialog::backdrop { background: var(--a55); }
 .review-dialog h2 { margin-top: 16px; }
 .review-dialog form { display: flex; justify-content: flex-end; }
@@ -464,29 +558,38 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
 .disclosure {
     border: 1px solid var(--a12);
     border-radius: var(--r-card);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
     margin-bottom: var(--block);
+    overflow: hidden;
   }
   .disclosure summary {
     cursor: pointer;
-    padding: 12px 16px;
-    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px 18px;
+    font-size: 14px;
     font-weight: 600;
+    letter-spacing: -0.005em;
     list-style: none;
   }
   .disclosure summary::-webkit-details-marker { display: none; }
   .disclosure summary:hover { background: var(--a4); }
   .disclosure[open] summary { border-bottom: 1px solid var(--a12); }
   .disclosure-content {
-    padding: 14px 16px;
+    padding: 16px 18px;
     font-size: 14px;
     line-height: 1.6;
   }
-  .review-point .disclosure, .disclosure .disclosure { border: 0; border-radius: 0; margin-bottom: 4px; }
+  .review-point .disclosure, .disclosure .disclosure { border: 0; border-radius: 0; margin-bottom: 4px; background: none; box-shadow: none; }
   .review-point .disclosure summary, .disclosure .disclosure summary { padding: 12px 0; }
   .review-point .disclosure[open] summary, .disclosure .disclosure[open] summary { border-bottom: 0; }
   .review-point .disclosure-content, .disclosure .disclosure-content { padding: 8px 0 16px; }
-  .disclosure summary::after { content: ""; display: inline-block; width: 7px; height: 7px; margin-left: 10px; border-right: 1.5px solid var(--text-muted); border-bottom: 1.5px solid var(--text-muted); transform: translateY(-2px) rotate(45deg); }
+  .disclosure summary::after { content: ""; flex: 0 0 auto; width: 7px; height: 7px; border-right: 1.5px solid var(--text-muted); border-bottom: 1.5px solid var(--text-muted); transform: translateY(-2px) rotate(45deg); transition: transform var(--dur-reveal) var(--ease); }
   .disclosure[open] > summary::after { transform: translateY(2px) rotate(225deg); }
+  .disclosure-plain summary { display: flex; align-items: center; justify-content: flex-start; }
   @media (prefers-reduced-motion: no-preference) {
     .disclosure[open] .disclosure-content {
       animation: disclosure-in var(--dur-fast) var(--ease);
@@ -579,19 +682,21 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
   }
 
   .flow-node-rect {
-    fill: var(--background);
+    fill: var(--surface);
     stroke: var(--a40);
-    stroke-width: 1.5;
+    stroke-width: 1;
   }
 
   .flow-node-rect.is-emphasized {
+    fill: var(--accent-soft);
     stroke: var(--accent);
-    stroke-width: 2;
+    stroke-width: 1.25;
   }
 
   .flow-node-label {
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     font-size: 13px;
+    font-weight: 560;
     fill: var(--foreground);
     text-anchor: middle;
     dominant-baseline: middle;
@@ -600,13 +705,21 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
   .flow-edge {
     fill: none;
     stroke: var(--a40);
-    stroke-width: 1.5;
+    stroke-width: 1;
+    stroke-linejoin: round;
   }
 
   .flow-edge-label {
-    font-size: 13px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
     fill: var(--a60);
     text-anchor: middle;
+    /* a background-colored halo keeps labels legible where they cross a line */
+    paint-order: stroke;
+    stroke: var(--background);
+    stroke-width: 4px;
+    stroke-linejoin: round;
   }
 
   .flow-caption {
@@ -652,6 +765,78 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
   @media (max-width: 680px) {
     .flow-notes { grid-template-columns: 1fr; gap: 12px; }
   }
+
+  /* Shared diagram grammar for authored SVG figures (see references/diagrams.md). */
+  .diagram-canvas {
+  display: block;
+  max-width: none;
+  height: auto;
+  margin-inline: auto;
+  overflow: visible;
+  }
+  :is(.diagram-canvas, .flow-diagram) text.is-start { text-anchor: start; }
+  :is(.diagram-canvas, .flow-diagram) text.is-middle { text-anchor: middle; }
+  :is(.diagram-canvas, .flow-diagram) text.is-end { text-anchor: end; }
+  /* Diagram grammar: 1px hairlines, 6px node corners, surface-filled nodes,
+  one or two focal elements in the accent, mono caps for edge and region labels. */
+  .diagram-node { fill: var(--surface); stroke: var(--a40); stroke-width: 1; }
+  .diagram-node.is-focal { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-node.is-store { fill: var(--a4); }
+  .diagram-node.is-external { fill: none; stroke-dasharray: 4 3; }
+  .diagram-node.is-added { fill: var(--accent-soft); stroke: var(--accent); }
+  .diagram-node.is-removed { fill: none; stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-region { fill: var(--a4); stroke: var(--a12); stroke-width: 1; }
+  .diagram-edge { fill: none; stroke: var(--a40); stroke-width: 1; stroke-linejoin: round; }
+  .diagram-edge.is-focal { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-async { stroke-dasharray: 5 4; }
+  .diagram-edge.is-added { stroke: var(--accent); stroke-width: 1.25; }
+  .diagram-edge.is-removed { stroke: var(--danger-ink); stroke-dasharray: 4 3; }
+  .diagram-gridline { stroke: var(--a12); stroke-width: 1; }
+  .diagram-arrow { fill: var(--a55); }
+  .diagram-arrow.is-focal { fill: var(--accent); }
+  .diagram-arrow.is-removed { fill: var(--danger-ink); }
+  .diagram-arrow.is-hollow { fill: var(--background); stroke: var(--a55); }
+  .diagram-set { fill: var(--a4); stroke: var(--a40); stroke-width: 1; }
+  .diagram-set.is-focal { fill: var(--accent); fill-opacity: 0.14; stroke: none; }
+  .diagram-label {
+  fill: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 560;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-label.is-small { fill: var(--text-muted); font-family: var(--font-mono); font-size: 11px; font-weight: 400; }
+  .diagram-label.is-focal { fill: var(--accent-deep); }
+  .diagram-tag {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  dominant-baseline: middle;
+  paint-order: stroke;
+  stroke: var(--background);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+  }
+  .diagram-tag.is-focal { fill: var(--accent-deep); }
+  .diagram-tag.is-removed { fill: var(--danger-ink); }
+  .diagram-value {
+  fill: var(--foreground);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  }
+  .diagram-value.is-focal { fill: var(--accent-deep); }
+  .diagram-value.is-inverse { fill: var(--background); }
+  /* Opacity steps over the card background keep computed fills in rgb() for contrast checks. */
+  .diagram-heat-0 { fill: var(--a4); }
+  .diagram-heat-1 { fill: var(--accent); fill-opacity: 0.18; }
+  .diagram-heat-2 { fill: var(--accent); fill-opacity: 0.38; }
+  .diagram-heat-3 { fill: var(--accent); fill-opacity: 0.62; }
+  .diagram-heat-4 { fill: var(--accent); }
 
 .implementation-steps { margin: 0 0 var(--block); }
   .implementation-steps > summary {
@@ -735,15 +920,41 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
   }
 
 .callout {
+    position: relative;
     border: 1px solid var(--a12);
     border-radius: var(--r-card);
-    padding: 14px 16px;
-    font-size: 14px;
+    background: var(--surface);
+    padding: 14px 18px 14px 46px;
+    font-size: 14.5px;
     line-height: 1.6;
+  }
+  .callout::before {
+    /* status glyph drawn in CSS so the callout stays one self-contained block */
+    content: "";
+    position: absolute;
+    left: 16px;
+    top: 15.5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: currentColor;
+    color: var(--a40);
+  }
+  .callout::after {
+    content: "i" / "";
+    position: absolute;
+    left: 16px;
+    top: 15.5px;
+    width: 18px;
+    height: 18px;
+    color: var(--surface);
+    font: 700 12px/18px var(--font-sans);
+    font-style: normal;
+    text-align: center;
   }
   .callout p { margin: 0; }
   .callout p + p { margin-top: 6px; }
-  .callout strong { font-weight: 700; }
+  .callout strong { font-weight: 650; }
   .callout.warn {
     background: var(--warning-bg);
     border-color: var(--warning-line);
@@ -754,6 +965,8 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
     border-color: var(--danger-line);
     color: var(--danger-ink);
   }
+  .callout.warn::before, .callout.danger::before { color: inherit; }
+  .callout.warn::after, .callout.danger::after { content: "!" / ""; color: var(--background); }
   .callout-stack { display: flex; flex-direction: column; gap: 10px; }
 </style>
 </head>
@@ -808,7 +1021,7 @@ tbody tr:last-child td { border-bottom: 1px solid var(--a20); }
     <div class="review-toolbar" data-document-control hidden><span class="review-progress" data-document-control role="status" aria-live="polite"></span><button type="button" data-review-next aria-label="Next unanswered decision">Next decision</button><button type="button" data-review-response>Prepare response<span data-review-count aria-hidden="true" hidden></span></button></div>
     <p class="review-save" data-document-control role="status" aria-live="polite"></p>
     <noscript><p>Choices and notes need JavaScript to export. Send your feedback in chat using the item headings.</p></noscript>
-    <section id="manage"><h2>Manage a scheduled message</h2><article data-component="plan-review" class="review-point" id="scope" data-review-point="scope" data-review-label="Normal Send and Drafts keep their behavior"><h3>Normal Send and Drafts keep their behavior</h3><p class="review-summary">Send still sends immediately. Drafts still save unfinished messages. Scheduling adds a separate, explicit action.</p><ul><li>Add Send Later beside the existing Send action. Keep Send as the default action and preserve its current shortcut.</li><li>Only a successful server confirmation moves a message from the composer or Drafts into Scheduled. If saving fails, keep the message and explain that it has not been scheduled.</li><li>Scheduled stores the content and attachments confirmed by the person. Reading a scheduled message does not turn it into a draft. The first version supports time changes and cancellation; content editing requires cancellation first.</li></ul><p>The confirmed message and attachments wait together. A chosen time is when sending should start; network delays can make the send later. Sent means the mail service accepted the message, not that the recipient read or received it.</p><details data-component="disclosure" class="disclosure"><summary>Proposed integration boundaries</summary><div class="disclosure-content"><p>First inspect the real composer, Drafts, immediate-send pipeline, Sent records, mail provider, authentication, and attachment lifetime. Reuse existing validation and send preparation where behavior matches. Add a scheduling entry point without changing the immediate-send path.</p><div data-component="data-table" class="table-scroll"><table><thead><tr><th>Proposed boundary</th><th>Responsibility</th></tr></thead><tbody><tr><td>Composer schedule action</td><td>Collect time, show confirmation, submit schedule request, preserve composition on error.</td></tr><tr><td>Schedule service</td><td>Authorize every request, validate content and time, atomically store the snapshot and queue record, list and mutate schedules.</td></tr><tr><td>Durable dispatcher</td><td>Find due records, atomically claim a record, call the existing mail adapter, recover interrupted attempts.</td></tr><tr><td>Mail adapter</td><td>Expose provider acceptance, deduplication and status lookup, and classify failures.</td></tr><tr><td>Scheduled view</td><td>Read authoritative states, display due times and errors, offer only actions valid for that state.</td></tr></tbody></table></div><p>These are roles to map onto existing code after inspection, not new files that are known to exist. Engineering owners and provider capabilities remain to be established.</p></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="scope:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Normal Send and Drafts keep their behavior<textarea data-review-field="scope:comment" rows="3"></textarea></label></details></article><article data-component="plan-review" class="review-point" id="scheduled-view" data-review-point="scheduled-view" data-review-label="Every message has a visible state and valid next action"><h3>Every message has a visible state and valid next action</h3><p class="review-summary">People can see what is waiting, what is already sending, and what needs their attention.</p><p>Queued messages show the recipient, subject, due date, time, and zone. Order them by due time. Keep failed or uncertain messages in a clearly labeled attention group above the queue.</p><div data-component="data-table" class="table-scroll"><table><thead><tr><th>State</th><th>What people can do</th></tr></thead><tbody><tr><td>Queued</td><td>Change the time or cancel before sending starts.</td></tr><tr><td>Sending</td><td>Read the status; time changes and cancellation are closed.</td></tr><tr><td>Failed, known not sent</td><td>Retry now, choose another time, or cancel. Reconnect the account first if its connection expired.</td></tr><tr><td>Checking whether this was sent</td><td>Wait for reconciliation. Retry is unavailable because it could send a duplicate.</td></tr><tr><td>Sent</td><td>Find the message in Sent through the existing PostBox flow.</td></tr></tbody></table></div><p>If the mail service rejected the content or recipients, explain that the person must cancel to edit the saved message. If another device has changed the message, show its current state and explain why the attempted action is unavailable. Never report cancellation success just because the person clicked Cancel.</p><details data-component="disclosure" class="disclosure"><summary>How the view stays accurate</summary><div class="disclosure-content"><p>Fetch server state when Scheduled opens and after every action. Keep a message visible during dispatch; move it to Sent only after provider acceptance.</p><ul><li>Use the same server schedule identity on every device. Authorize list and detail reads by account and message ownership.</li><li>Return state and version with every response. A stale action receives a conflict and current state, then the view refreshes.</li><li>Keep failed and uncertain records until the person recovers or cancels them. Record provider acceptance separately from delivery failures handled by existing PostBox behavior.</li><li>Provide accessible status text, keyboard actions, focus after dialogs, and error announcements. Never rely on color alone.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="scheduled-view:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Every message has a visible state and valid next action<textarea data-review-field="scheduled-view:comment" rows="3"></textarea></label></details></article></section><section id="timing"><h2>Timing and changes</h2><article data-component="plan-review" class="review-point" id="time-contract" data-review-point="time-contract" data-review-label="Confirm the time zone and preserve the chosen moment"><h3>Confirm the time zone and preserve the chosen moment</h3><p class="review-summary">A message scheduled for 9:00 AM in Toronto still leaves at that chosen moment if the sender travels to London.</p><p>Recommended behavior: default the picker to the device’s current named time zone, show that zone beside the time, and let the person change it before confirmation. Store one exact moment. Travel and device zone changes must not silently move the send time.</p><div data-component="data-table" class="table-scroll"><table><thead><tr><th>Example</th><th>What the person sees</th></tr></thead><tbody><tr><td>Schedule October 12, 9:00 AM in America/Toronto</td><td>Confirmation shows the full date, 9:00 AM, and America/Toronto.</td></tr><tr><td>Open Scheduled in London</td><td>Show the local equivalent, 2:00 PM, with Europe/London; also show the original 9:00 AM America/Toronto time.</td></tr><tr><td>A clock change creates a missing local time</td><td>Reject that time and ask for another valid time. Do not silently shift it.</td></tr><tr><td>A clock change repeats a local time</td><td>Show the two occurrences with their UTC offsets and require the person to choose one.</td></tr></tbody></table></div><p>If a message becomes overdue during a service interruption, people need predictable behavior when service returns. The proposed default below prevents a much later message from leaving unexpectedly.</p><fieldset data-component="plan-review" class="review-decision" id="overdue-policy" data-review-decision="overdue-policy"><legend>What should happen when service returns after a missed send time?</legend><p class="decision-state" data-document-control>Unanswered</p><div class="decision-options"><label class="decision-option"><input type="radio" name="decision-overdue-policy" data-review-field="overdue-policy:choice" value="bounded"><span><strong>Send within a short window; ask after that</strong><span class="decision-recommended">Recommended</span><small>Recommended initial window: 24 hours. Beyond it, show ‘Missed send time’ and offer Send now or a new time. A long outage cannot trigger a stale message silently.</small></span></label><label class="decision-option"><input type="radio" name="decision-overdue-policy" data-review-field="overdue-policy:choice" value="always"><span><strong>Send as soon as service returns</strong><small>The message eventually sends automatically, even after a long delay. Scheduled must explain the delay.</small></span></label></div><button type="button" data-review-clear data-document-control hidden>Clear answer</button><label class="decision-note">Reason or another suggestion<textarea data-review-field="overdue-policy:note" rows="2"></textarea></label></fieldset><details data-component="disclosure" class="disclosure"><summary>Proposed time validation and storage</summary><div class="disclosure-content"><ul><li>Submit the local date and time, an IANA zone such as America/Toronto, and the selected UTC offset when the local time repeats. Resolve with a timezone-aware library and validate on the server.</li><li>Store due_at as a UTC instant, plus the original zone and local-time presentation. The stored instant is authoritative; timezone database updates do not change already confirmed schedules.</li><li>Reject past times according to the server clock, including a time that passed while the dialog was open. Return the refreshed time instead of sending immediately. Reject invalid recipients, incomplete uploads, or invalid messages using normal send validation.</li><li>Use the same rules for a time change. Do not add an arbitrary maximum scheduling horizon until attachment retention and provider constraints are known; show an explicit limit if those constraints require one.</li><li>Keep queued attachments available until a terminal result or cancellation. Secure stored content under existing message access and retention policies. Validate current account authorization again before dispatch.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="time-contract:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Confirm the time zone and preserve the chosen moment<textarea data-review-field="time-contract:comment" rows="3"></textarea></label></details></article><article data-component="plan-review" class="review-point" id="cancel-boundary" data-review-point="cancel-boundary" data-review-label="Cancel before sending starts"><h3>Cancel before sending starts</h3><p class="review-summary">If cancellation wins, no send starts. If sending wins, PostBox says cancellation is too late.</p><p>Sending starts when PostBox takes the queued message to send. The message may not yet have reached the mail service, but cancellation is closed. If Cancel and Sending happen together, PostBox reports the server’s actual result; the order of clicks on a device cannot settle the outcome.</p><p>A time change follows the same boundary. If the change wins, the old due time cannot send the message. If dispatch already won, explain that the time cannot be changed because sending started.</p><fieldset data-component="plan-review" class="review-decision" id="cancel-destination" data-review-decision="cancel-destination"><legend>Where should a cancelled message go?</legend><p class="decision-state" data-document-control>Unanswered</p><div class="decision-options"><label class="decision-option"><input type="radio" name="decision-cancel-destination" data-review-field="cancel-destination:choice" value="draft"><span><strong>Return the message to Drafts</strong><span class="decision-recommended">Recommended</span><small>The person keeps the content and attachments, can edit it, and can send or schedule again.</small></span></label><label class="decision-option"><input type="radio" name="decision-cancel-destination" data-review-field="cancel-destination:choice" value="delete"><span><strong>Discard it after confirmation</strong><small>Cancel becomes destructive. Add a confirmation that explicitly says the message will be deleted.</small></span></label></div><button type="button" data-review-clear data-document-control hidden>Clear answer</button><label class="decision-note">Reason or another suggestion<textarea data-review-field="cancel-destination:note" rows="2"></textarea></label></fieldset><details data-component="disclosure" class="disclosure"><summary>How cancellation and rescheduling remain atomic</summary><div class="disclosure-content"><p>The precise cancellation boundary is the atomic Queued → Sending transition on the server.</p><div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 513.3320000000001 276" style="min-width:513.3320000000001px;max-width:513.3320000000001px;margin-inline:auto" aria-hidden="true"><defs><marker id="dots-sequence-1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a40)"/></marker></defs><text class="flow-node-label" x="85.42150000000001" y="70">Person</text><path class="flow-edge" d="M146.84300000000002,70 H360.48900000000015" marker-end="url(#dots-sequence-1-arrow)"/><text class="flow-edge-label" x="256.66600000000005" y="60">Cancel queued message</text><text class="flow-node-label" x="427.9105000000001" y="70">Schedule service</text><text class="flow-node-label" x="85.42150000000001" y="148">Dispatcher</text><path class="flow-edge" d="M146.84300000000002,148 H360.48900000000015" marker-end="url(#dots-sequence-1-arrow)"/><text class="flow-edge-label" x="256.66600000000005" y="138">Claim due message</text><text class="flow-node-label" x="427.9105000000001" y="148">Schedule service</text><text class="flow-node-label" x="85.42150000000001" y="226">Schedule service</text><path class="flow-edge" d="M146.84300000000002,226 H360.48900000000015" marker-end="url(#dots-sequence-1-arrow)"/><text class="flow-edge-label" x="256.66600000000005" y="216">One wins; return current state</text><text class="flow-node-label" x="427.9105000000001" y="226">Person</text></svg></div><p class="flow-caption">Cancel and dispatch compete for the same queued record. One atomic state change wins. Cancel success prevents dispatch; a successful claim makes cancellation too late.</p><ul><li>Cancel updates only a queued, waiting-to-retry, or known-unsent failed record with no active attempt, using the expected version. The worker claims only queued records whose due time has arrived or retrying records whose next attempt is due. Both transitions must use a transaction or compare-and-swap on the same durable row.</li><li>For the recommended Drafts result, cancel and create/restore the draft in one transaction, or use a durable reconciliation step if Drafts is in a separate service. A reported cancellation must not lose content.</li><li>A time change increments the version and changes due_at atomically. If a separate job queue exists, enqueue a new wake-up through a durable outbox and make old jobs check state, version and current due_at before claiming.</li><li>Treat repeated cancel requests as the same result. Allow a safe retry after network loss. A stale or already-sending request returns conflict and authoritative state.</li><li>Do not claim future messages in advance. Claiming early would close cancellation before the confirmed time.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="cancel-boundary:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Cancel before sending starts<textarea data-review-field="cancel-boundary:comment" rows="3"></textarea></label></details></article></section><section id="reliability"><h2>Reliable sending and release</h2><article data-component="plan-review" class="review-point" id="duplicate-prevention" data-review-point="duplicate-prevention" data-review-label="A retry continues the same send operation"><h3>A retry continues the same send operation</h3><p class="review-summary">Repeated clicks, repeated jobs, and crashes must not create another copy of the message.</p><p>PostBox must distinguish ‘not sent’ from ‘we do not yet know.’ A network timeout can happen after the mail service accepted the message. In that case, PostBox checks the result before offering a new attempt. The mail provider’s deduplication or status lookup is a release prerequisite for safe automatic recovery.</p><fieldset data-component="plan-review" class="review-decision" id="retry-policy" data-review-decision="retry-policy"><legend>Should known temporary failures retry automatically?</legend><p class="decision-state" data-document-control>Unanswered</p><div class="decision-options"><label class="decision-option"><input type="radio" name="decision-retry-policy" data-review-field="retry-policy:choice" value="automatic"><span><strong>Retry briefly, then show a failure</strong><span class="decision-recommended">Recommended</span><small>Retry confirmed-unsent transient failures with a bounded backoff. Show ‘Retrying’ and the next attempt time. After the limit, let the person retry manually or choose another time.</small></span></label><label class="decision-option"><input type="radio" name="decision-retry-policy" data-review-field="retry-policy:choice" value="manual"><span><strong>Ask the person for every retry</strong><small>Show a clear failure immediately. The person controls the next attempt, but temporary outages need more attention.</small></span></label></div><button type="button" data-review-clear data-document-control hidden>Clear answer</button><label class="decision-note">Reason or another suggestion<textarea data-review-field="retry-policy:note" rows="2"></textarea></label></fieldset><details data-component="disclosure" class="disclosure"><summary>Proposed persistence and API contract</summary><div class="disclosure-content"><p>The following text is an editable proposal, not code from an inspected repository. Map it onto PostBox’s existing types and persistence after inspection.</p><div data-component="plan-review" class="review-code" data-review-code="schedule-contract" data-review-label="Proposed schedule contract"><label>Proposed schedule contract<textarea data-review-field="schedule-contract:code" spellcheck="false" rows="8">Schedule record
+    <section id="manage"><h2>Manage a scheduled message</h2><article data-component="plan-review" class="review-point" id="scope" data-review-point="scope" data-review-label="Normal Send and Drafts keep their behavior"><h3>Normal Send and Drafts keep their behavior</h3><p class="review-summary">Send still sends immediately. Drafts still save unfinished messages. Scheduling adds a separate, explicit action.</p><ul><li>Add Send Later beside the existing Send action. Keep Send as the default action and preserve its current shortcut.</li><li>Only a successful server confirmation moves a message from the composer or Drafts into Scheduled. If saving fails, keep the message and explain that it has not been scheduled.</li><li>Scheduled stores the content and attachments confirmed by the person. Reading a scheduled message does not turn it into a draft. The first version supports time changes and cancellation; content editing requires cancellation first.</li></ul><p>The confirmed message and attachments wait together. A chosen time is when sending should start; network delays can make the send later. Sent means the mail service accepted the message, not that the recipient read or received it.</p><details data-component="disclosure" class="disclosure"><summary>Proposed integration boundaries</summary><div class="disclosure-content"><p>First inspect the real composer, Drafts, immediate-send pipeline, Sent records, mail provider, authentication, and attachment lifetime. Reuse existing validation and send preparation where behavior matches. Add a scheduling entry point without changing the immediate-send path.</p><div data-component="data-table" class="table-scroll"><table><thead><tr><th>Proposed boundary</th><th>Responsibility</th></tr></thead><tbody><tr><td>Composer schedule action</td><td>Collect time, show confirmation, submit schedule request, preserve composition on error.</td></tr><tr><td>Schedule service</td><td>Authorize every request, validate content and time, atomically store the snapshot and queue record, list and mutate schedules.</td></tr><tr><td>Durable dispatcher</td><td>Find due records, atomically claim a record, call the existing mail adapter, recover interrupted attempts.</td></tr><tr><td>Mail adapter</td><td>Expose provider acceptance, deduplication and status lookup, and classify failures.</td></tr><tr><td>Scheduled view</td><td>Read authoritative states, display due times and errors, offer only actions valid for that state.</td></tr></tbody></table></div><p>These are roles to map onto existing code after inspection, not new files that are known to exist. Engineering owners and provider capabilities remain to be established.</p></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="scope:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Normal Send and Drafts keep their behavior<textarea data-review-field="scope:comment" rows="3"></textarea></label></details></article><article data-component="plan-review" class="review-point" id="scheduled-view" data-review-point="scheduled-view" data-review-label="Every message has a visible state and valid next action"><h3>Every message has a visible state and valid next action</h3><p class="review-summary">People can see what is waiting, what is already sending, and what needs their attention.</p><p>Queued messages show the recipient, subject, due date, time, and zone. Order them by due time. Keep failed or uncertain messages in a clearly labeled attention group above the queue.</p><div data-component="data-table" class="table-scroll"><table><thead><tr><th>State</th><th>What people can do</th></tr></thead><tbody><tr><td>Queued</td><td>Change the time or cancel before sending starts.</td></tr><tr><td>Sending</td><td>Read the status; time changes and cancellation are closed.</td></tr><tr><td>Failed, known not sent</td><td>Retry now, choose another time, or cancel. Reconnect the account first if its connection expired.</td></tr><tr><td>Checking whether this was sent</td><td>Wait for reconciliation. Retry is unavailable because it could send a duplicate.</td></tr><tr><td>Sent</td><td>Find the message in Sent through the existing PostBox flow.</td></tr></tbody></table></div><p>If the mail service rejected the content or recipients, explain that the person must cancel to edit the saved message. If another device has changed the message, show its current state and explain why the attempted action is unavailable. Never report cancellation success just because the person clicked Cancel.</p><details data-component="disclosure" class="disclosure"><summary>How the view stays accurate</summary><div class="disclosure-content"><p>Fetch server state when Scheduled opens and after every action. Keep a message visible during dispatch; move it to Sent only after provider acceptance.</p><ul><li>Use the same server schedule identity on every device. Authorize list and detail reads by account and message ownership.</li><li>Return state and version with every response. A stale action receives a conflict and current state, then the view refreshes.</li><li>Keep failed and uncertain records until the person recovers or cancels them. Record provider acceptance separately from delivery failures handled by existing PostBox behavior.</li><li>Provide accessible status text, keyboard actions, focus after dialogs, and error announcements. Never rely on color alone.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="scheduled-view:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Every message has a visible state and valid next action<textarea data-review-field="scheduled-view:comment" rows="3"></textarea></label></details></article></section><section id="timing"><h2>Timing and changes</h2><article data-component="plan-review" class="review-point" id="time-contract" data-review-point="time-contract" data-review-label="Confirm the time zone and preserve the chosen moment"><h3>Confirm the time zone and preserve the chosen moment</h3><p class="review-summary">A message scheduled for 9:00 AM in Toronto still leaves at that chosen moment if the sender travels to London.</p><p>Recommended behavior: default the picker to the device’s current named time zone, show that zone beside the time, and let the person change it before confirmation. Store one exact moment. Travel and device zone changes must not silently move the send time.</p><div data-component="data-table" class="table-scroll"><table><thead><tr><th>Example</th><th>What the person sees</th></tr></thead><tbody><tr><td>Schedule October 12, 9:00 AM in America/Toronto</td><td>Confirmation shows the full date, 9:00 AM, and America/Toronto.</td></tr><tr><td>Open Scheduled in London</td><td>Show the local equivalent, 2:00 PM, with Europe/London; also show the original 9:00 AM America/Toronto time.</td></tr><tr><td>A clock change creates a missing local time</td><td>Reject that time and ask for another valid time. Do not silently shift it.</td></tr><tr><td>A clock change repeats a local time</td><td>Show the two occurrences with their UTC offsets and require the person to choose one.</td></tr></tbody></table></div><p>If a message becomes overdue during a service interruption, people need predictable behavior when service returns. The proposed default below prevents a much later message from leaving unexpectedly.</p><fieldset data-component="plan-review" class="review-decision" id="overdue-policy" data-review-decision="overdue-policy"><legend>What should happen when service returns after a missed send time?</legend><p class="decision-state" data-document-control>Unanswered</p><div class="decision-options"><label class="decision-option"><input type="radio" name="decision-overdue-policy" data-review-field="overdue-policy:choice" value="bounded"><span><strong>Send within a short window; ask after that</strong><span class="decision-recommended">Recommended</span><small>Recommended initial window: 24 hours. Beyond it, show ‘Missed send time’ and offer Send now or a new time. A long outage cannot trigger a stale message silently.</small></span></label><label class="decision-option"><input type="radio" name="decision-overdue-policy" data-review-field="overdue-policy:choice" value="always"><span><strong>Send as soon as service returns</strong><small>The message eventually sends automatically, even after a long delay. Scheduled must explain the delay.</small></span></label></div><button type="button" data-review-clear data-document-control hidden>Clear answer</button><label class="decision-note">Reason or another suggestion<textarea data-review-field="overdue-policy:note" rows="2"></textarea></label></fieldset><details data-component="disclosure" class="disclosure"><summary>Proposed time validation and storage</summary><div class="disclosure-content"><ul><li>Submit the local date and time, an IANA zone such as America/Toronto, and the selected UTC offset when the local time repeats. Resolve with a timezone-aware library and validate on the server.</li><li>Store due_at as a UTC instant, plus the original zone and local-time presentation. The stored instant is authoritative; timezone database updates do not change already confirmed schedules.</li><li>Reject past times according to the server clock, including a time that passed while the dialog was open. Return the refreshed time instead of sending immediately. Reject invalid recipients, incomplete uploads, or invalid messages using normal send validation.</li><li>Use the same rules for a time change. Do not add an arbitrary maximum scheduling horizon until attachment retention and provider constraints are known; show an explicit limit if those constraints require one.</li><li>Keep queued attachments available until a terminal result or cancellation. Secure stored content under existing message access and retention policies. Validate current account authorization again before dispatch.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="time-contract:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Confirm the time zone and preserve the chosen moment<textarea data-review-field="time-contract:comment" rows="3"></textarea></label></details></article><article data-component="plan-review" class="review-point" id="cancel-boundary" data-review-point="cancel-boundary" data-review-label="Cancel before sending starts"><h3>Cancel before sending starts</h3><p class="review-summary">If cancellation wins, no send starts. If sending wins, PostBox says cancellation is too late.</p><p>Sending starts when PostBox takes the queued message to send. The message may not yet have reached the mail service, but cancellation is closed. If Cancel and Sending happen together, PostBox reports the server’s actual result; the order of clicks on a device cannot settle the outcome.</p><p>A time change follows the same boundary. If the change wins, the old due time cannot send the message. If dispatch already won, explain that the time cannot be changed because sending started.</p><fieldset data-component="plan-review" class="review-decision" id="cancel-destination" data-review-decision="cancel-destination"><legend>Where should a cancelled message go?</legend><p class="decision-state" data-document-control>Unanswered</p><div class="decision-options"><label class="decision-option"><input type="radio" name="decision-cancel-destination" data-review-field="cancel-destination:choice" value="draft"><span><strong>Return the message to Drafts</strong><span class="decision-recommended">Recommended</span><small>The person keeps the content and attachments, can edit it, and can send or schedule again.</small></span></label><label class="decision-option"><input type="radio" name="decision-cancel-destination" data-review-field="cancel-destination:choice" value="delete"><span><strong>Discard it after confirmation</strong><small>Cancel becomes destructive. Add a confirmation that explicitly says the message will be deleted.</small></span></label></div><button type="button" data-review-clear data-document-control hidden>Clear answer</button><label class="decision-note">Reason or another suggestion<textarea data-review-field="cancel-destination:note" rows="2"></textarea></label></fieldset><details data-component="disclosure" class="disclosure"><summary>How cancellation and rescheduling remain atomic</summary><div class="disclosure-content"><p>The precise cancellation boundary is the atomic Queued → Sending transition on the server.</p><div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 514 276" style="min-width:514px;max-width:514px;margin-inline:auto" aria-hidden="true"><defs><marker id="dots-sequence-1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 10 5 0 10Z" fill="var(--a55)"/></marker></defs><text class="flow-node-label" x="85.42150000000001" y="70">Person</text><path class="flow-edge" d="M146.84300000000002,70 H360.48900000000015" marker-end="url(#dots-sequence-1-arrow)"/><text class="flow-edge-label" x="256.66600000000005" y="60">Cancel queued message</text><text class="flow-node-label" x="427.9105000000001" y="70">Schedule service</text><text class="flow-node-label" x="85.42150000000001" y="148">Dispatcher</text><path class="flow-edge" d="M146.84300000000002,148 H360.48900000000015" marker-end="url(#dots-sequence-1-arrow)"/><text class="flow-edge-label" x="256.66600000000005" y="138">Claim due message</text><text class="flow-node-label" x="427.9105000000001" y="148">Schedule service</text><text class="flow-node-label" x="85.42150000000001" y="226">Schedule service</text><path class="flow-edge" d="M146.84300000000002,226 H360.48900000000015" marker-end="url(#dots-sequence-1-arrow)"/><text class="flow-edge-label" x="256.66600000000005" y="216">One wins; return current state</text><text class="flow-node-label" x="427.9105000000001" y="226">Person</text></svg></div><p class="flow-caption">Cancel and dispatch compete for the same queued record. One atomic state change wins. Cancel success prevents dispatch; a successful claim makes cancellation too late.</p><ul><li>Cancel updates only a queued, waiting-to-retry, or known-unsent failed record with no active attempt, using the expected version. The worker claims only queued records whose due time has arrived or retrying records whose next attempt is due. Both transitions must use a transaction or compare-and-swap on the same durable row.</li><li>For the recommended Drafts result, cancel and create/restore the draft in one transaction, or use a durable reconciliation step if Drafts is in a separate service. A reported cancellation must not lose content.</li><li>A time change increments the version and changes due_at atomically. If a separate job queue exists, enqueue a new wake-up through a durable outbox and make old jobs check state, version and current due_at before claiming.</li><li>Treat repeated cancel requests as the same result. Allow a safe retry after network loss. A stale or already-sending request returns conflict and authoritative state.</li><li>Do not claim future messages in advance. Claiming early would close cancellation before the confirmed time.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="cancel-boundary:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Cancel before sending starts<textarea data-review-field="cancel-boundary:comment" rows="3"></textarea></label></details></article></section><section id="reliability"><h2>Reliable sending and release</h2><article data-component="plan-review" class="review-point" id="duplicate-prevention" data-review-point="duplicate-prevention" data-review-label="A retry continues the same send operation"><h3>A retry continues the same send operation</h3><p class="review-summary">Repeated clicks, repeated jobs, and crashes must not create another copy of the message.</p><p>PostBox must distinguish ‘not sent’ from ‘we do not yet know.’ A network timeout can happen after the mail service accepted the message. In that case, PostBox checks the result before offering a new attempt. The mail provider’s deduplication or status lookup is a release prerequisite for safe automatic recovery.</p><fieldset data-component="plan-review" class="review-decision" id="retry-policy" data-review-decision="retry-policy"><legend>Should known temporary failures retry automatically?</legend><p class="decision-state" data-document-control>Unanswered</p><div class="decision-options"><label class="decision-option"><input type="radio" name="decision-retry-policy" data-review-field="retry-policy:choice" value="automatic"><span><strong>Retry briefly, then show a failure</strong><span class="decision-recommended">Recommended</span><small>Retry confirmed-unsent transient failures with a bounded backoff. Show ‘Retrying’ and the next attempt time. After the limit, let the person retry manually or choose another time.</small></span></label><label class="decision-option"><input type="radio" name="decision-retry-policy" data-review-field="retry-policy:choice" value="manual"><span><strong>Ask the person for every retry</strong><small>Show a clear failure immediately. The person controls the next attempt, but temporary outages need more attention.</small></span></label></div><button type="button" data-review-clear data-document-control hidden>Clear answer</button><label class="decision-note">Reason or another suggestion<textarea data-review-field="retry-policy:note" rows="2"></textarea></label></fieldset><details data-component="disclosure" class="disclosure"><summary>Proposed persistence and API contract</summary><div class="disclosure-content"><p>The following text is an editable proposal, not code from an inspected repository. Map it onto PostBox’s existing types and persistence after inspection.</p><div data-component="plan-review" class="review-code" data-review-code="schedule-contract" data-review-label="Proposed schedule contract"><label>Proposed schedule contract<textarea data-review-field="schedule-contract:code" spellcheck="false" rows="8">Schedule record
   id, account_id, message_snapshot_id
   due_at_utc, original_zone, original_local_time
   state: queued | sending | retrying | failed | uncertain | sent | cancelled
@@ -828,13 +1041,106 @@ create/reschedule/cancel/retry return authoritative state + version.
 Repeated client_request_id returns the recorded result.
 A stale version returns conflict + current state.
 Retry is allowed only when provider non-acceptance is known.
-Provider deduplication key stays stable across every delivery attempt.</textarea></label><button type="button" data-review-revert hidden>Revert edit</button><label>Comment on Proposed schedule contract (include a line number when relevant)<textarea data-review-field="schedule-contract:code-comment" rows="2"></textarea></label></div><ul><li>Write the schedule and durable wake-up together. A database due-record poller is the simplest candidate if the existing stack has no reliable job system. Do not rely on device timers or an in-memory timer.</li><li>Use a durable, atomic claim so two workers cannot start independent operations. If leases expire, a recovery worker resumes the same operation. A lease alone cannot prevent duplicates after a crash; provider deduplication must still apply.</li><li>Persist intent before contacting the provider. Retry the same provider idempotency key inside its supported lifetime, or reconcile by operation ID. Never mint a new key just because an HTTP request timed out.</li><li>Persist provider acceptance and finalize Sent through a durable reconciliation path. A crash after acceptance but before local recording must recover acceptance instead of sending again.</li><li>If the provider lacks sufficient deduplication and lookup, keep ambiguous results in Uncertain and require a confirmed operational resolution. Do not promise exactly-once delivery or enable automatic retries for ambiguous outcomes.</li><li>Classify permanent failures, temporary confirmed-unsent failures, and unknown outcomes. Use a proposed bounded retry policy of up to three attempts with increasing delay; tune only after provider constraints and overdue policy are approved. Stop automatic retries when their limit or the lateness window is reached.</li><li>Manual Retry now requests confirmation and preserves the send operation identity. Choosing another time requeues a confirmed-unsent message. If automatic recovery is waiting and no attempt is active, cancellation stops further attempts; an active attempt has the same ‘too late’ boundary.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="duplicate-prevention:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on A retry continues the same send operation<textarea data-review-field="duplicate-prevention:comment" rows="3"></textarea></label></details></article><article data-component="plan-review" class="review-point" id="validation" data-review-point="validation" data-review-label="Prove what a person can trust"><h3>Prove what a person can trust</h3><p class="review-summary">Release depends on accurate time handling, a decisive cancellation result, and safe recovery after interruption.</p><p>Test the moments where trust can fail: a clock change, Cancel arriving as sending starts, two workers claiming one message, and a crash after the mail service accepts it. A duplicate acceptance or unresolved recovery defect blocks wider rollout.</p><details data-component="disclosure" class="disclosure"><summary>Acceptance checks for engineers</summary><div class="disclosure-content"><div data-component="data-table" class="table-scroll"><table><thead><tr><th>Scenario</th><th>Required result</th></tr></thead><tbody><tr><td>Schedule succeeds; app closes; another device opens</td><td>The same message and exact due moment appear; server dispatch still runs.</td></tr><tr><td>Schedule request repeats after a network timeout</td><td>One schedule exists; the caller receives the original result.</td></tr><tr><td>Travel, clock-change gaps and repeated hours</td><td>The chosen instant stays fixed; invalid local times reject; repeated times require an explicit occurrence.</td></tr><tr><td>Time change races with an old wake-up</td><td>If the change wins, no send starts at the old time. Otherwise return Sending and explain the conflict.</td></tr><tr><td>Cancel and claim execute concurrently</td><td>Exactly one transition wins. Successful cancellation produces no provider request and preserves the chosen cancellation result.</td></tr><tr><td>Two workers or duplicated jobs</td><td>One operation claims the message; provider receives the stable key.</td></tr><tr><td>Crash before request, after acceptance, or before Sent is saved</td><td>Recovery reconciles the same operation; no second accepted message is created.</td></tr><tr><td>Provider rejects, times out, or account access expires</td><td>Show the correct recovery action; ambiguous results never expose unsafe Retry.</td></tr><tr><td>Delayed service restarts</td><td>Apply the approved overdue policy and show a clear missed-time result when appropriate.</td></tr><tr><td>Normal Send and Drafts regression</td><td>Immediate Send, shortcuts, saves, editing and current provider outcomes match their existing behavior.</td></tr><tr><td>Keyboard and assistive technology</td><td>The picker, Scheduled actions, conflict errors and status updates remain operable and announced.</td></tr></tbody></table></div></div></details><details data-component="implementation-steps" class="implementation-steps implementation-steps-proof"><summary>Implementation order <span class="implementation-steps-count">4 steps</span></summary><div class="implementation-steps-head" aria-hidden="true"><span></span><span>Do</span><span>Done when</span></div><ol class="implementation-steps-list"><li class="implementation-step"><span class="implementation-step-number">1</span><div class="implementation-step-body"><div class="implementation-step-title">Confirm dependencies</div><p class="implementation-step-detail">Inspect the real code and mail provider, and resolve the three product choices.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>Server dispatch, durable storage and provider recovery are verified.</span></p></li><li class="implementation-step"><span class="implementation-step-number">2</span><div class="implementation-step-body"><div class="implementation-step-title">Build the durable path</div><p class="implementation-step-detail">Add storage and authenticated actions, then claim, send and reconciliation.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>Focused concurrency and crash tests pass before scheduling is exposed.</span></p></li><li class="implementation-step"><span class="implementation-step-number">3</span><div class="implementation-step-body"><div class="implementation-step-title">Connect the experience</div><p class="implementation-step-detail">Add the picker and the Scheduled list.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>Time handling, errors and unchanged Send and Drafts behavior pass end to end.</span></p></li><li class="implementation-step"><span class="implementation-step-number">4</span><div class="implementation-step-body"><div class="implementation-step-title">Release gradually</div><p class="implementation-step-detail">Enable an internal cohort, then a limited cohort, then broader availability.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>The guarantees and observed reliability hold at each stage.</span></p></li></ol></details><details data-component="disclosure" class="disclosure"><summary>Release controls</summary><div class="disclosure-content"><p>Track due-to-dispatch delay, queue age, claim conflicts, provider acceptance, confirmed failures, uncertain outcomes, retries and duplicate reports. Correlate by schedule and operation ID; keep message bodies and recipients out of routine telemetry.</p><p>Set launch thresholds and alerting after establishing a baseline; no existing volume or performance measurements are available here. Exercise service interruption and restart before widening access. A duplicate acceptance or unresolved reconciliation defect blocks wider rollout.</p><p>Use separate controls for creating new schedules and dispatching existing ones. If the interface must be rolled back, stop new scheduling and continue servicing the existing queue with a management route. If dispatch itself is unsafe, pause claims, preserve records, show delays, and reconcile accepted sends before resuming. Never silently discard queued messages.</p><p>Validate storage migration and permissions before enabling the flag. Keep the additive data model readable during rollback. Scheduled attachments must retain their supported lifetime throughout rollout.</p></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="validation:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Prove what a person can trust<textarea data-review-field="validation:comment" rows="3"></textarea></label></details></article><div data-component="callout" class="callout"><p><strong>Ready after the choices and dependencies are confirmed.</strong> The recommended proposal is to return cancellations to Drafts, hold messages missed by more than 24 hours for confirmation, and retry brief confirmed-unsent temporary failures. These defaults are proposals; the decision controls begin unanswered. Comments and edited contracts remain local until you copy or download one response.</p></div></section>
+Provider deduplication key stays stable across every delivery attempt.</textarea></label><button type="button" data-review-revert hidden>Revert edit</button><label>Comment on Proposed schedule contract (include a line number when relevant)<textarea data-review-field="schedule-contract:code-comment" rows="2"></textarea></label></div><ul><li>Write the schedule and durable wake-up together. A database due-record poller is the simplest candidate if the existing stack has no reliable job system. Do not rely on device timers or an in-memory timer.</li><li>Use a durable, atomic claim so two workers cannot start independent operations. If leases expire, a recovery worker resumes the same operation. A lease alone cannot prevent duplicates after a crash; provider deduplication must still apply.</li><li>Persist intent before contacting the provider. Retry the same provider idempotency key inside its supported lifetime, or reconcile by operation ID. Never mint a new key just because an HTTP request timed out.</li><li>Persist provider acceptance and finalize Sent through a durable reconciliation path. A crash after acceptance but before local recording must recover acceptance instead of sending again.</li><li>If the provider lacks sufficient deduplication and lookup, keep ambiguous results in Uncertain and require a confirmed operational resolution. Do not promise exactly-once delivery or enable automatic retries for ambiguous outcomes.</li><li>Classify permanent failures, temporary confirmed-unsent failures, and unknown outcomes. Use a proposed bounded retry policy of up to three attempts with increasing delay; tune only after provider constraints and overdue policy are approved. Stop automatic retries when their limit or the lateness window is reached.</li><li>Manual Retry now requests confirmation and preserves the send operation identity. Choosing another time requeues a confirmed-unsent message. If automatic recovery is waiting and no attempt is active, cancellation stops further attempts; an active attempt has the same ‘too late’ boundary.</li></ul></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="duplicate-prevention:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on A retry continues the same send operation<textarea data-review-field="duplicate-prevention:comment" rows="3"></textarea></label></details></article><article data-component="plan-review" class="review-point" id="validation" data-review-point="validation" data-review-label="Prove what a person can trust"><h3>Prove what a person can trust</h3><p class="review-summary">Release depends on accurate time handling, a decisive cancellation result, and safe recovery after interruption.</p><p>Test the moments where trust can fail: a clock change, Cancel arriving as sending starts, two workers claiming one message, and a crash after the mail service accepts it. A duplicate acceptance or unresolved recovery defect blocks wider rollout.</p><details data-component="disclosure" class="disclosure"><summary>Acceptance checks for engineers</summary><div class="disclosure-content"><div data-component="data-table" class="table-scroll"><table><thead><tr><th>Scenario</th><th>Required result</th></tr></thead><tbody><tr><td>Schedule succeeds; app closes; another device opens</td><td>The same message and exact due moment appear; server dispatch still runs.</td></tr><tr><td>Schedule request repeats after a network timeout</td><td>One schedule exists; the caller receives the original result.</td></tr><tr><td>Travel, clock-change gaps and repeated hours</td><td>The chosen instant stays fixed; invalid local times reject; repeated times require an explicit occurrence.</td></tr><tr><td>Time change races with an old wake-up</td><td>If the change wins, no send starts at the old time. Otherwise return Sending and explain the conflict.</td></tr><tr><td>Cancel and claim execute concurrently</td><td>Exactly one transition wins. Successful cancellation produces no provider request and preserves the chosen cancellation result.</td></tr><tr><td>Two workers or duplicated jobs</td><td>One operation claims the message; provider receives the stable key.</td></tr><tr><td>Crash before request, after acceptance, or before Sent is saved</td><td>Recovery reconciles the same operation; no second accepted message is created.</td></tr><tr><td>Provider rejects, times out, or account access expires</td><td>Show the correct recovery action; ambiguous results never expose unsafe Retry.</td></tr><tr><td>Delayed service restarts</td><td>Apply the approved overdue policy and show a clear missed-time result when appropriate.</td></tr><tr><td>Normal Send and Drafts regression</td><td>Immediate Send, shortcuts, saves, editing and current provider outcomes match their existing behavior.</td></tr><tr><td>Keyboard and assistive technology</td><td>The picker, Scheduled actions, conflict errors and status updates remain operable and announced.</td></tr></tbody></table></div></div></details><div data-component="flow-diagram" class="flow-diagram-wrap"><svg class="flow-diagram" viewBox="0 0 840 120" style="min-width:840px" aria-hidden="true"><defs><marker id="plan-phases-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path class="diagram-arrow" d="M0 0 10 5 0 10Z"/></marker></defs><rect class="diagram-node" x="0" y="20" width="192" height="52" rx="6"/><text class="diagram-label" x="96.0" y="40">confirm dependencies</text><text class="diagram-label is-small" x="96.0" y="56">server · storage</text><path class="diagram-edge" d="M96 72 L96 88"/><text class="diagram-tag is-middle" x="96" y="100">CHOICES SETTLED</text><path class="diagram-edge" d="M192 46 L214 46" marker-end="url(#plan-phases-arrow)"/><rect class="diagram-node is-focal" x="216" y="20" width="192" height="52" rx="6"/><text class="diagram-label is-focal" x="312.0" y="40">durable path</text><text class="diagram-label is-small" x="312.0" y="56">claim · send</text><path class="diagram-edge" d="M312 72 L312 88"/><text class="diagram-tag is-middle is-focal" x="312" y="100">CRASH TESTS PASS</text><path class="diagram-edge" d="M408 46 L430 46" marker-end="url(#plan-phases-arrow)"/><rect class="diagram-node" x="432" y="20" width="192" height="52" rx="6"/><text class="diagram-label" x="528.0" y="40">experience</text><text class="diagram-label is-small" x="528.0" y="56">picker · list</text><path class="diagram-edge" d="M528 72 L528 88"/><text class="diagram-tag is-middle" x="528" y="100">END TO END PASSES</text><path class="diagram-edge" d="M624 46 L646 46" marker-end="url(#plan-phases-arrow)"/><rect class="diagram-node" x="648" y="20" width="192" height="52" rx="6"/><text class="diagram-label" x="744.0" y="40">gradual release</text><text class="diagram-label is-small" x="744.0" y="56">internal → all</text><path class="diagram-edge" d="M744 72 L744 88"/><text class="diagram-tag is-middle" x="744" y="100">COHORTS HOLD</text></svg></div><p class="flow-caption">Four phases ship in order. Each gate must hold before the next phase starts; the durable path carries the most risk.</p><details data-component="implementation-steps" class="implementation-steps implementation-steps-proof"><summary>Implementation order <span class="implementation-steps-count">4 steps</span></summary><div class="implementation-steps-head" aria-hidden="true"><span></span><span>Do</span><span>Done when</span></div><ol class="implementation-steps-list"><li class="implementation-step"><span class="implementation-step-number">1</span><div class="implementation-step-body"><div class="implementation-step-title">Confirm dependencies</div><p class="implementation-step-detail">Inspect the real code and mail provider, and resolve the three product choices.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>Server dispatch, durable storage and provider recovery are verified.</span></p></li><li class="implementation-step"><span class="implementation-step-number">2</span><div class="implementation-step-body"><div class="implementation-step-title">Build the durable path</div><p class="implementation-step-detail">Add storage and authenticated actions, then claim, send and reconciliation.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>Focused concurrency and crash tests pass before scheduling is exposed.</span></p></li><li class="implementation-step"><span class="implementation-step-number">3</span><div class="implementation-step-body"><div class="implementation-step-title">Connect the experience</div><p class="implementation-step-detail">Add the picker and the Scheduled list.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>Time handling, errors and unchanged Send and Drafts behavior pass end to end.</span></p></li><li class="implementation-step"><span class="implementation-step-number">4</span><div class="implementation-step-body"><div class="implementation-step-title">Release gradually</div><p class="implementation-step-detail">Enable an internal cohort, then a limited cohort, then broader availability.</p></div><p class="implementation-step-done"><span><span class="implementation-step-done-label">Done when </span>The guarantees and observed reliability hold at each stage.</span></p></li></ol></details><details data-component="disclosure" class="disclosure"><summary>Release controls</summary><div class="disclosure-content"><p>Track due-to-dispatch delay, queue age, claim conflicts, provider acceptance, confirmed failures, uncertain outcomes, retries and duplicate reports. Correlate by schedule and operation ID; keep message bodies and recipients out of routine telemetry.</p><p>Set launch thresholds and alerting after establishing a baseline; no existing volume or performance measurements are available here. Exercise service interruption and restart before widening access. A duplicate acceptance or unresolved reconciliation defect blocks wider rollout.</p><p>Use separate controls for creating new schedules and dispatching existing ones. If the interface must be rolled back, stop new scheduling and continue servicing the existing queue with a management route. If dispatch itself is unsafe, pause claims, preserve records, show delays, and reconcile accepted sends before resuming. Never silently discard queued messages.</p><p>Validate storage migration and permissions before enabling the flag. Keep the additive data model readable during rollback. Scheduled attachments must retain their supported lifetime throughout rollout.</p></div></details><details class="review-notes"><summary>Comment or request a change</summary><label>Disposition<select data-review-field="validation:disposition"><option value="">No disposition</option><option value="keep">Keep this part</option><option value="change">Change this part</option><option value="remove">Remove this part</option></select></label><label>Comment on Prove what a person can trust<textarea data-review-field="validation:comment" rows="3"></textarea></label></details></article><div data-component="callout" class="callout"><p><strong>Ready after the choices and dependencies are confirmed.</strong> The recommended proposal is to return cancellations to Drafts, hold messages missed by more than 24 hours for confirmation, and retry brief confirmed-unsent temporary failures. These defaults are proposals; the decision controls begin unanswered. Comments and edited contracts remain local until you copy or download one response.</p></div></section>
     <dialog class="review-dialog" aria-label="Review response"><form method="dialog"><button class="review-close" aria-label="Close response">Close</button></form><h2>Your response</h2><p>Copy or download this response and send it back in chat. Nothing is sent from this page.</p><label>Response intent<select data-review-intent><option value="feedback">Feedback only</option><option value="revise">Revise the plan</option><option value="ready">Ready to implement</option></select></label><label>Response<textarea data-review-output readonly rows="14"></textarea></label><div class="review-actions"><button type="button" data-review-copy>Copy response</button><button type="button" data-review-download>Download response</button></div><p data-review-message role="status" aria-live="polite"></p></dialog>
   </div>
 
   <footer class="sources"><p>PostBox / implementation proposal</p>Proposal based on the requested behavior. No PostBox repository was supplied; all contracts and module boundaries below are proposed.</footer>
 </div>
 
+
+<script data-component="page-behavior">
+  /* Optional page behavior: motion opt-in, one-time reveals, TOC scroll-spy,
+     reading progress, and theme toggle. Everything works without this script. */
+  (function () {
+    var reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced) document.documentElement.classList.add("js-motion");
+
+    // One-time scroll reveals for .reveal figures
+    if (!reduced && "IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.25 });
+      document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+      // Fail-safe: never leave content hidden if the observer doesn't fire
+      // (headless capture, odd embedders). One-shot, complements reduced-motion.
+      setTimeout(function () {
+        document.querySelectorAll(".reveal:not(.is-in)").forEach(function (el) { el.classList.add("is-in"); });
+      }, 1500);
+    } else {
+      document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("is-in"); });
+    }
+
+    // TOC scroll-spy (no-op when no .toc-rail present)
+    var links = Array.prototype.slice.call(document.querySelectorAll(".toc-rail a[href^='#']"));
+    if (links.length) {
+      var targets = links
+        .map(function (a) { return document.getElementById(a.getAttribute("href").slice(1)); })
+        .filter(Boolean);
+      var spy = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            links.forEach(function (a) {
+              a.classList.toggle("active", a.getAttribute("href") === "#" + e.target.id);
+            });
+          }
+        });
+      }, { rootMargin: "-15% 0px -70% 0px" });
+      targets.forEach(function (t) { spy.observe(t); });
+    }
+
+    // Reading progress (no-op when no linked page-set navigation is present)
+    var progress = document.querySelector(".sequence-reading-progress");
+    if (progress) {
+      var progressBar = progress.querySelector(".sequence-reading-progress-bar");
+      var updateProgress = function () {
+        var max = document.documentElement.scrollHeight - innerHeight;
+        var value = max > 0 ? Math.max(0, Math.min(100, Math.round(scrollY / max * 100))) : 100;
+        progress.setAttribute("aria-valuenow", String(value));
+        if (progressBar) progressBar.style.width = value + "%";
+      };
+      addEventListener("scroll", updateProgress, { passive: true });
+      addEventListener("resize", updateProgress);
+      updateProgress();
+    }
+
+    // Keep the current page visible in an overflowing peer rail.
+    var sequenceLinks = document.querySelector(".sequence-links");
+    var currentPage = sequenceLinks && sequenceLinks.querySelector('[aria-current="page"]');
+    if (sequenceLinks && currentPage) {
+      var centerCurrentPage = function () {
+        if (sequenceLinks.scrollWidth <= sequenceLinks.clientWidth) return;
+        var railBox = sequenceLinks.getBoundingClientRect();
+        var currentBox = currentPage.getBoundingClientRect();
+        var currentCenter = currentBox.left - railBox.left + sequenceLinks.scrollLeft + currentBox.width / 2;
+        sequenceLinks.scrollLeft = Math.max(0, currentCenter - sequenceLinks.clientWidth / 2);
+      };
+      addEventListener("resize", centerCurrentPage);
+      centerCurrentPage();
+    }
+
+    // Theme toggle (no-op when no .theme-toggle present)
+    var toggle = document.querySelector(".theme-toggle");
+    if (toggle) {
+      var root = document.documentElement;
+      var stored = null;
+      try { stored = localStorage.getItem("theme"); } catch (e) {}
+      if (stored) root.setAttribute("data-theme", stored);
+      toggle.addEventListener("click", function () {
+        var dark = root.getAttribute("data-theme") === "dark" ||
+          (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+        var next = dark ? "light" : "dark";
+        var apply = function () { root.setAttribute("data-theme", next); };
+        // Cross-fade the whole page when the browser supports view transitions.
+        if (!reduced && document.startViewTransition) document.startViewTransition(apply);
+        else apply();
+        try { localStorage.setItem("theme", next); } catch (e) {}
+      });
+    }
+  })();
+</script>
 
 <script data-component="document-tools">
 (function () {

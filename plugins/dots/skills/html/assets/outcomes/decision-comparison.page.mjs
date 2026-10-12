@@ -7,6 +7,7 @@ export default ({ page, section, readingColumn, callout, comparison, table, reco
     dek: "Three approaches reduce duplicate release work. Only one preserves a literal chain from verification to publication.",
     footer: "Illustrative reference: replace all sample claims, dates, metrics, paths, and decisions with grounded source material.",
     layout: "wide",
+    behavior: true,
   }, [
     readingColumn([
       section("frame", "The decision", [

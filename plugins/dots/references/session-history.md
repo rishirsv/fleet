@@ -1,5 +1,12 @@
 # Session history
 
+Contents:
+
+- [Establish source coverage](#establish-source-coverage)
+- [Codex](#codex)
+- [Claude Code](#claude-code)
+- [Shared helper](#shared-helper)
+
 Use this reference only when a skill needs evidence from earlier Codex or Claude
 Code sessions. Prefer supported read-only interfaces. Local stores are a fallback
 for history or detail those interfaces do not expose.
@@ -94,8 +101,8 @@ See [Claude Code data storage](https://code.claude.com/docs/en/claude-directory)
 
 ## Shared helper
 
-The `self-improve` helper normalizes both local stores. From either the `recall`
-or `self-improve` skill directory:
+The `self-improve` helper normalizes both local stores. From any Dots skill
+directory:
 
 ```bash
 python3 ../self-improve/scripts/self_improve.py --platform codex triage --days 30 --limit 100

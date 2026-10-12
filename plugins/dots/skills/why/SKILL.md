@@ -1,6 +1,6 @@
 ---
 name: why
-description: "Use for 'why does X work this way', design rationale, regressions, postmortems, or evidence-backed thresholds. Searches the smallest useful historical record and separates direct evidence, inference, and unknowns. Use how for runtime behavior."
+description: "Investigates why code or a design exists from the smallest useful historical record, separating evidence, inference, and unknowns. Use for design rationale, regressions, postmortems, or thresholds; use how for runtime behavior."
 ---
 
 # Why
@@ -22,7 +22,7 @@ Start with the evidence closest to the change. Widen the search when the direct
 record cannot answer the question. Return the strongest answer the available record supports. Search another
 system only when its records could improve that answer.
 
-## Evidence Rules
+## Evidence rules
 
 - **Collect evidence first.** Decide which explanation the collected evidence
   supports before writing it.
@@ -34,11 +34,10 @@ system only when its records could improve that answer.
   the record does not answer the question.
 - **Match language to confidence.** Use confident language for direct evidence and cautious
   language for inference.
-- **Do not use code as proof of its own intent.** “It handles null because it
-  checks for null” describes mechanics, not motivation.
 
-Read [epistemics.md](references/epistemics.md) for the confidence framework and
-phrasing guide. Preserve that confidence language in the final answer.
+Read [epistemics.md](references/epistemics.md) for the confidence framework,
+phrasing guide, and final calibration check. Preserve that confidence language
+in the final answer.
 
 ## 1. Understand the target
 
@@ -54,21 +53,12 @@ If the target is vague, use the conversation, current selection, open files, or
 recent work to make the best interpretation. State it briefly and proceed so
 the user can redirect you.
 
-## 2. Locate The Code And Its History
+## 2. Locate the code and its history
 
 Find the relevant files, line ranges, symbols, and recent commits that change
 the target's structure, ownership, interfaces, or behavior.
 Use blame and file history to locate merge commits, pull requests, tickets,
 comments, tests, and incidents tied to the target.
-
-Typical starting commands include:
-
-```bash
-git blame -L <start>,<end> <file>
-git log --follow -p -- <file>
-git log --oneline -20 -- <file>
-git log -1 --format=%B <commit>
-```
 
 When `gh` is installed and authenticated, inspect the PR body, discussion,
 reviews, and linked issues for those commits. Keep the file paths, symbols,
@@ -87,33 +77,29 @@ Use the smallest depth likely to answer the question:
   high-stakes decision, or when focused searches still support different
   explanations that would change the conclusion.
 
-Use the available source playbooks under `references/sources/` when their source
-is relevant:
+Start with source control: read
+[code-archaeology.md](references/sources/code-archaeology.md) for the git and
+`gh` queries that recover implementation-time rationale from commits, PRs,
+review comments, and tests. Search other records, such as tickets, design
+documents, chat, or monitoring, only when the user names one or a connected
+tool holds it; apply the same evidence rules and cite each item.
 
-- **Source control** captures implementation-time rationale in commits, PRs,
-  comments, and tests.
-- **Tickets** often capture the customer, product, compliance, or scheduling
-  pressure behind the work.
-- **Long-form documents** hold RFCs, ADRs, PRDs, design alternatives, and
-  postmortems.
-- **Team chat** can hold real-time decisions that never reached a durable doc.
-- **Observability** connects thresholds and defensive code to runtime behavior
-  and incidents.
-- **Error tracking** connects corrective code to specific exceptions and
-  releases.
-- **Product analytics** can explain limits, experiments, migrations, and usage
-  assumptions.
+If the target has null checks, retries, timeouts, rate limits, feature flags,
+egress guards, or OOM handlers, also read
+[incident-postmortem.md](references/sources/incident-postmortem.md) and run its
+incident queries within each selected source.
 
 Investigate directly when the search is small. Delegate independent sources in
-parallel when that substantially improves coverage or reduces time. For a large run, use
-[investigator-prompt.md](references/investigator-prompt.md) rather than
-recreating its brief.
+parallel when that substantially improves coverage or reduces time. For a large
+run, fill [investigator-prompt.md](references/investigator-prompt.md) for each
+investigator and append the source file for its category, plus
+incident-postmortem.md when the condition above applies.
 
 A search with no results is useful only when its terms and scope could
 have found relevant evidence. Record an unavailable source as a gap when it could plausibly change
 the conclusion, not as a routine disclaimer.
 
-## 4. Test The Explanation
+## 4. Test the explanation
 
 Look for earlier implementations, reversions, contradictions, and evidence that
 supports a competing explanation. Do not assume the latest commit tells the
@@ -123,30 +109,47 @@ past decision.
 Keep direct evidence, inference, and hypotheses separate while you work. When
 several explanations still fit, preserve them instead of choosing one without sufficient evidence.
 
-## 5. Combine The Findings
+## 5. Combine the findings
 
 Use a separate synthesizer only when the reports are large, conflicting, or
-independently complex. When needed, give it the target code and its history, findings, searches with no
-results, original question, `epistemics.md`, and
-[synthesizer-prompt.md](references/synthesizer-prompt.md).
+independently complex. When needed, give it the target code and its history,
+findings, searches with no results, skipped sources with reasons, original
+question, `epistemics.md`, the output contract below, and
+[synthesizer-prompt.md](references/synthesizer-prompt.md). When you relay its
+answer, you may lightly edit for clarity or add context from the conversation;
+keep its confidence language.
 
 ## Output contract
 
+Write the answer with [Writing style](../../references/writing-style.md).
+
 Adapt the headings to the question, but keep the confidence separation:
 
-- **The question.** Restate the decision or history being investigated.
-- **The code in question.** Give the relevant files, lines, and symbols in one
-  or two lines.
-- **What we found.** State direct evidence with a commit, PR, ticket, document,
-  chat permalink, incident, metric, or code-comment citation.
-- **What we can reasonably infer.** Explain the evidence chain and use language
-  such as “appears to,” “likely,” or “suggests.”
+- **The question.** Restate the decision or history being investigated in one
+  or two sentences.
+- **The code in question.** Give the relevant files, lines, and symbols in two
+  or three lines that orient a reader without prior context.
+- **What we found.** One claim per bullet, tagged `[Direct]` for explicit
+  single-source evidence or `[Supported]` when several indirect items converge.
+  Cite the commit, PR, ticket, document, chat permalink, incident, metric, or
+  code comment, with a brief quote or paraphrase.
+- **What we can reasonably infer.** Tag claims `[Inferred]`, use language such
+  as “appears to,” “likely,” or “suggests,” and show the chain: “Given A and B,
+  C is likely.” Skip the section when nothing is inferred.
 - **Competing hypotheses.** Include this only when more than one explanation
-  still fits. Give evidence for and against each.
-- **What we do not know.** Name material unanswered questions and searches that
-  returned no relevant result.
-- **Sources consulted.** Say what was searched, what it contributed, and which
-  meaningful sources were unavailable or empty.
+  still fits. Give each hypothesis, the evidence for it, and the evidence
+  against it or missing.
+- **What we do not know.** Include this only when a material question remains.
+  Name the specific gap: “We searched the issue tracker for [query1] and
+  [query2] and found no issue discussing the threshold” is useful; “We don't
+  know why” is not. Do not invent a gap to fill the section.
+- **Sources consulted.** One bullet per evidence category: what was searched
+  (paths, commit and PR counts, ticket IDs, queries, channels and date ranges,
+  dashboards, tables and time windows with the numeric summaries that mattered)
+  and what it contributed. For a category not searched, say why, such as “No
+  matching MCP available in this environment.”
+- **Confidence summary.** One or two sentences on overall confidence, naming
+  which parts are direct, inferred, or unanswered.
 
 If the question precedes a code change, finish with Preserve / Change / Avoid /
 Risk constraints derived from the recorded history.

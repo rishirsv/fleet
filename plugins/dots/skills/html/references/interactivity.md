@@ -42,7 +42,9 @@ a document when local controls improve inspection and feedback. Use `ui-design`
 when the task calls for a functioning product, external writes, authentication,
 or live data and complex application state.
 
-Review keyboard access, labels, focus, narrow screens, and the changed state—not
-only the opening screenshot. Test empty search, sort direction, copying fallback,
-and no JavaScript when those controls are present. Downloads depend on the browser; if a viewer does not save the file, copy or
-select the response instead. Keep exports, feedback, and saved answers local; do not add network requests or telemetry.
+Check keyboard access, labels, focus, narrow screens, and each changed state
+in addition to the opening view. Test empty search, sort direction, copying
+fallback, and no JavaScript when those controls are present. Downloads depend
+on the browser; if a viewer does not save the file, copy or select the
+response instead. Keep exports, feedback, and saved answers local; add no
+network requests or telemetry.

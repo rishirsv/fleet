@@ -4,7 +4,7 @@ Read this when an original raster image would clearly improve a page. Use
 `imagegen` to create, edit, and check the image; this file explains how to place
 the result in HTML.
 
-## Decide Whether An Image Helps
+## Decide whether an image helps
 
 Use `imagegen` for a purposeful photo, illustration, texture, product mockup,
 or other raster visual that helps the reader understand or feel the subject.
@@ -64,7 +64,7 @@ it with a data URI and removes the local path from the final page.
 Use `loading="eager"` for an image visible in the first viewport and
 `loading="lazy"` below it. Meaningful images need concise alt text describing
 what is visibly present; captions explain why the reader should notice it.
-Decorative images should normally be omitted, not shipped with empty alt text.
+Omit decorative images instead of shipping them with empty alt text.
 
 The normal assembly command embeds the asset automatically:
 
@@ -80,8 +80,9 @@ node scripts/assemble.mjs \
 
 - The final HTML contains a `data:image/...` source, no `data-embed-src`, no
   local path, and no external image request.
-- The crop, focal point, caption, and alt text still make sense at 1280, 768,
-  360, and 320px in light and dark modes.
+- The crop, focal point, caption, and alt text still make sense at desktop and
+  narrow widths in light and dark modes. Choose the widths from
+  [Visual proof](../../../references/visual-proof.md).
 - The image does not contain invented evidence, broken text, logos, watermarks,
   or unintended generated defects.
 - Its pixel dimensions and file size fit the displayed size; the first useful content is not delayed by a decorative asset.

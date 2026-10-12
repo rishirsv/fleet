@@ -1,9 +1,9 @@
 ---
 name: index
-description: "Route work to the smallest applicable Dots skill, shared reference, or Feature Development workflow only when the user explicitly invokes Dots, $index, or Dots Feature Development. Ordinary implementation and bug-fix requests do not trigger this router. Focused requests use their owning skill."
+description: "Routes a request to the owning Dots skill, shared reference, or Feature Development workflow. Use only when the user explicitly invokes Dots, $index, or Dots Feature Development."
 ---
 
-# Dots Index
+# Dots index
 
 Route the request to the smallest Dots workflow that owns it. The index selects
 and loads the skill responsible for the work; it does not repeat or replace
@@ -18,53 +18,49 @@ its instructions.
   authorization, output, validation, and completion rules.
 - Do not turn the skill map into a checklist. Skip routes that do not change
   the work.
+- User instructions take precedence over Dots skill guidance. When a skill
+  causes a pause or a divergence from the user's intent, name its `SKILL.md`,
+  quote the instruction, and separate what the skill explicitly requires from
+  your interpretation of it.
 
 ## Develop software
 
-When the user explicitly selects Dots, `$index`, or Dots Feature Development
-for a material feature, bug fix, refactor, measured performance change,
+For a material feature, bug fix, refactor, measured performance change,
 behavior-changing configuration, or implementation plan, read and follow
 [Feature Development](../../references/feature-development.md) as the primary
 workflow. It routes into focused skills as its phases require.
+Use `$agent-workflow` instead when the user wants the whole plan-to-PR flow
+run with delegated agents.
 
 ## Choose the focused owner
 
-| Request | Owner |
-| --- | --- |
-| Design a new or changed code boundary before implementation | `$architect` |
-| Structural audit or refactor candidates in existing code | `$architecture-review` |
-| Completed code change before merge | `$change-review` |
-| Resolve one uncertain choice through a throwaway build | `$prototype` |
-| Explain how code or a subsystem works | `$how` |
-| Investigate why code or a decision exists | `$why` |
-| Write or revise durable repository documentation | `$repo-docs` |
-| Design, build, refine, or audit a product interface | `$ui-design` |
-| Create a self-contained HTML artifact | `$html` |
-| Publish finished work as a pull request | `$publish-pr` |
-| Keep a pull request moving | `$babysit-pr` |
-| Prepare work for another agent, task, or phase | `$handoff` |
-| Write or revise a standalone prompt for another assistant | `$meta-prompt` |
-| Create, update, or review a Dots skill | `$skill-standards` |
+Each skill's description defines its boundary. Choose within these groups:
+
+- Design and structure: `$architect`, `$architecture-review`, `$prototype`
+- Review and publishing: `$change-review`, `$publish-pr`, `$babysit-pr`
+- Explanation and documentation: `$how`, `$why`, `$repo-docs`
+- Interfaces and artifacts: `$ui-design`, `$ui-review`, `$html`
+- Agent work: `$handoff`, `$meta-prompt`, `$skill-standards`
 
 The user-controlled modes `$ask-model`, `$clarify-requirements`,
-`$shape-idea`, `$explain-simply`, `$recall`, and `$self-improve` remain explicit. Load
-them only when the user selects that mode. Their descriptions define the exact
-boundary.
+`$shape-idea`, `$explain-simply`, `$catch-up`, `$self-improve`,
+`$usage-insights`, and `$verification-skill`
+remain explicit. Load them only when the user selects that mode. Their
+descriptions define the exact boundary.
 
 ## Load shared references by need
 
-- Read [Hard-Cut Policy](../../references/hard-cut-policy.md) when replacing a
+- Read [Hard-cut policy](../../references/hard-cut-policy.md) when replacing a
   schema, contract, persisted shape, route, configuration, value set, or
   architecture, unless the selected skill already loads it.
-- Read [Duplicate Ownership](../../references/duplicate-ownership.md) when a
+- Read [Duplicate ownership](../../references/duplicate-ownership.md) when a
   change creates or removes copied policy, competing sources of truth, or
   normalization in several layers, unless the selected skill already loads it.
-- Route technical writing, visual explanation, visual proof, session history,
-  writing style, and skill practices through their owning focused skills rather
-  than loading those references independently.
-
-## Finish
-
-The selected owner finishes the work and produces the result. The index is done
-when the request has one clear primary owner, every supporting skill has a
-distinct job, and the selected skills' completion conditions have been met.
+- During Feature Development, read
+  [Performance measurement](../../references/performance-measurement.md) before
+  reporting or acting on a measured number,
+  [Visual proof](../../references/visual-proof.md) when verifying visible
+  output, and [Test consolidation](../../references/test-consolidation.md) when
+  placing new or moved tests.
+- Load other shared references, such as writing style, visual explanations, and
+  session history, through the skill that links them.

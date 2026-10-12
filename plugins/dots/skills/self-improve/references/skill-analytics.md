@@ -1,4 +1,4 @@
-# Skill-Usage Analytics
+# Skill-usage analytics
 
 Use `skill-usage` once to select a fixed list of sessions to read for a named
 skill review.
@@ -46,10 +46,6 @@ candidates. For each cluster:
 2. Decide whether any friction was caused by the skill, by its trigger, or by
    unrelated work in the thread.
 3. Compare successful runs to failures and state the repeatable happy path.
-4. Require repeated clusters when generalizing beyond the task. One cluster can
-   still support a narrow correction or an exact behavior the user requests.
-   Pass broader changes through the generalization gate in
-   [thread-evidence.md](thread-evidence.md).
 
 Prioritize repeated problems caused by the skill across invocation clusters. A
 heavily used skill with clean representative runs may need no change.

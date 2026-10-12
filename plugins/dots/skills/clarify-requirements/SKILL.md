@@ -1,6 +1,6 @@
 ---
 name: clarify-requirements
-description: "Use only when the user selects `$clarify-requirements` to resolve underspecified requirements before implementation; not for shaping a fuzzy idea, planning the implementation, or asking questions the repository can answer."
+description: "Asks the few questions that block a request from being built in one pass. Use only when the user selects `$clarify-requirements`; use shape-idea when the idea needs its decision tree explored."
 ---
 
 # Clarify Requirements
@@ -11,6 +11,8 @@ confirm the same decisions again. A clarification-only request ends with the
 shared understanding.
 
 ## Workflow
+
+Write questions and the summary with [Writing style](../../references/writing-style.md).
 
 ### 1. Inspect before asking
 

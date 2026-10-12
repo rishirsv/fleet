@@ -11,6 +11,21 @@ code, commands, identifiers, and required terminology. Respect the writer's
 established voice. Edit the explanation around protected material when needed.
 Style changes must not hide uncertainty or weaken a requirement.
 
+Contents: [Write for the reader](#write-for-the-reader) ·
+[State the action](#state-the-action) ·
+[Make conditions and sequence explicit](#make-conditions-and-sequence-explicit) ·
+[Use stable, concrete terms](#use-stable-concrete-terms) ·
+[Remove competing readings](#remove-competing-readings) ·
+[Keep sentences readable](#keep-sentences-readable-without-removing-meaning) ·
+[Write procedures](#write-procedures-that-can-be-followed) ·
+[Preserve examples and commands](#preserve-examples-and-commands) ·
+[Keep technical claims precise](#keep-technical-claims-precise) ·
+[Evidence in claims](#evidence-in-claims) ·
+[Preserve a natural voice](#preserve-a-natural-voice) ·
+[Remove artificial patterns](#remove-artificial-patterns) ·
+[Review before delivery](#review-before-delivery) ·
+[Relationship to full STE](#relationship-to-full-ste)
+
 ## Write for the reader
 
 Identify the reader, the intended effect, and the facts or source material that
@@ -81,8 +96,15 @@ component responsible for maintaining it.
 
 Replace metaphors and compressed noun groups when they hide the action or
 relationship. Explain which module calls another, which agent decides, or
-which file changes. Keep a metaphor in an explanation only when it teaches the
-relationship more clearly than a literal description.
+which file changes. Abstract metaphor nouns such as "landscape," "journey,"
+"tapestry," "realm," "ecosystem," "lever," "substrate," "wedge," "north star,"
+"flywheel," and "surface" for a vague set of things usually stand in for a
+concrete noun; name that noun. Keep a metaphor in an explanation only when it
+teaches the relationship more clearly than a literal description.
+
+Do not coin labels or hyphenated compounds such as "owner-first scan" or
+"proof-gated handoff" to name an idea once. Describe the idea in plain words.
+Introduce a new term only when the reader will reuse it, and define it there.
 
 > Before: Restate the problem space, constraints, dependency category, and current seam.
 >
@@ -96,7 +118,9 @@ classification. Do not silently substitute an invented meaning.
 
 Make every pronoun point to one clear noun. Repeat the noun when "it," "this,"
 or "which" could refer to several things. Keep articles and verbs when their
-omission makes the reader decode the sentence.
+omission makes the reader decode the sentence. Write "The parser rejects a bad
+date, exits with code 2, and writes nothing" instead of "Parser rejects bad
+date → exit 2, no write." Spell out arrows and abbreviations in prose.
 
 Put "only" and "not" next to the words they qualify. Make the grouping of
 "and" and "or" explicit. Distinguish requirements from recommendations:
@@ -222,7 +246,13 @@ the piece sound formulaic.
 
 - Prefer "is" or "has" to elaborate substitutes such as "serves as" or "boasts"
   when the simpler verb carries the same meaning.
-- State the point directly instead of adding a "not just X, but Y" construction.
+- State the positive claim directly. Remove "not just X, but Y" and "X, not Y"
+  contrasts unless the reader asked about Y or would otherwise assume it.
+- Replace AI vocabulary with plain words: "delve," "leverage," "utilize,"
+  "robust," "seamless," "crucial," "pivotal," "intricate," "interplay,"
+  "underscore," "showcase," "foster," "garner," "enhance," "vibrant," and
+  "additionally." Cut "really," "truly," and "it's worth noting" when they
+  add no meaning.
 - Use the number of examples or arguments the material requires. Do not force
   ideas into groups of three.
 - Avoid artificial ranges such as "from X to Y" when the items do not define a
@@ -230,8 +260,9 @@ the piece sound formulaic.
 - Cut filler such as "in order to" and "it is important to note that."
 - Replace stacked hedges with the level of uncertainty the evidence supports.
   "May" is clearer than "could potentially possibly."
-- End when the piece has answered the question. Remove generic conclusions
-  that merely announce optimism or repeat the preceding text.
+- End when the piece has answered the question. Remove summary closers such
+  as "In short," "Bottom line," and "Overall," and any closing paragraph that
+  restates the conclusion or announces optimism.
 - Use a stronger verb or a measurement when an adverb adds no information.
   Preserve qualifiers that change the claim's accuracy.
 
@@ -270,23 +301,19 @@ Do not delete useful background merely because other readers also need it.
 
 ## Review before delivery
 
-1. Check the structure against the reader's task or question and the source
-   material. Identify claims, caveats, examples, commands, and links that must
-   stay accurate.
-2. Check meaning before style. For each instruction, identify the action,
-   responsible actor, object, condition, and expected result where each matters.
-   For an explanation, check whether the reader can follow the claim and its
-   support without guessing a missing connection.
-3. Remove unsupported claims, repetition, filler, and artificial patterns.
-   Check that every procedure retains its prerequisites, sequence, expected
-   result, and relevant failure behavior. Keep evidence beside the claims it
-   supports.
-4. Read the prose aloud. Revise any passage that forces the reader to backtrack
-   or guess the connection between ideas.
-5. Compare the revision with the source. Preserve its meaning, evidence,
-   uncertainty, and intended voice. For instructions, preserve triggers,
-   permissions, required steps, exceptions, examples, output fields, and
-   completion conditions. Keep every technical detail needed for the task.
+1. Check the structure against the reader's task and the source. Note the
+   claims, caveats, examples, commands, and links that must stay accurate.
+2. Check meaning before style: for each instruction, the action, actor,
+   object, condition, and expected result; for an explanation, whether the
+   reader can follow the claim and its support without guessing.
+3. Remove unsupported claims, repetition, filler, and artificial patterns, and
+   keep each procedure's prerequisites, sequence, result, and failure behavior.
+4. Read it aloud and revise any passage that makes the reader backtrack.
+5. Compare with the source. Keep its meaning, evidence, uncertainty, voice,
+   and, for instructions, its triggers, permissions, exceptions, outputs, and
+   completion conditions.
+
+### Report a prose finding
 
 If wording is ambiguous, quote it, describe the plausible misreading, and write
 a concrete replacement. "Too much jargon" is not a sufficient finding. If the
@@ -294,16 +321,12 @@ intended meaning cannot be recovered from the source, report the uncertainty
 instead of deciding a new policy through an edit. Do not treat a clean schema
 check or a lower word count as proof that the agent will behave correctly.
 
+Check that each replacement preserves who acts, when, with what authority, and
+what must be true at completion.
+
 ## Relationship to full STE
 
-Full ASD-STE100 compliance also controls approved vocabulary, word meanings,
-parts of speech, grammar, technical terms, and sentence length. Dots uses the
-clarity principles above without enforcing that dictionary or fixed word
-limits. For example, Dots permits the ordinary verb "check."
-
-If the user requests full compliance, use the current official standard and
-review the applicable rules and dictionary entries. Do not label a plain-English
-rewrite compliant merely because its sentences are short.
-
-Sources: [ASD's overview](https://www.asd-ste100.org/about_STE.html) and
-[official standard access](https://www.asd-ste100.org/STE_downloads.html).
+Dots borrows STE's clarity rules without its controlled dictionary or fixed
+sentence limits. If the user asks for full ASD-STE100 compliance, apply the
+current official standard, and do not call a plain-English rewrite compliant
+because its sentences are short.

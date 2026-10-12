@@ -92,7 +92,10 @@ gotchas: Everything must remain complete and navigable without this script.
         var dark = root.getAttribute("data-theme") === "dark" ||
           (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
         var next = dark ? "light" : "dark";
-        root.setAttribute("data-theme", next);
+        var apply = function () { root.setAttribute("data-theme", next); };
+        // Cross-fade the whole page when the browser supports view transitions.
+        if (!reduced && document.startViewTransition) document.startViewTransition(apply);
+        else apply();
         try { localStorage.setItem("theme", next); } catch (e) {}
       });
     }

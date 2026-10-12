@@ -1,34 +1,35 @@
 ---
 name: skill-standards
-description: "Creates, updates, or statically reviews agent skill source against Dots standards. Use for authoring, revising, or diagnosing a skill; not for behavioral evaluation or plugin packaging."
+description: "Creates, updates, or statically reviews Dots plugin skill source against Dots standards. Use when authoring, revising, or diagnosing a Dots skill; not for behavioral evaluation or plugin packaging."
 ---
 
-# Skill Standards
+# Skill standards
 
-Use [standards.md](references/standards.md) to create, update, or review a skill.
-Apply [Writing style](../../references/writing-style.md) while writing the
-instructions and again before completing the review.
+Read [standards.md](references/standards.md) for every task. Apply
+[Writing style](../../references/writing-style.md) while writing instructions
+and again before completing a review; its
+[prose-finding form](../../references/writing-style.md#report-a-prose-finding)
+sets how to report each prose defect.
 
 For creation or updates, use the environment's default `skill-creator` for
 authoring mechanics, resource structure, validation, and forward testing.
-Preserve accepted wording, voice, examples, and explanations unless the user
-requests a change. Compare the revised source with the original before
-finishing. Check what future runs will load, decide, delegate, return, and
-require before completion. Review prose for clear actions and conditions as
-well as reviewing the skill's structure.
-
-For static review, read [skill-review.md](references/skill-review.md). Return
-evidence-backed findings and proposed edits. Review-only requests leave source unchanged; when
-the user also requests fixes, apply the supported edits and run their relevant
-checks.
-
-When the user wants the current or a named Codex task turned into a new or
-updated skill, read [session-capture.md](references/session-capture.md) first.
-
 Plugin scaffolding, manifests, packaging, marketplace entries, installation,
-and cache updates belong to the environment's default `plugin-creator`.
+and cache updates belong to the default `plugin-creator`.
 
-Return the changed source or the review verdict, findings, and proposed edits.
-Include the checks performed and any uncertainty that still affects use.
-A prose finding must quote the wording, explain the possible misreading, and
-provide a concrete replacement.
+For a static review, read [skill-review.md](references/skill-review.md).
+Review-only requests leave source unchanged; when the user also requests
+fixes, apply the supported edits.
+
+When the user wants the current or a named task turned into a skill, read
+only that task's history and capture the reusable method: the requests that
+should and should not select it, the steps that reached an accepted result,
+the judgment calls, and the failure behind each user correction. Treat a flow
+as successful only with evidence such as an accepted output or passing check,
+and keep task IDs, local paths, and private details out of the shipped skill.
+
+When the skill being authored produces visual artifacts whose layout affects
+correctness, read [Visual proof](../../references/visual-proof.md) for how its
+instructions should have the agent render and inspect them.
+
+Return the changed source, or the review verdict, findings, and proposed
+edits, with the checks performed and any uncertainty that still affects use.

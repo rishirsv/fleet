@@ -1,4 +1,4 @@
-# Code Archaeology (git + in-repo)
+# Code archaeology (git and in-repo records)
 
 ## What this source contains
 

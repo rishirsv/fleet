@@ -1,6 +1,6 @@
 # Duplicate ownership
 
-Read this when the same rule, contract, default, validation, transformation, or
+Use this when the same rule, contract, default, validation, transformation, or
 state appears to have more than one owner.
 
 ## Classify before changing
@@ -40,9 +40,8 @@ pass-through; if callers must implement that complexity after removal, the modul
 providing useful behavior. Keep translation at a real external, persisted, or untrusted
 boundary even when only one adapter exists.
 
-Tests should exercise the retained interface. Remove tests for the deleted
-implementation. Do not add a mediator, fallback, shim, or dual path between
-competing owners.
+Remove the competing owners and their tests as a
+[hard cut](hard-cut-policy.md); tests exercise the retained interface.
 
 If the canonical owner cannot be established from the requested scope, report
 the competing evidence and route the broader decision to Architecture Review.

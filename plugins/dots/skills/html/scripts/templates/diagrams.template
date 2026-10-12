@@ -53,7 +53,7 @@ __DOTS_THEME_CSS__
   </div>
 
   __DIAGRAM_FIGURES__
-  <div class="reading-column">
+  <div class="reading-column" style="margin-top: var(--section)">
     <section id="rules">
       <h2>Shared limits</h2>
       <p>Embedded diagrams target 4–9 nodes and one or two focal elements. Keep equivalent meaning in adjacent HTML, inspect the actual display width, and split a drawing that cannot remain legible without shrinking labels.</p>

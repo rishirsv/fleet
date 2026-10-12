@@ -30,5 +30,5 @@ export function diagramStyles({ components = true } = {}) {
   const gallery = readFileSync(join(registry, 'diagram-gallery.css'), 'utf8').replace(/[ \t]+$/gm, '');
   const names = ['flow-diagram', 'bar-chart', 'line-chart', 'stacked-chart'];
   const styles = components ? names.map((name) => readFileSync(join(registry, `${name}.html`), 'utf8').match(/<style>([\s\S]*?)<\/style>/)?.[1] ?? '').join('\n') : '';
-  return `<style>${gallery}\n${styles}\n.diagram-card .chart-card{border:0;padding:0;margin:0}.diagram-card .flow-diagram-wrap{margin:0}.diagram-card:is([data-diagram="flowchart"],[data-diagram="state-machine"],[data-diagram="sequence"],[data-diagram="timeline"],[data-diagram="line-chart"]){grid-column:1/-1}</style>`;
+  return `<style>${gallery}\n${styles}\n.diagram-card .chart-card{border:0;padding:0;margin:0}.diagram-card .flow-diagram-wrap{margin:0}.diagram-card:is([data-diagram="architecture-delta"],[data-diagram="flowchart"],[data-diagram="state-machine"],[data-diagram="sequence"],[data-diagram="timeline"],[data-diagram="gantt"],[data-diagram="fishbone"],[data-diagram="line-chart"]){grid-column:1/-1}</style>`;
 }

@@ -16,12 +16,8 @@ gotchas: If the options share many comparable attributes (pricing tiers,
 <style>
   .comparison-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
-    gap: 1px;
-    background: var(--a12);
-    border: 1px solid var(--a12);
-    border-radius: var(--r-card);
-    overflow: hidden;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+    gap: 12px;
     margin-bottom: var(--section);
   }
   .comparison-grid[data-columns="2"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -29,13 +25,41 @@ gotchas: If the options share many comparable attributes (pricing tiers,
   .comparison-grid[data-columns="4"] { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   @media (max-width: 680px) { .comparison-grid[data-columns] { grid-template-columns: 1fr; } }
   .option-card {
-    background: var(--background);
-    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--a12);
+    border-radius: var(--r-card);
+    box-shadow: var(--shadow-sm);
+    padding: 20px;
+  }
+  .option-card.recommended {
+    border-color: var(--accent-line);
+    box-shadow: 0 0 0 1px var(--accent-line), var(--shadow-md);
   }
   .option-card h3 { margin-bottom: 8px; }
-  .option-card p { font-size: 14px; line-height: 1.6; margin: 0 0 12px; }
-  .option-card .recommend-mark { font-weight: 700; color: var(--accent-deep); }
-  .best-for { font-size: 12px; color: var(--text-muted); text-transform: none; }
+  .option-card p { font-size: 14px; line-height: 1.6; margin: 0 0 16px; color: var(--a70); }
+  .option-card .recommend-mark {
+    display: table;
+    margin-bottom: 10px;
+    padding: 0 9px;
+    line-height: 22px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent-deep);
+    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px var(--accent-line);
+    border-radius: var(--r-pill);
+  }
+  .best-for {
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--a8);
+    font-size: 12.5px;
+    color: var(--text-muted);
+    text-transform: none;
+  }
 </style>
 
 <div data-component="comparison-grid" class="comparison-grid" data-columns="3">

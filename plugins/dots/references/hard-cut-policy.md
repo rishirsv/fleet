@@ -22,8 +22,8 @@ code is not evidence that compatibility is required.
    translation helpers, and dual-shape support.
 5. Delete migrations, backfills, restore translation, and resync paths whose
    only purpose is recognizing or preserving the retired shape.
-6. Do not add, and delete existing, guards or tests whose only purpose is
-   recognizing or rejecting the retired shape.
+6. Delete guards or tests whose only purpose is recognizing or rejecting the
+   retired shape, and add no new ones.
 7. Keep validation only for malformed input in the current contract.
 8. Search the entire declared scope for every retired name and path before
    calling the cut complete.

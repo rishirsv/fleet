@@ -1,9 +1,9 @@
-# Explain Changes
+# Explain changes
 
-Use this reference in change mode for a diff, commit, branch, pull request, or
+Use this reference with `tracing.md` for a diff, commit, branch, pull request, or
 completed body of work.
 
-## Establish Complete Coverage
+## Establish complete coverage
 
 Read the description, diff, affected source, and the tests, configuration,
 documentation, migrations, or surrounding behavior needed to understand the
@@ -28,7 +28,7 @@ For a pull request or similarly broad change, completeness means every
 meaningful item is represented. For a narrow change question, explain only the
 parts needed to answer it unless the user asks for the full change.
 
-## Choose The Explanation Order
+## Choose the explanation order
 
 Before outlining, identify the original condition, failure, constraint, or
 opportunity. Identify the practical result and the included and excluded
@@ -64,7 +64,7 @@ Every complete change explanation covers, without requiring fixed headings:
 - remaining constraints and how they affect the user or operation
 - what evidence proves the behavior and what remains unverified
 
-## Add Detail When It Matters
+## Add detail when it matters
 
 Add detail only when the source calls for it:
 
@@ -80,7 +80,7 @@ Add detail only when the source calls for it:
 | Infrastructure | Downstream capability or operating improvement it enables |
 | Recorded tradeoff | Decision, credible alternative, and documented consequence |
 
-## Preserve Evidence And Limits
+## Preserve evidence and limits
 
 Describe what validation proves. Test counts and status alone do not explain
 whether the behavior works. Keep these states distinct for staged work:

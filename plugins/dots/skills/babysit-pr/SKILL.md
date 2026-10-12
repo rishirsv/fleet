@@ -1,24 +1,22 @@
 ---
 name: babysit-pr
-description: "Keeps a GitHub pull request moving by watching its latest checks and review feedback, fixing problems within its original goal, and replying to handled feedback. Use when the user asks to monitor, watch, or babysit a pull request; not for a one-time status report."
+description: "Monitors a GitHub pull request and fixes failing checks or review feedback within its original goal until it is ready. Use when the user asks to watch or babysit a pull request; not for a one-time status report."
 ---
 
 # Babysit PR
 
 Follow the pull request until its latest commit passes required checks and
-reviews and no unresolved issue requires work. Keep the original goal fixed, and
-merge only when the user asks.
+reviews and no unresolved issue requires work. Keep the original goal fixed.
 
 ## Start
 
 1. Resolve the exact repository, pull request, and local branch. Use a supplied
    pull request link or number; otherwise find the pull request for the current
    branch. Confirm `gh auth status` before relying on command-line GitHub data.
-2. Record the original goal, target branch, latest commit, merge state, checks,
-   and unresolved review discussions. Prefer the GitHub app for pull request and
-   review data. Use `gh` for checks, run logs, and local branch work.
-3. Record the starting state once, keeping the record brief. Useful commands
-   are:
+2. Record the starting state once, briefly: the original goal, target branch,
+   latest commit, merge state, checks, and unresolved review discussions. Prefer
+   the GitHub app for pull request and review data. Use `gh` for checks, run
+   logs, and local branch work. Useful commands are:
 
    ```bash
    gh pr view <pr> --json headRefOid,baseRefName,mergeStateStatus,reviewDecision,state
@@ -35,7 +33,10 @@ review is pending. Otherwise use the host's supported scheduler and cadence;
 five minutes is a default only where supported. State the actual cadence and use
 the existing monitor for the same pull request. Do not silently substitute a
 different cadence when the user requested an exact one, or keep the main agent
-in a polling loop.
+in a polling loop. If persistent scheduling is unavailable, state that limit, use
+a bounded native wait if one exists, and otherwise return the current status and
+blocker. Claim future monitoring is active only after a successful scheduling
+result.
 
 When model selection is supported, use the configured lightweight monitoring
 role; otherwise keep the host's supported settings. Do not add a subagent merely
@@ -59,17 +60,14 @@ Keep its work read-only:
   replies; it does not poll the monitor. After a fix, resume from the new latest
   commit.
 
-Use the host's scheduling and task-notification tools only as supported. If
-persistent scheduling is unavailable, state that limit. Use a bounded native
-wait only if one is available; otherwise return the current status and blocker.
-Do not claim future monitoring is active without a successful scheduling result.
-
 If the repository offers automated review, request it once after the latest
 commit is pushed and stable, using the repository's exact command such as
 `@codex review`. Request another review only when the user and repository
 rules allow it.
 
-## Handle Changes
+## Handle changes
+
+Write replies to reviewers and status updates with [Writing style](../../references/writing-style.md).
 
 - For a failed GitHub Actions check, inspect only the failed run and relevant
   log lines. Confirm the failure comes from the pull request before changing
@@ -79,8 +77,8 @@ rules allow it.
   code. Fix real problems within the original goal. If it is incorrect,
   outdated, duplicated, or outside that goal, reply with the reason and resolve
   the discussion.
-- After a fix, run focused project checks, commit, push, and reply with the
-  short commit reference, what changed, and what passed. Then restart the watch
+- After a fix, commit, push, and reply with the short commit reference, what
+  changed, and which checks passed. Then restart the watch
   loop from the new latest commit.
 - Bring the branch up to date with its target branch only when required by the
   repository or a real conflict. Do not pull unrelated repairs into the pull
@@ -95,4 +93,4 @@ clearly if the pull request is merged, closed, or blocked on a decision only the
 user can make.
 
 Cancel the recurring monitor when these stop conditions are met or the user
-cancels babysitting. Report readiness once; do not merge without authorization.
+cancels babysitting. Report readiness once, and merge only when the user asks.

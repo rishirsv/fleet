@@ -1,13 +1,13 @@
 ---
 name: publish-pr
-description: "Commits and pushes finished changes, then opens or updates a non-draft GitHub pull request ready for review. Use when the user asks to publish completed work as a PR. Not for merging, addressing review feedback, or monitoring checks and reviews."
+description: "Commits and pushes finished changes, then opens or updates a GitHub pull request ready for review. Use when the user asks to publish completed work as a PR; not for merging, review feedback, or monitoring checks."
 ---
 
 # Publish PR
 
 For commit messages, the pull-request title, and its description, apply
 [Writing style](../../references/writing-style.md)
-as an editing standard. `$publish-pr` still owns these publishing artifacts.
+as an editing standard.
 
 1. Confirm the GitHub repository and active account. If necessary, run
    `gh auth switch` and confirm access again.
@@ -17,23 +17,24 @@ as an editing standard. `$publish-pr` still owns these publishing artifacts.
    when the change scope or branch starting point is unclear.
 
 3. Fetch the remote and check the branch against the PR's current base. Resolve
-   conflicts before publishing. Rebase when required by repository policy or
-   when base changes affect this work. Reuse the completed task's checks and
-   visual evidence. After rebasing or splitting the work, inspect changes to
-   code, dependencies and build configuration; rerun only checks whose evidence
-   no longer covers the delivered PR. A patch applying without conflicts does
-   not prove that the behavior is unchanged, and publication alone does not
-   require a new verification pass. Avoid rewriting shared branches without
+   conflicts before publishing. Rebase when repository policy requires it or
+   when base changes affect this work. Avoid rewriting shared branches without
    coordination. If a previously pushed branch is rebased, push with
    `--force-with-lease`.
 
-4. Commit and push the requested changes.
+4. Reuse the completed task's checks and visual evidence; publication alone
+   does not require a new verification pass. After rebasing or splitting the
+   work, inspect changes to code, dependencies, and build configuration, and
+   rerun only checks whose evidence no longer covers the delivered PR. A patch
+   that applies without conflicts can still change behavior.
 
-5. Update the branch's existing pull request to describe the latest changes, or
+5. Commit and push the requested changes.
+
+6. Update the branch's existing pull request to describe the latest changes, or
    open one if none exists. Make it ready for review; never create or leave a
    draft.
 
-6. Confirm that the pull request contains the pushed commit. Report its URL,
+7. Confirm that the pull request contains the pushed commit. Report its URL,
    automated checks, and anything that remains unverified. Do not merge it.
 
 ## Commit messages and titles
@@ -67,7 +68,7 @@ When prose alone makes a structural or behavioral change hard to follow,
 add a compact diff sketch, call tree, or Mermaid diagram beside the
 explanation. Include only the context needed to understand the change.
 
-## Visual Evidence
+## Visual evidence
 
 Upload visual evidence only when the completed task already produced a
 screenshot or short video; `$publish-pr` does not capture or recapture it.
@@ -75,8 +76,9 @@ screenshot or short video; `$publish-pr` does not capture or recapture it.
 Check the applicable `gh pr create --help` or `gh pr edit --help` before using
 `--attach`; availability belongs to the installed CLI, not this example. If it
 is unavailable, use another already-authorized attachment interface when one
-exists. Otherwise preserve the evidence locally and report the attachment gap.
-Remove local paths from the published body. If required attachments are missing,
+exists. Otherwise preserve the evidence locally and report the attachment gap. Never
+put a local path in the published body.
+If required attachments are missing,
 report that the pull request lacks that evidence.
 
 When supported, use `gh pr create` or `gh pr edit` with `--attach`. Write the description to a
@@ -107,4 +109,4 @@ gh pr edit 123 --attach './settings.png#Account status in Settings'
 
 After publishing, confirm that the saved body contains
 `github.com/user-attachments` links instead of local paths and that each image
-or video renders. Never leave a local path in the pull request.
+or video renders.

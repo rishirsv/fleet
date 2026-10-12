@@ -1,9 +1,9 @@
-# Trace Code And Systems
+# Trace code and systems
 
-Use this reference for question mode and as the tracing foundation for change
-mode.
+Use this reference for every explanation. For a diff, commit, branch, or pull
+request, `changes.md` adds change-specific guidance on top of it.
 
-## Assign Each Tracer A Question
+## Assign each tracer a question
 
 Give each tracer one question the source can answer. Name the target, the part
 of the system to follow, the evidence to return, and what the other tracers are
@@ -21,7 +21,7 @@ Each tracer follows the runtime path. A file list does not show that path.
 It can omit unchanged supporting code that does not affect the explanation. It should stop only
 when its assigned path reaches the visible result or a specifically named gap.
 
-## Connect The Findings
+## Connect the findings
 
 For a narrow question, use the traced path to organize the evidence.
 Investigate any missing handoff before writing.
@@ -37,7 +37,7 @@ system. Explain the general mechanism only after showing how the example works.
 Include branches only when they change the result, recovery, trust
 relationship, or answer.
 
-## Teach At The Reader's Level
+## Teach at the reader's level
 
 Treat the reader as intelligent without assuming codebase vocabulary they have
 not used. Start with a short map of where the explanation is going. Introduce a
@@ -47,7 +47,7 @@ then use the precise term consistently.
 Name the process, component, service, function, or person that performs the
 action. Explain its responsibility before giving its file or symbol. A file
 does not perform work; a process, component, service, function, or person does.
-Use file and symbol names as supporting evidence, not as the explanation.
+Use file and symbol names as supporting evidence for that explanation.
 
 Adapt the structure to the question:
 
@@ -60,12 +60,12 @@ Adapt the structure to the question:
 - **Data flow:** follow a real value from its origin through transformations,
   storage, external handoffs, and its visible use or failure.
 
-## Evidence Check
+## Evidence check
 
 Before delivery, verify that each claim about cause and effect points to source, each inference
 shows its reasoning, and each unknown names the missing handoff. Remove detail
 that does not help answer the question. If the reader would still need to open
 the source to understand a handoff that affects the answer, the trace is incomplete.
 Link source locations that support separate claims about cause and effect. Concentrate
-navigation-only links in Where Things Live instead of linking every symbol
+navigation-only links in "Where things live" instead of linking every symbol
 mention in the explanation.
