@@ -30,9 +30,9 @@ Use Plugin Creator's supported tools without ChatGPT web login:
 3. Call `update_plugin` with the exact backend ID, the archive's absolute local
    path as `archive`, and the observed release as `expected_release_id`.
    If the release changed, reread and reconcile before retrying. Do not create
-   a replacement plugin. The update overlays files and cannot delete them;
-   identify retired files still present rather than claiming ZIP omission
-   removed them.
+   a replacement plugin. The update overlays files; explicitly pass retired
+   file paths through `delete_paths` when supported. Otherwise identify retired
+   files still present rather than claiming ZIP omission removed them.
 4. Read back the returned release. Compare the complete expected skill inventory,
    changed content, and metadata with the source. Open the cloud listing and
    desktop plugin card to confirm the logo and composer icon render. Packaged
@@ -42,6 +42,12 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    committed ZIP through the existing plugin's **Upload new version** action.
    Refresh the web page and the desktop plugin inventory before checking again.
    Include explicit light and dark icon paths, even when both use the same artwork.
+   Fetch `plugin/list` with `created-by-me-remote` before reading skills; a fresh
+   CLI server otherwise omits account plugins and can falsely pass the duplicate
+   check. Require hosted logo and composer image URLs and visually compare the
+   web listing, sidebar, and composer against the source artwork after refresh.
+   A nonempty image URL alone does not establish correct rendered branding.
+   Do not report a release complete while a surface still shows a fallback.
    Installing or publishing skills does not start Tunnel or authorize folders.
 5. Refresh the desktop plugin inventory and verify a fresh loader uses the
    selected source without duplicates. The current `verify-skills.py`

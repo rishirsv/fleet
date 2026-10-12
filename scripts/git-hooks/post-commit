@@ -13,3 +13,4 @@ git push || {
   echo 'Fleet: push succeeded, but local config sync failed. Retry scripts/sync-configs.sh --apply.' >&2
   exit 1
 }
+[ "$(git branch --show-current)" != main ] || "$root/scripts/sync-plugins.sh" --all

@@ -125,9 +125,13 @@ Set `FLEET_HOME` in `.zshrc.local` if Fleet is outside `~/Code/fleet`.
 ## Fleet hooks
 
 Install hooks separately in each Fleet checkout. They push after a commit,
-then apply local configs. Failed push prevents apply without undoing the commit.
-Rebase intermediate commits skip publishing; completed rebase/merge pulls apply
-locally. A pull with no changes may not invoke hooks: sync manually if needed.
+then apply local configs and sync plugins on main. Failed push prevents apply
+without undoing the commit. Rebase intermediate commits skip publishing;
+completed rebase/merge pulls apply configs and sync plugins. Plugin sync fetches
+the account catalog before checking the fresh skill loader, so cloud duplicates
+cannot be hidden by a local-only CLI inventory. Dirty plugin source stops sync
+with an explicit error; it is never installed as a release by a hook.
+A pull with no changes may not invoke hooks: sync manually if needed.
 Existing hook configuration must be integrated before installation.
 
 Pull Fleet on another computer to receive changes. Git does not copy hook

@@ -52,7 +52,14 @@ def loaded_skills(cwd):
             "clientInfo": {"name": "dots_skill_verification", "version": "1.0"},
             "capabilities": {"experimentalApi": True},
         })
-        result = request(2, "skills/list", {"cwds": [str(cwd)], "forceReload": True})
+        # The desktop loads account plugins explicitly. A fresh CLI server
+        # otherwise sees only local plugins and can falsely certify duplicates
+        # as absent. Fetch the same account catalog before scanning skills.
+        request(2, "plugin/list", {
+            "marketplaceKinds": ["local", "created-by-me-remote"],
+            "forceRefetch": True,
+        })
+        result = request(3, "skills/list", {"cwds": [str(cwd)], "forceReload": True})
         return [skill for entry in result["data"] for skill in entry["skills"]]
     finally:
         selector.close()
@@ -76,7 +83,9 @@ def verify(skills, policy):
         elif not settings["enabled"] and plugin_id in present:
             errors.append(f"{plugin_id}: duplicate copy is still enabled")
     names = {}
-    for skill in enabled:
+    for skill in skills:
+        if not skill["enabled"]:
+            continue
         name = skill["name"].split(":")[-1]
         names.setdefault(name, []).append(skill["path"])
     for name, paths in names.items():
@@ -94,7 +103,7 @@ def main():
     errors, count = verify(loaded_skills(args.cwd), policy)
     if errors:
         raise SystemExit("Codex skill verification failed:\n  " + "\n  ".join(errors))
-    print(f"Codex loaded {count} Dots/Drafts skills from the selected source, with zero duplicates")
+    print(f"Codex loaded {count} Dots/Drafts skills from the selected source, with zero duplicate skill names across all sources")
 
 
 if __name__ == "__main__":

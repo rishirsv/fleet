@@ -4,3 +4,4 @@ set -eu
 [ "${1:-}" = rebase ] || exit 0
 root=$(git rev-parse --show-toplevel)
 "$root/scripts/sync-configs.sh" --apply
+"$root/scripts/sync-plugins.sh" --all

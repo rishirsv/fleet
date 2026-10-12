@@ -10,3 +10,11 @@ enabled = false
 
 [plugins."drafts@created-by-me-remote"]
 enabled = false
+
+# Keep the installed Canvas Sync app; its development checkout repeats skills.
+[plugins."canvas@canvas-local"]
+enabled = false
+
+# Retired standalone package; preserve the branded app-backed Prosper plugin.
+[plugins."prosper-finance@created-by-me-remote"]
+enabled = false
