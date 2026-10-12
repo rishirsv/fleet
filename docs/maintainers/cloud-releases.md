@@ -9,6 +9,8 @@ connection and release process. Dots packages contain no `.app.json` binding or
 A profile selects cloud only when its signed-in account has those plugins.
 Otherwise it selects local. Source selection controls the local loader, not
 cloud publication or account sign-in.
+Cloud publication is manual. Commits, pulls, hooks, and local sync commands
+must not publish an account release.
 
 Resolve the target plugin's exact backend ID from its installation metadata or
 authorized plugin discovery. Maintainers may keep their deployment IDs in
@@ -47,6 +49,15 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    check. Require hosted logo and composer image URLs and visually compare the
    web listing, sidebar, and composer against the source artwork after refresh.
    A nonempty image URL alone does not establish correct rendered branding.
+   Compare the owner catalog with the installed sidebar, listing, and composer.
+   If they disagree, inspect the responses used by those pages through the
+   supported browser tools. Compare the exact plugin and release IDs and the
+   four logo/composer URL fields. The owner catalog can return hosted images
+   while installed and detail responses return null for the same release.
+   Reinstalling Dots and Drafts did not repair that mismatch in an observed
+   release. Preserve screenshots and a summary of the mismatching fields outside
+   Git, and report host verification as blocked. Do not repeat identical ZIP
+   uploads or add an app binding to work around the mismatch.
    Do not report a release complete while a surface still shows a fallback.
    Installing or publishing skills does not start Tunnel or authorize folders.
 5. Refresh the desktop plugin inventory and verify a fresh loader uses the
