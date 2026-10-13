@@ -8,6 +8,9 @@ sandbox_mode = "danger-full-access"
 # Dots/Drafts source selection is managed by scripts/plugin-sync/.
 # Image generation uses the available image_gen tool and imagegen skill.
 
+[agents]
+max_concurrent_threads_per_session = 8
+
 [plugins."browser@openai-bundled"]
 enabled = true
 
