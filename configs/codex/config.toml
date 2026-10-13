@@ -11,6 +11,12 @@ sandbox_mode = "danger-full-access"
 [agents]
 max_concurrent_threads_per_session = 8
 
+[apps._default]
+enabled = true
+default_tools_approval_mode = "approve"
+destructive_enabled = true
+open_world_enabled = true
+
 [plugins."browser@openai-bundled"]
 enabled = true
 
