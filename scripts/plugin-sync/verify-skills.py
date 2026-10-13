@@ -86,7 +86,7 @@ def verify(skills, policy):
     for skill in skills:
         if not skill["enabled"]:
             continue
-        name = skill["name"].split(":")[-1]
+        name = skill["name"]
         names.setdefault(name, []).append(skill["path"])
     for name, paths in names.items():
         if len(paths) > 1:
