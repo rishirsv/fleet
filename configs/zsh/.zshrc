@@ -10,6 +10,9 @@ path=($HOME/.local/bin $HOME/.bun/bin $HOME/.cargo/bin $path)
 # Machine-specific exports and secrets stay outside Git.
 [[ ! -f "$HOME/.zshrc.local" ]] || source "$HOME/.zshrc.local"
 
+# Allow Codex and other shell-launched tools to open more files.
+ulimit -S -n 4096
+
 HISTFILE="${ZDOTDIR:-$HOME}/.zsh_history"
 HISTSIZE=20000
 SAVEHIST=20000

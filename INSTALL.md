@@ -124,6 +124,13 @@ Shell helpers: `cx` (Codex), `cxp` (personal Codex), `cl` (Claude), `gs` (status
 `gd` (diff), `gds` (staged diff), `gr` (repo root), and `fleet` (config preview).
 Set `FLEET_HOME` in `.zshrc.local` if Fleet is outside `~/Code/fleet`.
 
+Interactive shells set the soft open-file limit to 4096. Restart an existing
+Codex app-server daemon with that limit after syncing its configuration:
+
+```sh
+ulimit -S -n 4096 && codex app-server daemon restart
+```
+
 ## Fleet hooks
 
 Install hooks separately in each Fleet checkout. They push after a commit,
