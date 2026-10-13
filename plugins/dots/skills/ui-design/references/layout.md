@@ -37,14 +37,9 @@ hidden content is useful in that view.
 
 ## Adapt the composition
 
-Choose breakpoints where content stops working; device labels are only a
-starting guess. Decide what reflows, stacks, condenses, moves into disclosure,
-or remains scrollable. Preserve task priority and logical reading order as the
-structure changes.
-
-Prefer intrinsic sizing, flexible tracks, and bounded reading widths over fixed
-geometry. Account for long labels, empty regions, additional rows, translated
-content, and enlarged text. Keep controls reachable when browser chrome, a
+Decide what reflows, stacks, condenses, moves into disclosure, or remains
+scrollable as space changes. Preserve task priority and logical reading order
+as the structure changes. Keep controls reachable when browser chrome, a
 virtual keyboard, safe areas, or sticky regions reduce the available space.
 
 Scale properties at different rates. Large display type, media, and generous
@@ -55,8 +50,7 @@ the available space requires it.
 
 Dense tables and canvases may need intentional scrolling or alternate views.
 Keep essential context and controls available, and distinguish that behavior
-from accidental page overflow. Keep information available on small screens
-through reflow, disclosure, or scrolling.
+from accidental page overflow.
 
 ## Irregular collections
 

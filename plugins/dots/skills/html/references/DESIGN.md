@@ -20,8 +20,7 @@ Use a restrained technical style for the default tone. Use one flat page
 background: warm white in light mode and near black in dark mode. Use
 grotesque type with tight negative tracking. Show hierarchy through font
 weight, size, spacing, and ink opacity. Use one desaturated blue for emphasis.
-Reserve amber and red for warnings and failures. Align numbers, use thin
-rules, and keep motion brief and limited to one occurrence.
+Align numbers, use thin rules, and keep motion brief and limited to one occurrence.
 
 ## Tones
 
@@ -48,16 +47,13 @@ colors breaks theme switching.
 
 ## Colors
 
-`background` and `foreground` define the page colors. All grays use an alpha
-ladder (`--a4` … `--a70`) derived from `foreground` at the `x-alpha-steps`
-opacities, so every border, muted label, and track reads correctly on both
-themes without a second palette. Use `--a12` for subtle borders and `--a20`
-for strong rules. Normal-sized secondary text uses `--text-muted` (`--a60`) so
-it stays above 4.5:1 in both themes; lower alpha steps remain for borders,
-fills, and non-text marks. Secondary text that needs stronger contrast may use
-`--a70`.
+Take grays from the alpha ladder (`--a4` … `--a70`): `--a12` for subtle
+borders, `--a20` for strong rules, and `--text-muted` (or `--a70` for stronger
+contrast) for secondary text. Use lower alpha steps only for borders, fills,
+and non-text marks.
 
-`accent` is for links, active states, and the one emphasized data point.
+`accent` is for links, active states, the recommendation and recommended
+option, and the one emphasized data point.
 `accent-deep` is its high-contrast partner for small emphasized text.
 `warning-*` and `danger-*` mark genuine warnings and failures only. Code
 surfaces stay dark in both modes (`code-surface`/`code-ink`). The `x-dark`
@@ -65,15 +61,9 @@ block redefines the same roles for dark mode.
 
 ## Typography
 
-Use the system grotesque stack; no webfonts. Headings and pull quotes use the
-display font, which matches the body stack by default and changes only with
-the tone. Headings are semibold with negative tracking that scales with size;
-each heading size sets its own tracking value. H1 steps down to its mobile
-size at 380px so a long title does not consume the whole first viewport. Body
-is 15px/1.7 inside a 900px article column. Use mono (13px/20px, ligatures off)
-only for code and aligned figures, and the body font for labels. Digits that
-line up vertically set `font-variant-numeric: tabular-nums`. Headings get
-`text-wrap: balance`.
+Use the system grotesque stack; no webfonts. Use mono only for code and
+aligned figures, and the body font for labels. Digits that line up vertically
+set `font-variant-numeric: tabular-nums`.
 
 ## Layout
 
@@ -91,7 +81,6 @@ of contents is a sticky margin rail beside the reading column at wide
 viewports, with a scroll-spy active state; on narrow viewports it collapses to
 a native disclosure. Linear processes reflow into a vertical sequence;
 branching diagrams and wide tables stay bounded inside their own containers.
-The page never scrolls sideways.
 
 The page shell supplies the spacing between its header and the first content
 block; do not set structural spacing on the header's last child. For parallel
@@ -158,10 +147,5 @@ completely and stays static.
   [Dots writing style](../../../references/writing-style.md). Keep document
   metadata in the footer, review IDs in exported feedback, and functional
   breadcrumb navigation below the introduction.
-- Keep the single accent for links, active states, the recommendation and
-  recommended option, and the one emphasized data point. Amber and red mark genuine warnings only.
 - Use numbered markers, dividers, and labels only for real structure. If the
   content is not a sequence, do not number it.
-- Use a generated raster image when it gives the reader meaningful subject
-  matter or atmosphere. Do not generate filler for an empty grid track,
-  replace exact diagrams or screenshots, or imply invented evidence.

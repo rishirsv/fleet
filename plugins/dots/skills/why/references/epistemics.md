@@ -62,31 +62,9 @@ Phrasing: "We searched X, Y, and Z and found no evidence of why." Be specific ab
 
 ## Phrasing guide
 
-### Words that carry confidence. Use carefully
+**Confidence words** imply Direct or Supported evidence and need a citation immediately adjacent. Never use them for inferences: "because", "the reason is", "was designed to" (claims author intent), "fixes" / "addresses" / "solves" (claims the change achieved its goal), "the team decided" (claims a group decision happened).
 
-These imply **Direct** or **Supported** confidence. Don't use them for inferences.
-
-- "because". Implies a causal claim with evidence
-- "the reason is". Same
-- "was designed to". Claims author intent
-- "fixes", "addresses", "solves". Claims the change achieved its goal
-- "the team decided". Claims a group decision happened
-
-If you're using these, you should have a citation immediately adjacent.
-
-### Words that hedge. Use for inferences
-
-- "appears to"
-- "seems to"
-- "likely"
-- "suggests"
-- "is consistent with"
-- "one reading is"
-- "plausibly"
-- "may have been"
-- "the evidence points toward"
-
-These signal that you're interpreting, not reporting. Use the phrase that matches the evidence in the "What we can reasonably infer" section.
+**Hedges** signal interpretation, not report. Use them in "What we can reasonably infer": "appears to", "seems to", "likely", "suggests", "is consistent with", "one reading is", "plausibly", "may have been", "the evidence points toward".
 
 ### Words to avoid
 
@@ -98,12 +76,7 @@ These signal that you're interpreting, not reporting. Use the phrase that matche
 
 ### Avoid rationalization
 
-Code that "makes sense" today may have been written for reasons that no longer apply, or that were wrong when they were written. Do not replace uncertain history with a present-day justification.
-
-Do not:
-- Assume the author did the "right" thing and work backward to justify it
-- Assume a consistent pattern across the codebase was intentional when it might be copy-paste
-- Turn an absence of evidence into evidence of absence ("no one mentioned security concerns, so it must not have been a concern")
+Code that "makes sense" today may have been written for reasons that no longer apply, or that were wrong at the time. Don't retrofit a present-day justification onto uncertain history, assume the author did the "right" thing and work backward, assume a consistent pattern was intentional when it might be copy-paste, or turn an absence of evidence into evidence of absence ("no one mentioned security concerns, so it must not have been a concern").
 
 ## Check the user's hypothesis
 
@@ -122,19 +95,7 @@ Both may be true (the ticket motivated the work, the PR is the author's framing 
 
 ## When evidence is missing
 
-An honest "we don't know" is one of the most valuable outputs this skill can produce. The user now knows:
-
-- The answer isn't in the obvious places
-- They'll need to ask a human (the original author, the product owner, the team lead) to find out
-- Or they can decide the question isn't worth pursuing further
-
-Failing to mark a gap and filling it with a confident guess actively harms the user; they'll act on the guess.
-
-When you hit a gap, name it concretely:
-- What question you were trying to answer
-- What sources you searched
-- What you searched for in each
-- What you found (nothing, or only tangentially related material)
+Failing to mark a gap and filling it with a confident guess harms the user, because they'll act on the guess. An honest "we don't know" tells them the answer isn't in the obvious places and that they need to ask a human or drop the question. Name each gap concretely: the question, the sources searched, what you searched for in each, and what you found (nothing, or only tangential material).
 
 ## Calibration check before finalizing
 

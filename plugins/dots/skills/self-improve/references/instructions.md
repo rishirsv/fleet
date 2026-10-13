@@ -92,5 +92,3 @@ For every proposal:
 2. Show the exact rule and target file.
 3. Explain why a check, skill, doc, or memory note is not the more suitable
    place for the rule.
-4. Re-read the current file, apply the smallest edit, and check the combined
-   instructions that the agent will load for contradictions.

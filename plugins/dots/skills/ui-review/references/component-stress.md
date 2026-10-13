@@ -106,9 +106,8 @@ Render every selected scenario and exercise the relevant input, focus, and state
 transitions. Report a failure only after observing it, marked beside its
 scenario, and record unavailable checks separately.
 
-Report the failing scenario and what visibly or behaviorally broke. "Text
-escapes the field's right edge" gives a correction a target; "spacing feels
-tight" does not. If all checks pass, report only the tested scope.
+Report the failing scenario and what visibly or behaviorally broke. If all
+checks pass, report only the tested scope.
 
 A test-only request reports findings. When fixes are also requested, correct the
 component, then rerun the failing cases and the other cases the correction could

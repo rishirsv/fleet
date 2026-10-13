@@ -22,24 +22,14 @@ switch accounts to make the handoff work.
 ## Prepare a concise prompt
 
 Mention `@Dots` explicitly so the user or chat launcher can select the Dots
-plugin. Plain text alone does not prove that the plugin is attached. Include
-direct clickable links to the skill and tunnel instructions:
+plugin. Plain text alone does not prove that the plugin is attached.
 
-- [Change Review](https://github.com/rishirsv/dots/blob/main/plugins/dots/skills/change-review/SKILL.md)
-- [Dots Tunnel](https://github.com/rishirsv/dots/blob/main/plugins/dots/skills/dots-tunnel/SKILL.md)
-
-Prefer links pinned to a published Dots commit when that revision is known.
-For unpublished skill changes, provide the exact tunnel-accessible skill path
-and have the reviewer read that version. A local filesystem link alone is not
-usable from ChatGPT Web. If neither the links nor the authorized tunnel can
-supply the instructions, report the missing access instead of improvising a
-review without the skill.
-
-Summarize the intended behavior and changes in a few sentences. Include the
-repository mount/path, branch, exact base and head revisions, changed paths,
-relevant existing check results, and the user's review focus. Tailor the focus
-to the request and concrete risks; omit implementation reasoning, conclusions,
-conversation history, and generic checklists already owned by the skill.
+Pin the prompt's Change Review link to a published commit when that revision is
+known. For unpublished skill changes, provide the exact tunnel-accessible skill
+path and have the reviewer read that version. A local filesystem link alone is
+not usable from ChatGPT Web. If neither the link nor the authorized tunnel can
+supply the skill, report the missing access instead of improvising a review
+without it.
 
 Include staged, unstaged, and untracked changes when they belong to the target.
 Record their content hashes as well as HEAD so the implementer can detect
@@ -51,17 +41,19 @@ large packets into readable parts without omitting any changed paths. Do not
 assume that the connected plugin exposes every tool supported by the local
 server.
 
-Adapt this prompt, replacing placeholders with actual values:
+Adapt this prompt, replacing placeholders with actual values. Omit
+implementation reasoning, conclusions, conversation history, and generic
+checklists already owned by the skill.
 
 > @Dots — Review only as an independent reviewer using <requested Web model,
-> e.g. ChatGPT Pro>. Read and follow [Change Review](https://github.com/rishirsv/dots/blob/main/plugins/dots/skills/change-review/SKILL.md),
+> e.g. ChatGPT Pro>. Read and follow [Change Review](https://github.com/rishirsv/fleet/blob/main/plugins/dots/skills/change-review/SKILL.md),
 > starting at “Review the assigned change”; do not coordinate another reviewer
-> or apply repairs. Follow [Dots Tunnel](https://github.com/rishirsv/dots/blob/main/plugins/dots/skills/dots-tunnel/SKILL.md)
-> to confirm access and inspect the repository directly through the Dots plugin.
+> or apply repairs. Load the Tunnel workflow with `get_workflow` to confirm
+> access, then inspect the repository directly.
 >
 > Repository: <authorized mount/path>. Target: <branch, base SHA, head SHA,
 > working-tree changes or diff-packet path>. Changes: <concise intended behavior
-> and changed areas>. Focus: <user-requested points and concrete risks>.
+> and changed paths>. Focus: <user-requested points and concrete risks>.
 > Existing checks: <results or unverified>.
 >
 > Inspect the complete target and necessary callers and tests. Return all
@@ -75,9 +67,9 @@ Adapt this prompt, replacing placeholders with actual values:
 Use available chat or browser controls only within the user's authorization.
 Verify the requested model and Dots attachment before submitting; do not assume
 that a cloud Work creation tool can select the Web Pro model. When those
-controls are unavailable, provide the ready-to-paste prompt and skill links,
-and state the remaining action: open a fresh Web chat, select Pro, and attach
-Dots. Do not claim the review has started merely because a prompt was prepared.
+controls are unavailable, provide the ready-to-paste prompt and state the
+remaining action: open a fresh Web chat, select Pro, and attach Dots. Do not
+claim the review has started merely because a prompt was prepared.
 
 When launched, retain the conversation ID or URL. Retrieve its complete final
 findings through available chat-reading tools or the browser; do not treat a
@@ -88,7 +80,4 @@ incomplete.
 
 Compare the current target with the recorded revisions and working-tree hashes.
 If it changed, obtain review of the changed target before treating the review as
-complete. Otherwise combine the findings and repair supported issues under the
-parent skill without asking for routine fix approvals. Run affected checks and
-continue any already-authorized PR publishing; the external review adds no
-publishing authority of its own.
+complete.

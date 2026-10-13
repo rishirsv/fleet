@@ -30,10 +30,7 @@ component CSS. `scripts/assemble.mjs` wraps it into a finished page.
    `data-embed-src` so the assembler embeds it.
 5. Add `page-behavior` when the page needs motion, one-time reveals, TOC
    scroll-spy, or a theme toggle. Give animated charts and diagrams
-   `class="reveal"` on their container; leave text sections static. Without
-   `page-behavior`, the page stays static and complete.
-6. Use `recommendation` when the supplied material commits to a decision. Put
-   appendix material in `disclosure` blocks after the main argument.
+   `class="reveal"` on their container; leave text sections static.
 
 Write each component with its `data-component` attribute, then assemble:
 

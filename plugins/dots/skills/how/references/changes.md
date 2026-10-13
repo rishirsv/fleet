@@ -92,9 +92,3 @@ whether the behavior works. Keep these states distinct for staged work:
 Separate confirmed facts, rationale recorded in source, inference, and
 unknowns. Mention review metadata, commit identifiers, check labels, or merge
 state only when they change understanding of the delivered behavior.
-
-Before delivery, confirm a reader can explain what changed, why it matters, how
-the important path works, what is different, what was removed or
-left unfinished, and what evidence supports the result. Confirm every
-meaningful change is covered and every supporting change is accounted for
-without being given equal weight.

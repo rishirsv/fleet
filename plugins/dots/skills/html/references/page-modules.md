@@ -34,8 +34,6 @@ one self-contained HTML file. For a hand-written body or an existing page, use
    the module. Inspect a full-page capture when the contact sheet cannot show
    the affected area. The check flags desktop figures that scroll inside their
    container, data marks under 24px, and SVGs with a large unused area.
-   `node scripts/capture-artifact.mjs --in <name>.html --out-dir <dir>` runs
-   the same check on any finished page.
 5. Deliver the HTML file. Keep the module and inputs when continued editing is
    useful; they are the working source, so edit them and rebuild. For a
    portable edit loop, build with `--embed-source`. Embedding is opt-in because
@@ -49,14 +47,12 @@ are complete modules.
 
 ## Choose the content and structure
 
-Start with the reader's question, the supplied claims, and the decisions the
-material supports. Use a title and a short introduction, then the opening
-figure chosen under
+Use a title and a short introduction, then the opening figure chosen under
 [Visual explanations](../../../references/visual-explanations.md#explain-visually-by-default-in-html).
 Use [diagrams.md](diagrams.md) to pick the form and helper.
 
-- Use `stat-tiles` only for two to five supplied headline measures that matter
-  at first glance; omit them when a chart already labels those values.
+- Use `stat-tiles` only for supplied headline measures that matter at first
+  glance; omit them when a chart already labels those values.
 - Use `recommendation()` only when the request or material commits to a
   decision. Put appendix material (raw data, full logs, candidate configs) in
   `disclosure()` blocks after the main argument.
@@ -133,9 +129,7 @@ use the order the `how` skill supplies.
 - The page uses the design system and semantic HTML, keeps native tab order and
   visible focus, labels controls, gives informative figures equivalent text,
   and pairs color with text, shape, or line style.
-- Generated images have a reader purpose, accurate alt text, and no claim to
-  be observed evidence.
 - Internal working details, prompts, private paths, scratch files, and
   generation metadata are gone.
-- The page leads with the subject. It omits title chips and directions about
-  how to read or respond unless the interaction needs them.
+- The page leads with the subject. It omits directions about how to read or
+  respond unless the interaction needs them.

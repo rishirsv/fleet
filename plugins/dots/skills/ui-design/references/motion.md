@@ -2,7 +2,7 @@
 
 Use motion to explain change, maintain spatial continuity, give feedback, or
 express the interface's character. Preserve established motion conventions when
-refining a product. A still screenshot cannot specify timing or behavior.
+refining a product.
 
 ## Give motion a job
 
@@ -16,10 +16,10 @@ menus, and tabs, and for frequent keyboard actions. Animate when continuity
 explains a meaningful change. Highlights should follow the current pointer or
 focus position without delay as the user moves across neighboring items.
 
-Keep unsolicited movement selective. Animate the relationship that matters
-instead of giving every section the same entrance. Preserve immediate access to
-content and controls, and add no artificial waiting to make an operation seem
-substantial.
+Keep unsolicited movement to one orchestrated moment per view, such as a
+page-load sequence or a single reveal, instead of scattered entrances, and
+animate the relationship that matters. Preserve immediate access to content and controls,
+and add no artificial waiting to make an operation seem substantial.
 
 ## Choreograph the change
 
@@ -90,8 +90,4 @@ settings.
 
 Use the simplest mechanism that supports the behavior: CSS for local state
 transitions, a scripted timeline for sequencing, or the project's animation
-system for gestures and springs. Prefer transforms and opacity for spatial
-effects where they fit, and measure layout, paint, blur, and large-layer costs
-on the target device. Use temporary layer hints only when they solve an
-observed problem. For native interfaces, use the platform's animation, gesture,
-accessibility, and lifecycle facilities.
+system for gestures and springs.

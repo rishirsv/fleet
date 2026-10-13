@@ -2,15 +2,8 @@
 
 ## Describe the visible result
 
-Establish the intended use, subject, and setting. Add the visual decisions that
-matter: medium, materials, framing, viewpoint, lighting, palette, and mood.
-Prefer observable details over adjectives such as “stunning.” State
-photorealism explicitly when wanted; camera terminology is a visual cue, not
-a guarantee of physical simulation.
-
-Describe placement, relative scale, and negative space when layout matters.
-For people, specify relevant pose, gaze, and interaction with objects. These
-are optional decisions, not a checklist to fill for every image.
+State photorealism explicitly when wanted; camera terminology is a visual cue,
+not a guarantee of physical simulation.
 
 ## Text and reference images
 

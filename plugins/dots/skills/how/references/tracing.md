@@ -3,24 +3,6 @@
 Use this reference for every explanation. For a diff, commit, branch, or pull
 request, `changes.md` adds change-specific guidance on top of it.
 
-## Assign each tracer a question
-
-Give each tracer one question the source can answer. Name the target, the part
-of the system to follow, the evidence to return, and what the other tracers are
-covering. Ask for:
-
-- the real entry point and what triggers it
-- each caller, callee, state transition, or data transformation that affects the answer
-- the important types, boundaries, asynchronous handoffs, storage, and external
-  effects needed to understand the path
-- the visible result and important failure or alternate state
-- exact source locations, uncertainty, conflicting evidence, untraced handoffs,
-  and unexpected behavior or failure risks supported by source
-
-Each tracer follows the runtime path. A file list does not show that path.
-It can omit unchanged supporting code that does not affect the explanation. It should stop only
-when its assigned path reaches the visible result or a specifically named gap.
-
 ## Connect the findings
 
 For a narrow question, use the traced path to organize the evidence.
@@ -45,9 +27,7 @@ technical term only when it becomes useful, explain the behavior it names, and
 then use the precise term consistently.
 
 Name the process, component, service, function, or person that performs the
-action. Explain its responsibility before giving its file or symbol. A file
-does not perform work; a process, component, service, function, or person does.
-Use file and symbol names as supporting evidence for that explanation.
+action. Explain its responsibility before giving its file or symbol. Use file and symbol names as supporting evidence for that explanation.
 
 Adapt the structure to the question:
 

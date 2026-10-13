@@ -43,14 +43,11 @@ the requested host differs from the current one.
    [thread-evidence.md](references/thread-evidence.md) and apply its
    generalization gate.
 
-Compare the actual actions with the shortest sequence the available evidence
-justifies while preserving discoveries that affected the result. State what
-worked, what caused problems, how those problems affected the work, and the most
+State what worked, what caused problems, how those problems affected the work, and the most
 useful next action. A valid result may find no reusable lesson.
 
-For repeated work, choose a fixed set of sessions before reviewing them.
-Deduplicate retries and delegated children under the parent session, inspect
-examples of success and problems, and preserve contradictions.
+For repeated work, deduplicate retries and delegated children under the parent
+session, inspect examples of success and problems, and preserve contradictions.
 
 For a supported recurring code or harness mistake, read
 [enforcement.md](references/enforcement.md) and
@@ -75,6 +72,3 @@ When the request already asks for fixes, apply supported changes within that
 scope. Otherwise present the concrete proposal and apply it once the user
 agrees. Make changes through the owning workflow, and propose generated-memory
 changes for the user to review instead of editing memory stores directly.
-
-Lead with the conclusion. Include only the evidence and coverage needed to
-judge it.

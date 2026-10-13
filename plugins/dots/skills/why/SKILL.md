@@ -24,17 +24,6 @@ system only when its records could improve that answer.
 
 ## Evidence rules
 
-- **Collect evidence first.** Decide which explanation the collected evidence
-  supports before writing it.
-- **Precision over polish.** Prefer a claim the reader can trace to its source
-  over a smoother unsupported explanation.
-- **Consider what you have not seen.** Ask what evidence would exist if a
-  competing explanation were true and whether you looked for it.
-- **Name the gaps.** Say when a source is unavailable, linked records provide no further evidence, or
-  the record does not answer the question.
-- **Match language to confidence.** Use confident language for direct evidence and cautious
-  language for inference.
-
 Read [epistemics.md](references/epistemics.md) for the confidence framework,
 phrasing guide, and final calibration check. Preserve that confidence language
 in the final answer.
@@ -103,8 +92,7 @@ the conclusion, not as a routine disclaimer.
 
 Look for earlier implementations, reversions, contradictions, and evidence that
 supports a competing explanation. Do not assume the latest commit tells the
-whole story or use a present-day justification as evidence for an undocumented
-past decision.
+whole story.
 
 Keep direct evidence, inference, and hypotheses separate while you work. When
 several explanations still fit, preserve them instead of choosing one without sufficient evidence.

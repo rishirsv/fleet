@@ -14,16 +14,6 @@ Name the result and preserve the constraints that distinguish it. Do not add
 research, a plan, multiple alternatives, or self-evaluation to an ordinary
 transformation unless requested.
 
-**Input:** “Make this cancellation email kinder. Keep the date and refund
-policy unchanged. Under 120 words.”
-
-**Prompt:**
-
-> Rewrite the supplied cancellation email in a considerate, direct tone. Keep
-> the cancellation date and refund policy unchanged, and add no promises or
-> explanations that are absent from the original. Return only the revised
-> email, under 120 words.
-
 ## Unknown causes need investigation, not a predetermined solution
 
 Keep observations separate from the user's hypothesis. Ask the recipient to
@@ -48,24 +38,11 @@ State what the user is deciding and which constraints are settled. Define a
 selection or approval boundary only when the request includes one. Do not
 make brainstorming sound like permission to implement every proposed idea.
 
-**Input:** “Use the attached agenda and notes to compare two ways to shorten
-our weekly operations meeting. We still need incident decisions and named
-owners. No tool purchases.”
-
-**Prompt:**
-
-> Compare two practical ways to shorten our weekly operations meeting while
-> preserving incident decisions and named action owners. Use the supplied
-> agenda and meeting notes to explain what each option removes or changes,
-> the tradeoffs, and which you recommend. Work within the existing tools;
-> do not propose purchases or present a new process as already approved.
-
 ## Execution needs an endpoint and an honest boundary
 
 When the user authorizes work, describe the completed result and the limits
 on side effects. Let the recipient choose efficient steps within that scope.
-Do not insert approval after every reversible step, or infer publication
-from a request to prepare an artifact.
+Do not infer publication from a request to prepare an artifact.
 
 **Input:** “Clean the supplied customer import. Remove exact duplicates,
 keep uncertain matches separate, and give me the cleaned file.”
@@ -77,11 +54,6 @@ keep uncertain matches separate, and give me the cleaned file.”
 > them. Preserve the original file and the remaining field values. Return
 > the cleaned file and a concise account of removed duplicates and unresolved
 > matches. Check that no records were lost beyond the exact duplicates.
-
-If the request requires separate stages, state when to move to the next stage:
-“Present the alternatives and stop for selection” or “Implement the accepted
-plan and verify it.” Do not give both as competing instructions for the same
-response.
 
 ## Assign evidence gathering to the prompt recipient
 
@@ -103,9 +75,6 @@ synthetic manifest.”
 > evidence for material claims, distinguish documented capability from
 > untested assumptions, and recommend a shortlist with tradeoffs. Use only
 > the supplied synthetic manifest; do not upload private repository content.
-
-Only ask for exhaustive coverage if the user needs it. An evidence gap should
-remain a gap rather than become a confident negative or a fabricated fact.
 
 ## Revision preserves the requested substance
 

@@ -46,10 +46,10 @@ owners and handoffs, or a timeline or Gantt for supplied dates and dependencies.
 - Emphasize only one or two elements. Neutral structure should
   occupy most of the drawing.
 - Remove connectors whose meaning is already obvious from placement.
-- Put important labels in HTML when a responsive SVG would shrink them below
-  11px. Otherwise place the diagram in an internally scrolling wrapper.
-- Keep the SVG `aria-hidden="true"` and state the equivalent relationship in
-  an adjacent summary or ordered explanation.
+- When capture flags shrunken SVG labels, move important labels into HTML or
+  let the figure scroll in its wrapper.
+- State the equivalent relationship in an adjacent summary or ordered
+  explanation.
 - Use existing tokens. New diagrams can use different geometry. Preserve
   the palette, fonts, flat unshadowed shapes, and absence of decorative texture.
 

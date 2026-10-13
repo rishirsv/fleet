@@ -8,11 +8,9 @@ Contents:
 
 - [Find the costly decisions](#find-the-costly-decisions)
 - [Core shape](#core-shape)
-- [Sections by project kind](#sections-by-project-kind)
 - [How to build it](#how-to-build-it)
 - [Level of detail](#level-of-detail)
 - [Open issues and alternatives](#open-issues-and-alternatives)
-- [Review checklist](#review-checklist)
 
 ## Find the costly decisions
 
@@ -53,26 +51,6 @@ does not change the reader's ability to review the design.
 - **Risks and constraints**: security, privacy, reliability, legal, cost,
   compatibility, performance, staffing, timeline, or platform limits.
 - **Open and resolved issues**, and **alternatives considered**.
-
-## Sections by project kind
-
-- **User-facing apps and workflows**: roles and permissions, primary scenarios
-  and edge cases, UI states, navigation, notifications, accessibility,
-  platforms, user data and account lifecycle, and support or admin flows.
-- **Services, backends, and integrations**: service boundaries, APIs, events,
-  jobs, queues, CLI semantics, or file formats; data flow, persistence,
-  schema, migrations, idempotency, and retries; SLOs; monitoring, alerting,
-  and operational ownership; deployment topology, flags, rollout, rollback,
-  and client compatibility.
-- **Data-sensitive systems**: sensitive data, retention, deletion, access
-  control, encryption, backups, trust boundaries, abuse cases, auditability,
-  what must stay out of logs, and legal, contractual, or licensing limits.
-- **Migrations and compatibility work**: source and target formats, mapping,
-  partial-failure handling, backfill order, cutover, rollback, reconciliation,
-  versioning, old-client behavior, deprecation, and data repair.
-- **Libraries, tools, and internal platforms**: public API or CLI contract,
-  extension points, configuration and defaults, compatibility promise,
-  packaging, install and update path, and test harness.
 
 ## How to build it
 
@@ -122,20 +100,3 @@ follow-up implications, keeping the original question.
 List alternatives reviewers are likely to ask about or that consumed real
 investigation: what it was, what made it attractive, and why the design does
 not choose it. The section exists to prevent repeat debate.
-
-## Review checklist
-
-- A reviewer who missed earlier conversations has enough context on the first
-  page.
-- Goals describe outcomes; the proposed design describes implementation.
-- Non-goals are specific enough to stop scope creep.
-- The most detail goes to expensive or risky decisions.
-- Scenarios reveal behavior, permissions, failures, and edge cases.
-- The build plan explains a risk-reducing order when sequence matters.
-- Interfaces and data shapes are concrete enough for dependent systems.
-- Security, privacy, logging, retention, and legal coverage exists when the
-  system handles sensitive data or regulated behavior.
-- SLOs, monitoring, rollout, and rollback are covered when production
-  reliability is affected.
-- Open issues have next steps; resolved issues preserve decisions.
-- Alternatives answer the obvious "why not this?" questions.

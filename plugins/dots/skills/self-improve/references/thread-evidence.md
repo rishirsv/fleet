@@ -80,14 +80,3 @@ Prioritize threads containing:
 Do not treat generic negative words, incidental error output, a skill name in a
 diff, or a path mention as proof of failure. Distinguish normal use of the skill
 from threads that develop the skill itself.
-
-## Proposal destinations
-
-Choose one primary destination: an existing or new skill, project or personal
-instructions, a memory note, repository documentation, a script or harness, a
-validation check, or a conflict resolution or deletion.
-
-Choose the place that can maintain the rule with the least unnecessary work.
-Mechanical requirements belong in checks; judgment that must load every session
-belongs in instructions; long procedures belong in skills or docs; generated
-facts and preferences belong in memory.

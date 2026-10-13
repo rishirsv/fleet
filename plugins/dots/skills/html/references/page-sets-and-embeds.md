@@ -88,15 +88,13 @@ multiple roots, and cycles.
 
 Run `node scripts/assemble.mjs --manifest <manifest.json> --out <directory>`.
 The target directory must not exist; the script validates and renders the
-complete set before writing it and refuses to overwrite an existing set. Run
-`node scripts/capture-artifact.mjs --in <page>.html --out-dir <dir>` on each
-page with a figure, table, or custom layout.
+complete set before writing it and refuses to overwrite an existing set.
+Capture each page with a figure, table, or custom layout as described in
+[hand-written-pages.md](hand-written-pages.md#compose-a-body-fragment).
 
 The assembler adds `sequence-nav` for movement between pages. In a
 hierarchical manifest it scopes that rail and the previous and next controls to
-siblings, generates breadcrumbs, and adds `chapter-index` to parent pages. Use
-`toc-rail` only when one page also has six or more substantial sections or
-needs non-linear lookup within that page.
+siblings, generates breadcrumbs, and adds `chapter-index` to parent pages.
 
 ## Workshop agendas
 

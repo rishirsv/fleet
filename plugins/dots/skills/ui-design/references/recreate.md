@@ -19,8 +19,7 @@ there.
 ## Inputs
 
 - **Target:** the exact selected image, screenshot, mockup, generated result,
-  or URL and the routes to reproduce. A written brief alone does not establish
-  visual fidelity.
+  or URL and the routes to reproduce.
 - **Context:** relevant project code, brand assets, fonts, tokens, components,
   content, and behavior requirements already supplied or available locally.
 - **Scope:** static mock, interactive prototype, or production integration;
@@ -89,10 +88,7 @@ at once:
 
 Report the layers in paint order. For each, name the declaration that produces
 its effect, include blur and element size when they determine the result, and
-explain what the values do. For example, `opacity: 0 → 0.85 at 20% → 1` over
-`1500ms` reaches 85% opacity in the first 300ms and takes the remaining 1200ms
-for the last 15%: the layer appears quickly, then settles slowly. A linear
-`0 → 1` over the same duration looks different.
+explain what the values do, including how keyframe timing shapes the motion.
 
 Inspection methods:
 

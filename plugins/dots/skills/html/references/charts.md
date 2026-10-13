@@ -62,10 +62,6 @@ through the `--chart-*` tokens so themes work without changing the chart data.
 | Absorb one headline number | `stat-tiles` instead of a chart |
 | Scan many attributes per item | `data-table` instead of a chart |
 
-Use a chart when magnitude, direction, or shape is easier to see than read.
-Prefer prose or a table when visual encoding adds no decision value; dataset
-size alone is not the deciding rule.
-
 ## Explain the supplied data
 
 For a named numeric dataset or single analysis, start with the chart. Put the
@@ -83,12 +79,10 @@ cards above the plot.
 
 - Structure (tracks, axes, connectors): the alpha ladder — `--a4` tracks,
   `--a20` rules, `--a40` marks.
-- The one emphasized series or point: `--accent` (deep text partner:
-  `--accent-deep`).
 - Non-emphasized series: alpha steps (`--a20`/`--a40`/`--a70`) — lightness
   separates them in both modes and survives color-vision deficiency.
-- Good/bad polarity: `--warning-*`/`--danger-*` inks only when the data is
-  a warning.
+- Emphasis and warnings: the accent and warning roles in
+  [DESIGN.md](DESIGN.md#colors).
 
 Never introduce raw hex in a chart. If two series can't be told apart with
 the ladder, split the chart into small multiples. Do not add another color.
@@ -114,9 +108,5 @@ label, shape, position, or line treatment so color never carries meaning alone.
 
 ## Accessibility
 
-Every chart is inline SVG with `aria-hidden="true"`; the accessible content
-is adjacent text or a table carrying the same numbers. If the numbers appear
-only in the SVG, the chart is wrong. Bars animate via the shared `.reveal`
-pattern (grow once); with reduced motion or no JS they render at full width.
-Use no network-loaded chart library: author inline SVG or generate a supported
-chart locally so the final page remains self-contained.
+The accessible content is adjacent text or a table carrying the same numbers.
+If the numbers appear only in the SVG, the chart is wrong.

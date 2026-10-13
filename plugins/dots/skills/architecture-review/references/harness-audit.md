@@ -90,16 +90,11 @@ quality risk. Connect each to its owner and concrete evidence. Include estimated
 savings only with a stated basis; otherwise name the measurement needed. Add the
 validation and rollback approach to the parent skill's candidate report.
 
-For authorized implementation, keep changes independently reversible. Use flags
-or isolated experiments when prompt, schema-loading, output-format, compaction,
-or coordination changes need comparison. Even apparently mechanical cache or
-formatting changes must preserve request semantics and information access.
-
-Compare before and after on a fixed set of realistic tasks drawn from usage,
-including short or ambiguous requests and relevant failure cases. Measure cost
-per completed task alongside success, turns, tool errors, and latency. For a
-deployed product, use an authorized controlled rollout to check the real task
-mix; offline evaluations alone do not establish production savings.
+For authorized implementation, compare before and after on a fixed set of
+realistic tasks drawn from usage, including short or ambiguous requests and
+relevant failure cases. Measure cost per completed task alongside success,
+turns, tool errors, and latency. Offline evaluations alone do not establish
+production savings for a deployed product.
 
 Report measured improvements, null results, and unresolved gaps separately.
 Recommend rollout only when cost improves without a loss of quality or

@@ -65,21 +65,20 @@ Otherwise use the local reviewer workflow below.
    the smallest sufficient context without inherited conversation history. Let
    the reviewer inspect the changes directly rather than sending the
    implementer's reasoning or conclusions.
-4. Use the number of reviewers the level sets. Without a level, use one, and
-   suggest a higher level when the change crosses distinct subsystems or a
-   high-risk boundary.
+4. Use the number of reviewers the level sets. When no level was given, suggest
+   a higher level if the change crosses distinct subsystems or a high-risk
+   boundary.
 5. When using several reviewers, give each a distinct assignment from the
    level table. When splitting by paths, assign each changed path to one
    primary reviewer. Add a review assignment for interactions only when those
    interactions need separate review. A reviewer may inspect outside its
    assigned paths for context but reports findings only for its assigned paths.
    Do not give every reviewer the same undivided diff.
-6. Wait for every reviewer to finish. Each reviewer returns all findings for its
-   assignment in one response. Combine findings and begin repairs only after
-   every reviewer has finished. Merge duplicates and combine related findings
-   while preserving the evidence required for each finding. Resolve material
-   disagreement only when needed; do not repeat each reviewer's investigation.
-   The reviewer owns verification of its findings.
+6. Wait for every reviewer to finish; each returns all findings for its
+   assignment in one response. Then merge duplicates and combine related
+   findings while preserving the evidence required for each finding. Resolve
+   material disagreement only when needed; do not repeat each reviewer's
+   investigation. The reviewer owns verification of its findings.
 7. Repair or report the combined findings as described in
    [Repair before reporting](#repair-before-reporting).
 
@@ -225,13 +224,13 @@ user requested review only, report them without editing files. Otherwise, the
 coordinating agent fixes every supported issue within the original task scope. Make these repairs one at a time. After an
 implementation, this is the implementing agent's responsibility; a delegated
 reviewer's findings are input to that work, not the final user response. Choose
-the smallest supported repair within the original task and continue without
-asking the user to approve the findings, choose routine implementation details,
-or authorize fixes already covered by the task. Do not end the turn with a list
-of proposed fixes or an offer to implement them.
+the smallest supported repair and continue without asking the user to approve
+the findings, choose routine implementation details, or authorize fixes already
+covered by the task. Do not end the turn with a list of proposed fixes or an
+offer to implement them.
 
 Do not repair a finding that requires new authority or expands the original
-task; report it unresolved and complete the other repairs within the task scope.
+task; report it unresolved and complete the other repairs.
 Inspect the final diff before reporting the result. Do not start another review
 after ordinary repairs. Start a new review only when
 the user asks or the repairs materially change the original review scope.
@@ -247,8 +246,7 @@ issue in this form:
 `[P1] Imperative finding title — path/to/file.rs:line`
 
 Follow the title with one short paragraph explaining the affected scenario and
-why the behavior is wrong. Keep the cited range as small as possible and make
-sure it overlaps the reviewed diff.
+why the behavior is wrong.
 
 Use these priorities:
 
@@ -257,11 +255,10 @@ Use these priorities:
 - `P2`: ordinary defect that should be fixed.
 - `P3`: low-impact issue that is still worth fixing.
 
-If there are no qualifying findings, say `No findings.` Do not invent a finding
-to fill the result. After the findings, add a brief overall assessment and
-mention any material test gaps or remaining risks. Omit rejected candidates,
-descriptions of the review process, summaries of areas without findings, and
-praise.
+If there are no qualifying findings, say `No findings.` After the findings, add
+a brief overall assessment and mention any material test gaps or remaining
+risks. Omit rejected candidates, descriptions of the review process, summaries
+of areas without findings, and praise.
 
 For repaired findings, summarize the applied fix and checks run. For unresolved
 findings, state the blocker or decision needed from the user.

@@ -3,20 +3,6 @@
 Identify the module that should remain responsible for the rule. The layer where
 a bug appears may have a different responsibility.
 
-## Required discovery
-
-Before deciding ownership:
-
-- Read the repo docs that define architecture, boundaries, or responsibilities.
-- Read ADRs or design docs that define runtime flow, request flow, or package boundaries.
-- Inspect the top-level project structure to map the repo's concrete module or package names onto the generic layers in this reference.
-
-When docs are incomplete:
-
-- infer the current layer model from the codebase
-- state the assumption explicitly
-- keep the recommendation aligned to one canonical owner
-
 ## Required output
 
 When answering an ownership or placement question, name the single correct
@@ -32,19 +18,12 @@ recommendation is the canonical owner and the cleanup path to get there.
 
 ## Decision order
 
-1. Identify the runtime concern:
-   - visible UI state
-   - platform shell or OS bridge
-   - runtime composition or request dispatch
-   - canonical domain or application workflow
-   - pure shared logic
-   - concrete adapter or integration behavior
+1. Identify the runtime concern and the layer in the map below that owns it.
 2. Name the layer where the wrong behavior currently happens.
-3. Decide the single canonical owner for the behavior.
-4. If the behavior is reusable product or business policy, move ownership out of the runtime orchestration layer.
-5. Once the canonical owner is clear, remove duplicate policy, fallback logic,
-   and competing paths. Keep compatibility only where persisted data or an
-   external contract requires it.
+3. Decide the single canonical owner for the behavior, applying the placement
+   rules below.
+4. Once the canonical owner is clear, remove duplicate policy, fallback logic,
+   and competing paths.
 
 ## Layer map
 
@@ -63,8 +42,8 @@ recommendation is the canonical owner and the cleanup path to get there.
   - owns canonical product workflow, business rules, reusable application
     services, and cross-interface behavior
 - `Shared core layer`
-  - owns shared types, enums, validation, normalization, capability logic, and
-    pure logic used across runtimes
+  - owns shared types, wire and payload types, enums, validation,
+    normalization, capability logic, and pure logic used across runtimes
 - `Adapter or integration layer`
   - owns concrete protocol, provider, vendor, transport, or API integration
     behavior
@@ -86,10 +65,3 @@ Each rule keeps a concern where every interface that needs it can reach one copy
   layer; an adapter sees only its own provider.
 - Put pure validation, normalization, and capability logic in shared core or a
   narrow domain module, where every runtime can reuse it.
-
-## Common judgments
-
-- If the question is "who should decide this for all future interfaces?" the answer is usually the domain or application layer, a narrow domain package, or shared core, not the runtime orchestration layer.
-- If the question is "where should this behavior live after the fix?" answer with the canonical owner, not the easiest patch point.
-- If the question is "who owns the wire shape or payload type?" the answer is usually the shared API or core type layer, not the runtime orchestration layer.
-- If the question is "who owns vendor-specific behavior?" the answer is the relevant adapter or integration layer, but only for adapter behavior, not canonical product policy.
