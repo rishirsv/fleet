@@ -43,11 +43,13 @@ the requested host differs from the current one.
    [thread-evidence.md](references/thread-evidence.md) and apply its
    generalization gate.
 
-State what worked, what caused problems, how those problems affected the work, and the most
-useful next action. A valid result may find no reusable lesson.
+State what worked, what caused problems, how those problems affected the work,
+and the most useful next action. A valid result may find no reusable lesson.
 
-For repeated work, deduplicate retries and delegated children under the parent
-session, inspect examples of success and problems, and preserve contradictions.
+For repeated work, choose a fixed set of sessions or time window before
+reviewing individual outcomes. Deduplicate retries and delegated children under
+the parent session, inspect examples of success and problems, and preserve
+contradictions.
 
 For a supported recurring code or harness mistake, read
 [enforcement.md](references/enforcement.md) and
