@@ -40,7 +40,7 @@ Each skill's description defines its boundary. Choose within these groups:
 - Review and publishing: `$change-review`, `$publish-pr`, `$babysit-pr`
 - Explanation and documentation: `$how`, `$why`, `$repo-docs`
 - Interfaces and artifacts: `$ui-design`, `$ui-review`, `$html`
-- Agent work: `$handoff`, `$meta-prompt`, `$skill-standards`
+- Agent work: `$ambition`, `$handoff`, `$meta-prompt`, `$skill-standards`
 
 The user-controlled modes `$ask-model`, `$clarify-requirements`,
 `$shape-idea`, `$explain-simply`, `$catch-up`, `$self-improve`,
