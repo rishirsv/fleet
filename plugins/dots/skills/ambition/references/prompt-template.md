@@ -2,8 +2,8 @@
 
 Use this skeleton when another model or a subagent should do the ambitious
 pass. Replace each bracketed slot with task-specific content and delete slots
-that do not apply. Keep the section order of the requested deliverable; it is
-what makes answers comparable and easy to integrate.
+that do not apply. Keep the section order of the requested deliverable. A fixed order makes
+answers from different models easy to compare and combine.
 
 Contents: [Template](#template) · [Worked example](#worked-example)
 
@@ -49,8 +49,9 @@ Deliverable, in this order
 1. Altitude reframe.
 2. Depth worksheet and what it changed.
 3. Blunt critique of the current plan.
-4. Two or three more ambitious concepts, each with steps, the magic moment,
-   what earns trust, the technical split, and the hardest risk.
+4. Two or three more ambitious concepts, each with steps, the moment that
+   delights or convinces, what earns trust, the technical split, and the
+   hardest risk.
 5. Targets with their outside judges.
 6. Top five failure modes, each with a defusing move.
 7. Recommendation and staging.
