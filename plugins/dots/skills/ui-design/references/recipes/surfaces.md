@@ -43,33 +43,6 @@ that relationship by eye.
 .card-inner { border-radius: 12px; }
 ```
 
-With a bordered parent, the border is part of the inset, so the inner radius
-here is `12px`:
-
-```css
-.frame {
-  --outer-radius: 20px;
-  --frame-border: 1px;
-  --frame-padding: 7px;
-  border: var(--frame-border) solid var(--frame-edge);
-  border-radius: var(--outer-radius);
-  padding: var(--frame-padding);
-}
-
-.frame > .media {
-  border-radius: max(0px, calc(
-    var(--outer-radius) - var(--frame-border) - var(--frame-padding)
-  ));
-}
-```
-
-```tsx
-// Tailwind: 16px radius, 8px padding → 8px inner radius
-<div className="rounded-2xl p-2">
-  <div className="rounded-lg">...</div>
-</div>
-```
-
 The corner gap and the straight-edge gap should form a continuous band. If the
 inset exceeds the outer radius, the inner corner becomes square. Asymmetric
 insets and other corner shapes need individual judgment. Keep an established
@@ -92,14 +65,6 @@ with icon-side padding 2px less than text-side padding:
   padding-inline-start: 16px;
   padding-inline-end: 14px; /* trailing icon side = text side - 2px */
 }
-```
-
-```tsx
-// Tailwind
-<button className="ps-4 pe-3.5 flex items-center gap-2">
-  <span>Continue</span>
-  <ArrowRightIcon />
-</button>
 ```
 
 A right-pointing play triangle's geometric center sits left of its visual
@@ -149,21 +114,8 @@ project's dark-mode selector:
 --shadow-border-hover: 0 0 0 1px oklch(1 0 0 / 0.13);
 ```
 
-For a card whose lift benefits from a transition, animate `box-shadow`; keep
-frequently traversed rows and menu highlights instant.
-
-```css
-.card {
-  box-shadow: var(--shadow-border);
-  transition-property: box-shadow;
-  transition-duration: 150ms;
-  transition-timing-function: ease-out;
-}
-
-.card:hover {
-  box-shadow: var(--shadow-border-hover);
-}
-```
+For a card whose lift benefits from a transition, transition `box-shadow`
+between the two tokens over about 150ms.
 
 | Use shadows | Use borders |
 | --- | --- |
@@ -199,14 +151,6 @@ img {
 }
 ```
 
-```tsx
-<img
-  className="outline outline-1 -outline-offset-1 outline-black/10 dark:outline-white/10"
-  src={src}
-  alt={alt}
-/>
-```
-
 `outline` adds no width or height, and the negative offset follows the corner
 radius. Compare pale, dark, and mixed-edge images with the outline on and off in
 each theme; the edge should clarify the image's shape without reading as a
@@ -214,40 +158,11 @@ frame.
 
 ## Gradient interpolation
 
-Choose the interpolation space for the appearance you want; the difference shows
-most in the middle of the gradient. Keep a fallback declaration for browsers
-without interpolation-space syntax.
-
-```css
-/* Fallback */
-background: linear-gradient(#3b82f6, #ec4899);
-/* Explicit sRGB */
-background: linear-gradient(in srgb, #3b82f6, #ec4899);
-/* oklab: a straight path in a perceptual space */
-background: linear-gradient(in oklab, #3b82f6, #ec4899);
-/* oklch: interpolates lightness and chroma while traveling around hue */
-background: linear-gradient(in oklch, #3b82f6, #ec4899);
-```
-
-`oklab` and sRGB are rectangular: they interpolate in a straight line. Two hues
-on opposite sides of the wheel then pass near the neutral axis and produce a
-gray midpoint. Switch to a polar space or add a third stop.
-
-`oklch` is polar: it travels around the hue angle, preserving chroma but passing
-through every hue between the stops. Blue to pink passes through purple; check
-that the midpoint fits. Choose the direction:
-
-```css
-/* The short way round, usually what you want */
-background: linear-gradient(in oklch shorter hue, #3b82f6, #ec4899);
-/* The long way, sweeps most of the spectrum */
-background: linear-gradient(in oklch longer hue, #3b82f6, #ec4899);
-```
-
-Large, low-contrast gradients band visibly on 8-bit displays. Increase the
-contrast between stops, reduce the area, or add grain. For text over a
-gradient, measure contrast in its lowest-contrast region. Check the midpoint,
-gamut mapping, and fallback in the target browser.
+Choose the interpolation space for the midpoint you want and keep a plain
+fallback declaration: sRGB and `in oklab` pass near gray between opposite hues,
+while `in oklch shorter hue` keeps chroma by traveling around the hue wheel.
+Large, low-contrast gradients band on 8-bit displays; increase the contrast
+between stops, reduce the area, or add grain.
 
 ## Grain
 

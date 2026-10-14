@@ -1,15 +1,7 @@
 # Interface design
 
-Contents:
-
-- [Process](#process)
-- [Dependency categories](#dependency-categories)
-- [Schemas before hand-rolled guards](#schemas-before-hand-rolled-guards)
-- [Seam and test discipline](#seam-and-test-discipline)
-
 Generate alternative interface designs when the first plausible interface is
-unlikely to be the best one. Use subagents for high-impact or non-obvious seams
-when independent designs would improve the decision.
+unlikely to be the best one.
 
 ## Process
 
@@ -27,8 +19,9 @@ This sketch is not the proposal. It helps the user and subagents reason about th
 ### 2. Generate alternative designs
 
 Produce two to four meaningfully different interfaces for the deepened module.
-For high-impact seams, spawn parallel subagents when available; otherwise create
-the alternatives yourself.
+For high-impact or non-obvious seams, spawn parallel subagents when available
+and independent designs would improve the decision; otherwise create the
+alternatives yourself.
 
 Each design should work from the same technical brief: file paths, dependencies
 between modules, dependency category, behavior behind the current boundary, repo
@@ -96,54 +89,3 @@ Recommendation shape:
 
 Third-party services the codebase does not control. The module takes the
 external dependency as an injected port; tests provide a mock adapter.
-
-## Schemas before hand-rolled guards
-
-For TypeScript interfaces that accept external data:
-
-Before writing a property-by-property type guard for external data, look for the repository's runtime schema library and existing schemas. Let one schema own validation and derive the TypeScript type from it. Do not maintain a schema, a duplicate interface, and a guard that can drift apart.
-
-Use `safeParse` when failure is an expected branch. Use the equivalent inference helper when the repository uses another schema library. Do not add a new schema dependency for one guard. This rule prefers the schema system the codebase already trusts.
-
-```ts
-import { z } from "zod";
-
-// Don't
-const user = data as User;
-
-// Don't
-function isUser(data: unknown): data is User {
-  return typeof data === "object" && data !== null && "id" in data;
-}
-
-// Do
-const userSchema = z.object({ id: z.string(), name: z.string() });
-type User = z.infer<typeof userSchema>;
-
-function parseUser(data: unknown): User {
-  return userSchema.parse(data);
-}
-```
-
-When the type comes first, annotate the validator with the type it proves. The compiler then rejects a validator that proves less than the type. Remove `name` from the object below and the assignment fails to compile.
-
-```ts
-type User = { id: string; name: string };
-
-const userSchema: z.ZodType<User> = z.object({ id: z.string(), name: z.string() });
-```
-
-- Untyped boundary: parse with the schema that owns the shape. Add a schema only where none exists.
-
-## Seam and test discipline
-
-- Introduce a port only when at least two adapters are justified, typically
-  production plus test. With only one justified adapter, the boundary adds an
-  unnecessary layer.
-- A deep module can have internal seams private to its implementation and used
-  by its own tests. Do not expose internal seams through the interface just
-  because tests use them.
-- Replace shallow-module tests with tests at the deepened module's interface.
-  The interface is the test surface.
-- Tests assert observable outcomes through the interface, not internal state.
-  They should describe behavior, not implementation.

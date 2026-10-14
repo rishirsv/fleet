@@ -46,9 +46,9 @@ alternatives is one exploration round, separate from the iteration count.
 - **Mixed:** use images for art direction or assets and HTML for the interaction
   question. Keep the extra medium only when it helps decide.
 
-Follow an explicit medium preference. Choose dimensions from the reference or
-intended surface; use consistent viewports across comparable options instead of
-forcing every concept into one device preset.
+Choose dimensions from the reference or intended surface; use consistent
+viewports across comparable options instead of forcing every concept into one
+device preset.
 
 ## HTML variants and board
 
@@ -61,8 +61,7 @@ chrome so it does not compete with the variants; it follows no style system.
 Keep titles, descriptions of each direction, and comparison notes outside the
 prototype viewport. Let users inspect each design at its intended scale; a
 thumbnail cannot establish readability. Show the main task with realistic
-content, the distinguishing interaction, and relevant states. Use local sample
-data and assets instead of adding backend services for an exploration.
+content, the distinguishing interaction, and relevant states.
 
 Open the board and variants in the browser. Check that previews load, primary
 interactions work, and the board does not alter the designs' layout or scale.

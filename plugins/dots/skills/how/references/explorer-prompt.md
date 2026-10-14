@@ -18,8 +18,6 @@ Other explorers investigate different parts of the same subsystem in parallel. F
 
 ## Exploration instructions
 
-Start by finding the relevant code. Use `rg --files` to find files and `rg` to find key symbols, then read the actual implementation.
-
 Find where the behavior starts (a user action, API call, or scheduled job),
 follow the call chain and the data it transforms through the central types and
 services, and locate where the subsystem hands off to others. Note anything
@@ -28,11 +26,10 @@ surprising, historical, or easy for a newcomer to misread.
 Carry one representative action, input, or state from the entry point to the
 visible result. Include state transitions that affect the result, asynchronous
 handoffs, storage, external effects, and meaningful failure or alternate
-states. Explain the general mechanism only after showing how the example works.
+states.
 
 Keep exploring until the assigned path reaches the visible result or a
-specifically named gap. If you hit a part you can't trace, say so explicitly.
-"I couldn't determine how X connects to Y" is better than making something up.
+specifically named gap. Name any part you can't trace.
 
 ## Output
 
@@ -54,4 +51,4 @@ Where this subsystem connects to other parts of the codebase. The inputs and out
 Anything surprising, historically motivated, or easy to get wrong. Things that look like they should work one way but actually work another.
 
 ### Open questions
-Anything you couldn't fully trace or understand. Be honest about gaps.
+Anything you couldn't fully trace or understand.

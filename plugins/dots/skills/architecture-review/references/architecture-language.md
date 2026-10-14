@@ -1,23 +1,15 @@
 # Architecture language
 
-Use these
-terms when they make a finding more precise. Preserve repository-native words
-such as component, service, API, package, crate, or boundary when those are the
-names maintainers already use; explain the relationship to the terms below
-only when it matters.
+Use these terms when they make a finding more precise. Preserve
+repository-native words such as component, service, API, package, crate, or
+boundary when those are the names maintainers already use; explain the
+relationship to the terms below only when it matters.
 
 ## Terms
 
-**Module** Anything with an interface and an implementation. The term applies to
-a function, class, package, or component that spans several layers.
-
-**Interface**
-Everything a caller must know to use the module correctly. Includes the type signature, but also invariants, ordering constraints, error modes, required configuration, and performance characteristics.
-
-**Implementation** What's inside a module - its body of code. Distinct from
-**Adapter**: a thing can be a small adapter with a large implementation, or a
-large adapter with a small implementation. Use "adapter" when describing the
-role at a boundary. Otherwise use "implementation".
+**Interface** Everything a caller must know to use the module correctly.
+Includes the type signature, but also invariants, ordering constraints, error
+modes, required configuration, and performance characteristics.
 
 **Depth** The amount of behavior a caller or test can use compared with the
 interface they must learn. A module is **deep** when a large amount of behaviour
@@ -51,11 +43,3 @@ callers.
   shape.
 - **One adapter means a hypothetical seam. Two adapters means a real one.** Do
   not introduce a seam unless something actually varies across it.
-
-## Relationships
-
-- A **Module** has exactly one **Interface**.
-- **Depth** is a property of a **Module**, measured against its **Interface**.
-- A **Seam** is where a **Module**'s **Interface** lives.
-- An **Adapter** sits at a **Seam** and satisfies the **Interface**.
-- **Depth** produces **Leverage** for callers and **Locality** for maintainers.

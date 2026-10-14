@@ -35,10 +35,10 @@ For each real duplicate, name:
 
 Prefer the owner that gives callers a small interface, concentrates behavior
 and verification in one place, and matches the repository's architecture.
-Apply the deletion test: if removing a module makes complexity vanish, it was a
-pass-through; if callers must implement that complexity after removal, the module was
-providing useful behavior. Keep translation at a real external, persisted, or untrusted
-boundary even when only one adapter exists.
+Apply the
+[deletion test](../skills/architecture-review/references/architecture-language.md#principles).
+Keep translation at a real external, persisted, or untrusted boundary even when
+only one adapter exists.
 
 Remove the competing owners and their tests as a
 [hard cut](hard-cut-policy.md); tests exercise the retained interface.

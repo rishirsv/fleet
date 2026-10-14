@@ -6,8 +6,7 @@ description: "Writes, revises, or reviews durable documentation that lives in a 
 # Repo Docs
 
 Write the smallest durable document that lets its reader act or understand
-correctly. Lead with the outcome, preserve the exact technical meaning, and stop
-when the document has done its job.
+correctly, and stop when the document has done its job.
 
 ## References
 
@@ -21,8 +20,6 @@ Repository and user-named style guides come before these defaults.
   [design-docs.md](references/design-docs.md).
 - For a flow doc or a design-doc diagram, choose the form with
   [Visual explanations](../../references/visual-explanations.md).
-- Before completion, apply the checks in
-  [validation.md](references/validation.md) that the change touches.
 
 ## Workflow
 

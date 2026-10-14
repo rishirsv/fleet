@@ -61,11 +61,6 @@ it with a data URI and removes the local path from the final page.
 </figure>
 ```
 
-Use `loading="eager"` for an image visible in the first viewport and
-`loading="lazy"` below it. Meaningful images need concise alt text describing
-what is visibly present; captions explain why the reader should notice it.
-Omit decorative images instead of shipping them with empty alt text.
-
 The normal assembly command embeds the asset automatically:
 
 ```bash
@@ -78,12 +73,11 @@ node scripts/assemble.mjs \
 
 ## Verify the integrated result
 
-- The final HTML contains a `data:image/...` source, no `data-embed-src`, no
-  local path, and no external image request.
+- The final HTML contains a `data:image/...` source, no `data-embed-src`, and
+  no local path.
 - The crop, focal point, caption, and alt text still make sense at desktop and
   narrow widths in light and dark modes. Choose the widths from
   [Visual proof](../../../references/visual-proof.md).
 - The image does not contain invented evidence, broken text, logos, watermarks,
   or unintended generated defects.
 - Its pixel dimensions and file size fit the displayed size; the first useful content is not delayed by a decorative asset.
-- The page remains complete with JavaScript disabled and honors reduced motion.

@@ -1,21 +1,12 @@
 # Investigator prompt template
 
-Fill in this template for each investigator. In `{SOURCE_PLAYBOOK_SECTION}`, paste the source file for its assigned evidence category from the table in `SKILL.md`, plus `incident-postmortem.md` when that table's defensive-code condition applies. The investigator runs those incident queries only within its assigned source.
+Fill in this template for each investigator. In `{SOURCE_PLAYBOOK_SECTION}`, paste the source file for its assigned evidence category (SKILL.md step 3), plus `incident-postmortem.md` when the target has the defensive code listed in that step. The investigator runs those incident queries only within its assigned source.
 
 ---
 
 You are investigating the historical context and motivation behind a piece of code. A separate synthesizer combines your findings with other investigators' into a final answer, so gather evidence accurately rather than writing prose.
 
 Other investigators search different sources in parallel. Don't try to cover everything. Investigate your assigned source completely.
-
-## Evidence rules
-
-Return evidence with accurate descriptions. Include findings that conflict with a possible explanation. When exact wording matters, quote it and give a precise citation. Leave the final explanation to the synthesizer.
-
-- **Quote, don't paraphrase** when the exact wording matters. Citations should let the reader jump to the source and confirm the claim in seconds.
-- **Track what you searched, not just what you found.** An absence is only useful if the reader knows what was looked for. Record queries verbatim.
-- **Test other explanations.** Before calling a finding strong, ask whether you would expect the same evidence if your interpretation were wrong. Explain what evidence would distinguish the interpretations.
-- **Preserve incomplete findings.** Label a partial finding as partial. Do not add unsupported details or increase its confidence.
 
 ## The question
 
@@ -42,16 +33,16 @@ Return evidence with accurate descriptions. Include findings that conflict with 
 
 ## Investigation instructions
 
-Gather **evidence**; don't answer the question directly. The synthesizer weighs the evidence and forms conclusions. Follow this loop:
+Follow this loop:
 
 1. **Search broadly first.** Find related context, then narrow the search to specific records.
 2. **Read the whole thing.** Read any PR, ticket, doc, or thread fully, not just the title or summary. The key evidence is often buried in a comment, a subtask, or a follow-up.
-3. **Follow links within your assigned source.** If a PR references another PR or commit, fetch it. If a ticket links a parent or sibling, fetch it. If a doc links another doc, fetch it. Stay inside your assigned source. When you spot a cross-source reference, do not chase it yourself. Record it under "Additional leads" so the investigator assigned to that source can pick it up. The one-investigator-per-category design depends on this; chasing cross-source links duplicates work and confuses scope.
+3. **Follow links within your assigned source.** If a PR references another PR or commit, fetch it. If a ticket links a parent or sibling, fetch it. If a doc links another doc, fetch it. Stay inside your assigned source. When you spot a cross-source reference, do not chase it yourself. Record it under "Additional leads" so the investigator assigned to that source can pick it up.
 4. **Capture quotes verbatim** with their location (PR number, ticket ID, URL, commit hash, file:line). The synthesizer needs to cite this precisely.
-5. **Note absences.** If you searched for something and came up empty, that's also a finding. Record what you searched for and what you didn't find.
+5. **Note absences.** An empty search is a finding. Record queries verbatim, along with what you didn't find.
 6. **Watch for contradictions.** If two items in your source disagree, or a finding conflicts with other evidence, record both with citations.
 
-Return complete evidence without forming a final conclusion about intent. The synthesizer combines the evidence and draws that conclusion.
+Before calling a finding strong, ask whether you would expect the same evidence if your interpretation were wrong, and what evidence would distinguish the interpretations. Label a partial finding as partial; do not add unsupported details or increase its confidence.
 
 ## Epistemic discipline
 

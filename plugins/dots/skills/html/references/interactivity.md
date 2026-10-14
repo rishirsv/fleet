@@ -7,11 +7,11 @@ rather than adding a custom framework or a second visual system.
 | Reader task | Helper | Suitable content |
 |---|---|---|
 | Review a proposal and send one response | `review()`, `reviewPoint()`, `decision()`, `editableCode()` | Plans, RFCs, decision proposals; read [plans.md](plans.md) |
-| Comment on an implemented change | `review({kind:"pull-request",...})`, `reviewPoint()` | PR walkthroughs; read [pr-walkthroughs.md](pr-walkthroughs.md) |
-| Inspect screens or states one at a time | `walkthrough({id,label,steps:[{title,body}]})` | A lifecycle, before/after comparison, or annotated sequence |
-| Copy an exact snippet | `page({tools:true}, ...)` with `code()` | Commands, configuration, examples |
-| Open or close technical detail together | `page({tools:true}, ...)` with multiple `disclosure()` blocks | Reports with a technical appendix under each behavior |
-| Find and compare records | `table({columns,rows,searchable:true,sortable:true})` with `page({tools:true}, ...)` | Substantial inventories or evidence tables |
+| Comment on an implemented change | `review()` with `kind: "pull-request"`, `reviewPoint()` | PR walkthroughs; read [pr-walkthroughs.md](pr-walkthroughs.md) |
+| Inspect screens or states one at a time | `walkthrough()` | A lifecycle, before/after comparison, or annotated sequence |
+| Copy an exact snippet | `code()` with `page()` tools on | Commands, configuration, examples |
+| Open or close technical detail together | Several `disclosure()` blocks with `page()` tools on | Reports with a technical appendix under each behavior |
+| Find and compare records | A searchable, sortable `table()` with `page()` tools on | Substantial inventories or evidence tables |
 
 A walkthrough shows all steps without JavaScript and in print. With JavaScript,
 named buttons select one panel and expose selection through `aria-pressed`.
@@ -35,10 +35,7 @@ one response button; plans add the next unresolved decision and an answer count.
 The count reports explicit answers, never panels viewed. Keep the dock out of
 the main reading flow and hide it in print.
 
-Choose interactions from the reader's job. Do not add search to a tiny table,
-controls to decorative figures, a fake live dashboard, or progress that claims
-work is complete merely because a person viewed it. A static document remains
-a document when local controls improve inspection and feedback. Use `ui-design`
+A static document remains a document when local controls improve inspection and feedback. Use `ui-design`
 when the task calls for a functioning product, external writes, authentication,
 or live data and complex application state.
 
@@ -46,5 +43,13 @@ Check keyboard access, labels, focus, narrow screens, and each changed state
 in addition to the opening view. Test empty search, sort direction, copying
 fallback, and no JavaScript when those controls are present. Downloads depend
 on the browser; if a viewer does not save the file, copy or select the
-response instead. Keep exports, feedback, and saved answers local; add no
-network requests or telemetry.
+response instead. Keep exports, feedback, and saved answers local.
+
+## Check review pages
+
+For a `review()` page, inspect the opening view, every exhibit, expanded
+technical disclosures, a comment, and the exported response. Confirm that an
+untouched page exports no answer or approval, and that notes survive reload
+only for the same revision. Also check keyboard focus, dark mode, print,
+reduced motion, and JavaScript off. Without JavaScript, the content and native
+disclosures stay readable and readers can send feedback in chat by heading.

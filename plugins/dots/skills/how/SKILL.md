@@ -11,14 +11,6 @@ Explain how the parts work together so the reader can start working on it.
 
 ## 1. Understand the question and choose the depth
 
-How questions usually ask about one of these:
-
-- “How does the rate limiter work?”, a subsystem.
-- “How do we handle billing for on-demand usage?”, a feature flow.
-- “How is the auth service structured?”, an architectural overview.
-- “What happens when a user submits this form?”, a runtime trace.
-- “Walk me through this pull request,” a completed change.
-
 Identify the scope from the conversation and repository. If it is ambiguous,
 state your best interpretation and proceed so the user can redirect you.
 
@@ -36,8 +28,7 @@ Choose the exploration path:
   Add read-only explorers when they can investigate independent paths or
   when parallel work will cover more evidence or finish substantially faster.
 
-When in doubt, investigate directly. Add an explorer when you cannot cover
-the necessary source clearly in the current investigation.
+When in doubt, investigate directly.
 
 ## 2. Trace the source
 
@@ -53,26 +44,19 @@ different pieces of the question. A rate limiter might split into:
 - configuration, metrics, and operational controls.
 
 Build each explorer brief from
-[explorer-prompt.md](references/explorer-prompt.md). Each explorer should stop only when it can describe its path from
-input to output or from trigger to effect, with evidence for each step. It returns the
-components found, flow traced, files read, and anything surprising or easy to
-misunderstand.
+[explorer-prompt.md](references/explorer-prompt.md), and name what the other
+explorers cover.
 
 ## 3. Build one explanation
 
 Combine your findings into one explanation. Resolve conflicting findings
 before writing the answer. Combine reports in the current context unless
-they are large, conflict, or each require substantial analysis.
+they are large or each require substantial analysis.
 Only then use a separate explainer built from
 [explainer-prompt.md](references/explainer-prompt.md), and supply `tracing.md`
 and the output contract below with it.
 
-Lead with the system's purpose and how its parts work together. Then walk through what
-happens, where state lives, how data moves, and which decisions change the
-path. Link claims that affect the explanation to specific files and symbols.
-
-Write a complete explanation. Connect the findings so the reader does not
-have to reconstruct the behavior from search notes or file lists.
+Link claims that affect the explanation to specific files and symbols.
 
 ## Output contract
 
@@ -98,9 +82,6 @@ When the user asks to see, diagram, or make the explanation visual, read
 smallest useful view. Otherwise use a visual when several components interact
 or data changes shape across stages and the picture makes that relationship
 easier to understand. Skip it when prose already makes the flow clear.
-
-When explaining a change, follow `changes.md` to choose the explanation's order.
-Use headings that fit the change.
 
 ## Delivery and completion
 

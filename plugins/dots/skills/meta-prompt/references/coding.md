@@ -62,8 +62,7 @@ instead of silently upgrading it to production implementation.
 
 For coupled or stateful changes, define the observable guarantee, authoritative
 owner, and necessary order when known. Do not prescribe new queues, protocols,
-or coordinators as a substitute for understanding that guarantee. For ordinary
-local edits, omit unnecessary design steps.
+or coordinators as a substitute for understanding that guarantee.
 
 **Input:** “Draft a plan for making order submission safe against repeated
 taps. No code yet. We already have a server idempotency key.”

@@ -5,22 +5,62 @@ description: "Designs, builds, and refines web or native app interfaces, includi
 
 # UI design
 
-Make deliberate choices about palette, typography, composition, and interaction
-that fit the brief. Challenge clichés and familiar templates. Take aesthetic
-risks when they help express the idea or improve the experience. When refining
-an established product, work within its existing identity. When creating or
-redesigning a product, choose a consistent visual direction.
-
-Establish visual hierarchy before adding decoration. Reduce the prominence of
-competing elements before enlarging or emphasizing the main element. Use a
-small, consistent set of type, color, spacing, radius, and depth values. Add
-exceptions when an element has a distinct role or a visible problem. Preserve
-the meaning and behavior of conventional controls. Start sections with the
-heading itself; put category or context labels in the body or footer, and keep
-functional navigation separate from headings.
+Design with a point of view. Make deliberate choices about palette, typography,
+composition, and interaction that belong to this brief and would not carry over
+unchanged to a similar one. Take aesthetic risks when they express the subject
+or improve the experience. When refining an established product, work within
+its identity. When creating or redesigning one, commit to a single visual
+direction and carry it through every screen and state.
 
 To audit an existing interface, review a UI change, or stress test a component,
 load `$ui-review`.
+
+## Ground the design
+
+Identify the subject, audience, and primary job before choosing a style. When
+the brief leaves them open, propose a concrete interpretation and continue; ask
+only when different answers would materially change the design. Draw
+distinctive choices from the subject's materials, vocabulary, imagery, and
+activities instead of demographic clichés: a children's toy and an analyst's
+dashboard need different density, hierarchy, and expression. When a page opens
+with a hero, lead with the most characteristic thing in the subject's world,
+such as a headline, an image, a live demo, or an interaction. Build with real
+content, or plausible content for the actual task; generic copy makes a design
+read as a template as surely as generic styling does.
+
+## Avoid generic defaults
+
+Generated interfaces converge on a few looks whatever the subject:
+
+- A warm cream background, high-contrast serif display, and terracotta accent.
+- A near-black background with one acid-green or vermilion accent.
+- A broadsheet of hairline rules, square corners, and dense columns.
+- The SaaS card kit: identical rounded cards with one radius and one soft gray
+  shadow, decorative gradient washes, and a hero of one big number, a small
+  label, and supporting stats.
+- Template chrome: a tracked uppercase eyebrow over each heading, one accented
+  word per headline, `01 / 02 / 03` markers on content that is not a sequence,
+  metadata joined with middle dots, arrows appended to link text, a fade-up
+  entrance on every section, and a hover lift on every card.
+
+Any of these can suit a brief, but none is a choice when it would appear for
+any subject. Where the brief specifies a look, follow it exactly, even when it
+asks for one of these. Where the brief leaves a choice open, spend that freedom
+on something drawn from the subject. Use borders, numbering, labels, and
+dividers only when they encode something about the content. Start a section
+with its heading, put category or context in the body or footer, and keep
+functional navigation such as breadcrumbs separate from the heading.
+
+## Hierarchy and restraint
+
+Spend boldness in one place: let one element carry the memorable idea, keep the
+rest quiet, and cut decoration that does not serve the brief. Establish
+hierarchy before decoration, and reduce competing elements before enlarging the
+main one. Use a small, consistent set of type, color, spacing, radius, and depth
+values, with exceptions only for a distinct role or a visible problem. Preserve
+the meaning and behavior of conventional controls. Meet a baseline of
+responsive layout, visible keyboard focus, reduced motion, and readable
+contrast without presenting it as a feature.
 
 ## Choose the workflow
 
@@ -30,32 +70,24 @@ list at the top.
 
 | Outcome | Read |
 |---|---|
-| Build a new interface or substantially redesign one | [Ground and build](references/build.md) |
+| Build a new interface or substantially redesign one | [Plan and build](references/build.md) |
 | Refine a settled interface | [Build or refine](references/build.md#build-or-refine); reuse established context |
 | Explore directions or compare variants | [Ideation](references/ideation.md) |
 | Recreate an accepted image, mockup, or live page | [Recreate a reference](references/recreate.md) |
 | Check or correct a build against an accepted design | [Design QA](references/design-qa.md) |
 
-Design QA belongs to this skill: it compares a build with its accepted target
-and corrects the build. Judging whether a design itself is good belongs to
-`$ui-review`.
-
 ## Choose the craft
 
 | Decision | Guidance | Code recipes |
 |---|---|---|
-| Hierarchy, density, repeated rows, responsive layout | [Layout](references/layout.md) | [Logical properties and container queries](references/recipes/text-color-layout.md#direction-aware-layout) |
-| Fonts, text roles, wrapping, truncation | [Typography](references/typography.md) | [Web fonts and text CSS](references/recipes/text-color-layout.md#web-fonts) |
-| Palette, contrast, themes, gradients | [Color](references/color.md) | [Contrast, tokens, canvas](references/recipes/text-color-layout.md#measure-contrast); [gradients and grain](references/recipes/surfaces.md#gradient-interpolation) |
+| Hierarchy, density, repeated rows, responsive layout | [Layout](references/layout.md) | |
+| Fonts, text roles, wrapping, truncation | [Typography](references/typography.md) | [Web fonts](references/recipes/fonts-and-color.md#web-fonts) |
+| Palette, contrast, themes, gradients | [Color](references/color.md) | [Contrast, tokens, canvas, theme switch](references/recipes/fonts-and-color.md#measure-contrast); [gradients and grain](references/recipes/surfaces.md#gradient-interpolation) |
 | Controls, forms, feedback, search, labels | [Interaction](references/interaction.md) | [Accessible interaction](references/recipes/accessibility.md) |
 | Timing, choreography, gesture motion | [Motion](references/motion.md) | [Motion recipes](references/recipes/motion.md) |
-| Radii, optical alignment, depth, image edges, texture | Treatments below | [Surface recipes](references/recipes/surfaces.md) |
+| Radii, optical alignment, depth, image edges, texture | | [Surface recipes](references/recipes/surfaces.md) |
 | Icon weight, states, size, direction | [Icons](references/icons.md) | [Icon swap](references/recipes/motion.md#icon-swap) |
 | Native Apple controls, app icons, lazy SwiftUI lists | [Platforms](references/platforms.md) | |
-
-Use surface treatments only when they fit the accepted visual system. Preserve
-structural, selection, and focus boundaries, and use system components and
-materials on native platforms.
 
 ## Prove the result
 
@@ -67,21 +99,15 @@ the interface renders or behaves. Inspect the states the change affects:
   focused content. Check that the hierarchy survives as well as the fit.
 - Typography: long strings, localized expansion, fallback fonts, supported
   text sizes, and reflow when fonts load.
-- Interaction: the main path, errors, retries, cancellation, dismissal, back
-  navigation, and both directions of reversible changes.
+- Interaction: the main path, errors, retries, cancellation, dismissal, and
+  back navigation.
 - Motion: entry, exit, rapid repetition, reversal, interruption, and reduced
   motion. A static capture proves the endpoint only; use a recording or
   intermediate frames when continuity is in question.
 
 ## Explain the result
 
-Write design explanations with [Writing style](../../references/writing-style.md); interface copy follows [Interaction](references/interaction.md).
-
-Lead with the visible result, design decision, or blocker. Support judgments
-with specific observations. Name the element, quote the copy, or describe which
-elements compete for attention. Explain how the observation affects the user's
-task and what change would improve it. "Four equally prominent actions obscure
-where to start; give the primary task more weight" is more useful than "improve
-hierarchy." Distinguish observed behavior from assumptions about users'
-feelings. Name strengths a correction could damage, and show relevant previews
-or evidence when available.
+Write design explanations with [Writing style](../../references/writing-style.md).
+Lead with the visible result, design decision, or blocker; name elements and
+quote copy. Interface copy follows
+[Interaction](references/interaction.md#labels-and-messages).

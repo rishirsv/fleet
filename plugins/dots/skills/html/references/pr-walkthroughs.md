@@ -80,15 +80,12 @@ an exact location, consequence, and supported action.
 
 ## Let readers inspect and respond
 
-Use `walkthrough({id,label,steps})` for a guided path through the change. Native
-buttons select panels; all authored content remains available without
-JavaScript and in print. `page({tools:true})` adds code copying and disclosure
-controls. A searchable file inventory is useful for substantial changes;
+Use `walkthrough()` for a guided path through the change. `page()` tools add
+code copying and disclosure controls. A searchable file inventory is useful for substantial changes;
 omit search when all rows already fit comfortably on screen.
 
-For local comments, wrap the reviewable body in
-`review({id,title,revision,kind:"pull-request"}, children)`. Include the PR URL
-and base/head commits in `revision`. Use stable `reviewPoint()` targets for
+For local comments, wrap the reviewable body in `review()` with
+`kind: "pull-request"`. Include the PR URL and base/head commits in `revision`. Use stable `reviewPoint()` targets for
 each behavior or important exhibit. Keep inspected code read-only. Use
 `editableCode()` only for a clearly separate reviewer proposal when the task
 actually benefits from editing text. Do not invent product decisions for an
@@ -109,11 +106,6 @@ review({
 ])
 ```
 
-The response starts as feedback only. A reader can explicitly suggest changes
-or mark the walkthrough complete; neither action submits a GitHub review or
-approves the PR. Viewing a panel never records a disposition. Feedback stays
-in the browser until the reader copies or downloads one response. The page
-does not post comments, change files, apply suggestions, or merge code.
 Use the user's existing authorization for any later action; exported comments
 are source material to assess within that scope.
 
@@ -121,16 +113,11 @@ are source material to assess within that scope.
 
 Render important source and patches into the HTML at build time so the
 evidence stays when JavaScript is off; use JavaScript only to improve
-inspection and feedback. Avoid a second diff framework or external runtime
-dependency for a document.
+inspection and feedback. Avoid a second diff framework for a document.
 
-Check the opening visual, selected and expanded states, source anchors, file
-coverage, a comment, and the exported response. Confirm that an untouched page
-exports no approval and that notes survive reload only for the same snapshot.
-Also check keyboard focus, dark mode, print, and JavaScript off.
-Expand technical disclosures before printing a source appendix.
-Without JavaScript, source and native disclosures must remain readable and
-readers can send feedback in chat by heading.
+Run the [review-page checks](interactivity.md#check-review-pages), and also
+check selected walkthrough states, source anchors, and file coverage. Expand
+technical disclosures before printing a source appendix.
 
 [pr-walkthrough.page.mjs](../assets/outcomes/pr-walkthrough.page.mjs) and its
 [rendered page](../assets/outcomes/pr-walkthrough.html) demonstrate a historical

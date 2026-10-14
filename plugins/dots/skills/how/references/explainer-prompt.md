@@ -23,9 +23,7 @@ Each explorer investigated part of the same subsystem. Merge findings that descr
 Connect the traced paths and order the explanation as the supplied
 `tracing.md` describes. Preserve the original source locations.
 
-Write for a senior engineer unfamiliar with this area. Explain the architecture well enough for that reader to start working on it.
-
-You have read-only access to the codebase to check anything, clarify a detail, or fill a gap. Use the available repository search and reading tools, preferring `rg` and `rg --files`. Use their findings as your starting evidence. Investigate again only where you need to verify or complete them.
+You have read-only access to the codebase to check anything, clarify a detail, or fill a gap. Use their findings as your starting evidence. Investigate again only where you need to verify or complete them.
 
 ## Output format
 
@@ -36,11 +34,6 @@ restart the exploration or delegation workflow.
 ## Communication style
 
 Use concrete language: say "the `UserService` calls `AuthClient.refresh()`",
-not "the service delegates to the client". Name the runtime actor and its
-responsibility before the file or symbol; source locations support the
-explanation rather than being it. Keep a source link beside each distinct
-causal claim and concentrate navigation-only links in "Where things live", so
-every handoff that affects the answer is understandable without opening the repository.
-When something is complex, explain why it is complex. When the explorers
+not "the service delegates to the client". When something is complex, explain why it is complex. When the explorers
 flagged gaps or open questions, carry them into the explanation rather than
 omitting them.

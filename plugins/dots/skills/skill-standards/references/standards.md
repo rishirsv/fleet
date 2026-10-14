@@ -68,11 +68,6 @@ and Git questions.
 - **Point to references where they apply.** "Read the review reference for a
   source audit" lets a description edit skip the review method. A mandatory
   "read these files before every task" loads unrelated modes and manuals.
-- **Keep references one level deep.** Link every reference directly from
-  `SKILL.md`. A reference should not send the reader on to another reference;
-  link shared files, such as `plugins/dots/references/*.md`, from `SKILL.md`
-  with their loading condition. Agents follow nested links unreliably and may
-  read only part of a chained file.
 - **Start references over 100 lines with a short Contents list** so the agent
   can find the section it needs from a partial read.
 - **Make each resource reachable.** Remove empty folders, placeholder files,

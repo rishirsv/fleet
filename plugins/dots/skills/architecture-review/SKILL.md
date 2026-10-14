@@ -7,18 +7,14 @@ description: "Audits a codebase or subsystem for structural refactors, misplaced
 
 Review a codebase or subsystem to find changes that would improve its structure.
 
-By default, use one module responsible for each rule and one current code path.
-[Hard-cut policy](../../references/hard-cut-policy.md) owns the compatibility
-exception.
-
 ## References
 
 - Read [harness-audit.md](references/harness-audit.md) when reviewing an AI agent harness or a subsystem that assembles model requests, exposes tools, manages context, or coordinates agents. It adds cost and reliability checks to the candidate review; ordinary codebases without these components do not need it.
 - Read [architecture-language.md](references/architecture-language.md) when terminology would clarify a structural finding or a candidate proposes deleting an abstraction. Preserve the repository's established vocabulary.
-- Read [architecture-ownership.md](references/architecture-ownership.md) when a finding involves code placement, runtime ownership, duplicate policy, or canonical long-term ownership.
+- Read [architecture-ownership.md](references/architecture-ownership.md) when a finding involves code placement, runtime ownership, or canonical long-term ownership.
 - Read [duplicate-ownership.md](../../references/duplicate-ownership.md) when a finding involves a second source of truth, copied policy, normalization, or competing rule owners.
 - Read [test-consolidation.md](../../references/test-consolidation.md) when a refactor changes test placement, duplicates tests, or creates a new test surface.
-- Read [hard-cut-policy.md](../../references/hard-cut-policy.md) when a candidate replaces a schema, contract, persisted shape, or current path. It defines the exception rule and cleanup checklist.
+- Read [hard-cut-policy.md](../../references/hard-cut-policy.md) when exploration finds compatibility, fallback, migration, or dual-shape code, or a candidate replaces a schema, contract, persisted shape, or current path. It defines the exception rule and cleanup checklist.
 - Read [interface-design.md](references/interface-design.md) only after the user selects a candidate and wants alternative interface designs.
 
 ## Scope
@@ -37,20 +33,16 @@ issue found in a diff does not by itself expand the request into a broad audit.
 
 ## Exploration
 
-Follow the relevant code paths. Look for structures that make the code difficult
-to understand or change:
+Follow the relevant code paths. Look for the problems described in
+[Design red flags](../../references/design-red-flags.md), and for these
+structures that make the code difficult to understand or change:
 
-- understanding one concept requires reading many small modules
-- modules expose nearly as much complexity as their implementation contains
-- pure functions have separate tests, but defects occur when callers coordinate
-  them
-- modules depend on each other's internal decisions
 - duplicate policy exists in more than one layer
 - runtime orchestration owns product policy that belongs in a domain,
   application, or shared core layer
 - tests assert the same invariant in several places or test past the interface
-- compatibility, fallback, migration, or dual-shape code that
-  [Hard-cut policy](../../references/hard-cut-policy.md) would delete
+- compatibility, fallback, migration, or dual-shape code that the hard-cut
+  policy would delete
 
 For broad scans, add evidence from recent change patterns when it is cheap to
 inspect: frequent changes to the same modules, repeated edits to the same
@@ -69,9 +61,10 @@ test, or trace through the code. Prefer changes that remove unnecessary
 concepts, put each responsibility in one place, or let tests verify behavior
 through the public interface.
 
-Do not list speculative refactors just because they are imaginable. Support each
-candidate with a problem visible in the code, tests, documentation, or recent
-changes.
+Support each candidate with a problem visible in the code, tests, documentation,
+or recent changes. A candidate with that evidence but an uncertain payoff is
+valid; rate it worth exploring. Do not list a refactor that is merely
+imaginable, with no visible problem behind it.
 
 For a candidate that deletes an abstraction, apply the deletion test in
 [architecture-language.md](references/architecture-language.md).
@@ -88,8 +81,8 @@ Default to a ranked candidate report in chat unless the user asks for a file or 
    private behind an interface, or disappear, in plain English, including any
    hard cuts and where the owning invariant should be tested.
 3. **The payoff and confidence:** which work becomes easier to change, use,
-   test, or trace, and whether this is strongly recommended, worth exploring, or
-   speculative.
+   test, or trace, and whether the candidate is strongly recommended or worth
+   exploring.
 
 Write for the repo owner deciding what to do next: lead with the strongest candidate and why, keep candidates scannable, and skip dimensions that don't apply rather than filling in every field.
 
@@ -110,11 +103,12 @@ For each candidate selected by the user or covered by the implementation request
    prove it, and the rule that the responsible module must maintain. If
    important behavior has no tests, record its current results with a repeatable
    check before changing code that could affect it.
-3. If the interface is not obvious, use
-   [interface-design.md](references/interface-design.md) to generate alternative
-   interface designs.
-4. Compare designs by depth, locality, seam placement, adapter need, and test
-   surface.
+3. If the interface is not obvious, generate and compare alternative interface
+   designs with [interface-design.md](references/interface-design.md).
+4. Check each design against
+   [Design red flags](../../references/design-red-flags.md),
+   [Engineering principles](../../references/engineering-principles.md), and the
+   principles in [architecture-language.md](references/architecture-language.md).
 5. Recommend one path. Be opinionated.
 6. When the request authorized implementation, implement the recommended path
    within that scope. Otherwise, stop with the recommendation.

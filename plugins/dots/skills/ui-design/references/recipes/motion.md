@@ -31,12 +31,6 @@ keep platform motion.
 .disclosure-button[aria-expanded="true"] .disclosure-icon {
   transform: rotate(180deg);
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .disclosure-icon {
-    transition: none;
-  }
-}
 ```
 
 Drive `aria-expanded` and panel visibility from the same state. The icon
@@ -64,29 +58,18 @@ flags.
 
 ## Scripted motion lifecycle
 
-When CSS cannot express the sequence, keep these responsibilities in the
-component or animation controller:
-
-- Read the reduced-motion preference before starting and handle later changes.
-- Retarget from the current rendered state; use the animation system's velocity
-  handling when continuity requires it.
-- Cancel obsolete animation handles and pending callbacks when the user requests
-  a different state.
-- Commit the latest intended endpoint when motion is disabled.
-- Restore interaction state and clean up on completion, cancellation, and
-  unmount.
-
-An animation can complete after the user has requested a different state. Check
-that the completing animation still belongs to the active transition before it
-hides content or removes an element. `transitionend` may not fire when a
-transition is removed, so give cleanup another path too.
+When CSS cannot express the sequence, an animation can complete after the user
+has requested a different state. Check that the completing animation still
+belongs to the active transition before it hides content or removes an element.
+`transitionend` may not fire when a transition is removed, so give cleanup
+another path too.
 
 ## Scale on press
 
 A subtle scale-down on press gives buttons tactile feedback. Use `scale(0.96)`
 and keep it at or above `0.95`. CSS transitions let a release mid-press return
-smoothly. Apply it only to buttons that benefit, and disable it for reduced
-motion.
+smoothly. Apply it only to buttons that benefit, and reuse an existing variant
+to turn it off.
 
 ```css
 .button {
@@ -101,54 +84,16 @@ motion.
 ```
 
 ```tsx
-// Tailwind
-<button className="transition-transform duration-150 ease-out active:scale-[0.96]">
-  Click me
-</button>
-
 // Motion
 <motion.button whileTap={{ scale: 0.96 }}>Click me</motion.button>
-```
-
-Reuse an existing variant to turn the scale off. When designing a new button
-API, a `static` prop works:
-
-```tsx
-const tapScale = "active:not-disabled:scale-[0.96]";
-
-function Button({ static: isStatic, className, children, ...props }) {
-  return (
-    <button
-      className={cn("transition-transform duration-150 ease-out", !isStatic && tapScale, className)}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-}
-
-<Button>Click me</Button>      {/* scales on press */}
-<Button static>Submit</Button> {/* no scale */}
 ```
 
 ## Skip animation on first render
 
 Use `initial={false}` on `AnimatePresence` when a stateful component should show
 its default state on page load and animate only on later state changes: icon
-swaps, toggles, tabs, and segmented controls.
-
-```tsx
-<AnimatePresence initial={false} mode="popLayout">
-  <motion.span
-    key={isActive ? "active" : "inactive"}
-    initial={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
-    animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-    exit={{ opacity: 0, scale: 0.25, filter: "blur(4px)" }}
-  >
-    <Icon />
-  </motion.span>
-</AnimatePresence>
-```
+swaps, toggles, tabs, and segmented controls. The [icon swap](#icon-swap) shows
+it in use.
 
 Keep the default where the component relies on `initial` for a first-time
 entrance, such as a staggered page hero or a loading state; `initial={false}`
@@ -210,22 +155,13 @@ exit and focus separately.
 }
 ```
 
-This replaces setting `mounted: true` in a `useEffect` after the first render.
-Where support is missing, fall back to that pattern with a `data-mounted`
-attribute:
-
-```jsx
-useEffect(() => {
-  setMounted(true);
-}, []);
-// <div data-mounted={mounted}>
-```
+Where support is missing, set a `data-mounted` attribute after the first render
+and transition from the unmounted styles.
 
 ## Staged entrance
 
 Use for infrequent entrances where sequence communicates hierarchy: the first
-load of a page hero, a success state, an empty state. Keep routine interactions
-such as row hovers, keystrokes, and repeated tab changes unstaggered.
+load of a page hero, a success state, an empty state.
 
 Split the content into logical groups (title, description, actions) and stagger
 them about 100ms apart. Titles can stagger individual words about 80ms apart.
@@ -254,32 +190,7 @@ function PageHeader() {
 }
 ```
 
-```css
-/* CSS-only stagger */
-.stagger-item {
-  opacity: 0;
-  transform: translateY(12px);
-  filter: blur(4px);
-  animation: fadeInUp 400ms ease-out forwards;
-}
-
-.stagger-item:nth-child(1) { animation-delay: 0ms; }
-.stagger-item:nth-child(2) { animation-delay: 100ms; }
-.stagger-item:nth-child(3) { animation-delay: 200ms; }
-
-@keyframes fadeInUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-```
-
 ## Exit animation
-
-Make exits subtler than entrances; the user is moving on. For reduced motion,
-remove the element immediately.
 
 ```tsx
 // Default: a small fixed offset indicates direction
@@ -295,26 +206,7 @@ remove the element immediately.
 </motion.div>
 ```
 
-```css
-/* Good: subtle exit */
-.item-exit {
-  opacity: 0;
-  transform: translateY(-12px);
-  transition: opacity 150ms ease-out, transform 150ms ease-out;
-}
-
-/* Bad: dramatic exit that steals focus */
-.item-exit {
-  opacity: 0;
-  transform: translateY(-100%) scale(0.5);
-  transition: all 400ms ease-out;
-}
-
-/* Sometimes correct: remove immediately when motion adds no context */
-.item-exit {
-  display: none;
-}
-```
+When the exit adds no context, remove the element immediately.
 
 ## Icon swap
 
@@ -323,11 +215,10 @@ and nearby imports: with Motion installed, use the Motion version; otherwise use
 the CSS version and add no dependency. The `0.25` scale, `4px` blur, and zero
 bounce suit glyphs; tune larger surfaces separately.
 
-Both examples show a toggle: keep its label stable and expose state with
+The example shows a toggle: keep its label stable and expose state with
 `aria-pressed`. For a changing action such as Play/Pause, name the next action
 and omit `aria-pressed`; for disclosure, use `aria-expanded`. Connect the button
-event to the component or service that owns the state. For reduced motion,
-render the current glyph without animation.
+event to the component or service that owns the state.
 
 ```tsx
 // Motion
@@ -356,32 +247,10 @@ function IconButton({ isActive, ActiveIcon, InactiveIcon, label }) {
 }
 ```
 
-Without Motion, keep both glyphs mounted and cross-fade them so enter and exit
-both animate. The in-flow `InactiveIcon` sets the layout size; the absolute
-`ActiveIcon` overlays it. `cn` is the project's class-name helper.
-
-```tsx
-// CSS
-const shown = "scale-100 opacity-100 blur-0";
-const hidden = "scale-[0.25] opacity-0 blur-[4px]";
-const swap = "inline-flex transition-[opacity,filter,scale] duration-300 ease-[cubic-bezier(0.2,0,0,1)]";
-
-function IconButton({ isActive, ActiveIcon, InactiveIcon, label }) {
-  return (
-    <button type="button" aria-label={label} aria-pressed={isActive}
-      className="relative inline-flex items-center justify-center">
-      <span className="relative inline-flex" aria-hidden="true">
-        <span className={cn("absolute inset-0 items-center justify-center", swap, isActive ? shown : hidden)}>
-          <ActiveIcon />
-        </span>
-        <span className={cn(swap, isActive ? hidden : shown)}>
-          <InactiveIcon />
-        </span>
-      </span>
-    </button>
-  );
-}
-```
+For the CSS version, keep both glyphs mounted and cross-fade them so enter and
+exit both animate: leave the inactive glyph in flow to set the layout size,
+overlay the active glyph with absolute positioning, and transition `opacity`,
+`scale`, and `filter` on both with the same values.
 
 ## Inspect motion
 

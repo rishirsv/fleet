@@ -54,4 +54,4 @@ with conditional output. Check transforms near the visible boundary so
 virtualization does not remove content that still appears on screen.
 
 Test scrolling away and back, resizing, mixed row sizes, and navigation to a
-distant item. Confirm API availability in the target SDK.
+distant item.

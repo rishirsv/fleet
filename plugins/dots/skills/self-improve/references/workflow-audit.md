@@ -73,16 +73,11 @@ missed, and whether the local success depended on a lucky test path.
 When information gathering caused friction, distinguish navigation from
 information access:
 
-- **Navigation:** how easy was it for the agent to find the right files? Are
-  there hidden dependencies between files? Would a navigation pointer make it
-  easier? Use when the session took a long time to find a piece of information.
-- **Information access:** look for opportunities to increase the agent's access
-  to information. Teeing dev server logs, readonly access to third-party
-  services. Use when a crucial piece of information was not available to the
-  agent.
-
-Add a focused pointer when the information exists but is hard to find. Propose
-logs, diagnostics, or read access when the environment does not expose it.
+- **Navigation:** the information existed but was hard to find, for example
+  because of hidden dependencies between files. Add a focused pointer.
+- **Information access:** the environment did not expose crucial information.
+  Propose logs such as a teed dev server log, diagnostics, or read-only access
+  to third-party services.
 
 Separate two claim types:
 
@@ -99,29 +94,13 @@ behavior and the alternative explanations that remain.
 
 Keep one root cause per finding. Classify it as Tooling, Permissions,
 Environment, Documentation, Reliability, UX, Model behavior, or Workflow.
-Write about systems and observable behavior rather than people.
-
-Use this shape:
-
-```md
-### <category>: <root cause>
-- Observation: <what happened>
-- Impact: <time, rework, uncertainty, or degraded outcome>
-- Evidence: <traceable events; omit when no support exists>
-- Suggestion: <smallest improvement that addresses the cause>
-- Workaround: <omit when none was demonstrated>
-```
-
-Propose a shared instruction only when a missing, wrong, or underspecified rule
-would have prevented the failure and a capable agent could still fail with the
-current contract. Otherwise route the fix to code, tooling, documentation,
-configuration, or a check. A positive result may contain friction without a
-durable proposal.
+Write about systems and observable behavior rather than people, and title each
+finding `<category>: <root cause>`.
 
 ## Finding contract
 
-For every retained finding, account for the trigger, expected behavior, actual
-behavior, cost, cause, better path, closest owner, evidence strength, and a
-result that would show the diagnosis is wrong. Omit fields from the rendered
-answer when they would only repeat another line, but do not omit them from the
-analysis.
+Account for every retained finding with the
+[evidence record](thread-evidence.md#evidence-record), adding its cost, cause,
+better path, closest owner, evidence strength, and the smallest improvement
+that addresses the cause. Add a workaround only when one was demonstrated. Omit
+a field from the rendered answer when it would only repeat another line.

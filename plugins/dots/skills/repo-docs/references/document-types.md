@@ -23,31 +23,23 @@ Contents:
 
 ## README
 
-An introduction that helps a new reader decide what the project is and take the
-next useful step: purpose and scope, the most common workflow, a source map,
-expected contributor commands, current constraints, and generated-file
-boundaries. Link to deeper docs instead of repeating them; architecture essays,
-roadmaps, and exhaustive API references belong elsewhere.
+Helps a new reader decide what the project is and take the next step. Include
+generated-file boundaries; link to architecture essays, roadmaps, and
+exhaustive API references instead of including them.
 
 ## Concept
 
-Explains a system, model, or abstraction before the reader acts: what it is,
-why it exists, its vocabulary, how the parts relate, what it does not cover,
-and links to tasks or decisions. A concept doc explains rather than instructs;
-include examples only when they clarify the model.
+Explains a system or abstraction before the reader acts, including what it
+does not cover. It explains rather than instructs; include examples only when
+they clarify the model.
 
 ## Flow doc
 
 Traces how a request, behavior, or state transition moves through existing
 code, as a navigable explanation rather than a line-by-line restatement.
-
-- Scope, entry points, and required state at entry.
-- A high-level diagram when it clarifies control or ownership boundaries,
-  chosen with the shared visual explanations guidance.
-- The execution trace through important components, branches, and state
-  changes, including points where state is copied, frozen, or committed.
-- Exit states, outputs, and the handoff contract with adjacent flows.
-- Failure paths and observable evidence such as logs, metrics, or events.
+Include entry points and required state, the points where state is copied,
+frozen, or committed, exit states, the handoff contract with adjacent flows,
+and failure paths with their observable evidence.
 
 Keep separate lifecycle or domain flows separate when combining them would hide
 their boundaries; each standalone flow still states what it receives, what it
@@ -57,48 +49,30 @@ paths or line numbers alone.
 
 ## How-to and tutorial
 
-A how-to reaches one concrete outcome by a flexible path: goal,
-prerequisites, steps, how to confirm the result, and rollback or
-troubleshooting when failure is common. Split independent goals into separate
-how-tos.
-
-A tutorial teaches by completing a safe path, with expected observations at
-each step, cleanup, and next steps. Prefer reliable toy inputs over
-production-specific examples, and keep lookup material out of it.
+Split independent goals into separate how-tos. A tutorial teaches by
+completing a safe path: prefer reliable toy inputs over production-specific
+examples, and keep lookup material out of it.
 
 ## Reference
 
-Lookup material such as commands, config, schemas, API fields, events, or
-environment variables. Optimize for scanning and exactness: stable tables or
-definition lists with names, types, defaults, and required status, plus a
-source or generation note when the reference is derived. Prefer generated
-references, or a link to the defining source, over a hand-copied inventory.
+Lookup material optimized for scanning and exactness. Add a source or
+generation note when the reference is derived.
 
 ## Runbook
 
-An operational procedure: trigger, preconditions and access, commands, expected
-healthy output, failure handling and escalation, and completion criteria. Mark
-commands with external effects and the points where a human decides whether
-to continue.
+Mark commands with external effects and the points where a human decides
+whether to continue.
 
 ## Troubleshooting
 
-Starts from symptoms, errors, or failed checks, then gives likely causes,
-diagnosis, fixes, confirmation, and escalation. Quote exact error text when
-available and put the most common fix first.
+Start from symptoms or errors. Quote exact error text when available and put
+the most common fix first.
 
 ## PRD or feature spec
 
 A durable product contract: problem, target users and jobs, goals, non-goals,
 user stories, prioritized requirements, acceptance criteria, success criteria,
 risks, open questions, and phasing when relevant.
-
-Write user stories as "As a [user type], I want [capability] so that
-[benefit]" when that format helps. Keep the user type specific, describe the
-capability rather than a widget or technical solution, state the value, and
-give each story one capability. Cover important edge, error, empty, and
-boundary states. Record internal team work as requirements or technical notes
-rather than user stories.
 
 Without a stronger repository convention, group requirements as **P0 /
 Must-have** (required to solve the core problem), **P1 / Should-have**
@@ -116,11 +90,7 @@ and audit sections out of the PRD itself.
 
 ## Design doc, ADR, or design note
 
-Write a design doc when an engineering change needs alignment before
-implementation, especially when choices are expensive to reverse, several
-people or systems coordinate, requirements are ambiguous, or the work carries
-security, privacy, data, reliability, compatibility, cost, or maintenance risk.
-Its guidance is in the design docs reference.
+For a design doc, follow the design docs reference.
 
 An ADR records one durable decision: status only when the repository uses it,
 context, decision, consequences, alternatives considered, and evidence. Keep
@@ -179,3 +149,9 @@ frontmatter with `type`, `title`, `description`, and optional `resource`,
 `# Schema`, `# Examples`, `# Steps`, `# Relationships`, `# Failure Handling`,
 or `# Citations`; and bundle-relative links where a future agent should
 traverse context.
+
+When changing a bundle, preserve unknown existing frontmatter fields unless the
+user asks to remove them, match index entries to added, removed, and renamed
+concept files, and keep each description useful as a one-sentence search or
+index snippet. Give external claims inline source links or a `# Citations`
+section when source authority matters.

@@ -33,23 +33,10 @@ role. State the action and its object when context alone would not make the
 outcome clear. Carry essential meaning in visible text or shape so it works
 without hover, color, or an unexplained icon.
 
-Support keyboard and touch alongside pointer interaction. Preserve visible
-focus, logical traversal, and alternatives to essential gestures. Use platform
-focus facilities for native overlays, including initial focus, containment where
-appropriate, dismissal, and restoration. Prefer native elements and established
-accessible components.
-
-For web selection controls, first check whether a semantic select with
-progressive styling meets the required behavior. Verify both enhanced and
-fallback presentations, keyboard operation, and assistive technology before
-replacing it with a custom widget.
+Before building a custom web select, check whether a semantic select with
+progressive styling meets the required behavior.
 
 ## Design forms and recovery
-
-Explain expected input before failure when the format is not obvious. Keep
-labels visible, distinguish required fields, and connect errors to the affected
-fields. Validate at a useful moment without interrupting entry. Retain entered
-data after recoverable failures and make correction and retry straightforward.
 
 Default to a single-column form so labels, fields, and errors follow one
 scanning path; use multiple columns only for short, strongly related values when
@@ -88,8 +75,7 @@ complete. Check rapid repeated input and supported input methods.
 After a rerender, keep focus on the equivalent control. If that control is
 unavailable, move focus to a useful enabled destination; focusing a disabled or
 removed trigger leaves keyboard users without a usable position. Verify that
-labels, visible state, focus, and underlying behavior agree. In prototypes, make
-local simulations explicit without building unrequested services.
+labels, visible state, focus, and underlying behavior agree.
 
 ## Agency and permission timing
 
@@ -116,30 +102,13 @@ and no results.
 
 Read the copy nearby first and follow the product's voice, terminology, and
 localization conventions. Keep one term per concept: if the menu says
-"Archive", the toast says "Archive" too. Match tone to consequence: warm for
-success and empty states, neutral for routine actions and settings, calm and
-plain for errors and destructive confirmations, serious and explicit for data
-loss and security. A deliberate brand voice is a choice; flag a departure from
-plain language only when it creates inconsistency, ambiguity, translation risk,
-or a tone the stakes don't support. Check every label against the action it
-invokes and every error for a stated recovery. Keep persistent information
-outside empty states.
-
-- Start action buttons with a verb: "Send", "Save draft", "Delete project". A
-  confirmation button repeats the consequence: "Delete this project?" offers
-  `Delete project` and `Cancel`.
-- Use one vocabulary through a multi-step flow: "Get started", then "Continue"
-  or "Next" (pick one), then "Done".
-- Write link text that names the destination out of context: "Read the billing
-  docs", "Learn more about exports".
-- Label a toggle for its on state: "Send read receipts". Link directly to a
-  referenced setting.
-- In an empty state, explain what belongs there and offer one next action. A
-  search or filter empty state names the query and offers a way out: "No
-  results for 'quarterly'. Clear filters".
-- Localize complete messages with templated strings and proper pluralization;
-  word order changes per language, so avoid concatenating fragments around a
-  variable.
+"Archive", the toast says "Archive" too. Name things by what the user manages,
+not by how the system is built: "Notifications", not "Webhook config". A
+deliberate brand voice is a choice; flag a departure from plain language only
+when it creates inconsistency, ambiguity, translation risk, or a tone the
+stakes don't support. Check every label against the action it invokes and
+every error for a stated recovery. Keep persistent information outside empty
+states.
 
 For a feature or destination name, start from the audience and the benefit they
 seek, try candidates in real navigation and spoken sentences, and prefer a
