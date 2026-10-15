@@ -6,14 +6,81 @@
 """Verify the selected Fleet plugin source through Codex's actual skill loader."""
 
 import argparse
+import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
 import selectors
 import subprocess
+import sys
 import time
 
 import tomlkit
+
+
+EXCLUSION_MARKER = "# fleet:source-exclusion "
+
+
+def reconcile_source_exclusions(config, skills, policy):
+    """Work around loaders ignoring plugin.enabled; own only marked path rows."""
+    before = config.read_text()
+    doc = tomlkit.parse(before)
+    rows = doc.get("skills", {}).get("config", [])
+    unwanted = {
+        skill["path"]: skill for skill in skills
+        if skill.get("pluginId") in policy
+        and not policy[skill["pluginId"]]["enabled"]
+    }
+    # Source switches and new cache versions retire only our unchanged entries.
+    for index in range(len(rows) - 1, -1, -1):
+        row = rows[index]
+        marker = row.trivia.comment
+        if not marker.startswith(EXCLUSION_MARKER):
+            continue
+        parts = marker[len(EXCLUSION_MARKER):].split()
+        if len(parts) != 2:
+            continue
+        owner, path_hash = parts
+        if set(row) != {"path", "enabled"} or row["enabled"] is not False:
+            continue  # A user changed the entry; do not take it over.
+        if hashlib.sha256(row["path"].encode()).hexdigest() != path_hash:
+            continue
+        skill = unwanted.get(row["path"])
+        if skill is None or skill["pluginId"] != owner:
+            del rows[index]
+    existing_paths = {row.get("path") for row in rows}
+    existing_names = {row.get("name") for row in rows}
+    for path, skill in unwanted.items():
+        if not skill["enabled"] or path in existing_paths or skill["name"] in existing_names:
+            continue  # Preserve explicit user choices, even if verification fails.
+        if "skills" not in doc:
+            doc["skills"] = tomlkit.table()
+        if "config" not in doc["skills"]:
+            doc["skills"]["config"] = tomlkit.aot()
+            rows = doc["skills"]["config"]
+        row = tomlkit.table()
+        path_hash = hashlib.sha256(path.encode()).hexdigest()
+        row.comment(f"{EXCLUSION_MARKER.removeprefix('# ')}{skill['pluginId']} {path_hash}")
+        row["path"] = path
+        row["enabled"] = False
+        rows.append(row)
+        existing_paths.add(path)
+    after = tomlkit.dumps(doc)
+    if after == before:
+        return False
+    # Reuse the config merger's backup and atomic-write behavior.
+    spec = importlib.util.spec_from_file_location(
+        "fleet_config_merge", Path(__file__).with_name("merge-codex-config.py"))
+    merger = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = merger
+    spec.loader.exec_module(merger)
+    if config.read_text() != before:
+        raise RuntimeError("Codex config changed during sync; retry after the other writer finishes")
+    merger.backup_target(config)
+    merger.atomic_write(config, after.encode(), 0o600)
+    print(f"Reconciled Fleet skill source exclusions in {config}")
+    return True
 
 
 def loaded_skills(cwd):
@@ -98,9 +165,16 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--policy", type=Path, required=True)
     parser.add_argument("--cwd", type=Path, required=True)
+    parser.add_argument("--repair-source-exclusions", action="store_true",
+                        help="Maintain profile-local path exclusions when the loader ignores plugin policy")
     args = parser.parse_args()
     policy = tomlkit.parse(args.policy.read_text()).unwrap()["plugins"]
-    errors, count = verify(loaded_skills(args.cwd), policy)
+    skills = loaded_skills(args.cwd)
+    if args.repair_source_exclusions:
+        home = Path(os.environ.get("CODEX_HOME", str(Path.home() / ".codex")))
+        if reconcile_source_exclusions(home / "config.toml", skills, policy):
+            skills = loaded_skills(args.cwd)  # A fresh process must prove the repair.
+    errors, count = verify(skills, policy)
     if errors:
         raise SystemExit("Codex skill verification failed:\n  " + "\n  ".join(errors))
     print(f"Codex loaded {count} Fleet plugin skills from the selected source, with zero duplicate skill names across all sources")

@@ -1,0 +1,92 @@
+"""Exercise source reconciliation through the CLI with an isolated Codex loader."""
+import json
+import os
+from pathlib import Path
+import subprocess
+import tempfile
+import unittest
+
+ROOT = Path(__file__).resolve().parents[1]
+VERIFIER = ROOT / 'scripts/plugin-sync/verify-skills.py'
+FAKE_CODEX = '''#!/usr/bin/env python3
+import json, os, sys, tomllib
+from pathlib import Path
+for line in sys.stdin:
+    request = json.loads(line)
+    result = {}
+    if request['method'] == 'skills/list':
+        config = tomllib.loads((Path(os.environ['CODEX_HOME']) / 'config.toml').read_text())
+        rows = config.get('skills', {}).get('config', [])
+        skills = json.loads(os.environ['TEST_SKILLS'])
+        for skill in skills:
+            for row in rows:
+                if row.get('path') == skill['path'] or row.get('name') == skill['name']:
+                    skill['enabled'] = row['enabled']
+        result = {'data': [{'skills': skills}]}
+    print(json.dumps({'id': request['id'], 'result': result}), flush=True)
+'''
+
+
+class CodexSourceSyncTests(unittest.TestCase):
+    def test_repair_upgrade_source_switch_and_user_ownership(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            binary = root / 'codex'
+            binary.write_text(FAKE_CODEX)
+            binary.chmod(0o755)
+            config = root / 'config.toml'
+            user_rows = '\n[[skills.config]]\npath = "/user/disabled"\nenabled = false\n'
+            config.write_text('model = "unchanged"\n' + user_rows)
+            policy = root / 'policy.toml'
+            def set_policy(cloud):
+                policy.write_text('[plugins."dots@dots"]\nenabled = ' + str(not cloud).lower() +
+                                  '\n[plugins."dots@created-by-me-remote"]\nenabled = ' + str(cloud).lower())
+            def run(version='1', repair=True):
+                skills = [dict(name='dots:dots', path=f'/cloud/{version}/SKILL.md', enabled=True,
+                               pluginId='dots@created-by-me-remote'),
+                          dict(name='dots:dots', path='/local/SKILL.md', enabled=True, pluginId='dots@dots')]
+                env = {**os.environ, 'CODEX_HOME': str(root), 'PATH': f'{root}:' + os.environ['PATH'],
+                       'TEST_SKILLS': json.dumps(skills)}
+                args = ['uv', 'run', '--quiet', '--script', str(VERIFIER), '--policy', str(policy), '--cwd', str(root)]
+                if repair:
+                    args.append('--repair-source-exclusions')
+                return subprocess.run(args, env=env, text=True, capture_output=True)
+            set_policy(False)
+            failed = run(repair=False)
+            self.assertNotEqual(failed.returncode, 0)
+            self.assertIn('loaded 2 copies', failed.stderr)
+            result = run()
+            self.assertEqual(result.returncode, 0, result.stderr)
+            first = config.read_text()
+            self.assertIn('# fleet:source-exclusion dots@created-by-me-remote', first)
+            self.assertIn(user_rows, first)
+            self.assertIn('model = "unchanged"', first)
+            self.assertEqual(len(list(root.glob('config.toml.bak.*'))), 1)
+            self.assertEqual(run().returncode, 0)
+            self.assertEqual(first, config.read_text())
+            self.assertEqual(len(list(root.glob('config.toml.bak.*'))), 1)
+            upgraded = run('2')
+            self.assertEqual(upgraded.returncode, 0, upgraded.stderr)
+            self.assertNotIn('/cloud/1/', config.read_text())
+            self.assertIn('/cloud/2/', config.read_text())
+            set_policy(True)
+            switched = run('2')
+            self.assertEqual(switched.returncode, 0, switched.stderr)
+            self.assertNotIn('/cloud/', config.read_text())
+            self.assertIn('/local/SKILL.md', config.read_text())
+            self.assertIn(user_rows, config.read_text())
+            config.write_text(config.read_text().replace('/local/SKILL.md', '/user/changed'))
+            set_policy(False)
+            edited = run('2')
+            self.assertEqual(edited.returncode, 0, edited.stderr)
+            self.assertIn('/user/changed', config.read_text())
+            # A conflicting user-owned rule must fail visibly, never be overwritten.
+            set_policy(True)
+            config.write_text('[[skills.config]]\npath = "/local/SKILL.md"\nenabled = true\n')
+            before = config.read_text()
+            self.assertNotEqual(run('2').returncode, 0)
+            self.assertEqual(config.read_text(), before)
+
+
+if __name__ == '__main__':
+    unittest.main()

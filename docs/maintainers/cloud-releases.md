@@ -71,6 +71,21 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    Report cloud publication separately from desktop verification. Restart only
    after active chats finish if desktop retains stale skills.
 
+### When Codex ignores a source exclusion
+
+Some Codex builds load cloud skills even with the corresponding profile's
+`plugins.<id>.enabled = false`. Fleet sync verifies the actual skill loader.
+If the loader ignores that policy, sync adds path exclusions in that profile's
+`skills.config`, marked `# fleet:source-exclusion <plugin-id> <path-hash>`, and verifies
+again in a fresh process. It backs up the config before writing.
+
+Sync removes its unchanged marked entries when their cache paths retire or
+the selected source changes. Unmarked entries and user-modified entries remain
+user-owned; a conflicting override fails verification instead of being replaced.
+Run sync after plugin updates so new cache paths receive the selected policy.
+This workaround does not uninstall account plugins or alter another profile.
+Calling `verify-skills.py` without `--repair-source-exclusions` remains read-only.
+
 ## Diagnose missing cloud icons
 
 On 2026-10-15, uploading the committed Dots 0.2.256 ZIP through **Upload new

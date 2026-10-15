@@ -159,7 +159,7 @@ errors += ["%s: duplicate copy is still enabled" % key for key, settings in poli
 if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(errors))
 ' "$policy" "${active_specs[@]}" <<< "$installed"
   CODEX_HOME="$profile_home" uv run --quiet --script "$ROOT/scripts/plugin-sync/verify-skills.py" \
-    --policy "$policy" --cwd "$ROOT"
+    --policy "$policy" --cwd "$ROOT" --repair-source-exclusions
 
   if [[ "$policy" == */plugins-cloud.toml ]]; then
     for spec in "${CODEX_SPECS[@]}"; do
