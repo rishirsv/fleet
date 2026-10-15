@@ -43,15 +43,24 @@ failed verification remains pending. Local sync does not publish cloud.
 
 ## Work and propagation
 
-- In this repository, `commit` or `sync` means commit only scoped files, push
-  the current branch, then run relevant sync commands. Exclude unrelated changes.
-- For plugin changes, use `scripts/sync-plugins.sh --all` after commits on
-  `main` and plugin PR merges. Bump the owning `plugin.json` only when release
-  content is final and ready to commit.
-- Preview machine changes with `scripts/sync-configs.sh --dry-run`; apply only
-  when requested with `--apply`. Installed Fleet hooks push and apply after
-  commits, and apply after merge/rebase pulls. Install hooks per Fleet checkout,
-  never automatically in another repository.
+- `sync` means pull Fleet with fast-forward only, commit only task-scoped changes
+  when present, always push those commits, then apply configs and sync all plugins
+  on this computer and every configured peer. Preserve unrelated changes. Use
+  `scripts/sync-fleet.py`; it also syncs when the pull is already up to date.
+- Every Fleet commit must be pushed. Install `scripts/install-hooks.sh` in each
+  Fleet checkout: post-commit pushes the current branch and runs local/peer sync;
+  post-merge and completed post-rebase pulls apply configs and sync plugins.
+  Hooks skip intermediate rebase commits. Never install them in other repos.
+- Keep SSH aliases and checkout paths outside tracked files. Configure each
+  checkout with repeatable local `fleet.syncPeer` values (`HOST:/absolute/path`).
+  Peer sync pulls its existing branch without switching or resetting it, verifies
+  the requested revision, and suppresses recursive propagation. Report unreachable,
+  divergent, or failed peers as pending; never claim all computers synced then.
+- `sync` and `commit` authorize config apply and plugin refresh across configured
+  computers. For other config work, preview with `scripts/sync-configs.sh --dry-run`
+  and apply only when requested. Local sync does not publish cloud releases.
+- Bump the owning `plugin.json` only when release content is final and ready
+  to commit.
 - Use the active environment's default skill creator for creation/validation.
   Dots quality guidance: `plugins/dots/skills/skill-standards/references/standards.md`.
 
