@@ -95,7 +95,7 @@ Each skill's description defines its boundary. Choose within these groups:
 - Documents: `$html`. Product interfaces use `$design` and `$design-review`
   from the separate Design plugin when installed. If unavailable, complete the
   task directly with existing product sources and Dots visual-proof guidance.
-- Agent work: `$ambition`, `$handoff`, `$meta-prompt`, `$skill-standards`
+- Agent work: `$apply-ambition`, `$handoff`, `$meta-prompt`, `$skill-standards`
 
 The user-controlled modes `$ask-model`, `$clarify-requirements`,
 `$shape-idea`, `$explain-simply`, `$catch-up`, `$self-improve`,

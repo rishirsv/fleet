@@ -1,10 +1,10 @@
 interface:
-  display_name: "Ambition"
+  display_name: "Apply Ambition"
   short_description: "Push a task toward a deeper, wider outcome"
   icon_small: "../../assets/icon.png"
   icon_large: "../../assets/logo.png"
   brand_color: "#36C5A7"
-  default_prompt: "Use $ambition to push this task further with altitude, depth, and range, and end with a staged recommendation."
+  default_prompt: "Use $apply-ambition to push this task further with altitude, depth, and range, and end with a staged recommendation."
 
 policy:
   allow_implicit_invocation: true

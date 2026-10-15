@@ -1,9 +1,9 @@
 ---
-name: ambition
+name: apply-ambition
 description: "Develops more ambitious approaches to a task and the evidence needed to test them. Use when the user asks to push an idea further, raise its ambition, or prepare an ambitious brief for another model."
 ---
 
-# Ambition
+# Apply Ambition
 
 Develop more ambitious ways to achieve the user's goal. Reconsider the desired
 outcome, the depth of the work, and methods from other fields while preserving
