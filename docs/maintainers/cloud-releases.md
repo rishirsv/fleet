@@ -9,6 +9,11 @@ connection and release process. Dots packages contain no `.app.json` binding or
 A profile selects cloud only when its signed-in account has those plugins.
 Otherwise it selects local. Source selection controls the local loader, not
 cloud publication or account sign-in.
+Keep cloud Dots enabled for the personal account on both web and desktop.
+A missing icon does not indicate that the wrong source is enabled. Switching
+desktop to local would hide the cloud branding defect without repairing web.
+Use the profile's local enablement policy for duplicate loaders; account-wide
+uninstall is not a desktop-only switch.
 Cloud publication is manual. Commits, pulls, hooks, and local sync commands
 must not publish an account release.
 
@@ -52,8 +57,8 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    Compare the owner catalog with the installed sidebar, listing, and composer.
    If they disagree, inspect the responses used by those pages through the
    supported browser tools. Compare the exact plugin and release IDs and the
-   four logo/composer URL fields. The owner catalog can return hosted images
-   while installed and detail responses return null for the same release.
+   four logo/composer URL fields. The detail or owner response can return hosted
+   images while the installed response returns null for the same release.
    Reinstalling Dots and Drafts did not repair that mismatch in an observed
    release. Preserve screenshots and a summary of the mismatching fields outside
    Git, and report host verification as blocked. Do not repeat identical ZIP
@@ -65,6 +70,28 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    checks availability and known duplicates, not complete release contents.
    Report cloud publication separately from desktop verification. Restart only
    after active chats finish if desktop retains stale skills.
+
+## Diagnose missing cloud icons
+
+On 2026-10-15, uploading the committed Dots 0.2.256 ZIP through **Upload new
+version** created a new release ID without changing the version. The detail
+response returned all four hosted image URLs, but the installed response for
+the same release returned null. The web UI continued to use its folder fallback.
+This isolates a cloud response inconsistency; it does not prove that the
+packaged artwork is missing or that local and cloud skills conflict.
+
+Inspect responses captured from the actual page through supported browser tools:
+
+- Detail: `/backend-api/ps/plugins/<plugin-id>`.
+- Installed: `/backend-api/ps/plugins/installed`.
+- Compare `release.id`, `release.version`, and `release.interface` fields
+  `composer_icon_url`, `composer_icon_dark_url`, `logo_url`, and `logo_url_dark`.
+
+Keep evidence outside Git and redact signed image query strings. After one web
+upload and refresh, if the responses still disagree, report the branding repair
+as blocked on the host service. Repeated uploads, reinstalling the same plugin,
+and changing profile source do not resolve the observed inconsistency. Preserve
+the existing plugin identity and report skill delivery separately from branding.
 
 ## Preserve Tunnel during skill releases
 
