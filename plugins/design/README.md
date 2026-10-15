@@ -27,6 +27,6 @@ Figma and research integrations are optional capabilities of the active host.
 No Dots install is required. HTML documents and technical experiments remain
 in Dots. Personal/product state stays outside this plugin.
 
-Local package version: 0.1.0. Marketplace appearance is prepared; this does not
+Local package version: 0.1.1. Marketplace appearance is prepared; this does not
 mean the plugin is publicly listed or approved. Cloud publication, retirement of old Dots UI
 skills and fresh desktop verification are separate release steps.

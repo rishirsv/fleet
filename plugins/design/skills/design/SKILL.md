@@ -67,9 +67,7 @@ contrast without presenting it as a feature.
 
 ## Choose the workflow
 
-Read only the references the current decision needs. Read a recipe file only
-when implementing or checking the treatment it describes; each has a contents
-list at the top.
+Read only the references the current decision needs.
 
 | Outcome | Read |
 |---|---|
@@ -87,16 +85,15 @@ and label inferred values. Creating a handoff does not authorize publishing it.
 
 ## Choose the craft
 
-| Decision | Guidance | Code recipes |
-|---|---|---|
-| Hierarchy, density, repeated rows, responsive layout | [Layout](references/layout.md) | |
-| Fonts, text roles, wrapping, truncation | [Typography](references/typography.md) | [Web fonts](references/recipes/fonts-and-color.md#web-fonts) |
-| Palette, contrast, themes, gradients | [Color](references/color.md) | [Contrast, tokens, canvas, theme switch](references/recipes/fonts-and-color.md#measure-contrast); [gradients and grain](references/recipes/surfaces.md#gradient-interpolation) |
-| Controls, forms, feedback, search, labels | [Interaction](references/interaction.md) | [Accessible interaction](references/recipes/accessibility.md) |
-| Timing, choreography, gesture motion | [Motion](references/motion.md) | [Motion recipes](references/recipes/motion.md) |
-| Radii, optical alignment, depth, image edges, texture | | [Surface recipes](references/recipes/surfaces.md) |
-| Icon weight, states, size, direction | [Icons](references/icons.md) | [Icon swap](references/recipes/motion.md#icon-swap) |
-| Native Apple controls, app icons, lazy SwiftUI lists | [Platforms](references/platforms.md) | |
+| Decision | Guidance |
+|---|---|
+| Hierarchy, density, repeated rows, responsive layout | [Layout](references/layout.md) |
+| Fonts, text roles, wrapping, truncation | [Typography](references/typography.md) |
+| Palette, contrast, themes, gradients | [Color](references/color.md) |
+| Controls, forms, feedback, search, labels | [Interaction](references/interaction.md) |
+| Timing, choreography, gesture motion | [Motion](references/motion.md) |
+| Icon weight, states, size, direction | [Icons](references/icons.md) |
+| Native Apple controls, app icons, lazy SwiftUI lists | [Platforms](references/platforms.md) |
 
 ## Prove the result
 
