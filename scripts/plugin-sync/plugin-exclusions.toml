@@ -18,3 +18,10 @@ enabled = false
 # Retired standalone package; preserve the branded app-backed Prosper plugin.
 [plugins."prosper-finance@created-by-me-remote"]
 enabled = false
+
+# Design follows the selected profile source; cloud publication is separate.
+[plugins."design@dots"]
+enabled = true
+
+[plugins."design@created-by-me-remote"]
+enabled = false

@@ -1,0 +1,38 @@
+{
+  "name": "design",
+  "version": "0.1.0",
+  "description": "Design, build, and review product interfaces with grounded context and research.",
+  "author": {
+    "name": "Rishi"
+  },
+  "keywords": [
+    "design",
+    "product",
+    "research",
+    "accessibility"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Design",
+    "shortDescription": "From intent to interface",
+    "longDescription": "Create distinctive web and native interfaces, refine existing products, recreate visual references, and review real workflows. Keep product context and design-system sources organized. Turn user research into evidence-backed decisions. Includes complete workflows for critique, accessibility, UX copy, design systems, research, and developer handoff.",
+    "developerName": "Rishi",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Use $design to design and build this interface.",
+      "Use $design-review to audit this product flow.",
+      "Use $design-context to organize this product\u2019s design sources."
+    ],
+    "brandColor": "#E94B35",
+    "composerIcon": "./assets/icon.svg",
+    "logo": "./assets/logo.png",
+    "screenshots": [
+      "./assets/listing-light.png",
+      "./assets/listing-dark.png"
+    ]
+  }
+}

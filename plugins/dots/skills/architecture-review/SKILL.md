@@ -1,6 +1,6 @@
 ---
 name: architecture-review
-description: "Audits a codebase or subsystem for structural refactors, misplaced ownership, duplicated policy, and code to consolidate or delete. Use for broad architecture or cleanup reviews; use change-review for defects in one change."
+description: "Audits codebase structure, ownership, duplication, and opportunities to consolidate or delete code. Use for architecture or structural cleanup reviews; use change-review to review one diff."
 ---
 
 # Architecture review

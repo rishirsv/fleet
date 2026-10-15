@@ -1,0 +1,30 @@
+{
+  "repository": "https://github.com/rishirsv/kpmg",
+  "revision": "e280ec79a24188bfbf940da4483d0e64e99ca30b",
+  "source_root": "reference/claude-artifact-plugins",
+  "sha256": {
+    "references/upstream/claude-design-commands/.claude-plugin/plugin.json": "334481226cbe4232a95418484be7e503bfbf01431756f4bb2743a2345a28f89b",
+    "references/upstream/claude-design-commands/.mcp.json": "55e4ef3fe98e78ad06957ce375b9001535650ae34e79f1f95510d55a368edfa0",
+    "references/upstream/claude-design-commands/CONNECTORS.md": "242e232bb37b2bd5778d2e88db7edb53a6100819a8f037d786a3e1a55b4d141f",
+    "references/upstream/claude-design-commands/README.md": "c2bd176f922683acaa69d4eb4f3eed4a8ce029b36ac4fc4e05a19c2a28cc9325",
+    "references/upstream/claude-design-commands/skills/accessibility-review/SKILL.md": "ef42982af0d51238dda2ab16d08626712891bdd41864876c32d1e7b13fb3124f",
+    "references/upstream/claude-design-commands/skills/design-critique/SKILL.md": "3a4f260eb9f60b431782bf6d90f22afb480c0c67860267a032df58a3e1bd19cd",
+    "references/upstream/claude-design-commands/skills/design-handoff/SKILL.md": "38f1efc807928030654218443ad07f6a37ac82de6b4d627a03113a3568d787b7",
+    "references/upstream/claude-design-commands/skills/design-system/SKILL.md": "fb31bd0144c43955106f01927126ae9fd2d4148be44c8d5887b3391f40c31445",
+    "references/upstream/claude-design-commands/skills/research-synthesis/SKILL.md": "40048615dc81fc8b9b06104769498214d61a35ae4518a0995a12bbbd0ab945a1",
+    "references/upstream/claude-design-commands/skills/user-research/SKILL.md": "fa18fc13d0f44aa869102962ef9466417ade726d659465195a40fbcf08cee156",
+    "references/upstream/claude-design-commands/skills/ux-copy/SKILL.md": "d46a00a62ec637e9ca9d5f7823ea3e0a4ec26dffc53bb5035f59b48ebfcdcde7",
+    "references/upstream/claude-design-system/SKILL.md": "8b3d91f74385f805360ddf24acaf65444c33bf6b956f72b3df4d05053456788a",
+    "references/upstream/claude-design-system/artifact-type/app.css": "c16adab57085f775aab558ae42517a0f67e8dd27e4261cf324a293ef28d0ee03",
+    "references/upstream/claude-design-system/artifact-type/app.js": "3656b88d1d430bec12245353077a4dc9f8444dff7be820947e5e427e8ae40175",
+    "references/upstream/claude-design-system/artifact-type/demo.json": "ba5c9dc5778930275d1acb91048fed12d18acbf1e85f4d54292b3a9deadc2843",
+    "references/upstream/claude-design-system/artifact-type/reference/cover.md": "d5957e8a4c430a87d8d3c5f28526d0f966dfc28f539039f25252becb32528e3d",
+    "references/upstream/claude-design-system/artifact-type/reference/craft.md": "19f3646d94e86297bcfc21b3b07e596ce5c7dd675f81ef3d0a193e0d689b48e8",
+    "references/upstream/claude-design-system/artifact-type/reference/format.md": "0b8f13f42eee1305f962656dba054240ccd18ce0c26770859ea45956a05e5276",
+    "references/upstream/claude-design-system/artifact-type/reference/from-code.md": "a636b2eeb454c7c59351070d25cf768817b54598e31d82e1768416428135013a",
+    "references/upstream/claude-design-system/artifact-type/reference/from-design-tool.md": "8033bfe399da68c8aee6ff6df05df41d494723216abce16e39642e491503fcd0",
+    "references/upstream/claude-design-system/artifact-type/reference/sample-seazar-tokens.json": "a17410b515e73b1a36d6b3b9164575bb1fcd8b0931ecb7f5f5b2c8bdfcf5bfa6",
+    "references/upstream/claude-design-system/artifact-type/run.html": "ceffa563946ece66350de2425f5a6559839e89adf82ea24de7d4d86982455abb",
+    "references/upstream/claude-design-system/index.html": "03f9d262d6fdd886c7d280176158dd1d8ed8b0e84535eddeb3d13d668724def6"
+  }
+}

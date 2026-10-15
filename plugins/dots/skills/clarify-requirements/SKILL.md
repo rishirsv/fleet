@@ -1,6 +1,6 @@
 ---
 name: clarify-requirements
-description: "Asks the few questions that block a request from being built in one pass. Use only when the user selects `$clarify-requirements`; use shape-idea when the idea needs its decision tree explored."
+description: "Resolves ambiguous requirements before implementation through focused questions. Use when the user selects $clarify-requirements; use shape-idea to explore an open idea."
 ---
 
 # Clarify Requirements

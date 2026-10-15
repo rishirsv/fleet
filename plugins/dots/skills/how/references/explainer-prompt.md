@@ -2,7 +2,9 @@
 
 Build the explainer subagent's prompt from this template. Fill in the placeholders.
 Supply `tracing.md`, `changes.md` for a change, and the output contract from
-`SKILL.md` with it.
+`SKILL.md` with it. Supply the writing-style reference identified there as a
+resolved readable path or its full contents, and instruct the explainer to read
+and apply it before writing.
 
 ---
 

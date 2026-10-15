@@ -1,6 +1,6 @@
 ---
 name: meta-prompt
-description: "Writes, rewrites, or tightens a standalone prompt for another assistant from a task, an existing prompt, or context. Use when the user asks for a prompt, including coding-agent and image prompts; not for doing the task itself."
+description: "Writes or revises standalone prompts for coding agents, image models, or other assistants. Use when the user requests a prompt from notes, context, or an existing draft; not to execute the task described."
 ---
 
 # Meta prompt

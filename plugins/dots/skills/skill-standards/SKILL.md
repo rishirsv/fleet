@@ -5,6 +5,9 @@ description: "Creates, updates, or statically reviews Dots plugin skill source a
 
 # Skill standards
 
+Create, revise, or review Dots skill source for clear instructions and preserved
+behavior, using the default skill creator for authoring and validation.
+
 Read [standards.md](references/standards.md) for every task. Apply
 [Writing style](../../references/writing-style.md) while writing instructions
 and again before completing a review; its

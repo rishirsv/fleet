@@ -1,0 +1,10 @@
+interface:
+  display_name: "Design"
+  short_description: "Design, build, and refine product interfaces"
+  icon_small: "../../assets/icon.svg"
+  icon_large: "../../assets/logo.png"
+  brand_color: "#E94B35"
+  default_prompt: "Use $design for this product design task."
+
+policy:
+  allow_implicit_invocation: true

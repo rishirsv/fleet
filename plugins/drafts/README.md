@@ -2,7 +2,7 @@
 
 Writing workflows for developing ideas, drafting, and revising prose while
 preserving the writer's voice. Install through the repository's
-[installation guide](../../INSTALL.md).
+[installation guide](https://github.com/rishirsv/fleet/blob/main/INSTALL.md).
 
 ## Get started
 

@@ -37,10 +37,18 @@ The skill body loads only after selection, so it cannot correct a vague or
 overlapping description. **Requirement:** state the complete selection
 criteria in metadata.
 
-- **Write short, narrow descriptions.** Use the form "<Does X>. Use when …"
-  in the third person, in about 250 characters or fewer. Name the job and its
-  trigger in words people naturally use. Hosts may truncate long descriptions
-  before selection, and broad trigger lists load the skill for unrelated work.
+- **Write short, narrow descriptions.** Describe the task and its intended
+  trigger in the third person, using words the user would use. Put the main
+  task first; add "Use when" only when it clarifies selection. Aim for about
+  250 characters or fewer without dropping a meaningful boundary. Hosts may
+  truncate long descriptions before selection, and broad trigger lists load
+  the skill for unrelated work. Keep procedures in the body, not the description.
+- **Separate discovery from invocation policy.** A description says what
+  request fits the skill; host metadata controls whether the model may select
+  it implicitly. An overview in the body cannot repair a missing trigger.
+  Preserve invocation settings unless the user requests a policy change, and
+  report differences between hosts rather than claiming one setting controls
+  both.
 - **Give each trigger one strong phrase.** Collapse synonyms instead of
   listing every way to ask for the same thing.
 - **Add an exclusion only when it prevents a wrong choice** between this skill

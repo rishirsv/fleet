@@ -41,5 +41,7 @@ callers.
 - **The interface is the test surface.** Callers and tests cross the same seam.
   If testing needs to reach past the interface, the module is probably the wrong
   shape.
-- **One adapter means a hypothetical seam. Two adapters means a real one.** Do
-  not introduce a seam unless something actually varies across it.
+- **A seam needs a current responsibility.** Keep translation at external,
+  persisted, or untrusted boundaries even with one adapter. Introduce a
+  variation interface when implementations actually vary; do not invent a
+  second adapter to justify an otherwise unnecessary abstraction.

@@ -35,6 +35,21 @@
         "drafting"
       ],
       "homepage": "https://github.com/rishirsv/dots/tree/main/plugins/drafts"
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "description": "Design, build, and review product interfaces with grounded context and research.",
+      "author": {
+        "name": "Rishi"
+      },
+      "category": "productivity",
+      "tags": [
+        "design",
+        "product",
+        "research",
+        "accessibility"
+      ]
     }
   ]
 }

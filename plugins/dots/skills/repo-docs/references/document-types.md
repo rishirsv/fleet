@@ -10,7 +10,8 @@ Contents:
 - [README](#readme)
 - [Concept](#concept)
 - [Flow doc](#flow-doc)
-- [How-to and tutorial](#how-to-and-tutorial)
+- [How-to](#how-to)
+- [Tutorial](#tutorial)
 - [Reference](#reference)
 - [Runbook](#runbook)
 - [Troubleshooting](#troubleshooting)
@@ -31,7 +32,8 @@ exhaustive API references instead of including them.
 
 Explains a system or abstraction before the reader acts, including what it
 does not cover. It explains rather than instructs; include examples only when
-they clarify the model.
+they clarify the model. Center it on a bounded why question and explain the
+trade-offs behind the answer.
 
 ## Flow doc
 
@@ -47,16 +49,24 @@ produces, and which flow owns the next step. Point to code with repo-relative
 links, stable symbols, or searchable identifiers rather than local checkout
 paths or line numbers alone.
 
-## How-to and tutorial
+## How-to
 
-Split independent goals into separate how-tos. A tutorial teaches by
-completing a safe path: prefer reliable toy inputs over production-specific
-examples, and keep lookup material out of it.
+Solve a reader's task, assuming the relevant basic skills. Include decision
+branches when the goal requires them; link background and lookup details.
+Split independent goals into separate how-tos.
+
+## Tutorial
+
+Name what the learner will build. Use a safe, reproducible example with
+observable progress and expected results. Keep explanations brief and link
+deeper material; avoid making the learner choose among unexplained options.
 
 ## Reference
 
-Lookup material optimized for scanning and exactness. Add a source or
-generation note when the reference is derived.
+Organize lookup facts to match the interface: behavior, options, defaults,
+limits, and errors. Keep advocacy and lessons elsewhere. Add a source or
+generation note when the reference is derived. Cover the declared interface
+without turning a focused request into a catalogue of the whole repository.
 
 ## Runbook
 

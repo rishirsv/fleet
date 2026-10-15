@@ -3,7 +3,7 @@
 # requires-python = ">=3.10"
 # dependencies = ["tomlkit==0.13.3"]
 # ///
-"""Verify the selected Dots/Drafts source through Codex's actual skill loader."""
+"""Verify the selected Fleet plugin source through Codex's actual skill loader."""
 
 import argparse
 import json
@@ -103,7 +103,7 @@ def main():
     errors, count = verify(loaded_skills(args.cwd), policy)
     if errors:
         raise SystemExit("Codex skill verification failed:\n  " + "\n  ".join(errors))
-    print(f"Codex loaded {count} Dots/Drafts skills from the selected source, with zero duplicate skill names across all sources")
+    print(f"Codex loaded {count} Fleet plugin skills from the selected source, with zero duplicate skill names across all sources")
 
 
 if __name__ == "__main__":

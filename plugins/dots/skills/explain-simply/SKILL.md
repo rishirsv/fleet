@@ -1,6 +1,6 @@
 ---
 name: explain-simply
-description: "Gives a plain-language explanation of a subject, or of the previous answer, using familiar examples. Use only when the user selects `$explain-simply`; use how for a source-traced explanation of code."
+description: "Explains a subject or the previous answer in plain language with familiar examples. Use when the user selects $explain-simply; use how for an explanation traced through source code."
 ---
 
 # Explain simply
@@ -29,8 +29,7 @@ short pseudocode when order or timing is the point.
 Correct any misconception the context shows. Include a next action only when
 useful.
 
-Read the shared [writing style](../../references/writing-style.md) only for a
-substantial or writing-heavy explanation.
+Write the explanation with [Writing style](../../references/writing-style.md).
 
 Work from the code and context already available. Do not start a repository
 investigation, review code, or create an artifact.

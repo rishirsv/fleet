@@ -35,7 +35,7 @@ one response button; plans add the next unresolved decision and an answer count.
 The count reports explicit answers, never panels viewed. Keep the dock out of
 the main reading flow and hide it in print.
 
-A static document remains a document when local controls improve inspection and feedback. Use `ui-design`
+A static document remains a document when local controls improve inspection and feedback. Use the installed `$design` skill
 when the task calls for a functioning product, external writes, authentication,
 or live data and complex application state.
 

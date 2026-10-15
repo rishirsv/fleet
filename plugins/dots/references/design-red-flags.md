@@ -27,18 +27,13 @@ Information leakage makes multiple modules depend on the same internal
 decision. A representation, policy, or protocol detail appears in more than
 one place, so changing it requires coordinated edits.
 
-Public re-exports of transport or wire types are leakage. Parse external data
-into domain types behind the interface. Keep storage schemas, framework
-objects, and protocol details private.
+Public re-exports of transport or wire types are leakage.
 
 ## Temporal decomposition
 
 Temporal decomposition organizes modules by execution order instead of the
 knowledge they own. Separate load, validate, transform, and save stages often
 repeat one representation and its invariants across several boundaries.
-
-Group code around domain knowledge and ownership. Methods that run at different
-times can still belong to one module when they protect the same decisions.
 
 ## Pass-through method
 

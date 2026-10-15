@@ -38,6 +38,12 @@ with the task, relevant context and evidence, constraints, mode, ownership, and
 completion conditions. Point it at the actual repository so it can inspect the
 source directly.
 
+Write prompts, summaries, and recommendations with
+[Writing style](../../references/writing-style.md). Supply this reference to the
+advisor as a resolved file path it can read, or include its contents in the
+prompt, for its authored prose. Preserve quotations and requested verbatim
+material unchanged.
+
 For implementation, include this directive near the start:
 
 > Mode: implementation. You own the repository changes, required checks,
@@ -45,6 +51,9 @@ For implementation, include this directive near the start:
 > Do not return only advice or a proposed patch.
 
 ## Complete the mode
+
+Preserve verbatim model responses unchanged. Apply the writing style to your
+own commentary and synthesis, keeping them separate from the original response.
 
 Wait for the run to finish and inspect its output. For implementation, inspect
 the resulting diff and validation evidence. If requested changes are absent or

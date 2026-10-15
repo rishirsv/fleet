@@ -1,6 +1,6 @@
 ---
 name: catch-up
-description: "Catches the user up on this chat or on earlier Codex and Claude sessions and turns each decision waiting on them into a short summary. Use only when the user selects `$catch-up` or asks where work stands."
+description: "Summarizes work completed, current status, and decisions awaiting the user in this chat or earlier Codex and Claude sessions. Use when the user selects $catch-up or requests a work-status recap."
 ---
 
 # Catch up

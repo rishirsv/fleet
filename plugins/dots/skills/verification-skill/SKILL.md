@@ -1,6 +1,6 @@
 ---
 name: verification-skill
-description: "Creates or refreshes a project-local verify skill (verify-appname) that launches the real app, drives it the way a user does, and captures proof. Use only when the user selects `$verification-skill`, or asks for a repeatable way to prove app behavior."
+description: "Creates or refreshes a project-local verification skill for driving the real app and capturing evidence. Use when the user selects $verification-skill or requests a reusable app-verification workflow."
 ---
 
 # Verification skill

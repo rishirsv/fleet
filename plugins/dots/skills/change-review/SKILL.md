@@ -1,6 +1,6 @@
 ---
 name: change-review
-description: "Reviews a completed code change before merge for correctness, simplicity, and maintainability, then repairs supported findings. Use for a diff, branch, or pull request review, including a requested ChatGPT Pro review."
+description: "Reviews a diff, branch, or pull request for defects and maintainability, with configurable independent reviewers. Repairs supported findings unless the user requests review-only."
 ---
 
 # Change review
@@ -31,7 +31,9 @@ constraints, then repair supported findings as described in
 The user can pass a level, a mode, and a target in any order, for example
 `$change-review high`, `$change-review medium review-only`, or
 `$change-review max #123`. The level sets how many independent reviewers run;
-`low` is the default.
+`low` is the default. These are review-depth presets, not model reasoning-effort
+settings. `$change-review` and `$change-review low` both launch exactly one
+fresh subagent; do not add agents for discovery, summarization, or verification.
 
 | Level | Reviewers | Assignment |
 |---|---|---|
@@ -41,7 +43,7 @@ The user can pass a level, a mode, and a target in any order, for example
 | `xhigh` | 4 | `high`, plus what the change can break outside the diff |
 | `max` | 5 | `xhigh`, plus one reviewer on a different model through `$ask-model` when one is available |
 
-A count overrides the table, for example `$change-review 2`. `review-only`
+A positive count overrides the table, for example `$change-review 2`. `review-only`
 reports findings without editing files.
 
 ## Coordinate review
@@ -49,9 +51,11 @@ reports findings without editing files.
 Use this section only when coordinating the review. A delegated reviewer skips
 it and follows **Review the assigned change** directly.
 
-When the user requests ChatGPT Web or ChatGPT Pro as the reviewer, follow
-[ChatGPT review handoff](references/chatgpt-review.md) instead of spawning a
-local reviewer. Then combine the findings and repair supported issues here.
+When the user requests an external reviewer such as ChatGPT Pro, prepare the
+fixed target, intended behavior, and review-only instructions for a manual
+handoff. Do not substitute another model or claim the review ran until its
+complete result is returned. Repository access and model selection belong to
+the external chat; Dots does not provide or configure that connection.
 Otherwise use the local reviewer workflow below.
 
 1. Review through independent reviewers, even for a narrow diff, because the
@@ -61,13 +65,14 @@ Otherwise use the local reviewer workflow below.
    subagent and have it load this skill. An agent that implemented
    any part of the change must not serve as its independent reviewer.
 3. Give the reviewer the fixed target, intended behavior, any review focus the
-   user requested, applicable repository instructions, and changed paths. Use
-   the smallest sufficient context without inherited conversation history. Let
+   user requested, applicable repository instructions (including ancestor and
+   changed-directory instructions), and changed paths. Use the smallest
+   sufficient context without inherited conversation history. Let
    the reviewer inspect the changes directly rather than sending the
    implementer's reasoning or conclusions.
-4. Use the number of reviewers the level sets. When no level was given, suggest
-   a higher level if the change crosses distinct subsystems or a high-risk
-   boundary.
+4. Use the number of reviewers the level sets. Do not increase it automatically
+   or pause a default review to propose a higher level. Allocate the available
+   reviewers to the most consequential risks in this target.
 5. When using several reviewers, give each a distinct assignment from the
    level table. When splitting by paths, assign each changed path to one
    primary reviewer. Add a review assignment for interactions only when those
@@ -78,7 +83,9 @@ Otherwise use the local reviewer workflow below.
    assignment in one response. Then merge duplicates and combine related
    findings while preserving the evidence required for each finding. Resolve
    material disagreement only when needed; do not repeat each reviewer's
-   investigation. The reviewer owns verification of its findings.
+   investigation. The reviewer owns verification of its findings. Do not launch
+   per-finding validation agents or a second consensus pass. Resolve a material uncertainty
+   with the smallest targeted check, reusing the assigned reviewer if needed.
 7. Repair or report the combined findings as described in
    [Repair before reporting](#repair-before-reporting).
 

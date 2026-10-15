@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none" role="img" aria-labelledby="title">
+<title id="title">Design — folded frame</title>
+<defs>
+ <linearGradient id="rim" x1="85" y1="70" x2="430" y2="440" gradientUnits="userSpaceOnUse"><stop stop-color="#FF916C"/><stop offset=".48" stop-color="#FF5A3D"/><stop offset="1" stop-color="#E93621"/></linearGradient>
+ <linearGradient id="side" x1="70" y1="280" x2="165" y2="280" gradientUnits="userSpaceOnUse"><stop stop-color="#FF6745"/><stop offset="1" stop-color="#C72A1A"/></linearGradient>
+ <linearGradient id="fold" x1="350" y1="175" x2="425" y2="325" gradientUnits="userSpaceOnUse"><stop stop-color="#B82317"/><stop offset=".5" stop-color="#F0442A"/><stop offset="1" stop-color="#FF7951"/></linearGradient>
+</defs>
+<path d="M142 66H370C412 66 446 100 446 142V229L370 294V163H163V349H370V301L446 345V370C446 412 412 446 370 446H142C100 446 66 412 66 370V142C66 100 100 66 142 66Z" fill="url(#rim)"/>
+<path d="M66 142C66 105 102 82 136 101L163 116V370C163 413 177 446 203 446H142C100 446 66 412 66 370Z" fill="url(#side)"/>
+<path d="M136 101L218 146C238 157 251 163 274 163H370C402 163 429 194 446 229V248C446 264 440 276 428 286L355 349C346 357 339 358 330 350L284 310C275 302 275 295 285 287L370 220V163H274C251 163 238 157 218 146Z" fill="url(#fold)"/>
+<path d="M355 349L403 308L435 334C451 350 430 369 406 379L370 395V370C370 359 362 353 355 349Z" fill="#FF7650"/>
+</svg>

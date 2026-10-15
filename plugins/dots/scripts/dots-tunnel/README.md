@@ -194,8 +194,9 @@ runtime connection, credentials, and authorized folders during plugin updates.
 
 ## Start, check, and stop
 
-On the configured Mac, invoke `$dots-tunnel` in Codex to start the saved
-connection on demand. The skill uses this helper (from the repository root):
+On the configured Mac, use the runtime helper to manage the saved connection
+on demand (from the repository root). This is an operator command, not an
+installed Dots skill:
 
 ```sh
 python3 plugins/dots/scripts/dots-tunnel/runtime.py start

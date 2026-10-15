@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import sqlite3
+from contextlib import closing
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -150,18 +151,20 @@ class CodexSource:
             where.append("(lower(title) LIKE ? OR lower(first_user_message) LIKE ?)")
             params.extend([needle, needle])
         if cwd:
-            where.append("cwd LIKE ?")
-            params.append(f"{cwd}%")
+            directory = str(Path(cwd))
+            prefix = directory.rstrip("/") + "/"
+            where.append("(cwd = ? OR substr(cwd, 1, ?) = ?)")
+            params.extend([directory, len(prefix), prefix])
         where_sql = "WHERE " + " AND ".join(where) if where else ""
         limit_sql = ""
         if limit is not None:
             limit_sql = " LIMIT ?"
             params.append(limit)
         try:
-            conn = sqlite3.connect(f"file:{self.state_db}?mode=ro", uri=True)
+            conn = sqlite3.connect(self.state_db.resolve().as_uri() + "?mode=ro", uri=True)
         except sqlite3.Error as exc:
             raise SystemExit(f"Cannot open Codex state DB {self.state_db}: {exc}") from exc
-        with conn:
+        with closing(conn):
             try:
                 rows = conn.execute(
                     f"""
@@ -298,13 +301,15 @@ class ClaudeSource:
             cutoff = int((datetime.now(tz=timezone.utc) - timedelta(days=days)).timestamp())
         paths = sorted(self.projects.glob("*/*.jsonl"), key=lambda path: path.stat().st_mtime, reverse=True)
         rows: list[SessionRecord] = []
+        directory = str(Path(cwd)) if cwd else None
+        prefix = directory.rstrip("/") + "/" if directory else None
         for path in paths:
             if cutoff and int(path.stat().st_mtime) < cutoff:
                 continue
             session = self._metadata(path)
             if cutoff and session.updated_at < cutoff:
                 continue
-            if cwd and not session.cwd.startswith(cwd):
+            if directory and session.cwd != directory and not session.cwd.startswith(prefix):
                 continue
             if query and query.lower() not in f"{session.title} {session.cwd}".lower():
                 continue

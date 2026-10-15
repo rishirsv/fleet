@@ -1,6 +1,6 @@
 ---
 name: shape-idea
-description: "Interviews the user through every branch of an idea's decision tree, surfacing known and unknown unknowns, and can split the result into tickets or specifications. Use only when the user selects `$shape-idea`."
+description: "Interviews the user to resolve an open idea, plan, or decision, with optional specifications or tickets. Use when the user selects $shape-idea for structured exploration."
 ---
 
 # Shape Idea

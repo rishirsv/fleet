@@ -1,0 +1,10 @@
+interface:
+  display_name: "Design Review"
+  short_description: "Review real interfaces, flows, and accessibility"
+  icon_small: "../../assets/icon.svg"
+  icon_large: "../../assets/logo.png"
+  brand_color: "#E94B35"
+  default_prompt: "Use $design-review for this product design task."
+
+policy:
+  allow_implicit_invocation: true

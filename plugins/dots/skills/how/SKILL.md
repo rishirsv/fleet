@@ -1,13 +1,13 @@
 ---
 name: how
-description: "Explains how code, a subsystem, or a change works: runtime flow, ownership, and layering. Use when the user asks how something works or wants a walkthrough of a commit, branch, or PR; use why for historical rationale."
+description: "Explains how code, a subsystem, or a change works by tracing its source. Use for runtime flow, ownership, or a walkthrough of a commit, branch, or PR; use why for historical rationale."
 ---
 
 # How
 
-Explore the codebase to answer “how does X work?” questions. Produce clear
-explanations that help a senior engineer understand an unfamiliar subsystem.
-Explain how the parts work together so the reader can start working on it.
+Trace the source to explain how code, a subsystem, or a change works. Match
+the explanation to the reader and show how the parts work together so they
+can understand or change the implementation.
 
 ## 1. Understand the question and choose the depth
 
@@ -54,7 +54,9 @@ before writing the answer. Combine reports in the current context unless
 they are large or each require substantial analysis.
 Only then use a separate explainer built from
 [explainer-prompt.md](references/explainer-prompt.md), and supply `tracing.md`
-and the output contract below with it.
+and the output contract below with it. Supply
+[Writing style](../../references/writing-style.md) as a resolved file path the
+explainer can read, or include its contents in the prompt.
 
 Link claims that affect the explanation to specific files and symbols.
 

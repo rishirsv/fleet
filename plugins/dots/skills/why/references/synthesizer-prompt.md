@@ -1,7 +1,10 @@
 # Synthesizer prompt template
 
 Build the synthesizer's prompt from this template; fill in the placeholders.
-Supply `epistemics.md` and the output contract from `SKILL.md` with it.
+Supply `epistemics.md` and the output contract from `SKILL.md` with it. Supply
+the writing-style reference identified there as a resolved readable path or
+its full contents, and instruct the synthesizer to read and apply it before
+writing.
 
 ---
 

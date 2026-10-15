@@ -1,6 +1,6 @@
 ---
 name: usage-insights
-description: "Reports how the user works with agents: a usage profile across retained Codex or Claude sessions, or coaching on their prompting and steering. Use only when the user selects `$usage-insights`."
+description: "Reports agent-usage patterns and provides feedback on prompting and steering from Codex or Claude sessions. Use when the user selects $usage-insights; use self-improve to change workflows or instructions."
 ---
 
 # Usage insights

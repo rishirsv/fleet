@@ -60,6 +60,18 @@ class PluginValidationTests(unittest.TestCase):
             write_valid_plugin(root)
             self.assertEqual(validator.validate_plugin(root), [])
 
+    def test_body_examples_cannot_supply_frontmatter(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "dots"
+            skill = write_valid_plugin(root)
+            path = skill / "SKILL.md"
+            for content in ("name: example\ndescription: Body only\n",
+                            "---\n---\nname: example\ndescription: Body only\n"):
+                with self.subTest(content=content):
+                    path.write_text(content)
+                    errors = validator.validate_plugin(root)
+                    self.assertTrue(any("missing frontmatter name" in error for error in errors))
+
     def test_plain_description_is_valid_for_drafts(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp) / "drafts"
@@ -85,6 +97,16 @@ class PluginValidationTests(unittest.TestCase):
             errors = validator.validate_plugin(root)
             self.assertTrue(any("must match directory" in error for error in errors))
             self.assertTrue(any("duplicate skill name" in error for error in errors))
+
+    def test_existing_link_outside_package_is_rejected(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp) / "design"
+            skill = write_valid_plugin(root)
+            (Path(tmp) / "shared.md").write_text("# Outside package\n")
+            with (skill / "SKILL.md").open("a") as handle:
+                handle.write("\n[Shared](../../../shared.md)\n")
+            errors = validator.validate_plugin(root)
+            self.assertTrue(any("leaves plugin package" in error for error in errors))
 
     def test_broken_local_links_and_icons_fail(self):
         with tempfile.TemporaryDirectory() as tmp:

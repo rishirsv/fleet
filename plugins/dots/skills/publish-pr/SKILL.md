@@ -5,6 +5,9 @@ description: "Commits and pushes finished changes, then opens or updates a GitHu
 
 # Publish PR
 
+Commit and push the intended changes, then open or update their GitHub pull
+request ready for review. Preserve unrelated work.
+
 For commit messages, the pull-request title, and its description, apply
 [Writing style](../../references/writing-style.md)
 as an editing standard.

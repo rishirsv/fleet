@@ -3,12 +3,11 @@
 Contents:
 
 - [Choose the route](#choose-the-route)
-- [Performance hypotheses](#performance-hypotheses)
 - [Follow the common workflow](#follow-the-common-workflow)
 - [Stop at a planning handoff when requested](#stop-at-a-planning-handoff-when-requested)
 - [Completion](#completion)
 
-Use this playbook when the user explicitly selects Dots, `$index`, or Dots
+Use this playbook when the user explicitly selects Dots, `$dots`, or Dots
 Feature Development for features, bug fixes, refactors, measured performance
 work, configuration changes that affect behavior, or their plans. Handle
 ordinary requests directly with any applicable focused skills.
@@ -28,33 +27,24 @@ instructions rather than appending another status summary.
 
 - **Feature:** add or change behavior. Define the data or state and the
   component responsible for it before distributing logic across callers.
-- **Bug fix:** reproduce the reported symptom where it occurs before
-  changing code. Form competing hypotheses, run checks that distinguish them,
-  and confirm the cause supported by those checks. The original reproduction must pass
-  after the fix. When two fixes have failed and both rested on the same
-  assumption, test that assumption directly before trying a third.
-- **Refactor:** record the behavior that must remain stable, name the target
-  ownership or structure, migrate every caller, and remove the replaced path in
-  the same change under [Hard-cut policy](hard-cut-policy.md) unless the
-  repository requires a staged rollout.
-- **Performance:** freeze a representative input and baseline, locate the
-  measured cause with a trace or profile, and compare the same measurement
-  after each candidate change. Keep measured improvements that preserve the required behavior. Remove
-  experiments that do not improve the target or violate those requirements.
+- **Bug fix:** read [Bug fix](../playbooks/bug-fix.md).
+- **Refactor:** read [Refactoring](../playbooks/refactoring.md).
+- **Performance:** read [Performance](../playbooks/performance.md).
 
-If no route fits, use the common workflow below and state what evidence will
-show that the requested task succeeded.
+Load only the selected playbook. It owns the route's technical sequence; apply
+the common workflow's scope, design, proof, and completion rules within that
+sequence, not as a second pass. For a plan-only request, use the playbook to
+define the work and proof, then stop at the planning handoff below.
+
+An investigation of what a named change could break beyond its diff belongs
+to [Blast radius](../skills/blast-radius/SKILL.md). This does not authorize a fix.
+
+If no route fits and the task needs dependent experiments or changes, read
+[Task-specific workflow](../playbooks/task-specific-workflow.md). Otherwise use
+the common workflow below directly.
 
 Before you report or act on a benchmark, speedup, or regression you measured,
 apply [Performance measurement](performance-measurement.md).
-
-## Performance hypotheses
-
-Prefer the cheapest change that meets the target, and stop once one does. The
-usual order from cheapest is: stop work whose result nothing uses; avoid
-repeating work; do less of it; defer it; move it off the path the user waits
-on; run it concurrently; and make the remaining work cheaper. Skip an option
-when the measured cause rules it out.
 
 ## Follow the common workflow
 
@@ -78,7 +68,7 @@ The steps describe the contract between phases; adapt their depth to the task.
    responsible module, or place to test behavior settled before implementation.
    Use Architect for the design phases only, then return here for implementation,
    proof, review, and completion.
-   Apply `$ui-design` when visible product UI needs design guidance, then return
+   Apply the installed `$design` skill when visible product UI needs design guidance, then return
    here.
 4. **Implement.** Build the complete authorized change in checkable units. A
    unit with a clear scope, defined behavior, source locations, and an
@@ -86,8 +76,18 @@ The steps describe the contract between phases; adapt their depth to the task.
    decisions, integration, review, and final proof. Return to step 3 when
    repeated implementation problems show that the selected module boundary or
    data shape is wrong.
-   For a repetitive edit across many sites, make the first one by hand, then
-   script the rest and confirm the script reproduces the manual edit.
+   For dependent migrations or sweeps, read
+   [Sequence verifiable units](sequence-verifiable-units.md) unless already loaded.
+   For a repetitive edit across many sites:
+
+   - Prefer an existing rename operation or codemod. If a custom tool is needed,
+     do the first unit by hand to learn the recipe, then build the tool. Prove
+     it by rerunning it on that unit and diffing against your hand-done version.
+     Make the tool safe to rerun.
+   - A deterministic tool beats fan-out. If the tool can process every unit
+     in one pass, run it yourself. Don't fan out delegates to hand-apply what
+     a script can do.
+
    Record consequential decisions made during implementation that the request
    or plan left open. Include the reason, tradeoff, and whether the decision is
    provisional. Reopen a settled decision only when new evidence changes it.
@@ -98,11 +98,8 @@ The steps describe the contract between phases; adapt their depth to the task.
    repeats the same measurement on the fixed input. When the repository has a
    `verify-<app>` skill, drive the change with it and fix its feature map if
    the change made the map wrong.
-   Place new or moved tests with [Test consolidation](test-consolidation.md).
-   When adding or repairing a regression test, confirm that it fails for the
-   intended reason on the broken behavior and passes after the fix. If written
-   after the fix, demonstrate the failure using an isolated copy or reversible
-   change that preserves unrelated work. Report any missing failing control.
+   Place new or moved tests and establish their regression signal with
+   [Test consolidation](test-consolidation.md).
 6. **Review and finish.** Inspect the final diff against the requested outcome.
    Before finishing, reconcile every requirement and consequential recorded
    decision with the final implementation. Each must be implemented and
@@ -111,7 +108,7 @@ The steps describe the contract between phases; adapt their depth to the task.
    Apply `$change-review` when the user requests a review, repository
    policy requires it, or consequential behavior needs independent challenge;
    it owns review scope, reviewer handoff, findings, repair, and review-only
-   requests. Add `$ui-review` when that review covers visible UI.
+   requests. Add the installed `$design-review` skill when that review covers visible UI.
    Report the result, evidence, and important remaining gaps. List the
    decisions you made that the request did not cover, least confident first,
    each with how to reverse it. Apply
@@ -151,3 +148,7 @@ For planning-only work, it is complete when the execution handoff is grounded
 in current source, every decision needed for implementation is settled or listed as a blocker,
 and the verification checks the requested behavior rather than an unrelated
 passing result.
+
+If the Design plugin is unavailable, complete UI work directly using the product's
+existing design system and this plugin's visual-proof guidance. Do not require
+a second plugin to finish an engineering task.

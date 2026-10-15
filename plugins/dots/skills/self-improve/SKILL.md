@@ -1,6 +1,6 @@
 ---
 name: self-improve
-description: "Diagnoses friction in agent work, workflows, skills, or instructions from Codex or Claude session evidence and proposes the smallest durable fix. Use only when the user selects `$self-improve`; not for usage reports."
+description: "Diagnoses friction in agent workflows, skills, or instructions from session evidence and proposes durable fixes. Use when the user selects $self-improve; use usage-insights for usage reports or prompting feedback."
 ---
 
 # Self-improve

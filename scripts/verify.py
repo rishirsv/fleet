@@ -31,13 +31,20 @@ def validate_skill(skill_dir: Path, errors: list[str]) -> str | None:
     skill_file = skill_dir / "SKILL.md"
     agent_file = skill_dir / "agents" / "openai.yaml"
     text = skill_file.read_text(encoding="utf-8")
-    name = string_field(text, "name")
+    # The active skill creator owns YAML/schema validation. These checks only
+    # enforce Fleet's package identity and resource contracts; never mistake
+    # examples in the skill body for loadable frontmatter.
+    frontmatter = re.match(r"\A---\r?\n(.*?)\r?\n---(?:\r?\n|$)", text, re.DOTALL)
+    if frontmatter is None:
+        errors.append(f"{skill_file}: missing delimited frontmatter; run the default skill validator")
+    metadata = frontmatter.group(1) if frontmatter else ""
+    name = string_field(metadata, "name")
     if name is None:
         errors.append(f"{skill_file}: missing frontmatter name")
     elif name != skill_dir.name:
         errors.append(f"{skill_file}: name {name!r} must match directory {skill_dir.name!r}")
 
-    description = string_field(text, "description")
+    description = string_field(metadata, "description")
     if description is None:
         errors.append(f"{skill_file}: missing frontmatter description")
 
@@ -85,8 +92,12 @@ def validate_markdown_links(root: Path, errors: list[str]) -> None:
             if not target or target.startswith("#") or re.match(r"^[a-z][a-z0-9+.-]*:", target, re.I):
                 continue
             target = unquote(target.split("#", 1)[0].split("?", 1)[0])
-            if target and not (path.parent / target).resolve().exists():
-                errors.append(f"{path}: local link does not resolve: {match.group(1)}")
+            if target:
+                resolved = (path.parent / target).resolve()
+                if not resolved.is_relative_to(root.resolve()):
+                    errors.append(f"{path}: local link leaves plugin package: {match.group(1)}")
+                elif not resolved.exists():
+                    errors.append(f"{path}: local link does not resolve: {match.group(1)}")
 
 
 def validate_plugin(root: Path) -> list[str]:

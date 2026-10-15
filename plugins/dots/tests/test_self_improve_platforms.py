@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import importlib.util
 import json
 import os
@@ -40,6 +41,28 @@ def write_jsonl(path: Path, events: list[dict]) -> None:
 
 
 class PlatformSeamTests(unittest.TestCase):
+    def test_session_scope_uses_literal_directory_boundaries(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            home = Path(tmp)
+            paths = ["/work/app", "/work/app/sub", "/work/application", "/work/app-old",
+                     "/work/app_%", "/work/app_%/sub", "/work/appXX/sub"]
+            with contextlib.closing(sqlite3.connect(home / "state_5.sqlite")) as conn:
+                conn.execute("CREATE TABLE threads (id TEXT, title TEXT, source TEXT, cwd TEXT, "
+                             "created_at INTEGER, updated_at INTEGER, archived INTEGER, model TEXT, "
+                             "rollout_path TEXT, first_user_message TEXT)")
+                for index, cwd in enumerate(paths):
+                    conn.execute("INSERT INTO threads VALUES (?, '', '', ?, 1, 2, 0, '', '', '')",
+                                 (str(index), cwd))
+                    write_jsonl(home / "projects" / "fixture" / f"{index}.jsonl",
+                                [{"type": "user", "cwd": cwd, "message": {"content": "test"}}])
+                conn.commit()
+            for source in (session_sources.CodexSource(home, None), session_sources.ClaudeSource(home)):
+                for cwd, expected in (("/work/app/", set(paths[:2])),
+                                      ("/work/app_%", set(paths[4:6])), ("/", set(paths))):
+                    with self.subTest(platform=source.platform, cwd=cwd):
+                        rows = source.list_sessions(limit=None, archived="all", cwd=cwd)
+                        self.assertEqual({row.cwd for row in rows}, expected)
+
     def test_claude_normalizes_messages_tools_subagents_and_unknown_entries(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

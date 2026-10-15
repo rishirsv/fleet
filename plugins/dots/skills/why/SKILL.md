@@ -1,13 +1,13 @@
 ---
 name: why
-description: "Investigates why code or a design exists from the smallest useful historical record, separating evidence, inference, and unknowns. Use for design rationale, regressions, postmortems, or thresholds; use how for runtime behavior."
+description: "Investigates the historical reasons behind code, design decisions, regressions, or thresholds. Separates evidence from inference and unknowns; use how for current runtime behavior."
 ---
 
 # Why
 
-Investigate the motivation and intent behind code. Why was it built this way?
-What edge cases were considered? What product, business, or operational
-constraints shaped the design? What alternatives were rejected, and why?
+Investigate the historical evidence behind code and design decisions. Explain
+the constraints, alternatives, and events that shaped the implementation,
+distinguishing documented reasons from inference and unknowns.
 
 Why is the companion to `how`. How explains what the code does and how it works.
 Why investigates the constraints and decisions that led to the code.
@@ -103,7 +103,9 @@ Use a separate synthesizer only when the reports are large, conflicting, or
 independently complex. When needed, give it the target code and its history,
 findings, searches with no results, skipped sources with reasons, original
 question, `epistemics.md`, the output contract below, and
-[synthesizer-prompt.md](references/synthesizer-prompt.md). When you relay its
+[synthesizer-prompt.md](references/synthesizer-prompt.md). Supply
+[Writing style](../../references/writing-style.md) as a resolved file path the
+synthesizer can read, or include its contents in the prompt. When you relay its
 answer, you may lightly edit for clarity or add context from the conversation;
 keep its confidence language.
 

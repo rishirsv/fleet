@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: "Creates a continuation brief for the current task, branch, pull request, plan, or conversation. Use when the user asks to hand work to another task, agent, or phase; use catch-up to reconstruct earlier work and publish-pr to publish changes."
+description: "Creates a continuation brief with the current state, decisions, and next steps. Use when handing a task, branch, pull request, plan, or conversation to another agent or phase; use catch-up for a status recap."
 ---
 
 # Handoff

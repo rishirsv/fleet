@@ -13,7 +13,7 @@ Usage: scripts/sync-plugins.sh [--all|--codex|--claude] [--source cloud|local] [
 
 Refreshes repo-owned plugins and verifies their installed versions. Codex also
 syncs ~/.codex-personal when it exists. Each profile loads either cloud or local
-Dots/Drafts. --source selects and remembers the source for CODEX_HOME (or ~/.codex);
+Fleet plugins. --source selects and remembers the source for CODEX_HOME (or ~/.codex);
 it does not change the second profile. Unconfigured profiles default to local.
 Cloud mode verifies cloud availability before removing local duplicates.
 Requires uv for the scoped Codex configuration merge.
@@ -162,7 +162,8 @@ if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(error
     --policy "$policy" --cwd "$ROOT"
 
   if [[ "$policy" == */plugins-cloud.toml ]]; then
-    for name in dots drafts; do
+    for spec in "${CODEX_SPECS[@]}"; do
+      IFS=$'\t' read -r name version <<< "$spec"
       if python3 -c 'import json,sys; raise SystemExit(not any(p["pluginId"] == sys.argv[1] for p in json.load(sys.stdin)["installed"]))' "$name@dots" <<< "$installed"; then
         codex_for "$home" plugin remove "$name@dots" >/dev/null
       fi

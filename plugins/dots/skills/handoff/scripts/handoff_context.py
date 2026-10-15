@@ -8,6 +8,7 @@ import json
 import os
 import sqlite3
 import sys
+from contextlib import closing
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -58,7 +59,7 @@ def one_line(text: str, limit: int) -> str:
 def connect(db_path: Path) -> sqlite3.Connection:
     if not db_path.exists():
         raise SystemExit(f"Missing Codex state DB: {db_path}")
-    return sqlite3.connect(db_path)
+    return sqlite3.connect(db_path.resolve().as_uri() + "?mode=ro", uri=True)
 
 
 def row_to_thread(row: sqlite3.Row | tuple[Any, ...]) -> Thread:
@@ -86,8 +87,9 @@ def find_threads(args: argparse.Namespace) -> list[Thread]:
     else:
         if args.cwd:
             cwd = str(Path(args.cwd).expanduser().resolve())
-            where.append("(cwd = ? OR cwd LIKE ?)")
-            params.extend([cwd, f"{cwd}/%"])
+            prefix = cwd.rstrip("/") + "/"
+            where.append("(cwd = ? OR substr(cwd, 1, ?) = ?)")
+            params.extend([cwd, len(prefix), prefix])
         if args.query:
             needle = f"%{args.query.lower()}%"
             where.append(
@@ -108,14 +110,14 @@ def find_threads(args: argparse.Namespace) -> list[Thread]:
     """
     params.append(args.limit)
 
-    with connect(db_path) as conn:
+    with closing(connect(db_path)) as conn:
         rows = conn.execute(sql, params).fetchall()
     return [row_to_thread(row) for row in rows]
 
 
 def parse_function_call(payload: dict[str, Any], limit: int) -> str:
     name = payload.get("name") or "tool"
-    arguments = payload.get("arguments") or ""
+    arguments = payload.get("arguments", payload.get("input", ""))
     if isinstance(arguments, str):
         try:
             parsed = json.loads(arguments)
@@ -174,15 +176,15 @@ def parse_transcript(path: Path, *, max_events: int, char_limit: int) -> list[di
                     "kind": normalized.role,
                     "text": one_line(redact_sensitive(normalized.text), char_limit),
                 }
-        elif normalized.kind == "function_call":
+        elif normalized.kind in {"function_call", "custom_tool_call"}:
             event = {
                 "timestamp": timestamp,
                 "kind": "tool-call",
                 "text": parse_function_call(payload, char_limit),
             }
-        elif normalized.kind == "function_call_output":
+        elif normalized.kind in {"function_call_output", "custom_tool_call_output"}:
             output = str(payload.get("output") or "")
-            if interesting_tool_output(output):
+            if normalized.kind == "custom_tool_call_output" or interesting_tool_output(output):
                 event = {
                     "timestamp": timestamp,
                     "kind": "tool-output",

@@ -1,6 +1,6 @@
 ---
 name: html
-description: "Creates or edits self-contained HTML pages, linked page sets, and embed blocks. Use when the result should be a browser-openable document such as a report, plan, or walkthrough; use ui-design for product interfaces."
+description: "Creates or edits HTML reports, plans, walkthroughs, linked page sets, and embeds. Use for browser-openable documents; use the Design plugin for product interfaces."
 ---
 
 # HTML
@@ -70,7 +70,7 @@ it supplies `artifact-template.json` with `kind: "html"`, inspect the retained
 reference and preview relative to that skill, follow its content and
 structure, and deliver the new artifact.
 
-Use `ui-design` for production UI and interactive prototypes, `repo-docs` for
+Use the installed `$design` skill for production UI and interactive prototypes, `repo-docs` for
 repository documentation, and presentation tooling for slide decks. When the
 user explicitly selected Dots Feature Development, apply its
 [planning-only boundary](../../references/feature-development.md).

@@ -1,0 +1,10 @@
+interface:
+  display_name: "Design Context"
+  short_description: "Keep product sources and design systems grounded"
+  icon_small: "../../assets/icon.svg"
+  icon_large: "../../assets/logo.png"
+  brand_color: "#E94B35"
+  default_prompt: "Use $design-context for this product design task."
+
+policy:
+  allow_implicit_invocation: true

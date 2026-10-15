@@ -67,10 +67,16 @@ establish this. Reconsider:
   defined or truthy;
 - a broad snapshot when one field carries the contract, so unrelated changes
   fail it and reviewers approve updates unread;
-- a regression test whose failing run was never observed, or failed for a
-  different reason than the defect it targets;
 - a new test file created only to mirror a new production symbol; and
 - test-only launch flags, hooks, or fixtures without a current owner and removal condition.
+
+When adding or repairing a regression test, confirm that the test itself fails
+for the intended reason on the broken behavior and passes after the fix. If
+written after the fix, demonstrate the failure using an isolated copy or
+reversible change that preserves unrelated work. Keep the failing-before and
+passing-after evidence; report any missing failing control.
+
+For an absence, also assert the presence on another input.
 
 ## Decision order
 
@@ -118,9 +124,10 @@ If any condition is false, fold the coverage into the canonical suite.
 
 ## Duplicate cleanup
 
-After placing coverage:
+Limit cleanup to duplication introduced or directly affected by the coverage
+you added or moved. Within that scope:
 
-1. Search for tests that assert the same invariant.
+1. Find tests that duplicate that coverage.
 2. Keep the strongest test in the layer responsible for the rule.
 3. Merge any unique assertions into that location.
 4. Delete or simplify weaker duplicates.

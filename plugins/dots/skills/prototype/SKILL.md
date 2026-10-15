@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: "Builds an isolated throwaway prototype that settles one behavioral, technical, interaction, timing, or visual choice by observation. Use when a choice needs evidence before production work; not for static HTML or open-ended UI direction."
+description: "Builds and runs a disposable prototype to test one technical, behavioral, or timing decision. Use when a choice needs observed evidence before production work; not for static documents or UI direction."
 ---
 
 # Prototype
@@ -9,11 +9,15 @@ Build the least costly disposable artifact that can settle one decision
 through observation. Return the observed answer and its evidence. Keep
 prototype code separate from code to merge.
 
+Product visual direction and interface exploration belong to the installed
+`$design` skill. If unavailable, make the smallest visual experiment directly
+using the existing product design and visual-proof guidance.
+
 ## Name the decision
 
 Build a prototype only for a named decision. State the question before
 building, the alternatives, and the observation that would distinguish them. If
-no choice affects the work, return to Feature Development or `$ui-design`.
+no choice affects the work, return to Feature Development or the installed `$design` skill.
 
 Use a prototype instead of asking the user for a fact that can be observed by
 running or viewing something. The user still owns preferences and product

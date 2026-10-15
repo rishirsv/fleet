@@ -1,6 +1,6 @@
 interface:
   display_name: "Repo Docs"
-  short_description: "Write repository docs and reusable knowledge"
+  short_description: "Write, edit, or review repository docs"
   icon_small: "../../assets/icon.png"
   icon_large: "../../assets/logo.png"
   brand_color: "#36C5A7"

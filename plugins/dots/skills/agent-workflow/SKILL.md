@@ -1,11 +1,12 @@
 ---
 name: agent-workflow
-description: "Runs a feature from plan to a reviewed, babysat pull request in one flow: plan, spec, build, review, PR, and babysit, delegating each stage to the right agent. Use only when the user selects `$agent-workflow`."
+description: "Delivers a feature from plan through implementation, review, pull request, and monitoring using delegated agents. Use when the user selects $agent-workflow for the full delivery workflow."
 ---
 
 # Agent workflow
 
-Run the whole delivery loop as one orchestrated flow. You are the coordinator:
+Coordinate a feature from planning through implementation, review, publication,
+and pull-request monitoring. You are the coordinator:
 you hold the plan, write each agent's brief, check each stage's gate, and keep
 the user informed. Agents do the reading, writing, and reviewing.
 
@@ -20,7 +21,8 @@ The user can add options in any order, for example
 `$agent-workflow add CSV export review=high stop-after=spec`:
 
 - `review=low|medium|high|xhigh|max` sets the `$change-review` level
-  (default `low`).
+  (default `low`). [Change Review](../change-review/SKILL.md#choose-the-level)
+  owns reviewer budgets and assignments.
 - `stop-after=plan|spec|build|review|pr` ends the run after that stage.
 - `approve=spec` pauses for the user's approval after the spec. Without it,
   pause only for product decisions, approvals the repository requires, and
@@ -32,12 +34,20 @@ Use these four patterns, whatever tools the platform provides:
 
 - **Delegate:** one agent, one brief, one structured result.
 - **Parallel:** independent tasks at once, then wait for all of them.
-- **Fan out per item:** the same step for each file, unit, or finding.
+- **Fan out per item:** the same step for independent work units within the
+  stage's scope and agent budget.
 - **Gate:** a stage ends only when its check passes. Retry a failing check
   until it passes or two rounds make no progress, then stop and report.
 
-Verify before you trust: send each consequential finding or claim to an
-independent agent that tries to disprove it. Run parallel writers only on
+Add an independent check only when a material uncertainty could change a
+decision. Name the uncertainty and the decision it affects, then use the
+smallest targeted check that can resolve it. Reuse the assigned reviewer
+when applicable. During change review, keep checks within the selected
+reviewer budget; do not add verification agents, per-finding reviews, or a
+second consensus pass. Stop checking once the uncertainty is resolved, or
+report the remaining limitation when it cannot be resolved.
+
+Run parallel writers only on
 disjoint files or in isolated copies such as separate worktrees; otherwise run
 them in sequence. Keep runs small, under about five agents at a time unless the
 user asks for more, and try a small slice first when cost is uncertain. When the
@@ -76,9 +86,11 @@ decisions, and the next action. Update it at every gate so the run can resume.
    its proof are concrete.
 2. **Spec.** For a new boundary, contract, or state model, run `$architect`.
    Otherwise write the spec yourself: units of work, each with its files,
-   behavior, and done-when check, in dependency order. Ask one `adversary` to
-   challenge it. Gate: every requirement maps to a unit, and the adversary's
-   supported objections are resolved.
+   behavior, and done-when check, in dependency order. Use an `adversary`
+   only for a material uncertainty that could change the design or build
+   plan; give it that question rather than a mandatory full-spec review.
+   Gate: every requirement maps to a unit, and any supported blocking
+   objections are resolved.
 3. **Build.** Give each unit to a `worker`, or to `luna` when it needs
    judgment. Run units in parallel only when their files are disjoint. Each
    unit must pass its check before you build on it. Integrate, run the
@@ -86,8 +98,10 @@ decisions, and the next action. Update it at every gate so the run can resume.
    [Feature Development](../../references/feature-development.md)'s proof step
    and the repository's `verify-<app>` skill when it has one. Gate: checks and
    proof pass.
-4. **Review.** Run `$change-review` at the chosen level. Gate: supported
-   findings are repaired and re-checked.
+4. **Review.** Run `$change-review` at the chosen level without adding a
+   separate workflow review. Gate: supported findings are repaired and
+   checked as that skill requires; a repair does not trigger a full review
+   restart by default.
 5. **PR.** Run `$publish-pr`. Gate: the pull request contains the pushed
    commit and is ready for review.
 6. **Babysit.** Run `$babysit-pr` until checks pass and review feedback is

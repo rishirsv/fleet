@@ -1,0 +1,67 @@
+{
+  "repository": "https://github.com/cursor/plugins",
+  "revision": "850d7f2e9f5e55dff7eb00a0a479337fe79eb22f",
+  "license": "plugins/dots/licenses/pstack-MIT.txt",
+  "files": [
+    {
+      "source": "pstack/skills/poteto-mode/playbooks/bug-fix.md",
+      "destination": "plugins/dots/playbooks/bug-fix.md",
+      "source_sha256": "66e26542dad131cfd7df80ac0cdf81ed4d85e7b5e3f0eb65b933888760c4831f",
+      "adaptations": "Replace host tools and skill dependencies; conditional delegation and architecture; bounded reproduction; restore Dots shared-assumption check; move failing-test step before implementation; publish only on request. Test consolidation owns regression-test controls; retain test-first timing for cheap local tests."
+    },
+    {
+      "source": "pstack/skills/poteto-mode/playbooks/refactoring.md",
+      "destination": "plugins/dots/playbooks/refactoring.md",
+      "source_sha256": "0f5dd38113379ea8cf61e2182eca0a7478eea9a869eb40c2dddab3335aeca197",
+      "adaptations": "Replace host tools and principle dependencies; preserve Dots compatibility exceptions; reuse existing behavioral checks; restrict adjacent work and publication to authorized scope. Distinguish mechanical renames/moves from structural redesign; reuse the pin and preserve user-specified targets."
+    },
+    {
+      "source": "pstack/skills/poteto-mode/playbooks/perf-issue.md",
+      "destination": "plugins/dots/playbooks/performance.md",
+      "source_sha256": "c12aa2f82de7651a11676a3d5fea168f539b7f0faaa3a501d279255dd2a469c8",
+      "adaptations": "Replace host tools and skill dependencies; preserve fixed inputs and rejected-experiment cleanup; conditional delegation and architecture; remove unavailable hillclimb route and automatic publication."
+    },
+    {
+      "source": "pstack/skills/blast-radius/SKILL.md",
+      "destination": "plugins/dots/skills/blast-radius/SKILL.md",
+      "source_sha256": "2e10745b97f5862323dcda3b29ca60d56b5c3c98e37020085d26b48efbe0a436",
+      "adaptations": "Adapt metadata for Dots discovery; bound investigation and scratch probes; replace unavailable arena with targeted checks within Change Review budgets; use Dots writing style and evidence references."
+    },
+    {
+      "source": "pstack/skills/figure-it-out/SKILL.md",
+      "destination": "plugins/dots/playbooks/task-specific-workflow.md",
+      "source_sha256": "bdb23cdbd82a1e6af094b495691c832a6f7f3ab9706ba9edbeb664ef51a726e1",
+      "adaptations": "Fork framing, workflow design and experiment-loop passages; use existing Feature Development record and completion rules; conditional harness and sequencing; proportional rigor and bounded verification; omit mandatory delegation, extra logs and automatic commits. Keep framing and phases in the existing record without an implied human-review stop."
+    },
+    {
+      "source": "pstack/skills/principle-sequence-verifiable-units/SKILL.md",
+      "destination": "plugins/dots/references/sequence-verifiable-units.md",
+      "source_sha256": "2ccbbacc56ace5afdfb8670cef19d7bd009fb2a0033b9a741cbdf2b6baf72187",
+      "adaptations": "Preserve sequencing rationale and before/after bracket; define dependency-sized units, batch independent edits and reuse evidence; remove mandatory rebase, per-edit full checks and automatic commits; honor green-commit policy."
+    },
+    {
+      "source": "pstack/skills/principle-model-the-domain/SKILL.md",
+      "destination": "plugins/dots/references/engineering-principles.md",
+      "source_sha256": "52c0d85e0c3827c41c18299b642657d7b47eaf77b7b31609e42e0df42b84c75f",
+      "adaptations": "Replace the existing domain-modeling section with the complete upstream body verbatim; retain other existing principles."
+    },
+    {
+      "source": "pstack/skills/principle-boundary-discipline/SKILL.md",
+      "destination": "plugins/dots/references/engineering-principles.md",
+      "source_sha256": "62ac2862c2caa22dd14531f51c9c6bb445ceb198ca98a687e25b4d47c1f10a28",
+      "adaptations": "Fork domain-facing interface and representation bullets; retain existing boundary parsing guidance and qualify pure-function advice to avoid unnecessary extraction."
+    },
+    {
+      "source": "pstack/skills/principle-build-the-lever/SKILL.md",
+      "destination": "plugins/dots/references/feature-development.md",
+      "source_sha256": "3434b0ad0c640c6f1d7960be7a8986c3bcdc14e26060360dec29903df60074ff",
+      "adaptations": "Fork manual-first proof, safe-rerun and deterministic-over-fan-out bullets; limit to repetitive edits and replace existing overlapping guidance. Prefer existing rename/codemod tools before writing a custom tool."
+    },
+    {
+      "source": "pstack/skills/principle-test-behavior-not-implementation/SKILL.md",
+      "destination": "plugins/dots/references/test-consolidation.md",
+      "source_sha256": "b2b73ba42920f9c3174ecdf808ec6e4591b3a9266ada9a05814f386004266d3a",
+      "adaptations": "Fork the positive-control sentence for absence assertions; keep existing overlapping regression-signal rules."
+    }
+  ]
+}

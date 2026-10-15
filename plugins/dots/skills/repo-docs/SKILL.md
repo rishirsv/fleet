@@ -1,6 +1,6 @@
 ---
 name: repo-docs
-description: "Writes, revises, or reviews durable documentation that lives in a repository. Use for READMEs, design docs, runbooks, ADRs, changelogs, or agent-readable knowledge; not for project instructions, code comments, or chat explanations."
+description: "Writes, revises, or reviews repository documentation, including READMEs, design docs, runbooks, ADRs, and changelogs. Use for durable repository knowledge; not project instructions, code comments, or chat explanations."
 ---
 
 # Repo Docs
@@ -12,8 +12,9 @@ correctly, and stop when the document has done its job.
 
 Repository and user-named style guides come before these defaults.
 
-- Apply [Writing style](../../references/writing-style.md) to every new
-  document or substantial section; durable docs are its main audience.
+- Apply [Writing style](../../references/writing-style.md) when drafting,
+  editing, or reviewing documentation, including small prose edits and the
+  written report.
 - After choosing the document type, read its recipe in
   [document-types.md](references/document-types.md).
 - For a design doc, architecture proposal, or durable build plan, read
@@ -25,7 +26,10 @@ Repository and user-named style guides come before these defaults.
 
 1. Define the reader, job, document type, controlling sources, destination, and
    requested mode: edit, draft, or review. Infer clear answers from the request
-   and repository.
+   and repository. Choose whether the reader needs guided practice, a task
+   procedure, lookup facts, or an explanation. Keep these purposes distinct;
+   a README may use separate sections and links. Do not split files or expand
+   a small edit into a documentation reorganization without a need in scope.
 2. Support the claims with the smallest set of authoritative sources needed.
    Expand only to resolve a concrete gap or conflict. Derive changelogs and
    release notes from history and merged changes since the last release.
@@ -39,12 +43,31 @@ Repository and user-named style guides come before these defaults.
 5. Lead with what the reader can do, decide, or understand. Keep background
    proportional to that job. Preserve caveats and uncertainty; label proposals
    and unverified claims. Leave explicitly protected sections unchanged.
-6. Report the changed files, document types, checks performed, material checks
+6. Check changed claims, examples, paths, and links against their sources.
+   Run relevant documentation checks available in the repository. Exercise
+   examples when safe and useful; report untested commands without running
+   external mutations merely to validate prose. Fix documentation errors,
+   and report product defects rather than expanding into product repairs.
+7. Report the changed files, document types, checks performed, material checks
    skipped, and open gaps.
 
 For review-only requests, lead with material findings and cite their locations
 and evidence. State the reviewed scope and say plainly when no material issue
 was found.
+
+## Write for use
+
+Address the reader as "you" where useful. Give task headings an action verb
+and concept headings a specific subject. Keep heading levels sequential.
+Use numbered steps for ordered actions and parallel bullets otherwise.
+Name link destinations; format code identifiers as code and UI labels in bold.
+Follow the repository's indentation conventions in examples.
+
+Keep conditions with their actions and put prerequisites before the steps
+that need them. Present the usual path before exceptions. Avoid promises of
+unreleased behavior and claims that a procedure is easy. Preserve uncertainty
+where the evidence requires it. Read for natural rhythm as well as precision;
+do not mechanically shorten a clear sentence to meet a word count.
 
 ## Frontmatter
 
