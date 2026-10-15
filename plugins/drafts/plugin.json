@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "drafts",
-  "version": "0.1.5",
-  "description": "Writing workflows for developing ideas, drafting, and revising prose while preserving your voice.",
+  "version": "0.1.6",
+  "description": "Develop, draft, and revise prose through a focused writing workflow.",
   "author": {
     "name": "Rishi"
   },
@@ -15,8 +15,8 @@
     "com.openai": {
       "interface": {
         "displayName": "Drafts",
-        "shortDescription": "From first idea to finished prose, in your voice.",
-        "longDescription": "Develop an idea, shape an outline, draft in your voice, and revise with focused editorial passes. Start with Scribe or choose a writing skill directly. Keep voice and style guidance in your own writing workspace.",
+        "shortDescription": "Writing, in your voice.",
+        "longDescription": "Select Drafts with an idea, notes, or a draft. Scribe chooses and runs the writing workflow needed for your request. Call a focused writing skill directly when you know the pass you want. Keep voice and style guidance in your own writing workspace.",
         "developerName": "Rishi",
         "category": "Productivity",
         "capabilities": [

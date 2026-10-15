@@ -2,7 +2,7 @@
 
 **You own the measurement story. Plan, review, verify the numbers.** Tie every fix to a measurement, don't read source instead of measuring.
 
-1. Freeze a representative input and baseline. Capture a baseline trace using the repository's verification skill, existing harness, or available profiler. Vet the baseline, and each later number, with [Performance measurement](../references/performance-measurement.md).
+1. Freeze a representative input and baseline. Capture a baseline trace using the repository's verification skill, existing harness, or available profiler.
 2. Use [How](../skills/how/SKILL.md) when the runtime path is unclear to ground hypotheses. Don't claim a perf ceiling without running it first.
    Try the performance mantras in order, cheapest first:
    1. Don't do it. Stop work whose result nothing uses rather than cheapening it.
@@ -19,8 +19,6 @@
 4. Parse and compare the artifacts (JSON to sqlite, diff). "Inconclusive" or wrong-surface is not a pass. Flag it.
 5. Cite the measurement in the report and, when requested, the PR.
 6. Finish under [Feature Development](../references/feature-development.md#completion). Run [Publish PR](../skills/publish-pr/SKILL.md) only when publication is requested.
-
-Sustained improvement against a metric is a separate request from a one-off fix. Agree the target and effort budget before extending the run.
 
 Write the report with [Writing style](../references/writing-style.md).
 

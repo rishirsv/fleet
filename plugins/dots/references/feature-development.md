@@ -36,15 +36,14 @@ the common workflow's scope, design, proof, and completion rules within that
 sequence, not as a second pass. For a plan-only request, use the playbook to
 define the work and proof, then stop at the planning handoff below.
 
+Testing how a skill, structure, or prompt change affects agent behavior uses [Eval](../playbooks/eval.md).
+
 An investigation of what a named change could break beyond its diff belongs
 to [Blast radius](../skills/blast-radius/SKILL.md). This does not authorize a fix.
 
 If no route fits and the task needs dependent experiments or changes, read
 [Task-specific workflow](../playbooks/task-specific-workflow.md). Otherwise use
 the common workflow below directly.
-
-Before you report or act on a benchmark, speedup, or regression you measured,
-apply [Performance measurement](performance-measurement.md).
 
 ## Follow the common workflow
 
@@ -78,15 +77,7 @@ The steps describe the contract between phases; adapt their depth to the task.
    data shape is wrong.
    For dependent migrations or sweeps, read
    [Sequence verifiable units](sequence-verifiable-units.md) unless already loaded.
-   For a repetitive edit across many sites:
-
-   - Prefer an existing rename operation or codemod. If a custom tool is needed,
-     do the first unit by hand to learn the recipe, then build the tool. Prove
-     it by rerunning it on that unit and diffing against your hand-done version.
-     Make the tool safe to rerun.
-   - A deterministic tool beats fan-out. If the tool can process every unit
-     in one pass, run it yourself. Don't fan out delegates to hand-apply what
-     a script can do.
+   For non-trivial work, apply [Build the Lever](engineering-principles.md#build-the-lever). Prefer an existing rename operation or codemod before writing a custom tool.
 
    Record consequential decisions made during implementation that the request
    or plan left open. Include the reason, tradeoff, and whether the decision is

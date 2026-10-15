@@ -1,6 +1,6 @@
 ---
 name: setup-project
-description: "Create or initialize a writing home with VOICE.md, STYLE.md, examples/, and drafts/. Use for explicit setup or migration, or Scribe's first-use setup route."
+description: "Use when the writer wants to set up or migrate a writing home."
 ---
 
 # Set Up A Writing Home
@@ -68,7 +68,7 @@ When `TASTE.md` exists:
 
 ## Begin The Guides
 
-After first-run setup, begin `onboarding` so the writer can add a useful first version of both guides from a short conversation, existing writing, or the work already in progress. Do not block use of the writing home on completing either profile.
+After first-run setup, follow [Onboarding](../onboarding/SKILL.md) so the writer can add a useful first version of both guides from a short conversation, existing writing, or the work already in progress. Do not block use of the writing home on completing either profile.
 
 When the user invoked `setup-project` manually for an additional folder, offer onboarding rather than assuming they want a new profile immediately.
 

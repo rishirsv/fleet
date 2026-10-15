@@ -1,10 +1,10 @@
 interface:
   display_name: "Scribe"
-  short_description: "Choose a writing workflow for the task at hand"
+  short_description: "Start Drafts from an idea, notes, or a draft"
   icon_small: "./assets/icon.png"
   icon_large: "./assets/icon.png"
   brand_color: "#7B5E45"
-  default_prompt: "Use $scribe to help me choose the next step for my writing."
+  default_prompt: "Use $scribe to help me develop, draft, or revise this piece."
 
 policy:
   allow_implicit_invocation: true

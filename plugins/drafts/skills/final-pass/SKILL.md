@@ -1,6 +1,6 @@
 ---
 name: final-pass
-description: Run a publication-readiness check on a nearly complete piece and deliver a clear ready, almost-ready, or needs-work verdict. Use when the user asks for a final pass, quality gate, or pre-publication check.
+description: "Use when a nearly finished piece needs a publication-readiness verdict."
 ---
 
 # Final Pass

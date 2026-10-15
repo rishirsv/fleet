@@ -1,6 +1,6 @@
 ---
 name: reader
-description: "Read prose as its intended audience and report confusion, missing setup, and lost trust. Use for cold reads or first-time-reader feedback; use dev-edit for structural editing."
+description: "Use when the writer wants a cold read for confusion, missing setup, or lost trust."
 ---
 
 # Reader

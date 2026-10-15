@@ -7,4 +7,4 @@ interface:
   default_prompt: "Use $interview to explore my writing idea before outlining."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

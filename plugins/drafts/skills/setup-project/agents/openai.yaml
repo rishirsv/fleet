@@ -7,4 +7,4 @@ interface:
   default_prompt: "Use $setup-project to set up a writing home in the folder I specify."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

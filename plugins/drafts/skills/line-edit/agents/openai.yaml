@@ -7,4 +7,4 @@ interface:
   default_prompt: "Use $line-edit to revise my draft at the sentence level."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

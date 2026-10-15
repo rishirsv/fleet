@@ -1,6 +1,6 @@
 ---
 name: save
-description: Capture a confirmed writing preference, editorial lesson, recurring failure pattern, or workflow improvement in the right durable context file. Use when the user asks to save, remember, codify, or turn a repeated correction into a rule.
+description: "Use when the writer asks to remember a writing preference or save an editorial lesson."
 ---
 
 # Save

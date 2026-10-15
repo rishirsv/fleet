@@ -7,4 +7,4 @@ interface:
   default_prompt: "Use $final-pass to review my draft."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

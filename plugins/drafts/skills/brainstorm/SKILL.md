@@ -1,6 +1,6 @@
 ---
 name: brainstorm
-description: Help users surface raw material for a piece when they don't have a specific idea yet. Invoke with /brainstorm or when user says they want to explore ideas.
+description: "Use when the writer wants to brainstorm or find an idea for a piece."
 ---
 
 # Brainstorm

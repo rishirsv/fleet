@@ -1,6 +1,6 @@
 ---
 name: voice-check
-description: Diagnose whether writing matches the active writer, project, publication, and platform voice context, then offer a closer revision. Use when the user asks whether text sounds like them, feels generic, or has drifted from an established voice.
+description: "Use when prose feels generic, unlike the writer, or out of step with established voice guidance."
 ---
 
 # Voice Check

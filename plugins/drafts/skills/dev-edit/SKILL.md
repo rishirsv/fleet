@@ -1,6 +1,6 @@
 ---
 name: dev-edit
-description: Review a draft for big-picture issues in argument, structure, stakes, evidence, and payoff. Use when a piece needs developmental editing, a top-level diagnosis, or substantial restructuring before sentence polish.
+description: "Use when a draft needs argument, structure, evidence, or stakes reviewed before sentence editing."
 ---
 
 # Developmental Edit

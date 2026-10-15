@@ -7,4 +7,4 @@ interface:
   default_prompt: "Use $reader to review my draft from the intended reader's perspective."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

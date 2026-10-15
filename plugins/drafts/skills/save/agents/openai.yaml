@@ -7,4 +7,4 @@ interface:
   default_prompt: "Use $save to save a confirmed writing preference in the right context file."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

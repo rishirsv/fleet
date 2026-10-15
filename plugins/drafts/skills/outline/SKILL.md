@@ -1,6 +1,6 @@
 ---
 name: outline
-description: Organize interview material into a detailed structure using the 10%/30% framework. Invoke with /outline or after completing an interview.
+description: "Use when writing material needs an outline or a clearer reader promise."
 ---
 
 # Outline

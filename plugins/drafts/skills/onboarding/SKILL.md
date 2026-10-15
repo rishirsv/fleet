@@ -1,6 +1,6 @@
 ---
 name: onboarding
-description: Begin or refresh the separate VOICE.md and STYLE.md guides in a writer's durable writing home from a short conversation, existing writing, or maintained context. Use during first-run writing-home setup and when the user wants to define, calibrate, import, or update voice and style rules.
+description: "Use when the writer wants to create, calibrate, or refresh VOICE.md and STYLE.md."
 ---
 
 # Onboarding
@@ -12,7 +12,7 @@ Create the smallest useful first version of the writer's durable voice and style
 Read `../../references/context-contract.md`. Inspect the current workspace for maintained identity, voice, preference, and project-style files before asking questions.
 
 - If authoritative context already exists, summarize it and ask only about genuine gaps.
-- If the user needs a writing-home folder, resolve the target and run `setup-project` first so `VOICE.md`, `STYLE.md`, `examples/`, and `drafts/` exist together.
+- If the user needs a writing-home folder, resolve the target and follow [Setup Project](../setup-project/SKILL.md) first so `VOICE.md`, `STYLE.md`, `examples/`, and `drafts/` exist together.
 - Do not auto-trigger because either guide is sparse or because a legacy `TASTE.md` is absent.
 - Do not duplicate global guidance into the writing home unless a local override is needed.
 - Do not overwrite an existing profile without explicit approval.

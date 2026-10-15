@@ -1,6 +1,6 @@
 ---
 name: ai-check
-description: "Remove AI residue while preserving source meaning and voice. Use for AI-smell diagnosis or cleanup; apply silently when Draft or Line Edit calls it."
+description: "Use when prose sounds AI-generated or needs an AI-residue check."
 ---
 
 # AI Check

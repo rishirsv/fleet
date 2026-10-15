@@ -1,6 +1,6 @@
 ---
 name: interview
-description: Draw out and organize the writer's own thinking without supplying meaning, stakes, or an argument for them. Invoke with /interview or when the user has a specific idea they want to explore before outlining.
+description: "Use when the writer has an idea and wants to draw out their thinking before outlining."
 ---
 
 # Interview

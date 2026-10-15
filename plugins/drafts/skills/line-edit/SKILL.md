@@ -1,6 +1,6 @@
 ---
 name: line-edit
-description: Revise prose at the sentence and word level while preserving voice, meaning, source accuracy, and useful weirdness. Use when the structure is stable and the user asks for a line edit, polish, tightening pass, or usable rewrite.
+description: "Use when structure is settled and prose needs sentence editing, tightening, or polish."
 ---
 
 # Line Edit
@@ -40,7 +40,7 @@ Apply a thorough review for:
 - Technical, business, or academic jargon
 
 ### AI Tells
-Run `ai-check` in its required order. When source material or earlier human drafts are available, scan for structural overcompletion before running the full lexicon. Flag and fix:
+Read [AI Check](../ai-check/SKILL.md) and run it in its required order. When source material or earlier human drafts are available, scan for structural overcompletion before running the full lexicon. Flag and fix:
 - Stock openers ("In today's fast-paced world...")
 - AI-scent vocabulary (delve, leverage, utilize, pivotal, crucial)
 - Formal transitions (moreover, furthermore, additionally)

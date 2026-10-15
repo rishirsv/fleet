@@ -7,4 +7,4 @@ interface:
   default_prompt: "Use $outline to organize my writing material into an outline."
 
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

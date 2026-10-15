@@ -1,11 +1,20 @@
 ---
 name: scribe
-description: Route open-ended writing work through the smallest useful Drafts workflow. Use when the user wants to start, continue, finish, or improve a piece and has not named a more specific skill.
+description: "Use when Drafts is selected or the user wants help developing, drafting, or revising a piece of prose."
 ---
 
 # Scribe
 
-Act as the orchestration layer for Drafts. Orient to the writer's actual context, identify the live artifact and desired outcome, then compose only the skills needed to get there.
+Use Scribe as the entry point when the user selects Drafts. Identify the live
+artifact and desired outcome, then load only the writing skills needed to finish
+the request. A plugin call is enough; the writer does not need to name a skill.
+
+Scribe is the only automatically discoverable Drafts skill in Codex. The focused
+skills remain directly callable and available through the links below. Read the
+selected skill's `SKILL.md` before applying it; resolve links relative to this
+file, not the user's working directory. Do not load the whole catalog or ask the
+writer to invoke each stage. If the user names a skill or editorial pass, honor
+that choice before considering a broader workflow.
 
 ## Find The Writer's Starting Point
 
@@ -28,22 +37,24 @@ Choose the smallest route that fits the request:
 
 | User state or outcome | Route |
 |---|---|
-| First meaningful interaction with no writing home or useful artifact | Brief orientation, resolve the target, `setup-project`, then `onboarding` |
-| Explicitly asks for another self-contained writing folder | `setup-project`, then optional `onboarding` |
-| No idea yet | `brainstorm` |
-| Has a live idea and needs material | `interview` |
+| First meaningful interaction with no writing home or useful artifact | Brief orientation, resolve the target, [Setup Project](../setup-project/SKILL.md), then [Onboarding](../onboarding/SKILL.md) |
+| Explicitly asks to set up or migrate a writing home, or create another self-contained writing folder | [Setup Project](../setup-project/SKILL.md), then optional [Onboarding](../onboarding/SKILL.md) |
+| Wants to create, calibrate, import, or refresh voice and style guides | [Onboarding](../onboarding/SKILL.md) |
+| No idea yet | [Brainstorm](../brainstorm/SKILL.md) |
+| Has a live idea and needs material | [Interview](../interview/SKILL.md) |
 | Needs the point sharpened | Read [Thesis](../../references/thesis.md) for thesis options |
-| Needs the reader promise sharpened | `outline` |
-| Needs the most important idea or real opening found and placed | `dev-edit` |
-| Has notes and needs structure | `outline` |
-| Has an outline or partial draft and needs prose | `draft` |
-| Needs argument, structure, stakes, or evidence fixed | `dev-edit` |
-| Structure is stable and prose needs revision | `line-edit` |
-| Needs a first-time-reader or fresh-eyes cold read | `reader` |
-| Sounds generic or machine-smoothed | `ai-check`, `voice-check` |
+| Needs the reader promise sharpened, or has notes that need structure | [Outline](../outline/SKILL.md) |
+| Needs the most important idea or real opening found and placed | [Dev Edit](../dev-edit/SKILL.md) |
+| Has notes, an outline, or partial prose and asks for a complete draft | [Draft](../draft/SKILL.md) |
+| Needs argument, structure, stakes, or evidence reviewed or fixed | [Dev Edit](../dev-edit/SKILL.md) |
+| Structure is stable and prose needs revision | [Line Edit](../line-edit/SKILL.md) |
+| Needs a first-time-reader or fresh-eyes cold read | [Reader](../reader/SKILL.md) |
+| Asks to remove AI residue or machine-smoothed patterns | [AI Check](../ai-check/SKILL.md) |
+| Asks whether prose sounds like the writer or matches established voice guidance | [Voice Check](../voice-check/SKILL.md) |
 | Needs publication, project, or format standards | Load the active `STYLE.md`, brief, template, or maintained workflow |
-| Needs a publication-readiness decision | `final-pass` |
-| Needs argument and reader feedback | `dev-edit`, then `reader` |
+| Needs a publication-readiness decision | [Final Pass](../final-pass/SKILL.md) |
+| Needs argument and reader feedback | [Dev Edit](../dev-edit/SKILL.md), then [Reader](../reader/SKILL.md) |
+| Asks to save a confirmed writing preference or editorial lesson | [Save](../save/SKILL.md) |
 
 The familiar sequence remains available:
 
@@ -67,6 +78,9 @@ Do not lead with a tour of every feature. The user came to write, not admire the
 ## Compose Skills Deliberately
 
 - Use one skill when one skill can finish the job.
+- When a selected skill calls another pass, read that skill's instructions from
+  the linked folder before applying it. Keep automatic checks silent when the
+  selected workflow requires it; a diagnosis-only request remains diagnosis-only.
 - Put diagnosis before revision and validation after revision.
 - Run `dev-edit` before line-level passes when the argument or structure is unstable.
 - Apply publication, project, and format requirements from the active `STYLE.md`, brief, template, or workflow while drafting or revising.

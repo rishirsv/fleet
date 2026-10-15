@@ -1,6 +1,6 @@
 ---
 name: draft
-description: Turn an outline, notes, source material, or partial prose into a complete draft while preserving the writer's voice, thesis ownership, and source provenance. Use when the user asks to draft a piece or section.
+description: "Use when notes, an outline, or partial prose need to become a complete draft."
 ---
 
 # Draft
@@ -52,7 +52,7 @@ Check the active voice and style files for the writer's specific list. Common fa
 - Jargon without explanation
 
 ### AI Pattern Removal
-Silently apply `ai-check` in its required order: preserve source boundaries and epistemic temperature before removing lexical or sentence-pattern residue. User sees clean copy only.
+Read [AI Check](../ai-check/SKILL.md) and silently apply it in its required order: preserve source boundaries and epistemic temperature before removing lexical or sentence-pattern residue. User sees clean copy only.
 
 ## Structural Moves
 
