@@ -133,18 +133,30 @@ ulimit -S -n 4096 && codex app-server daemon restart
 
 ## Fleet hooks
 
-Install hooks separately in each Fleet checkout. They push after a commit,
-then apply local configs and sync plugins on main. Failed push prevents apply
-without undoing the commit. Rebase intermediate commits skip publishing;
-completed rebase/merge pulls apply configs and sync plugins. Plugin sync fetches
-the account catalog before checking the fresh skill loader, so cloud duplicates
-cannot be hidden by a local-only CLI inventory. Dirty plugin source stops sync
-with an explicit error; it is never installed as a release by a hook.
-A pull with no changes may not invoke hooks: sync manually if needed.
-Existing hook configuration must be integrated before installation.
+Install hooks separately in each Fleet checkout with `scripts/install-hooks.sh`.
+Every completed commit pushes its branch, applies configs, refreshes all plugins,
+and syncs configured computers. Push failure leaves the commit intact and stops
+sync. Rebase intermediate commits are skipped. Merge/rebase pull hooks apply
+configs and refresh plugins locally. Existing hooks must be integrated first.
 
-Pull Fleet on another computer to receive changes. Git does not copy hook
-installation, app sign-ins, private shell settings, or macOS permissions.
+Run `scripts/sync-fleet.py` for a full pull and sync, including an already-current
+pull. Git has no hook for a pull that changes nothing; use this command when you
+need guaranteed refresh. It does not create commits: agents commit scoped work
+before invoking it. Failed targets are reported for retry, without undoing work.
+
+Configure peers separately on each computer; private machine details stay in
+`.git/config`:
+
+```sh
+git config --local --add fleet.syncPeer 'HOST:/absolute/path/to/fleet'
+```
+
+Use an existing SSH alias with key authentication. Peers pull their current
+upstream with fast-forward only and must reach the initiating revision. Sync
+never switches their branch, resets changes, or propagates recursively. Install
+hooks on every peer, and keep the same release branch checked out for unattended
+propagation. Offline or divergent peers remain pending until a later retry.
+Git does not copy hook installation, app sign-ins, or macOS permissions.
 
 Scripts expose sync, doctor, hook installation, and validation. `config-sync.py`
 contains the shared file merge helper; `plugin-sync/` contains plugin internals.
