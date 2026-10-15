@@ -1,6 +1,9 @@
 web_search = "live"
 
-# Model, reasoning effort, and UI text size use app defaults.
+# Selected defaults; mirror them in T3's environment settings.
+model = "gpt-6.1-sol"
+model_reasoning_effort = "medium"
+# UI text size uses app defaults.
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 

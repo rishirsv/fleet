@@ -113,7 +113,8 @@ Ghostty forwards Claude's supported bindings using extended terminal sequences.
 Use Claude's model picker for effort controls. Claude inherits terminal fonts
 and its automatic theme follows the terminal background. Codex and Claude
 settings enable the selected unrestricted permissions; VS Code enables tool
-auto-approval. Model and effort remain app defaults.
+auto-approval. Codex defaults to GPT-6.1 Sol with medium reasoning; individual
+chats can override these defaults.
 
 Claude Code uses fullscreen rendering with mouse support so conversation scrolling
 stays inside Claude instead of relying on terminal redraw history. The managed
@@ -130,6 +131,29 @@ Codex app-server daemon with that limit after syncing its configuration:
 ```sh
 ulimit -S -n 4096 && codex app-server daemon restart
 ```
+
+## Remote development and T3
+
+Use the execution host's project in Codex and T3 so worktrees, dependencies,
+builds and Simulators stay on that host. Codex Remote Control supports desktop
+and phone clients. T3 can connect through an existing SSH alias without enabling
+T3 Connect. Keep machine names, paths and host preferences in local settings;
+sync preserves guidance outside the managed shared block in `~/.codex/AGENTS.md`.
+
+T3's Codex provider should use that host's Codex home. In each T3 environment's
+settings, set the default model to GPT-6.1 Sol and reasoning to Medium. T3's
+Full access mode corresponds to Codex's `never` approvals and
+`danger-full-access` sandbox. Preserve intentional project and chat overrides.
+T3 settings are applied through its Settings UI; Fleet does not overwrite its
+live settings file. These defaults match at setup time, not through live sync.
+
+Repository `t3.json` can select worktrees and offer the same setup/build/test
+commands as `.codex/environments/environment.toml`; import its scripts once
+from the T3 project's Actions menu. T3 does not import Codex's
+environment actions. Keep dependency and Simulator setup in the repository's
+shared command, rather than implementing it separately for each app. For remote
+documents, return a private preview URL; a host's absolute path or `localhost`
+URL cannot be opened as a local file on another device.
 
 ## Fleet hooks
 
