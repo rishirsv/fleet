@@ -27,10 +27,30 @@ settled decisions and constraints. Explore four dimensions:
   materials it must read. When a subagent runs the prompt, combine its answer
   with your own work. Mark which of its claims you checked.
 
+## Keep ambition proportional
+
+Choose the few changes that materially improve the outcome. Ambition can mean
+removing work, simplifying a design, or using a better check. Preserve the user's
+deadline, budget, audience, format, and deliverable. A higher goal guides the
+work; it does not authorize a larger project.
+
+- Select the strongest one to three moves across the dimensions. Skip a
+  dimension when it adds no useful method or changes no decision.
+- Keep narrow tasks narrow. For a rename, conversion, or similarly routine
+  request, complete it with the relevant check; skip the ambition breakdown.
+- Add a method, artifact, abstraction, process, or agent only when its expected
+  benefit justifies its implementation and ongoing cost. Prefer existing tools
+  and boundaries when they achieve the outcome.
+- Stop expanding when the requested result is supported by sufficient evidence.
+  Keep further opportunities as brief suggestions only when they matter.
+- Separate optional stretch targets from agreed acceptance criteria. Keep them
+  out of execution requirements and composed prompts unless the user adopts them.
+
 ## Record what is settled first
 
-Before any reframing, list the settled decisions and hard constraints. Mark
-each one "do not reopen without strong evidence; you may push beyond it." The
+Before reframing, identify the settled decisions and hard constraints. State
+them in the answer only when needed to explain a proposed change. Do not reopen
+them without strong evidence; push beyond them within the authorized scope. The
 work can then go past the plan without undoing choices the user already made.
 Treat earlier assistant recommendations as inputs to test, not as settled
 decisions.
@@ -67,8 +87,9 @@ permissions; if unavailable, perform the same distinct work sequentially.
 ## Altitude: move from the task to the outcome
 
 - Ask what the person wants to happen after this task is done. Then ask what
-  goal sits behind that goal. Restate the task at that level. For example,
-  "fix this crash" becomes "keep the app free of crashes."
+  goal sits behind that goal. Choose the highest level the user can act on
+  within this task; keep one-off or creative work at task level when useful.
+  For a recurring crash, consider what would prevent the same failure class.
 - Question the format itself. If the deliverable is a report, review, or
   screen, ask whether a different mechanism reaches the outcome sooner.
   Propose how to test that mechanism against past cases, and how to run it
@@ -95,8 +116,9 @@ heavily.
 
 ## Depth: work like the field's best practitioner
 
-Fill a depth worksheet for each relevant expert, named by discipline. For each
-expert, answer four questions:
+Use the following questions to select useful methods from the relevant
+disciplines. Show a worksheet only when it helps the user assess a consequential
+choice:
 
 1. What would a top professional do here that the user did not request?
 2. What is the rawest material they would start from?
@@ -109,8 +131,9 @@ task, not a bigger one. Apply these rules while you do it:
 - Use the field's real instruments. Do not accept work that only borrows the
   field's vocabulary. Insist on the databases, statistical methods, and tools
   that practitioners use.
-- Set specific, hard targets, with numbers where possible, and treat them as
-  achievable. For example, ask for a 200 ms response instead of accepting 5 s.
+- Use specific acceptance criteria tied to the user's outcome. Offer a harder
+  target separately when it would be useful; label it as proposed and explain
+  how to measure it. For example, propose 200 ms against a measured 5 s baseline.
 - Test each assumption the plan depends on against raw data. Ask for the
   check directly: "Reproduce that result from the raw data."
 - Aim to produce knowledge the user did not have, such as a simulation, a
@@ -128,12 +151,13 @@ task, not a bigger one. Apply these rules while you do it:
   decide under uncertainty." Look for fields that do that verb well. This
   noun-to-verb move comes from Tom Kelley and Jonathan Littman's book "The
   Art of Innovation."
-- Assemble a crew of disciplines beyond the obvious one. For the quarterly
-  review, the crew might be an analyst, a journalist, an editor, and a motion
-  or audio designer.
-- Always include a red team: a skeptic who profits if the idea fails, such as
-  a short seller; a forensic auditor of the numbers; and the real user at
-  their least patient.
+- Borrow from another discipline only when its specific technique improves
+  the result. Skip Range when the main discipline covers the task. For a
+  quarterly review, borrow journalism's causal narrative or editing's argument
+  structure when either helps the audience decide.
+- Use an adversarial pass when a consequential assumption needs testing.
+  Choose the relevant challenge: a skeptic who profits if the idea fails,
+  a forensic check of the numbers, or the user at their least patient.
 - Perform each discipline's work; do not role-play it. Write "audit these
   numbers the way a forensic accountant would: trace each figure to its
   source," not "you are a forensic accountant." A persona changes the voice
@@ -156,9 +180,9 @@ self-efficacy, and three findings support pushing it:
   that trying too hard hurts performance. Linus Torvalds announced Linux as
   "just a hobby, won't be big and professional like gnu."
 
-Model capability changes every few weeks. State targets that look
-unreasonable, treat them as reasonable, and let the outside judges report
-what the model reached.
+Use hard targets to explore what might be possible. Keep proposed stretch
+targets distinct from measured results and agreed requirements; let outside
+judges establish what the model reached.
 
 ## Output
 
@@ -167,33 +191,34 @@ Write prompts, critiques, recommendations, and the report with
 supply this reference as a resolved file path the recipient can read, or include
 its contents in the prompt.
 
-Deliver these sections in this order. Include only the sections the task
-supports:
+Lead with the result and the evidence needed to assess it, at the scale the
+user requested. Use the following sections only when they add a finding or
+change a decision. For substantial analyses, keep their relative order:
 
 1. The altitude reframe, in one or two sentences.
-2. The depth worksheet and what it changed.
+2. The methods that changed the result; a depth worksheet only when useful.
 3. A blunt critique of the current plan.
-4. Two or three more ambitious concepts. For each, give the steps, the moment
-   that delights or convinces, what earns trust, the technical split, and the
-   hardest risk.
-5. Targets, each with its outside judge.
+4. Alternative concepts when a real choice remains. Include only the steps,
+   user benefit, trust, technical split, and risks needed to compare them.
+5. Acceptance criteria with outside judges; optional stretch targets separately.
 6. The top failure modes, each with a move that defuses it.
-7. A recommendation with staging: what to do first, what to defer, what
-   evidence would change the plan, and team assignments and handoffs when
+7. A recommendation, with staging when dependencies or risk justify it: what
+   to do first, what to defer, what evidence would change the plan, and team
+   assignments and handoffs when
    parallel work helps.
 8. Observations separated from inferences, with the uncertainty stated.
 
-If a section produces nothing new, say so in one line instead of filling it.
-Report ideas the work killed and errors it caught; they are part of the
-result.
+Omit empty sections and routine worksheets. Report rejected ideas and caught
+errors only when they affect the recommendation. Stop when the request is answered.
 
 ## Prompt template
 
 Use this skeleton when another model or a subagent should do the ambitious
 pass. Replace each bracketed slot with task-specific content and delete slots
-that do not apply. Keep the section order of the requested deliverable. A fixed order makes
-answers from different models easy to compare and combine. Supply the
-writing-style reference identified in `SKILL.md` as a resolved readable path
+that do not apply. Select the strongest moves and keep the brief concise,
+usually within 350 words. Preserve the user's deliverable and constraints;
+use placeholders for unknown facts. Keep optional stretch targets outside the
+prompt until adopted. Supply the writing-style reference identified in `SKILL.md` as a resolved readable path
 or its full contents, and instruct the recipient to read and apply it to
 authored prose.
 
@@ -204,6 +229,10 @@ Context
 [Product or project, who it serves, the current plan, and the materials to
 read: files, mockups, data, prior decisions. The recipient cannot see our
 conversation.]
+
+Scope
+[Requested deliverable, deadline, budget, and stopping condition. Select only
+the ambition moves that improve this outcome; omit unused sections.]
 
 Settled decisions and hard constraints
 Do not reopen these unless you find strong evidence; you may push beyond them.
@@ -222,34 +251,34 @@ wrong, e.g. "is 'X' even the right verb?"] Propose how a different format
 would be tested against past cases and run alongside the current one.
 
 Depth
-For each expert below, answer: (1) what a top professional would do here that
-was not requested, (2) the rawest material they would start from, (3) their
+For the relevant disciplines, use these questions to choose methods:
+(1) what a top professional would do here that was not requested, (2) the rawest material they would start from, (3) their
 specific methods, instruments, or datasets, (4) what besides you or me would
-verify the result. Then state what the worksheet changed in the plan.
+verify the result. Report only what changes the plan.
 - [discipline, with its real instruments or data sources]
 - [...]
 
 Range
-Draw on [fields beyond the obvious one]. Run a red team: [a skeptic who
-profits if this fails], [a forensic auditor of the numbers or claims], [the
-real user at their least patient, mid-task]. Perform each discipline's work
-directly; do not adopt personas.
+Borrow [specific technique and its benefit] when useful. If a consequential
+assumption warrants an adversarial pass, use [the specific challenge and
+check]. Perform the discipline's work directly; do not adopt personas.
 
 Targets
-Set specific, numeric targets that look unreasonable, and treat them as
-achievable. Give each an outside judge: a test, dataset, benchmark, tool, or
-person independent of the model. Self-assessment does not count.
+Use [agreed acceptance criteria]. Give each an outside judge: a test,
+dataset, benchmark, tool, or person independent of the model. Self-assessment does not count.
 
-Deliverable, in this order
+Deliverable
+[Return the requested result at its original scale. Include only useful
+sections below, in this relative order; omit worksheets unless they explain
+a consequential choice.]
 1. Altitude reframe.
-2. Depth worksheet and what it changed.
+2. Methods and what they changed.
 3. Blunt critique of the current plan.
-4. Two or three more ambitious concepts, each with steps, the moment that
-   delights or convinces, what earns trust, the technical split, and the
-   hardest risk.
-5. Targets with their outside judges.
-6. Top five failure modes, each with a defusing move.
-7. Recommendation and staging, including team assignments when useful.
+4. Alternative concepts only where a real choice remains, with the details
+   needed to compare them.
+5. Agreed acceptance criteria with their outside judges.
+6. Material failure modes and how to address them.
+7. Recommendation, with staging and team assignments only when useful.
 8. Observations versus inferences, with uncertainty stated.
 ```
 
@@ -283,7 +312,7 @@ and a tired person using it mid-task. Perform the analysis rather than
 role-playing those people.
 
 Targets
-Propose ambitious numeric targets and an independent way to test each.
+Use the agreed acceptance criteria and an independent way to test each.
 Distinguish proposed targets from measured results.
 
 Constraints
