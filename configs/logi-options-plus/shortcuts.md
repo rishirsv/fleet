@@ -46,6 +46,15 @@ slots, or Wispr shortcut object is missing.
 Run this repair explicitly: it stops applications and modifies their private
 stored state.
 
+## Space gesture sync
+
+Run `scripts/sync-configs.sh --spaces --apply` to merge the selected Logitech
+left/right gesture assignments and matching macOS shortcuts on this Mac.
+This also runs during normal Fleet local/peer sync. Unlike the historical
+snapshot, these two directions are maintained in `spaces.json` and applied to
+every MX Master 4 profile. No account IDs or full database snapshots enter Git.
+The helper backs up the local database and restarts Options+ after applying.
+
 ## Wispr Flow shortcuts
 
 Open **Settings > General > Shortcuts**.
@@ -85,8 +94,8 @@ Open the MX Master 4 in Logi Options+ and select **Global settings**.
 | Gesture button: click | Mission Control |
 | Gesture button: hold + move up | Mission Control |
 | Gesture button: hold + move down | App Exposé |
-| Gesture button: hold + move left | Built-in Desktop left (macOS `Control+Left`) |
-| Gesture button: hold + move right | Built-in Desktop right (macOS `Control+Right`) |
+| Gesture button: hold + move left | Keyboard shortcut: `Hyper+Left` |
+| Gesture button: hold + move right | Keyboard shortcut: `Hyper+Right` |
 | Additional button (`c195`) | Stored keystroke: `Escape`; the UI labels it “Keyboard shortcut: None” |
 
 For `c196`, the stored Logitech keystroke must include all three fields below.

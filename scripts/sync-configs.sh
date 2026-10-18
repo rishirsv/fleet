@@ -160,5 +160,6 @@ if (( ${TARGETS[(Ie)spaces]} )); then
   args=("$MODE")
   (( ! DRY_RUN )) || args+=(--dry-run)
   python3 "$ROOT/scripts/sync-spaces.py" "${args[@]}" || result=$?
+  python3 "$ROOT/scripts/logi-options/sync-spaces.py" "${args[@]}" || result=$?
 fi
 exit "$result"

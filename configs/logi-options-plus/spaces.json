@@ -1,0 +1,26 @@
+{
+  "slotPattern": "^mx-master-4-[^/]+_c416$",
+  "selectedGesture": "custom_gesture",
+  "directions": {
+    "left": {
+      "attribute": "MACRO_PLAYBACK",
+      "id": "card_global_presets_keyboard_shortcut",
+      "name": "ASSIGNMENT_NAME_KEYBOARD_SHORTCUT",
+      "macro": {
+        "actionName": "Hyper + Left",
+        "type": "KEYSTROKE",
+        "keystroke": {"code": 80, "modifiers": [224, 225, 226, 227], "virtualKeyId": "VK_LEFT"}
+      }
+    },
+    "right": {
+      "attribute": "MACRO_PLAYBACK",
+      "id": "card_global_presets_keyboard_shortcut",
+      "name": "ASSIGNMENT_NAME_KEYBOARD_SHORTCUT",
+      "macro": {
+        "actionName": "Hyper + Right",
+        "type": "KEYSTROKE",
+        "keystroke": {"code": 79, "modifiers": [224, 225, 226, 227], "virtualKeyId": "VK_RIGHT"}
+      }
+    }
+  }
+}

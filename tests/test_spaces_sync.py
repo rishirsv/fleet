@@ -16,22 +16,29 @@ class SpaceSyncTests(unittest.TestCase):
 
     def test_only_selected_keys_change(self):
         native = {'AppleSymbolicHotKeys': {'99': {'enabled': True}}}
-        tiny = {'unrelated': 'preserve'}
+        tiny = {'unrelated': 'preserve', **{key: 'old' for key in self.wanted['tinycast']}}
         edits = spaces.changes(self.wanted, native, tiny)
         self.assertEqual([(d, k) for d, k, _ in edits], [
             ('com.apple.symbolichotkeys', '79'), ('com.apple.symbolichotkeys', '81'),
             ('com.tinycast.app', 'hotkey.windowCommand.previous-space'),
             ('com.tinycast.app', 'hotkey.windowCommand.next-space')])
         self.assertEqual(native['AppleSymbolicHotKeys']['99'], {'enabled': True})
-        self.assertEqual(tiny, {'unrelated': 'preserve'})
+        self.assertEqual(tiny['unrelated'], 'preserve')
 
     def test_current_is_idempotent_and_absent_tinycast_is_skipped(self):
         native = {'AppleSymbolicHotKeys': self.wanted['AppleSymbolicHotKeys']}
-        self.assertEqual(spaces.changes(self.wanted, native, self.wanted['tinycast']), [])
+        self.assertEqual(spaces.changes(self.wanted, native, {}), [])
         self.assertEqual(spaces.changes(self.wanted, native, None), [])
 
-    def test_hyper_and_control_modifier_encodings(self):
+    def test_native_hyper_and_tinycast_unassigned(self):
         for value in self.wanted['tinycast'].values():
-            self.assertEqual(json.loads(value)['combo']['_0']['carbonModifiers'], 256 | 512 | 2048 | 4096)
+            self.assertIsNone(value)
         for value in self.wanted['AppleSymbolicHotKeys'].values():
-            self.assertEqual(value['value']['parameters'][2], 0x800000 | 0x40000)
+            self.assertEqual(value['value']['parameters'][2], 0x800000 | 0x1e0000)
+
+    def test_absent_tinycast_keys_are_current_but_assigned_keys_are_removed(self):
+        native = {'AppleSymbolicHotKeys': self.wanted['AppleSymbolicHotKeys']}
+        self.assertEqual(spaces.changes(self.wanted, native, {}), [])
+        key = 'hotkey.windowCommand.next-space'
+        self.assertEqual(spaces.changes(self.wanted, native, {key: 'old'}),
+                         [('com.tinycast.app', key, None)])

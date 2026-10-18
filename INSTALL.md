@@ -191,17 +191,22 @@ status commands; skill and Tunnel runtime tests stay with their plugin source.
 ## Space switching on macOS
 
 Run `scripts/sync-configs.sh --spaces --apply` (included in normal Fleet sync).
-Fleet merges macOS Move left/right a space as Control+Left/Right and Tinycast
-Switch to Previous/Next Space as Hyper+Left/Right. Tinycast's Hyper key must
-include Shift; keep one Caps Lock remapper active (Tinycast or Karabiner).
+Fleet assigns macOS Move left/right a space directly to Hyper+Left/Right and
+removes Tinycast's Previous/Next Space hotkeys so they cannot intercept those
+keys. Tinycast still supplies Caps Lock → Hyper, with Include Shift enabled;
+keep one Caps Lock remapper active (Tinycast or Karabiner).
 Restart Tinycast after applying; log out/in if macOS retains old shortcuts.
 `--spaces --status` checks saved settings; `--spaces --dry-run` previews drift.
 Existing preferences are backed up under `~/Library/Application Support/Fleet/backups/`.
 
-In Logi Options+, the MX Master gesture button uses Custom gestures with
-built-in Desktop left/right actions. These depend on macOS Control+Arrow;
-leave click/up/down assignments unchanged. On another mouse, select those
-same desktop actions manually. Fleet does not copy Logitech account/device state.
+Fleet also applies `configs/logi-options-plus/spaces.json` to every local
+MX Master 4 gesture profile, matching model slots rather than private profile
+IDs. It selects Custom gestures and assigns left/right to explicit Hyper arrows,
+using the same macOS shortcut as the keyboard. Click/up/down, other buttons,
+account state and device identities stay local. Options+ is stopped for the
+merge, its SQLite database is backed up beside the original, and the agent is
+restarted. Other mouse models are reported as skipped rather than guessed.
+The standalone helper is `python3 scripts/logi-options/sync-spaces.py apply`.
 
 Tinycast's Settings → Backup → Export Backup saves its native backup separately;
 keep that archive outside Git because it may include personal application data.

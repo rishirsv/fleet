@@ -25,7 +25,7 @@ def changes(wanted, native, tinycast):
             edits.append(('com.apple.symbolichotkeys', key, value))
     if tinycast is not None:
         for key, value in wanted['tinycast'].items():
-            if tinycast.get(key) != value:
+            if (key in tinycast if value is None else tinycast.get(key) != value):
                 edits.append(('com.tinycast.app', key, value))
     return edits
 
@@ -60,6 +60,8 @@ def main():
         if domain == 'com.apple.symbolichotkeys':
             xml = plistlib.dumps(value).decode()
             command = ['defaults', 'write', domain, 'AppleSymbolicHotKeys', '-dict-add', key, xml]
+        elif value is None:
+            command = ['defaults', 'delete', domain, key]
         else:
             command = ['defaults', 'write', domain, key, '-string', value]
         subprocess.run(command, check=True)
