@@ -187,3 +187,22 @@ contains the shared file merge helper; `plugin-sync/` contains plugin internals.
 The retained Logi repair helper is under `scripts/logi-options/`. Root tests
 cover package validation only. Sync is checked through doctor, dry-run, and
 status commands; skill and Tunnel runtime tests stay with their plugin source.
+
+## Space switching on macOS
+
+Run `scripts/sync-configs.sh --spaces --apply` (included in normal Fleet sync).
+Fleet merges macOS Move left/right a space as Control+Left/Right and Tinycast
+Switch to Previous/Next Space as Hyper+Left/Right. Tinycast's Hyper key must
+include Shift; keep one Caps Lock remapper active (Tinycast or Karabiner).
+Restart Tinycast after applying; log out/in if macOS retains old shortcuts.
+`--spaces --status` checks saved settings; `--spaces --dry-run` previews drift.
+Existing preferences are backed up under `~/Library/Application Support/Fleet/backups/`.
+
+In Logi Options+, the MX Master gesture button uses Custom gestures with
+built-in Desktop left/right actions. These depend on macOS Control+Arrow;
+leave click/up/down assignments unchanged. On another mouse, select those
+same desktop actions manually. Fleet does not copy Logitech account/device state.
+
+Tinycast's Settings → Backup → Export Backup saves its native backup separately;
+keep that archive outside Git because it may include personal application data.
+Verify physical Hyper+Left/Right and gesture-button+left/right after restore.

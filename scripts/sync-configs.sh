@@ -10,7 +10,7 @@ TARGETS=()
 
 usage() {
   cat <<'EOF'
-Usage: scripts/sync-configs.sh [--dry-run|--apply|--status] [--agents|--codex|--claude|--vscode|--karabiner|--ghostty|--zsh ...] [--profile PATH]
+Usage: scripts/sync-configs.sh [--dry-run|--apply|--status] [--agents|--codex|--claude|--vscode|--karabiner|--ghostty|--zsh|--spaces ...] [--profile PATH]
 
 Preview by default. Selected targets cover Codex, Claude, VS Code, Karabiner,
 Ghostty, and Zsh. Merge Fleet's Codex settings into CODEX_HOME (or ~/.codex)
@@ -28,7 +28,7 @@ while (( $# )); do
     --dry-run) MODE=apply; DRY_RUN=1 ;;
     --apply) MODE=apply; DRY_RUN=0 ;;
     --status) MODE=status; DRY_RUN=0 ;;
-    --agents|--codex|--claude|--vscode|--karabiner|--ghostty|--zsh) TARGETS+=("${1#--}") ;;
+    --agents|--codex|--claude|--vscode|--karabiner|--ghostty|--zsh|--spaces) TARGETS+=("${1#--}") ;;
     --profile)
       (( $# >= 2 )) || { usage >&2; exit 2; }
       PROFILE="$2"; shift ;;
@@ -37,7 +37,7 @@ while (( $# )); do
   esac
   shift
 done
-(( ${#TARGETS} )) || TARGETS=(agents codex claude vscode karabiner ghostty zsh)
+(( ${#TARGETS} )) || TARGETS=(agents codex claude vscode karabiner ghostty zsh spaces)
 
 if (( ${TARGETS[(Ie)codex]} )); then
   command -v uv >/dev/null || { echo 'uv is required for Codex sync' >&2; exit 2; }
@@ -155,5 +155,10 @@ if (( result == 0 || DRY_RUN )) || [[ "$MODE" == status ]]; then
   if (( ${TARGETS[(Ie)zsh]} )); then
     install_file "$ROOT/configs/zsh/.zshrc" "${ZDOTDIR:-$HOME}/.zshrc"
   fi
+fi
+if (( ${TARGETS[(Ie)spaces]} )); then
+  args=("$MODE")
+  (( ! DRY_RUN )) || args+=(--dry-run)
+  python3 "$ROOT/scripts/sync-spaces.py" "${args[@]}" || result=$?
 fi
 exit "$result"

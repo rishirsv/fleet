@@ -85,8 +85,8 @@ Open the MX Master 4 in Logi Options+ and select **Global settings**.
 | Gesture button: click | Mission Control |
 | Gesture button: hold + move up | Mission Control |
 | Gesture button: hold + move down | App Exposé |
-| Gesture button: hold + move left | `Command+Control+Option+Shift+Left` |
-| Gesture button: hold + move right | `Command+Control+Option+Shift+Right` |
+| Gesture button: hold + move left | Built-in Desktop left (macOS `Control+Left`) |
+| Gesture button: hold + move right | Built-in Desktop right (macOS `Control+Right`) |
 | Additional button (`c195`) | Stored keystroke: `Escape`; the UI labels it “Keyboard shortcut: None” |
 
 For `c196`, the stored Logitech keystroke must include all three fields below.

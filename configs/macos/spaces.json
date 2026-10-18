@@ -1,0 +1,10 @@
+{
+  "AppleSymbolicHotKeys": {
+    "79": {"enabled": true, "value": {"type": "standard", "parameters": [65535, 123, 8650752]}},
+    "81": {"enabled": true, "value": {"type": "standard", "parameters": [65535, 124, 8650752]}}
+  },
+  "tinycast": {
+    "hotkey.windowCommand.previous-space": "{\"combo\":{\"_0\":{\"carbonKeyCode\":123,\"carbonModifiers\":6912}}}",
+    "hotkey.windowCommand.next-space": "{\"combo\":{\"_0\":{\"carbonKeyCode\":124,\"carbonModifiers\":6912}}}"
+  }
+}
