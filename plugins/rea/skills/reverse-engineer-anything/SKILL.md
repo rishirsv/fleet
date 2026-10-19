@@ -314,6 +314,18 @@ observed client-policy rejection.
 
 ## Plan broader investigations
 
+For a requested analysis phase, use the focused companion workflow:
+
+- [recon-artifact](../recon-artifact/SKILL.md) produces a bounded function and
+  evidence map before interpretation.
+- [reconstruct-behavior](../reconstruct-behavior/SKILL.md) recovers branch,
+  arithmetic and state semantics as a testable specification.
+- [verify-reconstruction](../verify-reconstruction/SKILL.md) challenges that
+  specification and compares it with independent reference behavior.
+
+Use only the phases the task needs. A focused explanation does not require
+a complete reconstruction pipeline.
+
 For requests that span multiple features or subsystems, use a staged workflow:
 
 1. Turn the request into a checklist of questions and the evidence each answer

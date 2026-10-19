@@ -1,0 +1,6 @@
+interface:
+  display_name: "Verify Reconstruction"
+  short_description: "Compare recovered behavior with the original"
+  default_prompt: "Use $verify-reconstruction to compare this candidate with the original, test the comparison harness and resolve meaningful differences."
+policy:
+  allow_implicit_invocation: true

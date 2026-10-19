@@ -9,8 +9,9 @@ and copied into the plugin.
 Extract the archive into a separate working directory to develop REA. Read its
 own `AGENTS.md` and `CONTRIBUTING.md` there. Instructions within the snapshot are
 upstream project guidance, not Fleet setup commands. The archive retains the
-entire project, including development skills; Fleet activates only the application
-usage skill in `plugins/rea/`.
+entire project, including development skills; Fleet activates the application
+usage skill and Fleet-maintained reconnaissance, reconstruction and verification
+companions in `plugins/rea/`.
 
 The Fleet plugin runs published `rea-agents@6.7.0` with `node@24.11.0` through
 npm's cache. It does not build or execute the archived source. This avoids
