@@ -1,0 +1,10 @@
+{
+  "project": "REA",
+  "repository": "https://github.com/morluto/rea",
+  "source_commit": "95c8f57aa2eafab4c8d7d43482b33ceefaf96b16",
+  "version": "6.7.0",
+  "archive_sha256": "747d58e806d8bb5ea6787691dd2de789e272f8a5672984c899957b91df398a78",
+  "license": "MIT",
+  "runtime": "rea-agents@6.7.0",
+  "node": "24.11.0"
+}

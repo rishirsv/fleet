@@ -1,0 +1,36 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "rea",
+  "version": "0.1.0",
+  "description": "Inspect shipped applications and artifacts with the local REA CLI and MCP server.",
+  "author": {
+    "name": "Rishi"
+  },
+  "keywords": [
+    "rea",
+    "reverse-engineering",
+    "mcp",
+    "binary-analysis"
+  ],
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Rea",
+        "shortDescription": "Understand shipped apps",
+        "longDescription": "Inspect native, managed, JavaScript and Electron applications with REA. Includes the upstream evidence workflow and a version-pinned local MCP server. Analysis engines are bring-your-own.",
+        "developerName": "Rishi",
+        "category": "Developer Tools",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "defaultPrompt": [
+          "Use $reverse-engineer-anything to investigate this application and explain the evidence."
+        ],
+        "composerIcon": "./assets/icon.svg",
+        "logo": "./assets/icon.svg"
+      }
+    }
+  }
+}

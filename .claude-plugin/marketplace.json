@@ -50,6 +50,21 @@
         "research",
         "accessibility"
       ]
+    },
+    {
+      "name": "rea",
+      "source": "./plugins/rea",
+      "description": "Inspect shipped applications and artifacts with the local REA CLI and MCP server.",
+      "author": {
+        "name": "Rishi"
+      },
+      "category": "development",
+      "tags": [
+        "rea",
+        "reverse-engineering",
+        "mcp",
+        "binary-analysis"
+      ]
     }
   ]
 }

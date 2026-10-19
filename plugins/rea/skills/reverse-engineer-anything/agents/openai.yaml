@@ -1,0 +1,6 @@
+interface:
+  display_name: "Rea"
+  short_description: "Inspect shipped apps with local evidence"
+  default_prompt: "Use $reverse-engineer-anything to investigate this application and explain the evidence."
+policy:
+  allow_implicit_invocation: true

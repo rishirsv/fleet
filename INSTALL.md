@@ -211,3 +211,16 @@ The standalone helper is `python3 scripts/logi-options/sync-spaces.py apply`.
 Tinycast's Settings → Backup → Export Backup saves its native backup separately;
 keep that archive outside Git because it may include personal application data.
 Verify physical Hyper+Left/Right and gesture-button+left/right after restore.
+
+## Rea application analysis
+
+Rea is a local MCP plugin available alongside Dots, Drafts and Design. Fleet sync
+installs `rea@dots` for both local- and cloud-selected Codex profiles and Claude
+Code. It preserves the selected Dots/Drafts source. Start a fresh chat and use
+`$reverse-engineer-anything` with the application or artifact to inspect.
+
+The first launch needs npm/network access to cache REA 6.7.0 and Node 24.11.0.
+Native analysis engines are configured separately on each computer. This runtime
+is local; it does not provide tools to ChatGPT web/mobile. The supplied source
+snapshot and provenance are stored under `projects/rea/`; the installable package
+is `plugins/rea/`. See its README for runtime and validation details.

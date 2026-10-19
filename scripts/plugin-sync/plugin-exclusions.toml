@@ -25,3 +25,7 @@ enabled = true
 
 [plugins."design@created-by-me-remote"]
 enabled = false
+
+# REA needs a local process in either account profile.
+[plugins."rea@dots"]
+enabled = true

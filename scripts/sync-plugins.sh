@@ -15,7 +15,8 @@ Refreshes repo-owned plugins and verifies their installed versions. Codex also
 syncs ~/.codex-personal when it exists. Each profile loads either cloud or local
 Fleet plugins. --source selects and remembers the source for CODEX_HOME (or ~/.codex);
 it does not change the second profile. Unconfigured profiles default to local.
-Cloud mode verifies cloud availability before removing local duplicates.
+Cloud mode verifies cloud skills before removing local duplicates; local MCP
+plugins selected by the profile policy remain installed.
 Requires uv for the scoped Codex configuration merge.
 Defaults to --all. Refuses uncommitted
 plugin source unless --allow-dirty is passed for development testing.
@@ -106,7 +107,7 @@ codex_for() {
 
 sync_codex_home() {
   local label="$1" home="$2" selection="${3:-}" profile_home policy agent_source agent_target backup spec name version installed stale marketplaces
-  local -a active_specs
+  local -a active_specs local_specs
   [[ -z "$home" || -d "$home" ]] || { echo "Skipping $label: $home does not exist"; return; }
 
   echo "Syncing $label"
@@ -119,21 +120,30 @@ sync_codex_home() {
   uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" apply \
     --source "$policy" \
     --target "$profile_home/config.toml"
-  # Registering the repo can install its packages again. Cloud profiles must
-  # never enter the local installation path.
-  if [[ "$policy" != */plugins-cloud.toml ]]; then
+  # A local MCP plugin can coexist with cloud skills. The profile policy
+  # selects which marketplace packages are local, independently of Dots/Drafts.
+  local_specs=("${(@f)$(uv run --quiet --with tomlkit==0.13.3 python -c '
+import sys, tomlkit
+from pathlib import Path
+policy = tomlkit.parse(Path(sys.argv[1]).read_text())["plugins"]
+for spec in sys.argv[2:]:
+    name = spec.split("\t", 1)[0]
+    if policy.get(name + "@dots", {}).get("enabled", False):
+        print(spec)
+' "$policy" "${CODEX_SPECS[@]}")}")
+  if (( ${#local_specs} )); then
     codex_for "$home" plugin marketplace add "$ROOT" >/dev/null
   fi
   installed="$(codex_for "$home" plugin list --json)"
   active_specs=()
-  if [[ "$policy" != */plugins-cloud.toml ]]; then
+  if (( ${#local_specs} )); then
     active_specs=("${(@f)$(python3 -c '
 import json, sys
 disabled = {p["pluginId"] for p in json.load(sys.stdin)["installed"] if p.get("enabled") is False}
 for spec in sys.argv[1:]:
     if spec.split("\t", 1)[0] + "@dots" not in disabled:
         print(spec)
-' "${CODEX_SPECS[@]}" <<< "$installed")}")
+' "${local_specs[@]}" <<< "$installed")}")
   fi
   for spec in "${active_specs[@]}"; do
     [[ -n "$spec" ]] || continue
@@ -164,14 +174,15 @@ if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(error
   if [[ "$policy" == */plugins-cloud.toml ]]; then
     for spec in "${CODEX_SPECS[@]}"; do
       IFS=$'\t' read -r name version <<< "$spec"
+      [[ "${local_specs[(r)$spec]:-}" != "" ]] && continue
       if python3 -c 'import json,sys; raise SystemExit(not any(p["pluginId"] == sys.argv[1] for p in json.load(sys.stdin)["installed"]))' "$name@dots" <<< "$installed"; then
         codex_for "$home" plugin remove "$name@dots" >/dev/null
       fi
     done
     # Desktop lists registered folder-marketplace entries even after uninstall.
-    # Cloud profiles must remove the local source as well as its packages.
+    # Remove the marketplace only when no local runtime package needs it.
     marketplaces="$(codex_for "$home" plugin marketplace list --json)"
-    if python3 -c 'import json,sys; raise SystemExit(not any(m["name"] == "dots" for m in json.load(sys.stdin)["marketplaces"]))' <<< "$marketplaces"; then
+    if (( ! ${#local_specs} )) && python3 -c 'import json,sys; raise SystemExit(not any(m["name"] == "dots" for m in json.load(sys.stdin)["marketplaces"]))' <<< "$marketplaces"; then
       codex_for "$home" plugin marketplace remove dots >/dev/null
     fi
     # plugin remove also removes its config entry; retain explicit exclusions.

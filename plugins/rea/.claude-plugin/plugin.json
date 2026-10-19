@@ -1,0 +1,16 @@
+{
+  "name": "rea",
+  "version": "0.1.0",
+  "description": "Inspect shipped applications and artifacts with the local REA CLI and MCP server.",
+  "author": {
+    "name": "Rishi"
+  },
+  "keywords": [
+    "rea",
+    "reverse-engineering",
+    "mcp",
+    "binary-analysis"
+  ],
+  "license": "MIT",
+  "mcpServers": "./.mcp.json"
+}
