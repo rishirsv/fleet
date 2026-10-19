@@ -1,5 +1,5 @@
 interface:
-  display_name: "apply-ambition"
+  display_name: "Apply Ambition"
   short_description: "Push a task toward a deeper, wider outcome"
   icon_small: "../../assets/icon.png"
   icon_large: "../../assets/logo.png"
