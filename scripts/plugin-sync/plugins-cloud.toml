@@ -30,3 +30,7 @@ enabled = false
 # REA needs a local process in either account profile.
 [plugins."rea@dots"]
 enabled = true
+
+# Superseded standalone REA installation; Fleet owns the active runtime.
+[plugins."rea@rea-local"]
+enabled = false

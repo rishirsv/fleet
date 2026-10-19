@@ -1,1 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 32 32"><rect width="32" height="32" rx="5" fill="#20252b"/><path fill="#fff" d="M9 7h7.5c5 0 7.5 2.3 7.5 6.2 0 2.8-1.4 4.7-4 5.6L25 25h-5l-4.5-5.8H13V25H9zm4 3.5v5.2h3.5c2.3 0 3.5-.8 3.5-2.6s-1.2-2.6-3.5-2.6z"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Reverse-Engineer</title>
+  <rect width="64" height="64" rx="16" fill="#162B49"/>
+  <path d="m15 40 17 10 17-10" stroke="#729CF2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m15 31 17 10 17-10" stroke="#71D8E5" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="m32 12 17 10-17 10-17-10 17-10Z" fill="#F1F6FF"/>
+  <path d="m32 18 7 4-7 4-7-4 7-4Z" fill="#162B49"/>
+</svg>

@@ -1,6 +1,8 @@
 interface:
-  display_name: "Rea"
+  display_name: "Reverse-Engineer"
   short_description: "Inspect shipped apps with local evidence"
+  icon_small: "../../assets/icon.svg"
+  icon_large: "../../assets/logo.png"
   default_prompt: "Use $reverse-engineer-anything to investigate this application and explain the evidence."
 policy:
   allow_implicit_invocation: true

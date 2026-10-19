@@ -1,7 +1,7 @@
 {
   "name": "rea",
-  "version": "0.1.0",
-  "description": "Inspect shipped applications and artifacts with the local REA CLI and MCP server.",
+  "version": "0.1.1",
+  "description": "Understand how shipped software works through local, evidence-based analysis.",
   "author": {
     "name": "Rishi"
   },
@@ -15,9 +15,9 @@
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "Rea",
-    "shortDescription": "Understand shipped apps",
-    "longDescription": "Inspect native, managed, JavaScript and Electron applications with REA. Includes the upstream evidence workflow and a version-pinned local MCP server. Analysis engines are bring-your-own.",
+    "displayName": "Reverse-Engineer",
+    "shortDescription": "See how software works",
+    "longDescription": "Trace how shipped software works. Inspect native, managed, JavaScript and Electron applications, compare versions, and connect findings to evidence. Use those findings to guide reconstruction. Powered by local REA analysis; native analysis engines are configured separately.",
     "developerName": "Rishi",
     "category": "Developer Tools",
     "capabilities": [
@@ -28,6 +28,8 @@
       "Use $reverse-engineer-anything to investigate this application and explain the evidence."
     ],
     "composerIcon": "./assets/icon.svg",
-    "logo": "./assets/icon.svg"
+    "logo": "./assets/logo.png",
+    "composerIconDark": "./assets/icon.svg",
+    "logoDark": "./assets/logo.png"
   }
 }

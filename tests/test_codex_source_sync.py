@@ -28,6 +28,43 @@ for line in sys.stdin:
 
 
 class CodexSourceSyncTests(unittest.TestCase):
+    def test_local_runtime_coexists_with_cloud_skills_and_excludes_legacy_copy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            binary = root / 'codex'
+            binary.write_text(FAKE_CODEX)
+            binary.chmod(0o755)
+            config = root / 'config.toml'
+            config.write_text('model = "unchanged"\n')
+            policy = root / 'policy.toml'
+            policy.write_text(
+                '[plugins."dots@created-by-me-remote"]\nenabled = true\n'
+                '[plugins."rea@dots"]\nenabled = true\n'
+                '[plugins."rea@rea-local"]\nenabled = false\n')
+            skills = [
+                dict(name='dots:dots', path='/cloud/dots/SKILL.md', enabled=True,
+                     pluginId='dots@created-by-me-remote'),
+                dict(name='rea:reverse-engineer-anything', path='/fleet/rea/SKILL.md',
+                     enabled=True, pluginId='rea@dots'),
+                dict(name='rea:reverse-engineer-anything', path='/legacy/rea/SKILL.md',
+                     enabled=True, pluginId='rea@rea-local'),
+            ]
+            env = {**os.environ, 'CODEX_HOME': str(root),
+                   'PATH': f'{root}:' + os.environ['PATH'], 'TEST_SKILLS': json.dumps(skills)}
+            args = ['uv', 'run', '--quiet', '--script', str(VERIFIER),
+                    '--policy', str(policy), '--cwd', str(root)]
+            failed = subprocess.run(args, env=env, text=True, capture_output=True)
+            self.assertNotEqual(failed.returncode, 0)
+            self.assertIn('loaded 2 copies', failed.stderr)
+            repaired = subprocess.run(args + ['--repair-source-exclusions'], env=env,
+                                      text=True, capture_output=True)
+            self.assertEqual(repaired.returncode, 0, repaired.stderr)
+            self.assertIn('loaded 2 Fleet plugin skills', repaired.stdout)
+            self.assertIn('/legacy/rea/SKILL.md', config.read_text())
+            self.assertNotIn('/fleet/rea/SKILL.md', config.read_text())
+            self.assertNotIn('/cloud/dots/SKILL.md', config.read_text())
+            self.assertIn('model = "unchanged"', config.read_text())
+
     def test_repair_upgrade_source_switch_and_user_ownership(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

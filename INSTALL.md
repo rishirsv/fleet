@@ -212,9 +212,9 @@ Tinycast's Settings → Backup → Export Backup saves its native backup separat
 keep that archive outside Git because it may include personal application data.
 Verify physical Hyper+Left/Right and gesture-button+left/right after restore.
 
-## Rea application analysis
+## Reverse-Engineer application analysis
 
-Rea is a local MCP plugin available alongside Dots, Drafts and Design. Fleet sync
+Reverse-Engineer is a local MCP plugin available alongside Dots, Drafts and Design. Fleet sync
 installs `rea@dots` for both local- and cloud-selected Codex profiles and Claude
 Code. It preserves the selected Dots/Drafts source. Start a fresh chat and use
 `$reverse-engineer-anything` with the application or artifact to inspect.
