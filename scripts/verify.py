@@ -27,7 +27,7 @@ def string_field(text: str, field: str) -> str | None:
     return value[1:-1] if value[:1] in {"'", '"'} and value[-1:] == value[:1] else value
 
 
-def validate_skill(skill_dir: Path, errors: list[str]) -> str | None:
+def validate_skill(skill_dir: Path, errors: list[str], *, upstream: bool = False) -> str | None:
     skill_file = skill_dir / "SKILL.md"
     agent_file = skill_dir / "agents" / "openai.yaml"
     text = skill_file.read_text(encoding="utf-8")
@@ -48,6 +48,9 @@ def validate_skill(skill_dir: Path, errors: list[str]) -> str | None:
     if description is None:
         errors.append(f"{skill_file}: missing frontmatter description")
 
+    if upstream:
+        # Upstream owns optional UI metadata and invocation defaults.
+        return name
     if not agent_file.exists():
         errors.append(f"{agent_file}: missing agent metadata")
         return name
@@ -83,8 +86,12 @@ def validate_manifest(root: Path, errors: list[str]) -> None:
 
 
 def validate_markdown_links(root: Path, errors: list[str]) -> None:
+    # Imported docs have their own upstream gate, including generated links.
+    origin = root / 'fleet/upstream.json'
+    imported = set(json.loads(origin.read_text())['files']) if origin.exists() else set()
     for path in sorted(root.rglob("*.md")):
-        if "node_modules" in path.relative_to(root).parts:
+        relative = path.relative_to(root)
+        if "node_modules" in relative.parts or relative.as_posix() in imported or relative.parts[:2] == ('fleet', '.cache'):
             continue
         text = path.read_text(encoding="utf-8")
         for match in MARKDOWN_LINK.finditer(text):
@@ -103,13 +110,14 @@ def validate_markdown_links(root: Path, errors: list[str]) -> None:
 def validate_plugin(root: Path) -> list[str]:
     errors: list[str] = []
     skills = root / "skills"
+    upstream = root / 'fleet/upstream.json'
     skill_dirs = sorted(path.parent for path in skills.glob("*/SKILL.md"))
     if not skill_dirs:
         errors.append(f"{skills}: no source skills found")
 
     names: dict[str, Path] = {}
     for skill_dir in skill_dirs:
-        name = validate_skill(skill_dir, errors)
+        name = validate_skill(skill_dir, errors, upstream=upstream.exists())
         if name is not None:
             if name in names:
                 errors.append(f"{skill_dir / 'SKILL.md'}: duplicate skill name {name!r}; first used by {names[name]}")
@@ -118,6 +126,15 @@ def validate_plugin(root: Path) -> list[str]:
 
     validate_manifest(root, errors)
     validate_markdown_links(root, errors)
+    if upstream.exists():
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('rea_import', ROOT / 'scripts/update-rea.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        try:
+            module.check(root)
+        except RuntimeError as exc:
+            errors.append(str(exc))
     return errors
 
 

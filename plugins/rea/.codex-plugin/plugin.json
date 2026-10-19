@@ -1,6 +1,6 @@
 {
   "name": "rea",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Understand how shipped software works through local, evidence-based analysis.",
   "author": {
     "name": "Rishi"
@@ -27,9 +27,9 @@
     "defaultPrompt": [
       "Use $reverse-engineer-anything to investigate this application and explain the evidence."
     ],
-    "composerIcon": "./assets/icon.svg",
-    "logo": "./assets/logo.png",
-    "composerIconDark": "./assets/icon.svg",
-    "logoDark": "./assets/logo.png"
+    "composerIcon": "./fleet/assets/icon.svg",
+    "logo": "./fleet/assets/logo.png",
+    "composerIconDark": "./fleet/assets/icon.svg",
+    "logoDark": "./fleet/assets/logo.png"
   }
 }

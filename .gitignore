@@ -30,6 +30,7 @@ venv/
 
 # Local dependencies and build output
 node_modules/
+/plugins/rea/fleet/.cache/
 build/
 dist/
 

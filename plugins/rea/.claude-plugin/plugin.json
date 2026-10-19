@@ -1,6 +1,6 @@
 {
   "name": "rea",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Understand how shipped software works through local, evidence-based analysis.",
   "author": {
     "name": "Rishi"
@@ -12,5 +12,6 @@
     "binary-analysis"
   ],
   "license": "MIT",
-  "mcpServers": "./.mcp.json"
+  "mcpServers": "./.mcp.json",
+  "skills": "./skills/"
 }

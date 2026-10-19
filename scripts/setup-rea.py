@@ -8,10 +8,9 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
-import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / 'plugins/rea/scripts'))
+sys.path.insert(0, str(ROOT / 'plugins/rea/fleet'))
 from runtime import ensure_runtime
 
 
@@ -28,18 +27,16 @@ def prepare_installed(client: str, built: Path) -> None:
         entry = next(p for p in entries if p['scope'] == 'user')
         installed = Path(entry.get('readFromFolder') or entry['installPath'])
     # Do not write into an unrelated or unexpectedly resolved package.
-    for relative in ('mcp.json', 'runtime/origin.json', 'scripts/runtime.py'):
+    for relative in ('mcp.json', 'fleet/upstream.json', 'fleet/runtime.py'):
         if (installed / relative).read_bytes() != (ROOT / 'plugins/rea' / relative).read_bytes():
             raise RuntimeError(f'{client} installed a different REA package at {installed}; leaving it untouched.')
-    destination = installed / 'node_modules/.fleet-rea' / built.name
-    if not destination.exists():
-        destination.parent.mkdir(parents=True, exist_ok=True)
-        # Copy a verified relocatable build rather than downloading dependencies
-        # again or letting a cold compile exceed the client's MCP startup deadline.
-        with tempfile.TemporaryDirectory(prefix='.prepare-', dir=destination.parent) as tmp:
-            staging = Path(tmp) / 'source'
-            shutil.copytree(built, staging, symlinks=True)
-            staging.rename(destination)
+    # Only prime the installation this invocation just created. Upstream's
+    # normal build produces these relocatable outputs; no alternate build recipe.
+    for relative in ('node_modules', 'dist', 'skills/reverse-engineer-anything'):
+        destination = installed / relative
+        if destination.exists():
+            shutil.rmtree(destination)
+        shutil.copytree(built / relative, destination, symlinks=True)
     ensure_runtime(plugin=installed, build=False)
 
 
@@ -58,6 +55,7 @@ def main() -> int:
         installed = data.get('installed', []) if isinstance(data, dict) else data
         if any(p.get('name') == 'rea' or p.get('pluginId', p.get('id', '')).split('@', 1)[0] == 'rea' for p in installed):
             parser.error(f'{client} already has REA installed. Refusing to replace an installation that other projects may use. Run without --client to prepare Fleet only; migrate explicitly after those projects finish.')
+    subprocess.run([sys.executable, str(ROOT / 'scripts/update-rea.py')], check=True)
     runtime, node, env = ensure_runtime()
     for client in clients:
         # REA alone: never invoke the Fleet-wide sync or upstream `rea setup`.
@@ -71,7 +69,7 @@ def main() -> int:
             subprocess.run(command, check=True, env=env)
         prepare_installed(client, runtime)
     print(f'Fleet REA ready: {runtime}')
-    print('Launch: python3 plugins/rea/scripts/rea.py mcp')
+    print('Launch: python3 plugins/rea/fleet/rea.py mcp')
     if clients:
         print('Registered and prepared for ' + ', '.join(clients) + '. Start a new chat when ready.')
     else:

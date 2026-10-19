@@ -1,6 +1,0 @@
-interface:
-  display_name: "Recon Artifact"
-  short_description: "Find feature entry points from an app or artifact"
-  default_prompt: "Use $recon-artifact on this app, artifact or URL to find the relevant implementation and the next useful probe."
-policy:
-  allow_implicit_invocation: true

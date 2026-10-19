@@ -1,6 +1,0 @@
-interface:
-  display_name: "Reconstruct Behavior"
-  short_description: "Trace a feature and recover its working behavior"
-  default_prompt: "Use $reconstruct-behavior on this target to explain the feature from trigger to result and complete the requested reconstruction."
-policy:
-  allow_implicit_invocation: true

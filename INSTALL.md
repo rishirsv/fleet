@@ -212,21 +212,25 @@ Verify physical Hyper+Left/Right and gesture-button+left/right after restore.
 
 ## Reverse-Engineer application analysis
 
-Reverse-Engineer is a local MCP plugin available alongside Dots, Drafts and Design. Fleet sync
-installs `rea@dots` for both local- and cloud-selected Codex profiles and Claude
-Code. It preserves the selected Dots/Drafts source. Start a fresh chat and use
-`$reverse-engineer-anything` with the application or artifact to inspect.
+Fleet packages upstream REA as `rea@dots`. Use `$reverse-engineer-anything` with
+an application, artifact or behavior question. Its four upstream development
+skills are included too; Fleet adds no investigation skills.
 
-For a new computer, install Python 3.10+, supported Node.js with npm, and Codex
-CLI separately, then run `python3 scripts/setup-rea.py --client codex` from Fleet.
-Use `--client claude` or `--client both` for other clients. This builds the bundled
-REA source, verifies MCP and registers only REA. It refuses to replace an existing
-REA install. On an already configured computer, omit `--client` to prepare only
-the repo runtime while preserving other projects' installed copies.
+For a new computer, install Python 3.10+, the Node/npm toolchain pinned by REA,
+and the desired client CLI separately, then run:
 
-Source, lockfile and provenance travel in `plugins/rea/runtime/`; maintained skills
-remain in `plugins/rea/skills/`. npm dependencies and compiled output are generated
-under that plugin's ignored `node_modules/`, using a private npm cache. First setup
-needs npm network access. Native engines, browsers and Apple/Android toolchains
-are installed separately. This local runtime does not provide ChatGPT web/mobile
-tools. See the [REA setup guide](plugins/rea/README.md) for dependencies and commands.
+```sh
+python3 scripts/setup-rea.py --client codex
+```
+
+Use `--client claude` or `--client both` for other clients. Setup uses upstream's
+normal source build, verifies MCP and registers only REA. It refuses to replace
+an existing REA installation. Omit `--client` to build only the repo copy while
+other projects continue using their installed copies.
+
+The complete upstream source is readable in `plugins/rea/`, with Fleet's additions
+isolated in `fleet/` and the plugin manifests. Dependencies and build output are
+ignored. Native engines and platform SDKs still require separate installation.
+See the [Fleet packaging guide](plugins/rea/fleet/README.md) for setup, upstream
+updates, dependencies and package ownership. Fleet-wide sync still refreshes
+installed plugins; do not run it while preserving older active installations.

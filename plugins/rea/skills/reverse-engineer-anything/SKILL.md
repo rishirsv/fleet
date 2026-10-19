@@ -3,6 +3,7 @@ name: reverse-engineer-anything
 description: Reverse engineer native, managed, Electron/JavaScript, packaged, firmware, and browser targets with REA. Use shipped-artifact or requested runtime evidence to explain features, compare versions, decompile code, or guide a reconstruction. Skip REA for ordinary source-repository architecture analysis.
 metadata:
   version: "42"
+  tool_count: 207
 ---
 
 # REA
@@ -12,20 +13,6 @@ passive application runtime evidence, or comparison with
 behavior not established by available source. For ordinary analysis of a
 complete source repository, use normal repository tools and do not run REA
 readiness or provider commands.
-
-## Fleet plugin runtime
-
-This plugin registers the local `rea` MCP server using REA 6.7.0 and Node
-24.11.0. The first launch needs npm/network access; later launches reuse npm's
-cache. It does not install native analysis engines. Use the connected tool
-schemas as the authority for capabilities.
-
-For a CLI fallback matching this plugin, use
-`npx --yes --package=node@24.11.0 --package=rea-agents@6.7.0 rea` followed by
-the command. Prefer that over a different global version. Repair a missing
-plugin registration through Fleet plugin sync first. Do not run upstream setup
-to add a second MCP registration or standalone skill for this plugin. The setup
-instructions below apply only to a separately requested standalone installation.
 
 ## Connect only when needed
 
@@ -47,7 +34,7 @@ availability have different remedies; avoid repeating setup for all of them.
 
 1. Diagnose without changing REA or client configuration. `npx` may download
    the package and write to npm's cache. For Codex, run
-   `npx --yes --package=node@24.11.0 --package=rea-agents@6.7.0 rea doctor --client codex --json`. Substitute the current
+   `npx -y rea-agents@6.7.0 doctor --client codex --json`. Substitute the current
    supported client: `claude_code`, `claude_desktop`, `codex`, `cursor`,
    `gemini_cli`, `windsurf`, `devin`, `opencode`, `antigravity`, `copilot_cli`,
    `commandcode`, `vscode`, `grok_build`, `omp`, or `grok_bot`. `grok_bot` has no local
@@ -61,12 +48,12 @@ availability have different remedies; avoid repeating setup for all of them.
    that provider: static JavaScript inspection needs neither Hopper nor Ghidra,
    and Android inspection has separate bring-your-own JADX/Java prerequisites.
 3. For a configuration repair, prepare the read-only plan:
-   `npx --yes --package=node@24.11.0 --package=rea-agents@6.7.0 rea setup --client codex --dry-run --json`.
+   `npx -y rea-agents@6.7.0 setup --client codex --dry-run --json`.
    Use the current client's ID, show its exact proposed paths, backups, and
    changes, and obtain approval before setup writes configuration or installs
    Hopper. Setup normally installs the matching bundled skill too; include that
    replacement in the reviewed plan. After approval, apply the same scope with
-   `npx --yes --package=node@24.11.0 --package=rea-agents@6.7.0 rea setup --client codex --yes`. Add `--install-hopper`
+   `npx -y rea-agents@6.7.0 setup --client codex --yes`. Add `--install-hopper`
    only if that separate installation was needed and explicitly approved.
 4. Restart/reconnect the affected agent. Verify that REA tools actually appear
    in the session, then resume the original investigation. If they remain
@@ -81,7 +68,7 @@ with a version-pinned `rea-agents` package or continue through the CLI.
 A concrete CLI fallback for an operator-supplied JavaScript tree or ASAR is:
 
 ```bash
-npx --yes --package=node@24.11.0 --package=rea-agents@6.7.0 rea analyze-javascript-application /absolute/path/to/app --json
+npx -y rea-agents@6.7.0 analyze-javascript-application /absolute/path/to/app --json
 ```
 
 No MCP registration or native engine is required. Read the returned Evidence,
@@ -89,7 +76,7 @@ graph, limitations, and unknowns with the same care as an MCP result; the CLI
 returns the Evidence record directly. This fallback does not establish that
 MCP is configured. Native CLI tasks still require their selected engine.
 Prefer an existing `rea` CLI. When none is installed and REA package acquisition
-is within the authorized scope, use `npx --yes --package=node@24.11.0 --package=rea-agents@6.7.0 rea` in its place.
+is within the authorized scope, use `npx -y rea-agents@6.7.0` in its place.
 Configuration repair starts with a read-only setup plan; show paths, backups and
 skill replacement before applying authorized changes. Preserve existing approval
 and target-execution boundaries. REA setup never installs or upgrades unrelated
@@ -313,18 +300,6 @@ scope and the host's actual access requirements; use the recovery guide for an
 observed client-policy rejection.
 
 ## Plan broader investigations
-
-For a requested analysis phase, use the focused companion workflow:
-
-- [recon-artifact](../recon-artifact/SKILL.md) produces a bounded function and
-  evidence map before interpretation.
-- [reconstruct-behavior](../reconstruct-behavior/SKILL.md) recovers branch,
-  arithmetic and state semantics as a testable specification.
-- [verify-reconstruction](../verify-reconstruction/SKILL.md) challenges that
-  specification and compares it with independent reference behavior.
-
-Use only the phases the task needs. A focused explanation does not require
-a complete reconstruction pipeline.
 
 For requests that span multiple features or subsystems, use a staged workflow:
 
