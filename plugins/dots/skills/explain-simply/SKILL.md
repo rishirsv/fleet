@@ -8,10 +8,27 @@ description: "Explains a subject or the previous answer in plain language with f
 Explain the named subject or, when none is named, the previous answer. Ask what
 to explain only when neither is clear.
 
-Use plain language that does not require specialist knowledge. Give the
-background needed to answer the question without restarting the whole subject.
-Lead with the answer, then explain the relevant mechanism or distinction and
-provide the context needed to understand it.
+The reader is busy and may remember none of this session. Restore just enough
+context for someone returning from another task. Make the explanation compelling
+by making the consequence clear. Name the actual feature, decision, or record
+before referring to it as "this" or "it". Calibrate to the knowledge the user
+has demonstrated; avoid jargon the agent invented unless the user understands it.
+
+Use plain language that does not require specialist knowledge. Start with a
+short takeaway title, ideally 3–7 familiar words, that states what the reader
+should understand. Lead with the answer, then explain the relevant mechanism or
+distinction, why it matters, and any useful decision or action. Give the
+background needed without restarting the whole subject.
+
+Use a few plain sentences for a simple idea and a few bullets when a complex
+idea needs them. Treat about 120 words per distinct topic as a rough guide, not
+a limit. Let the subject and requested coverage determine the length. Keep
+uncertainty next to the claim; preserve consequential limits, stored-data
+changes, and the user's requested coverage.
+
+If the user asks for several PRs or tasks, cover them all. If they ask to decide
+one at a time, explain the first item and ask for that decision before advancing.
+An explicit explanation request is already a reason to explain.
 
 Explain the idea in familiar words. Describe the behavior before naming
 technical terms. Use an example, analogy, comparison, or compact text diagram
