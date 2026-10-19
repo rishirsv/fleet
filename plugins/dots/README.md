@@ -51,9 +51,3 @@ unless you request it.
 
 See [Dots](skills/dots/SKILL.md) for the complete routing map. Each skill
 defines its own inputs, permissions, and checks.
-
-## Optional tools
-
-[Tunnel](scripts/dots-tunnel/README.md) is a separate connection for locally
-authorized file access and optional command execution from ChatGPT. The Dots
-plugin contains its source and workflow, but does not bundle the app connection.

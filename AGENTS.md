@@ -1,6 +1,6 @@
 # Fleet
 
-Source for Dots and Drafts plugins, Tunnel, and selected portable configuration.
+Source for Dots and Drafts plugins and selected portable configuration.
 For setup and sync behavior, see [INSTALL.md](INSTALL.md).
 
 ## Ownership
@@ -26,11 +26,7 @@ choice in `dots-plugin-source`. Preserve other profiles' choices and enforce
 this policy in config and plugin sync. Never uninstall account-wide cloud
 plugins to fix desktop duplicates.
 
-Keep Dots a standalone skills plugin and Tunnel a separate tools-only app.
-Dots manifests must not bind Tunnel through `.app.json` or `apps`. Preserve
-Tunnel's existing identity, service, connection, and authorized folders. Keep
-Tunnel enabled independently of Dots/Drafts source selection; never return
-Dots skills to its app-backed canonical plugin.
+Keep Dots a standalone skills plugin with no `.app.json` or `apps` binding.
 
 Follow [the cloud release procedure](docs/maintainers/cloud-releases.md).
 Prefer Plugin Creator source/archive updates. Update the existing backend ID

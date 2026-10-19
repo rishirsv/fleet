@@ -60,7 +60,7 @@ def main():
         print('INFO  Verify Karabiner input/accessibility permissions in macOS settings; file checks cannot confirm them.')
     else:
         print('INFO  Caps Lock mapping and font installation are currently macOS-only.')
-    print('INFO  App sign-ins and Tunnel authorization remain app-managed; doctor does not change them.')
+    print('INFO  App sign-ins remain app-managed; doctor does not change them.')
     if args.configs:
         command = ['zsh', str(ROOT / 'scripts/sync-configs.sh'), '--status']
         if args.profile:

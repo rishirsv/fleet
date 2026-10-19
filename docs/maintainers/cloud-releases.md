@@ -3,9 +3,8 @@
 This procedure is for maintainers publishing an existing account or workspace
 plugin. Public users install local plugins through [INSTALL.md](../../INSTALL.md).
 
-Dots is a standalone skills plugin. Tunnel is a separate app with its own
-connection and release process. Dots packages contain no `.app.json` binding or
-`apps` declaration. Keep Git as the source for local and cloud releases.
+Dots is a standalone skills plugin. Dots packages contain no `.app.json` binding
+or `apps` declaration. Keep Git as the source for local and cloud releases.
 A profile selects cloud only when its signed-in account has those plugins.
 Otherwise it selects local. Source selection controls the local loader, not
 cloud publication or account sign-in.
@@ -64,7 +63,6 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    Git, and report host verification as blocked. Do not repeat identical ZIP
    uploads or add an app binding to work around the mismatch.
    Do not report a release complete while a surface still shows a fallback.
-   Installing or publishing skills does not start Tunnel or authorize folders.
 5. Refresh the desktop plugin inventory and verify a fresh loader uses the
    selected source without duplicates. The current `verify-skills.py`
    checks availability and known duplicates, not complete release contents.
@@ -107,14 +105,6 @@ upload and refresh, if the responses still disagree, report the branding repair
 as blocked on the host service. Repeated uploads, reinstalling the same plugin,
 and changing profile source do not resolve the observed inconsistency. Preserve
 the existing plugin identity and report skill delivery separately from branding.
-
-## Preserve Tunnel during skill releases
-
-Preserve the existing Tunnel app and its connected account, runtime credentials,
-and authorized folders. Its app-backed canonical plugin cannot be edited with
-Plugin Creator. Use the app's owning release process for Tunnel updates; never
-package Dots skills into it. Keep the tools-only Tunnel plugin enabled
-independently of the Dots/Drafts skill-source policies.
 
 If a supported publisher or read-back is unavailable, report that step as
 pending. Archive creation, local cache refresh, and local skill availability

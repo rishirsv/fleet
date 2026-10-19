@@ -4,7 +4,7 @@ Clone this repository on each computer. Install the apps you use and sign in.
 Sync requires Git, Python 3.10+, and Zsh; Codex/plugin sync also needs uv, and
 Claude plugin sync needs Node. VS Code extension installation needs `code` on
 PATH. On macOS, install Karabiner-Elements and grant its requested permissions
-for Caps Lock → Hyper. Tunnel and Logi Options retain their separate setup.
+for Caps Lock → Hyper. Logi Options retains its separate setup.
 
 ## Check this computer
 
@@ -16,7 +16,7 @@ python3 scripts/doctor.py --configs
 Doctor checks required CLI tools, per-profile plugin-source choices, Fleet hooks,
 and macOS app/font installation. `--configs` also checks saved configuration
 drift; `--profile PATH` selects a Codex profile. It reports problems without
-applying changes. App sign-ins, Tunnel authorization, and macOS permissions
+applying changes. App sign-ins and macOS permissions
 still need verification in their apps.
 
 ## Preview and apply
@@ -63,7 +63,7 @@ Apply can succeed for one target before another fails. Check the output and
 retry the failed target; backups are beside changed files. `--status` reports
 drift without writing. Sync does not execute on another computer.
 
-## Plugins and Tunnel
+## Plugins
 
 Choose the source for the account in the current Codex profile:
 
@@ -89,9 +89,7 @@ cloud releases; follow [cloud releases](docs/maintainers/cloud-releases.md).
 Config sync installs the selected VS Code extensions; Codex/Claude plugin
 installation remains a separate step.
 
-Follow [Tunnel setup](plugins/dots/scripts/dots-tunnel/README.md#local-setup)
-for its separate connection and folder authorization. Retained mouse/keyboard
-setup is in [Logi Options](configs/logi-options-plus/shortcuts.md).
+Retained mouse/keyboard setup is in [Logi Options](configs/logi-options-plus/shortcuts.md).
 
 ## Shortcuts and shell
 
@@ -186,7 +184,7 @@ Scripts expose sync, doctor, hook installation, and validation. `config-sync.py`
 contains the shared file merge helper; `plugin-sync/` contains plugin internals.
 The retained Logi repair helper is under `scripts/logi-options/`. Root tests
 cover package validation only. Sync is checked through doctor, dry-run, and
-status commands; skill and Tunnel runtime tests stay with their plugin source.
+status commands; skill tests stay with their plugin source.
 
 ## Space switching on macOS
 
