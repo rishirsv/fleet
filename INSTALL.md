@@ -217,8 +217,16 @@ installs `rea@dots` for both local- and cloud-selected Codex profiles and Claude
 Code. It preserves the selected Dots/Drafts source. Start a fresh chat and use
 `$reverse-engineer-anything` with the application or artifact to inspect.
 
-The first launch needs npm/network access to cache REA 6.7.0 and Node 24.11.0.
-Native analysis engines are configured separately on each computer. This runtime
-is local; it does not provide tools to ChatGPT web/mobile. The supplied source
-snapshot and provenance are stored under `projects/rea/`; the installable package
-is `plugins/rea/`. See its README for runtime and validation details.
+For a new computer, install Python 3.10+, supported Node.js with npm, and Codex
+CLI separately, then run `python3 scripts/setup-rea.py --client codex` from Fleet.
+Use `--client claude` or `--client both` for other clients. This builds the bundled
+REA source, verifies MCP and registers only REA. It refuses to replace an existing
+REA install. On an already configured computer, omit `--client` to prepare only
+the repo runtime while preserving other projects' installed copies.
+
+Source, lockfile and provenance travel in `plugins/rea/runtime/`; maintained skills
+remain in `plugins/rea/skills/`. npm dependencies and compiled output are generated
+under that plugin's ignored `node_modules/`, using a private npm cache. First setup
+needs npm network access. Native engines, browsers and Apple/Android toolchains
+are installed separately. This local runtime does not provide ChatGPT web/mobile
+tools. See the [REA setup guide](plugins/rea/README.md) for dependencies and commands.

@@ -1,12 +1,9 @@
 {
   "mcpServers": {
     "rea": {
-      "command": "npx",
+      "command": "python3",
       "args": [
-        "--yes",
-        "--package=node@24.11.0",
-        "--package=rea-agents@6.7.0",
-        "rea",
+        "${CLAUDE_PLUGIN_ROOT}/scripts/rea.py",
         "mcp"
       ]
     }

@@ -1,20 +1,18 @@
-# REA source snapshot
+# REA source in Fleet
 
-The supplied source project is preserved intact in `rea-6.7.0-source.zip`.
-`origin.json` records the upstream repository, source commit, version and archive
-SHA-256. This is the supplied main-branch snapshot, not a claim that it is
-byte-identical to the published npm release. Its MIT license is inside the archive
-and copied into the plugin.
+The complete upstream REA source snapshot is bundled in the installable plugin:
+[rea-6.7.0-source.zip](../../plugins/rea/runtime/rea-6.7.0-source.zip).
+[origin.json](../../plugins/rea/runtime/origin.json) records its upstream repository,
+commit, version and archive SHA-256. This supplied main-branch snapshot is not
+assumed byte-identical to the published npm release.
 
-Extract the archive into a separate working directory to develop REA. Read its
-own `AGENTS.md` and `CONTRIBUTING.md` there. Instructions within the snapshot are
-upstream project guidance, not Fleet setup commands. The archive retains the
-entire project, including development skills; Fleet activates the application
-usage skill and Fleet-maintained reconnaissance, reconstruction and verification
-companions in `plugins/rea/`.
+Fleet builds and runs this source. See the [plugin setup guide](../../plugins/rea/README.md)
+for the single new-computer command, separately installed dependencies, build
+layout and protection for existing installations. The archive includes upstream
+instructions and development skills; they do not become Fleet setup commands or
+additional active plugin skills. Fleet maintains its active skills in `plugins/rea/skills/`.
 
-The Fleet plugin runs published `rea-agents@6.7.0` with `node@24.11.0` through
-npm's cache. It does not build or execute the archived source. This avoids
-shipping development dependencies or installing over the computer's Node.
-Future source refreshes and runtime upgrades should update this provenance,
-the plugin launchers, and its skill together after validation.
+For upstream development, extract a separate working copy and read its own
+`AGENTS.md` and `CONTRIBUTING.md`. Do not edit ignored build generations or installed
+caches as maintained source. The upstream MIT license and third-party notices
+remain in the source archive, with the plugin license alongside the package.

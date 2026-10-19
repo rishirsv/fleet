@@ -5,6 +5,8 @@
   "version": "6.7.0",
   "archive_sha256": "747d58e806d8bb5ea6787691dd2de789e272f8a5672984c899957b91df398a78",
   "license": "MIT",
-  "runtime": "rea-agents@6.7.0",
-  "node": "24.11.0"
+  "runtime": "Fleet source build of REA 6.7.0",
+  "node": "^22.19.0 || ^24.11.0 || >=26.0.0",
+  "archive": "rea-6.7.0-source.zip",
+  "archive_root": "rea-main"
 }
