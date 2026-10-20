@@ -5,14 +5,12 @@ plugin. Public users install local plugins through [INSTALL.md](../../INSTALL.md
 
 Dots is a standalone skills plugin. Dots packages contain no `.app.json` binding
 or `apps` declaration. Keep Git as the source for local and cloud releases.
-A profile selects cloud only when its signed-in account has those plugins.
-Otherwise it selects local. Source selection controls the local loader, not
-cloud publication or account sign-in.
-Keep cloud Dots enabled for the personal account on both web and desktop.
-A missing icon does not indicate that the wrong source is enabled. Switching
-desktop to local would hide the cloud branding defect without repairing web.
-Use the profile's local enablement policy for duplicate loaders; account-wide
-uninstall is not a desktop-only switch.
+Fleet desktop profiles on both Macs use local Dots/Drafts and disable cloud
+copies in the local loader. Keep the account-wide cloud installations for web
+use. Follow [the desktop setup](../../INSTALL.md#plugins) when configuring a
+profile; cloud desktop loading requires an explicit source choice.
+Source selection controls the local loader, not cloud publication or account
+sign-in. Diagnose cloud branding separately from desktop source selection.
 Cloud publication is manual. Commits, pulls, hooks, and local sync commands
 must not publish an account release.
 

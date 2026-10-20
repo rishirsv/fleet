@@ -1,4 +1,4 @@
-# Work account: use local installs without also loading the personal cloud copies.
+# Fleet desktops: use local installs and keep cloud copies available on the web.
 [plugins."dots@dots"]
 enabled = true
 

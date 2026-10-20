@@ -19,11 +19,13 @@ For setup and sync behavior, see [INSTALL.md](INSTALL.md).
 
 ## Plugin boundaries
 
-Load one Dots/Drafts source per Codex profile: cloud for the personal account
-shared by web and desktop; local for the work account without cloud plugins.
-`scripts/sync-plugins.sh --codex --source cloud|local` records that profile's
-choice in `dots-plugin-source`. Preserve other profiles' choices and enforce
-this policy in config and plugin sync. Never uninstall account-wide cloud
+Use local Dots/Drafts on both Fleet Macs, including personal-account desktop
+profiles. Disable their cloud copies only in each desktop profile's local
+loader; keep the account-wide cloud installations available on the web.
+`scripts/sync-plugins.sh --codex --source local` records the desktop choice in
+`dots-plugin-source`, which later config and plugin syncs preserve. Verify
+the local source and zero duplicates on each computer. Use cloud as a desktop
+source only when explicitly requested. Never uninstall account-wide cloud
 plugins to fix desktop duplicates.
 
 Keep Dots a standalone skills plugin with no `.app.json` or `apps` binding.

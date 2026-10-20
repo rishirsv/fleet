@@ -1,4 +1,5 @@
-# Personal account: use the same cloud installs on web and desktop.
+# Optional cloud desktop source, selected only by explicit request.
+# Fleet desktops normally use plugin-exclusions.toml; web installs are separate.
 [plugins."dots@dots"]
 enabled = false
 

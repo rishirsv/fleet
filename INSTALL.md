@@ -65,18 +65,21 @@ drift without writing. Sync does not execute on another computer.
 
 ## Plugins
 
-Choose the source for the account in the current Codex profile:
+Use local Dots/Drafts in desktop profiles on both Fleet Macs, including when
+signed in to the personal account. Keep the cloud installations for web use:
 
 ```sh
-# Personal account with existing cloud Dots/Drafts installations
-scripts/sync-plugins.sh --codex --source cloud
-# Work account using local plugins
+# Desktop profiles: local skills, cloud copies disabled in the local loader
 scripts/sync-plugins.sh --codex --source local
 # Claude marketplace plugins
 scripts/sync-plugins.sh --claude
 ```
 
-The source choice is saved per profile and preserved by later syncs. Cloud mode
+The source choice is saved per profile and preserved by later syncs. Set it
+for each desktop profile with `CODEX_HOME=/path/to/profile` when needed;
+`--source` changes only the current profile's choice. Local mode does not
+uninstall account-wide cloud plugins or disable their web use. Use
+`--source cloud` only when explicitly choosing a cloud desktop source; it
 requires the account's existing installations. Sync validates a fresh Codex
 loader and rejects duplicates; restart existing desktop sessions when needed.
 Claude uses the `rishirsv/dots` marketplace; `/reload-plugins` refreshes sessions.
