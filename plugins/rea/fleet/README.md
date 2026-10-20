@@ -76,6 +76,15 @@ registration. Upstream setup remains available unchanged for standalone use,
 including its own preview, approval and provider setup behavior. Use upstream
 doctor and tool help for task-specific readiness.
 
+For desktop MCP launches, put machine-local provider paths in
+`~/.config/rea/environment.json` (or `$XDG_CONFIG_HOME/rea/environment.json`).
+The Fleet launcher reads this JSON object before starting REA. It accepts string
+values for `REA_*`, `JAVA_HOME` and `FLEET_REA_NODE`; inherited process values
+take precedence. For Android, set `REA_ADB_PATH`, `REA_JADX_MCP_JAR` and
+`JAVA_HOME` to the installed adb executable, verified JADX JAR and full JDK home.
+Keep this file outside Git. Refresh the plugin after changing launcher source;
+reconnect its MCP server after changing environment settings.
+
 ## Refresh upstream
 
 From Fleet's root:

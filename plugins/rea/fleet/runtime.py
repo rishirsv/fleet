@@ -9,11 +9,28 @@ from skill_exports import package_skills
 PLUGIN = Path(__file__).resolve().parents[1]
 
 
+def configured_environment():
+    """Load host-local provider settings; explicit process values take priority."""
+    inherited = dict(os.environ)
+    config_home = Path(inherited.get('XDG_CONFIG_HOME', str(Path.home() / '.config')))
+    path = config_home / 'rea/environment.json'
+    if not path.exists():
+        return inherited
+    settings = json.loads(path.read_text())
+    if not isinstance(settings, dict) or any(
+        not isinstance(key, str) or not isinstance(value, str)
+        or not (key.startswith('REA_') or key in ('JAVA_HOME', 'FLEET_REA_NODE'))
+        for key, value in settings.items()
+    ):
+        raise RuntimeError(f'{path} must map REA_*, JAVA_HOME or FLEET_REA_NODE names to strings.')
+    return {**settings, **inherited}
+
+
 def toolchain():
-    node = shutil.which(os.environ.get('FLEET_REA_NODE', 'node'))
+    env = configured_environment()
+    node = shutil.which(env.get('FLEET_REA_NODE', 'node'), path=env.get('PATH'))
     if not node:
         raise RuntimeError('Install the Node.js version in REA .nvmrc, with npm.')
-    env = dict(os.environ)
     env['PATH'] = str(Path(node).parent) + os.pathsep + env.get('PATH', '')
     return node, env
 

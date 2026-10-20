@@ -8,15 +8,44 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 PLUGIN = ROOT / 'plugins/rea'
 spec = importlib.util.spec_from_file_location('rea_update', ROOT / 'scripts/update-rea.py')
 update = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(update)
+sys.path.insert(0, str(PLUGIN / 'fleet'))
+import runtime
 
 
 class ReaPackageTests(unittest.TestCase):
+    def test_host_provider_environment_preserves_process_overrides(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config = Path(tmp) / 'rea/environment.json'
+            config.parent.mkdir()
+            inherited = {'XDG_CONFIG_HOME': tmp, 'JAVA_HOME': '/process/jdk'}
+            with patch.dict(os.environ, inherited, clear=True):
+                self.assertEqual(runtime.configured_environment(), inherited)
+                config.write_text(json.dumps({'JAVA_HOME': '/local/jdk', 'REA_ADB_PATH': '/local/adb'}))
+                environment = runtime.configured_environment()
+                self.assertEqual(environment['JAVA_HOME'], '/process/jdk')
+                self.assertEqual(environment['REA_ADB_PATH'], '/local/adb')
+                self.assertNotIn('REA_ADB_PATH', os.environ)
+
+    def test_host_provider_environment_rejects_invalid_settings(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            config = Path(tmp) / 'rea/environment.json'
+            config.parent.mkdir()
+            with patch.dict(os.environ, {'XDG_CONFIG_HOME': tmp}, clear=True):
+                for value in ([], {'PATH': '/replacement'}, {'REA_ADB_PATH': False}):
+                    config.write_text(json.dumps(value))
+                    with self.assertRaises(RuntimeError):
+                        runtime.configured_environment()
+                config.write_text('{')
+                with self.assertRaises(ValueError):
+                    runtime.configured_environment()
+
     def test_import_and_skills_match_upstream(self):
         origin = update.check()
         package = json.loads((PLUGIN / 'package.json').read_text())
