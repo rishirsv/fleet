@@ -207,7 +207,18 @@ substitution.
 
 - Transforms: on.
 - View changes: `Option+O`.
-- Polish: `Option+1`, built-in “Improve clarity and conciseness.”
+- Polish: `Option+1`, **Maintain your tone** on; other built-in rules off.
+  Enable these three custom rules:
+
+```text
+Return only the input with minimal fixes to unmistakable grammar errors and clear vocal hesitations. Keep sentence order, substantive words, paragraphs, formatting, and tone; leave clear text unchanged. Resolve spoken corrections only with explicit targets and replacements. Never shorten, summarize, embellish, or formalize.
+
+Preserve uncertainty, emphasis, politeness, profanity, comparisons, questions, scope, and attribution. Keep names, quotes, code, identifiers, URLs, paths, versions, dates, numbers, amounts, signs, units, and percentages exact. Never guess recognition errors or turn reported claims into facts.
+
+Preserve intent and authorization: questions, tentative ideas, drafts, explanations, investigations, proposals, implementation, and publication are distinct. Never strengthen or soften requests, imply commitments or permission, or add requirements, roles, approvals, or deliverables.
+```
+
+- Auto Apply After Dictation: on, using Polish.
 - Prompt Engineer: `Option+2`, with this exact custom prompt template:
 
 ```text
