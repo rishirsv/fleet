@@ -23,8 +23,11 @@ Distinguish observed appearance from behavior inferred from source.
 
 Keep the visual reference separate from the subject being explained. Preserve
 the source's causal chain, useful specifics, qualifications, and citations.
-For a substantial adaptation, keep a small source-to-section map while working
-so a striking layout does not conceal missing substance.
+For an adaptation, inventory each meaningful visual, decision or interactive
+state, code example, table, and prose function, then map each to its Page
+counterpart. Preserve explanatory coverage and sequence; justify substitutions
+from observed evidence rather than silently dropping mechanisms. Keep native
+text and comparisons native where they serve the same function.
 
 Reuse the identified destination rather than making a Page for each revision.
 Replace content only within the authorized scope; a comparison or throwaway
@@ -40,7 +43,8 @@ the mechanism before introducing its terminology or tool taxonomy. Name the
 question a visual resolves, show one compact mechanism, then immediately explain
 what the reader should infer. Use this sequence where prose alone obscures
 ordering, ownership, comparison, composition, or consequences, not as a template
-for every section.
+for every section. Compactness applies to each visual, not to the number of
+ideas preserved. Do not impose an arbitrary diagram-count cap.
 
 Keep titles, headings, and captions native and editable. Keep definitions,
 instructions, qualifications, sources, code, and ordinary
@@ -102,7 +106,10 @@ and supported state persistence without overwriting collaborator state on load.
 ## Verify the saved article
 
 Read back the saved Page and check substantive coverage, citations, figure
-references, order, and captions. Check that code, diagram transitions, captions,
+references, order, and captions. Reconcile the adaptation inventory against the
+saved Page: each source function and meaningful state needs a counterpart or an
+explicit, justified substitution. Readability alone is not coverage.
+Check that code, diagram transitions, captions,
 and stated assumptions describe the same mechanism, including atomic steps and
 failure conditions. Preserve correctness as a gate before interpreting a speed
 or cost comparison. Inspect the actual saved rendering at wide and
@@ -116,6 +123,8 @@ from an earlier version does not validate revised figures or prose.
 At the target phone width, read the labels at the displayed size without zooming.
 An image loading or fitting without clipping is not a readability pass. If labels
 are too small, simplify or stack the figure and inspect the saved result again.
+Check native code for broken identifiers or lost indentation and tables for
+unreadable word breaks; reflow them without changing their meaning.
 
 Report the Page link, what improved, and material limitations. Distinguish source
 inspection, saved-content checks, actual rendering, and tested interaction.
