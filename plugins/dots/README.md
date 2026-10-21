@@ -42,6 +42,7 @@ unless you request it.
 
 | Task | Skill |
 | --- | --- |
+| Understand an idea through a guided explanation | [Teach](skills/teach/SKILL.md) |
 | Explain code or investigate a decision | [How](skills/how/SKILL.md), [Why](skills/why/SKILL.md) |
 | Design a boundary or resolve an uncertain choice | [Architect](skills/architect/SKILL.md), [Prototype](skills/prototype/SKILL.md) |
 | Review architecture or a completed change | [Architecture Review](skills/architecture-review/SKILL.md), [Change Review](skills/change-review/SKILL.md) |

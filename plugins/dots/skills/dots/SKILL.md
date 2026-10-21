@@ -91,7 +91,7 @@ Each skill's description defines its boundary. Choose within these groups:
 - Design and structure: `$architect`, `$architecture-review`, `$prototype`
 - Review and publishing: `$change-review`, `$publish-pr`, `$babysit-pr`
 - Effects beyond a named diff: `$blast-radius`
-- Explanation and documentation: `$how`, `$why`, `$repo-docs`
+- Explanation and documentation: [Teach](../teach/SKILL.md), `$how`, `$why`, `$repo-docs`
 - Documents: `$html`. Product interfaces use `$design` and `$design-review`
   from the separate Design plugin when installed. If unavailable, complete the
   task directly with existing product sources and Dots visual-proof guidance.
