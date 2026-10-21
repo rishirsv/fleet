@@ -35,17 +35,25 @@ uploading assets whose use depends on replacing protected content.
 
 ## Shape the article
 
-Start from a central tension and a concrete entry point. Lead from something
-the reader recognizes to the mechanism they need to understand. Keep the title,
-headings, argument, captions, qualifications, and source links native and
-editable. Let changes in the argument determine the sections; do not impose a
-chapter count or a figure-per-section quota.
+Start from a central tension and a concrete example. Let the reader encounter
+the mechanism before introducing its terminology or tool taxonomy. Name the
+question a visual resolves, show one compact mechanism, then immediately explain
+what the reader should infer. Use this sequence where prose alone obscures
+ordering, ownership, comparison, composition, or consequences, not as a template
+for every section.
+
+Keep titles, headings, and captions native and editable. Keep definitions,
+instructions, qualifications, sources, code, and ordinary
+comparisons in native prose, code blocks, or tables. Use a diagram for the
+relationship that is hard to see in that text, not to turn the text into a poster.
+Preserve the source's nuance while choosing the simplest form for each idea.
 
 Choose a subject-specific visual idea and a coherent medium, palette, recurring
 objects, and composition. Use visuals for distinct purposes: establish a scene,
 explain a mechanism, compare alternatives, or resolve the opening question.
-Vary density and scale rather than repeating interchangeable cards. Keep prose
-at reading width; widen selected art or figures only through supported layout
+Avoid consecutive poster-sized figures; alternate compact visuals with their
+interpretation and deeper prose. Keep prose at reading width; widen selected
+art or figures only through supported layout
 metadata, preserving their geometry.
 
 The host controls native typography and page styling. Do not promise custom
@@ -55,7 +63,7 @@ imitate that styling. Preserve the editable outline and reading experience.
 
 ## Make visuals truthful
 
-Use image generation for commissioned editorial art when useful. Specify the
+Use image generation for a useful scene or conceptual metaphor. Specify the
 idea, composition, aspect ratio, medium, and palette; inspect the result and
 revise weak compositions. Use supplied or sourced images when identity or
 documentary evidence matters. Distinguish illustrations from evidence where a
@@ -67,20 +75,25 @@ from the same data and keep material assumptions beside the claim. Label a
 bounded model, hypothetical example, or analogy as such; do not invent measured
 values or use decorative precision.
 
-Default to native uploaded image figures with native captions. Confirm the
-upload's accessible reference, insert it, and read back the saved Page. An
+For static diagrams, default to native uploaded figures with native captions.
+Do not rasterize prose, code, or tables merely to make them look designed.
+Confirm the upload's accessible reference, insert it, and read back the saved Page. An
 uploaded file alone is not an inserted figure. Make important facts and states
 available in native text, with useful image descriptions where supported.
 
 Use interaction only when it answers a question materially better than a static
 figure. Define the question, data or rules, control, visible consequence, initial
-state, and limits before building. A control must change the explanation, not
-just decorate it. Keep article prose and sources outside the exhibit.
+state, and limits before building. A stepper can reveal a dangerous ordering;
+a selector can expose effects an average hides. A static contrast rarely needs
+controls. Keep article prose and sources outside the exhibit.
 
 Do not deliver an interactive exhibit until the saved Page has been observed
 rendering it and its meaningful controls have been tested in the actual host.
-Source, upload, or isolated JavaScript tests do not establish this. If host
-verification fails or is unavailable, use precise static figures and native
+Chat widgets are not evidence that the same component works in Pages. Do not
+claim source portability or diagnose a failed embed without evidence. A failed
+embed does not establish that all interaction is unsupported.
+Source, upload, or isolated JavaScript tests do not establish host support.
+If host verification fails or is unavailable, use precise static figures and native
 text covering the important states instead. Remove failed embeds and obsolete
 control instructions within the authorized scope. Preserve unrelated content.
 For verified interactions, check keyboard use, narrow layouts, reduced motion,
@@ -89,11 +102,16 @@ and supported state persistence without overwriting collaborator state on load.
 ## Verify the saved article
 
 Read back the saved Page and check substantive coverage, citations, figure
-references, order, and captions. Inspect the actual saved rendering at wide and
+references, order, and captions. Check that code, diagram transitions, captions,
+and stated assumptions describe the same mechanism, including atomic steps and
+failure conditions. Preserve correctness as a gate before interpreting a speed
+or cost comparison. Inspect the actual saved rendering at wide and
 narrow widths when accessible, including the opening, prose-to-visual transitions,
 and ending. Check for weak art, repetitive cards, clipped labels, unreadably
-scaled figures, redundant headings, and missing context. Fix observed defects
-and inspect the affected section again.
+scaled figures, redundant headings, and missing context. Check that each visual
+answers its setup question and its following prose explains the consequence.
+Fix observed defects and inspect the affected section again; a rendering pass
+from an earlier version does not validate revised figures or prose.
 
 At the target phone width, read the labels at the displayed size without zooming.
 An image loading or fitting without clipping is not a readability pass. If labels
