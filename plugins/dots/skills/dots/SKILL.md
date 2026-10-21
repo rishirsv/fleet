@@ -91,6 +91,8 @@ Each skill's description defines its boundary. Choose within these groups:
 - Design and structure: `$architect`, `$architecture-review`, `$prototype`
 - Review and publishing: `$change-review`, `$publish-pr`, `$babysit-pr`
 - Effects beyond a named diff: `$blast-radius`
+- Reusable formal checks for a named invariant: `$formal-verification-skill`.
+  This does not add formal tooling to ordinary implementation or app verification.
 - Explanation and documentation: `$how`, `$why`, `$repo-docs`
 - Documents: `$html`. Product interfaces use `$design` and `$design-review`
   from the separate Design plugin when installed. If unavailable, complete the

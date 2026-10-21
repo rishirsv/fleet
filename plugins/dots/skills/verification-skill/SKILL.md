@@ -10,6 +10,10 @@ launch it, check it is healthy, drive a feature the way a user does, capture
 evidence, and clean up. The output is a project skill named `verify-<app>`
 that a future agent reads cold, mid-task, without having seen the app.
 
+For a reusable formal check of one invariant, use
+[Formal verification skill](../formal-verification-skill/SKILL.md). Keep its
+model or code-level evidence separate from this skill's real-app evidence.
+
 Choose the route:
 
 - **Create** when the repository has no verification skill.
