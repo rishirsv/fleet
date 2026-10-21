@@ -44,9 +44,18 @@ from the subject; keep any body brief.
 
 ## Description
 
-Keep the body terse: one or two sentences stating the change and reason, then
-brief validation. Include a material risk, limitation, or unverified behavior
-only when it affects review. Preserve required template fields.
+Write the opening for the product owner deciding whether to merge, who may
+know the product but not its code or the investigation. In one or two sentences,
+name the action that triggers the problem, what the person previously saw, and
+what happens after the change. Use the product's button and screen names. For
+a refactor or tooling change, explain its practical purpose and whether product
+behavior changes. Preserve required template fields.
+
+Keep the rest brief and explain the final change from scratch. Replace
+implementation vocabulary with the behavior it causes; keep technical detail
+only when it helps assess a decision. Keep decisive checks and material risks,
+limitations, and unverified behavior visible. Put full logs and detailed
+technical evidence in a linked report or collapsed section.
 
 Name the relevant check and its observed result, including what behavior it
 verifies. Use before-and-after evidence when the completed task produced it.
@@ -58,9 +67,14 @@ reverting the code restores the previous behavior. Describe material
 consequences and any recovery work a revert would leave, such as restoring data
 or coordinating consumer changes.
 
-Use short paragraphs or bullets. Omit background, walkthroughs, file lists,
-commit history, generic checklists, and agent narration. For a performance
-change, give the primary measurement with its unit as before → after.
+Use short paragraphs or bullets. Omit investigation chronology, repeated
+evidence, background, file inventories, commit history, generic checklists,
+and agent narration. For a performance change, give the primary measurement
+with its unit as before → after.
+
+Before publishing, read only the title and opening. A reader should understand
+the problem and result without reading code, following an audit link, or knowing
+another PR. If they cannot, rewrite them around a concrete action and outcome.
 
 ## Visual evidence
 
