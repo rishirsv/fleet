@@ -184,6 +184,27 @@
       "source_sha256": "a93d449a908236afa6645179651844094b1547dbab4e484cffcdda630e4b90bf",
       "revision": "e5136d82418d2db3165ea1050d17577cd618cc05",
       "adaptations": "Retain upstream wording and sequence. Replace unavailable skills, Cursor tools, model slugs and transcript paths with Dots owners and host-supported tools. Keep delegation conditional, diagnosis read-only, and commits, publication and scheduling within authorization; remove the Cursor throughput checkpoint."
+    },
+    {
+      "source": "pstack/skills/create-formal-verification-skill/SKILL.md",
+      "destination": "plugins/dots/skills/formal-verification-skill/SKILL.md",
+      "source_sha256": "6c934cd15a9583533ff9b7a9cad62775d7e80402d26d3ba7f74f79ea21a1d8eb",
+      "revision": "7b353f78f6ec193bdbe48ed8059444eb09b6878e",
+      "adaptations": "Combine creation and refresh in one narrow Dots skill, with original concise wording. Preserve runtime verification ownership; choose the method by the property, require code mapping and negative controls, label bounded/model results, track drift and new writers. Do not install tools or alter product code/CI without authorization. Use normal narrow discovery rather than upstream explicit-only invocation."
+    },
+    {
+      "source": "pstack/skills/maintain-formal-verification-skill/SKILL.md",
+      "destination": "plugins/dots/skills/formal-verification-skill/SKILL.md",
+      "source_sha256": "0c96f54293542d3818b68754562b338073958781a9684454611dca37592e2d2c",
+      "revision": "7b353f78f6ec193bdbe48ed8059444eb09b6878e",
+      "adaptations": "Combine creation and refresh in one narrow Dots skill, with original concise wording. Preserve runtime verification ownership; choose the method by the property, require code mapping and negative controls, label bounded/model results, track drift and new writers. Do not install tools or alter product code/CI without authorization. Use normal narrow discovery rather than upstream explicit-only invocation."
+    },
+    {
+      "source": "pstack/skills/benchmark-checklist/SKILL.md",
+      "destination": "plugins/dots/references/benchmark-checklist.md",
+      "source_sha256": "6a767e788a60428fa14e645ee10fe2e49896e514ff654f668b1d824deb9038e8",
+      "revision": "e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a",
+      "adaptations": "Rewrite as a conditional reference owned by the existing Performance playbook, not a new skill or mandatory workflow. Retain limiter, fair tuning, physical bounds, correct completed work, repeated comparisons, end-to-end relevance, and honest verdicts. Use host-available tools, reuse artifacts, distinguish configuration comparisons, and do not treat five runs as statistical significance. Cite Brendan Gregg original seven-question article."
     }
   ]
 }

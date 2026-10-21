@@ -1,0 +1,7 @@
+interface:
+  display_name: "Formal verification skill"
+  short_description: "Create or refresh one formal property check"
+  default_prompt: "Use $formal-verification-skill to create or refresh a project-local formal check for one consequential invariant."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Editorial Pages"
+  short_description: "Compose rich native Page explainers"
+  default_prompt: "Use $editorial-pages to create or improve a native ChatGPT Page with sustained prose, art-directed images, and verified explanatory figures."
+
+policy:
+  allow_implicit_invocation: true
