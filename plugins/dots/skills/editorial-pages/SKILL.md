@@ -79,29 +79,43 @@ from the same data and keep material assumptions beside the claim. Label a
 bounded model, hypothetical example, or analogy as such; do not invent measured
 values or use decorative precision.
 
-For static diagrams, default to native uploaded figures with native captions.
-Do not rasterize prose, code, or tables merely to make them look designed.
-Confirm the upload's accessible reference, insert it, and read back the saved Page. An
-uploaded file alone is not an inserted figure. Make important facts and states
-available in native text, with useful image descriptions where supported.
+Choose the supported format for the explanatory job: native prose and tables
+for reading and lookup, Mermaid for sufficient simple relationships, and the
+Page Visualize workflow for custom diagrams, charts, and simulations, even when
+no interaction is needed. Read the full Visualize guidance and current Page
+content contract; use the Page-specific insertion workflow, not the chat output
+contract. Keep source inspectable rather than defaulting custom graphics to PNG.
+Use uploaded images for art or when a static fallback is actually needed; verify
+both insertion and rendering. Do not rasterize prose, code, or tables for style.
 
-Use interaction only when it answers a question materially better than a static
-figure. Define the question, data or rules, control, visible consequence, initial
-state, and limits before building. A stepper can reveal a dangerous ordering;
-a selector can expose effects an average hides. A static contrast rarely needs
-controls. Keep article prose and sources outside the exhibit.
+Keep graphical exhibits compact, theme-aware, and responsive to their actual
+container width. Use host typography, restrained semantic hierarchy and
+connectors, and readable labels rather than shrinking a desktop canvas. Keep
+article prose, takeaways, and sources native outside the exhibit.
 
-Do not deliver an interactive exhibit until the saved Page has been observed
-rendering it and its meaningful controls have been tested in the actual host.
-Chat widgets are not evidence that the same component works in Pages. Do not
-claim source portability or diagnose a failed embed without evidence. A failed
-embed does not establish that all interaction is unsupported.
-Source, upload, or isolated JavaScript tests do not establish host support.
-If host verification fails or is unavailable, use precise static figures and native
-text covering the important states instead. Remove failed embeds and obsolete
-control instructions within the authorized scope. Preserve unrelated content.
-For verified interactions, check keyboard use, narrow layouts, reduced motion,
-and supported state persistence without overwriting collaborator state on load.
+Use interaction when it lets the reader investigate a meaningful question.
+Define the data or rules, control, visible consequence, useful initial example,
+and limits before building. A stepper can reveal dangerous ordering; a selector
+can expose effects an average hides. More controls are not inherently more
+ambitious. For simulations, test transitions and derived values against the
+stated model, including boundaries and failure states; compare reachable states
+and paths when claiming equivalence to an executable model. Label hypothetical
+inputs and do not imply that model agreement proves production behavior.
+
+When host compatibility is uncertain, test one scoped prototype before rollout.
+Distinguish static HTML rendering, custom JavaScript behavior, and required CDN
+loads: success in one does not prove the others. Inspect the saved Page at wide
+and phone widths and in relevant themes; test meaningful controls, keyboard and
+touch behavior, reduced motion, and supported state persistence without
+replacing collaborator state with defaults. Source, upload, or isolated script
+tests do not establish host support. Chat widgets do not establish Page portability.
+Do not diagnose a failed embed or reject all HTML from one failure.
+
+Fix and retest a supported exhibit when feasible. If required capabilities fail
+or cannot be verified, use precise static figures and native text covering the
+important states, and disclose the verification limit. Remove failed embeds and
+obsolete control instructions within the authorized scope. Preserve unrelated
+content and provide useful text alternatives for important graphical states.
 
 ## Verify the saved article
 
