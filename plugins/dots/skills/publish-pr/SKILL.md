@@ -49,7 +49,8 @@ know the product but not its code or the investigation. In one or two sentences,
 name the action that triggers the problem, what the person previously saw, and
 what happens after the change. Use the product's button and screen names. For
 a refactor or tooling change, explain its practical purpose and whether product
-behavior changes. Preserve required template fields.
+behavior changes. Preserve required template fields without copying older PR
+wording or treating historical prose as the standard.
 
 Keep the rest brief and explain the final change from scratch. Replace
 implementation vocabulary with the behavior it causes; keep technical detail
