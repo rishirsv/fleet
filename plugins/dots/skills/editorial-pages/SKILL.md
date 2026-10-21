@@ -95,6 +95,10 @@ and ending. Check for weak art, repetitive cards, clipped labels, unreadably
 scaled figures, redundant headings, and missing context. Fix observed defects
 and inspect the affected section again.
 
+At the target phone width, read the labels at the displayed size without zooming.
+An image loading or fitting without clipping is not a readability pass. If labels
+are too small, simplify or stack the figure and inspect the saved result again.
+
 Report the Page link, what improved, and material limitations. Distinguish source
 inspection, saved-content checks, actual rendering, and tested interaction.
 If narrow or mobile rendering was not observed, say so; desktop readback is not
