@@ -2,6 +2,10 @@
 
 **You own the measurement story. Plan, review, verify the numbers.** Tie every fix to a measurement, don't read source instead of measuring.
 
+Read [Benchmark checklist](../references/benchmark-checklist.md) before trusting
+the baseline or a comparison. Apply it to the same measurement artifacts below,
+not as a second benchmark run.
+
 1. Freeze a representative input and baseline. Capture a baseline trace using the repository's verification skill, existing harness, or available profiler.
 2. Use [How](../skills/how/SKILL.md) when the runtime path is unclear to ground hypotheses. Don't claim a perf ceiling without running it first.
    Try the performance mantras in order, cheapest first:
