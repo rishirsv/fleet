@@ -86,11 +86,5 @@ see, constraints and open choices, selected moves, acceptance criteria, and
 requested deliverable. Keep it self-contained and usually within 350 words.
 Use placeholders for unavailable facts, not invented context.
 
-For a substantial written report or a prose-editing task, apply
-[Writing style](../../references/writing-style.md). Do not load or attach the
-full guide for a short answer or prompt rewrite unless the requested writing
-work needs it. When a recipient needs the guide, supply its contents or a
-verified readable path rather than a path from your own environment.
-
-The four dimensions draw on Felix Rieseberg's
-[How to be more ambitious](https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/).
+Write clear, concrete prose at the requested length. Preserve technical meaning
+and uncertainty; include only context the reader needs to understand or act.
