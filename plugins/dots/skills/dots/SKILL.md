@@ -93,7 +93,7 @@ Each skill's description defines its boundary. Choose within these groups:
 - Effects beyond a named diff: `$blast-radius`
 - Reusable formal checks for a named invariant: `$formal-verification-skill`.
   This does not add formal tooling to ordinary implementation or app verification.
-- Explanation and documentation: `$how`, `$why`, `$repo-docs`
+- Explanation and documentation: [Teach](../teach/SKILL.md), `$how`, `$why`, `$repo-docs`
 - Documents: `$html` for browser-openable documents; `$editorial-pages` for
   native ChatGPT Page explainers. Product interfaces use `$design` and `$design-review`
   from the separate Design plugin when installed. If unavailable, complete the
