@@ -48,6 +48,11 @@ and [workflow guidance](../../references/workflows-guide.md).
   [evidence contract](../../references/evidence.md); a context document alone
   does not implement a component.
 
+When implementing component or token changes that affect rendered UI, use
+`$design`'s [craft floor](../../references/craft-floor.md) before editing and
+[finish review](../../references/finish-review.md) before delivery. Documentation
+and audit-only work need neither an implementation nor a finishing handoff.
+
 To build or sync the bundled design-system format, read the full
 [artifact guide](../../design-system/GUIDE.md) and
 [local setup](../../design-system/local-setup.md). Use the source-specific

@@ -25,10 +25,16 @@ sources. Do not edit in a review-only request.
 | Stress test or harden a component | [Component stress](references/component-stress.md) |
 
 Checking a build against an accepted design belongs to `$design`'s design QA.
+The independent finishing handoff for implemented UI belongs to `$design`'s
+[finish review](../../references/finish-review.md); a review-only request here
+does not recursively delegate another review. When applying requested fixes,
+use that handoff before delivering the corrected implementation.
 For the craft guidance behind a finding or its fix (layout, typography, color,
 interaction, motion, icons), load `$design` and read the matching reference.
 
 For critique, read the full [critique guide](../../references/critique.md).
+For implemented UI's visual craft, also read the [craft floor](../../references/craft-floor.md)
+and distinguish scoped violations from unrelated incumbent patterns.
 For accessibility, read the full [accessibility guide](../../references/accessibility.md).
 For copy review, read the full [UX-copy guide](../../references/ux-copy.md).
 Apply the [workflow guidance](../../references/workflows-guide.md) to these workflows.

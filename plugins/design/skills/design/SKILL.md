@@ -54,6 +54,11 @@ dividers only when they encode something about the content. Start a section
 with its heading, put category or context in the body or footer, and keep
 functional navigation such as breadcrumbs separate from the heading.
 
+Before editing UI, read the [craft floor](../../references/craft-floor.md).
+Its aesthetic bans are required checks, not optional suggestions; this list of
+generic defaults does not waive them. Apply them to the requested change,
+preserving explicit user choices and unrelated existing UI.
+
 ## Hierarchy and restraint
 
 Spend boldness in one place: let one element carry the memorable idea, keep the
@@ -110,6 +115,12 @@ the interface renders or behaves. Inspect the states the change affects:
 - Motion: entry, exit, rapid repetition, reversal, interruption, and reduced
   motion. A static capture proves the endpoint only; use a recording or
   intermediate frames when continuity is in question.
+
+Before delivering implemented UI, run [finish review](../../references/finish-review.md):
+a fresh reviewer judges the changed scope and verifies material corrections.
+Use it as the final comparison in design QA, not an additional audit cycle.
+Planning, unselected concept variants, prose-only deliverables, and review-only
+requests do not trigger this handoff.
 
 ## Explain the result
 

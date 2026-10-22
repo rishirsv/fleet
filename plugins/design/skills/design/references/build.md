@@ -44,10 +44,8 @@ QA](design-qa.md). For a focused refinement, inspect the exact changed workflow
 at a representative viewport and exercise the affected interaction.
 
 Correct material issues within the requested scope, then inspect the affected
-result again. Continue while concrete P0–P2 defects remain and the next change
-has a supported fix. Stop when the acceptance scope is satisfied, the user's
-limit is reached, or progress is blocked. If the same defect survives two
-attempted fixes without new evidence, investigate its cause or report the
-blocker instead of repeating cosmetic changes. Do not reopen settled design
-decisions or perform another full audit after a clean check. Report unresolved
-issues at any stop; stopping does not establish readiness.
+result again. Then use [finish review](../../../references/finish-review.md)
+for the final independent comparison and verified corrections, including when
+the builder's own check is clean. Keep the handoff proportional to the change;
+do not reopen settled design decisions or audit unrelated screens. Report open
+findings and evidence gaps at any stop; stopping does not establish readiness.

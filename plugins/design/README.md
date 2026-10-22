@@ -16,6 +16,12 @@ image-generation gate for a sufficiently specified task. Visible claims need
 rendered evidence. Corrections continue toward the requested outcome, bounded
 by user limits and concrete blockers.
 
+Implemented UI ends with a fresh, scoped finish reviewer and evidence-backed
+verification of material corrections. Shared aesthetic bans guide both building
+and review. The handoff reuses captures and task notes; no extra engine, hook,
+config, or product document is required. Hosts without delegation disclose a
+local self-check instead of claiming independent review.
+
 The seven complete [domain workflows](references/workflows-guide.md) are loaded for
 their respective jobs. Their mapping and capability boundaries live in
 [Workflow guidance](references/workflows-guide.md). The bundled design-system
@@ -27,6 +33,6 @@ Figma and research integrations are optional capabilities of the active host.
 No Dots install is required. HTML documents and technical experiments remain
 in Dots. Personal/product state stays outside this plugin.
 
-Local package version: 0.1.1. Marketplace appearance is prepared; this does not
+Local package version: 0.1.2. Marketplace appearance is prepared; this does not
 mean the plugin is publicly listed or approved. Cloud publication, retirement of old Dots UI
 skills and fresh desktop verification are separate release steps.

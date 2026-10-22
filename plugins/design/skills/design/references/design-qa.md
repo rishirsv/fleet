@@ -105,10 +105,17 @@ again**:
 4. Compare again, linking each original finding to its fix and post-fix
    evidence. Carry unresolved findings and regressions into the next iteration.
 
+For implementation or correction work, use [finish review](../../../references/finish-review.md)
+as the final comparison and independent verification of material corrections.
+Pass this rubric and accepted target to the fresh reviewer. Its correction
+batches are part of this loop, not a second iteration budget. A comparison-only
+request needs no additional reviewer and authorizes no fixes.
+
 Build, lint, deployment, and preview troubleshooting do not count as design
 iterations. Recheck other areas a change could affect. Stop when the requested
-limit is reached, no actionable P0–P2 findings remain, or a concrete blocker
-prevents progress. If the same defect survives two attempted fixes without new
+limit (or finish review's default budget) is reached, no actionable P0–P2
+findings remain, or a concrete blocker prevents progress. If the same defect
+survives two attempted fixes without new
 evidence, investigate its cause or report why progress is blocked. Do not
 repeat a whole audit for a local repair unless its effects warrant it. A clean
 initial comparison needs no correction cycle.
