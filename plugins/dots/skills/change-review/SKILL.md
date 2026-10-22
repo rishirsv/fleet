@@ -79,6 +79,12 @@ Otherwise use the local reviewer workflow below.
    interactions need separate review. A reviewer may inspect outside its
    assigned paths for context but reports findings only for its assigned paths.
    Do not give every reviewer the same undivided diff.
+   At `high`, `xhigh`, or `max`, request an
+   [omissions sweep](#optional-omissions-sweep) in the initial briefs when a
+   large diff, moved logic, or changed lifecycle or configuration makes gaps
+   likely. Each assigned reviewer does it within its existing assignment and
+   context before returning findings; it adds no reviewers or verification
+   agents and does not reserve a reviewer solely for the sweep.
 6. Wait for every reviewer to finish; each returns all findings for its
    assignment in one response. Then merge duplicates and combine related
    findings while preserving the evidence required for each finding. Resolve
@@ -117,6 +123,14 @@ returning it.
   problem that depends on a value or state.
 - Probe for off-by-one errors, inconsistent state, repeat execution, partial
   failure, and race conditions when relevant.
+- Check the changed language and framework's failure modes, such as coercion
+  or truthiness, captured or stale state, mutable defaults, iteration semantics,
+  and time or numeric conversions. Trace a concrete trigger rather than
+  reporting a generic pitfall.
+- For wrappers, proxies, caches, decorators, and adapters, trace forwarded
+  operations to the intended underlying instance. Look for accidental re-entry
+  through a registry or global lookup, recursion, and missing forwarding for
+  methods callers use.
 - Check what the change can break outside the diff. Name the one fact its
   safety depends on, such as "no caller passes an empty list" or "nothing else
   reads the old field". Look for consumers a text search misses: persisted or
@@ -193,6 +207,16 @@ returning it.
   batch, one failing item must not block the rest.
 - Flag only a reachable security problem or material performance cost introduced
   by the change.
+
+### Optional omissions sweep
+
+When the brief requests a sweep, reread the assigned diff and enclosing
+functions after the first pass, looking only for defects absent from your
+current findings. Focus on moved code that lost a guard, changed defaults,
+and setup/teardown or acquisition/release asymmetry. Do not rederive existing
+findings or repeat the full review. Verify new candidates yourself under
+[Keep only supported findings](#keep-only-supported-findings), then return
+one combined result. An empty sweep is valid; do not target a finding count.
 
 ## Keep only supported findings
 
