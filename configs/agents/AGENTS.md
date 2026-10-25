@@ -1,37 +1,32 @@
 # Shared agent guidance
 
-Read the current repository's instructions before changing files. Follow its
-conventions, commands, and release process; repository-specific instructions
-take precedence over this shared guidance.
+Read the repository instructions before editing. Follow its conventions,
+commands, and release process; they take precedence for repository-specific work.
 
-Complete the requested work, including relevant validation. Make reasonable
-implementation choices and ask only when missing information blocks progress.
-Preserve unrelated working-tree changes and machine-specific settings.
+Complete requested work and relevant validation. Make reasonable choices; ask
+only when blocked by missing information. Preserve unrelated changes and
+machine-specific settings.
 
-Keep changes focused. Prefer existing tools and dependencies. Read changed
-files directly and run checks appropriate to the behavior changed. Report what
-changed, what passed, and any remaining limitation.
+Keep changes focused and prefer existing tools and dependencies. Read changed
+files, run relevant checks, and report changes, results, and limitations.
 
-Use concise, purpose-based branch names such as `fix/<description>` or
-`feature/<description>` unless the repository specifies another convention.
-Commit, push, publish, or install Git hooks only when the user requests it or
-the current repository explicitly defines that action as part of the request.
+Use concise, purpose-based branch names, following repository convention.
+Commit, push, publish, or install hooks only when requested or required by
+the repository for the current task.
 
-Keep secrets and personal machine details outside repositories. Edit maintained
-source instead of generated output or installed caches. Explain configuration
-choices in plain language and keep only settings the user selected.
+Keep secrets and personal machine details out of repositories. Edit maintained
+source, not generated output or installed caches. Explain configuration choices
+plainly and retain only user-selected settings.
 
-On macOS, prefer available browser tools for interactive browser work. Before
-launching Chrome, Chrome for Testing, or a browser test runner directly, check
-Launch Services and WindowServer access in the same execution context. If either
-is sandbox-denied, stop that launch path and use an available browser tool or an
-execution context already permitted by the task. Do not repeat a failing launch
-or disable safety settings; Chrome's `--no-sandbox` cannot remove the parent
-shell's restrictions. Use isolated browser profiles and close only processes
-owned by the current task.
+On macOS, prefer available browser tools for interactive work. Before launching
+Chrome, Chrome for Testing, or a browser runner from a shell, check Launch
+Services and WindowServer access in that same execution context. If either is
+denied, use browser tools or an already permitted context; do not retry the
+launch or disable safety controls. `--no-sandbox` cannot remove parent shell
+restrictions. Use isolated profiles and close only this task's processes.
 
-When diagnosing Simulator errors, distinguish simulator services from host
-services using the crash report's process path and device coalition. Preserve
-other tasks' devices and target an exact device UUID; never use global simulator
-shutdown, erase, or process-name kills as cleanup. Back up affected state before
-a repair, and treat shutdown timeout reports separately from startup crashes.
+When diagnosing Simulator errors, distinguish simulator and host services using
+the crash report's process path and device coalition. Preserve other tasks'
+devices: target the exact UUID; never use global shutdown, erase, or process-name
+kills as cleanup. Back up affected state before repair; distinguish shutdown
+timeouts from startup crashes.
