@@ -10,8 +10,9 @@ one ready for review. Preserve unrelated changes and follow repository and
 user choices about branches, commits, templates and draft status.
 
 Confirm the repository, account, branch, intended diff and current PR base.
-Resolve conflicts before publishing; rebase only when policy or relevant base
-changes require it. Reuse completed checks and visual evidence. Rerun only
+Fetch the remote and compare against the PR’s current base. Resolve conflicts
+before publishing; rebase only when policy or relevant base changes require it.
+Reuse completed checks and visual evidence. Rerun only
 checks invalidated by subsequent code, dependency, build or history changes.
 
 Commit and push the scoped changes. Reuse the branch's PR. Confirm its head
@@ -21,9 +22,13 @@ monitoring unless requested.
 
 Write a terse result-based title and a short description for a reviewer who
 has not seen the chat. Lead with the concrete problem and resulting behavior.
+Use a concrete trigger and before/after behavior where useful. A reader should
+understand the problem and result from the title and opening alone.
 Include decisive validation and material risks, unverified behavior and recovery
-limits. Follow the repository template; omit file inventories, agent narration
-and generic checklists.
+limits. Give performance measurements with units and comparable conditions.
+Claim a failing-before result only when it was observed; name data or external
+changes that reverting code would not undo when material. Follow the repository
+template; omit file inventories, agent narration and generic checklists.
 
 Use existing screenshots or videos when they help. Check `gh pr create --help`
 or `gh pr edit --help` for `--attach`; use a body file for multiline text and

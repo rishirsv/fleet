@@ -8,8 +8,12 @@ where available. Opaque or missing content is not readable evidence.
 
 For a candidate lesson, reconstruct the request, expected and actual behavior,
 user correction, governing source, observed file actions and verified outcome.
-A path mention is weaker than a structured read or edit. Read the transcript
-around helper signals before assigning a cause.
+Rank file evidence: a dedicated read/edit/write argument establishes the
+operation; a path inside a shell command is a lead to inspect; prose mentions
+establish neither a read nor an edit. Resolve relative paths against the task’s
+working directory and distinguish a file’s current state from what the agent
+actually accessed. Read the transcript around helper signals before assigning
+a cause; distinguish using a skill from developing it.
 
 Before generalizing, identify independent occurrences of the same behavior,
 the closest responsible owner, a rule that does not copy incidental names or

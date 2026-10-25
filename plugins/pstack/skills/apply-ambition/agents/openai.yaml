@@ -1,10 +1,10 @@
 interface:
   display_name: "Apply Ambition"
-  short_description: "Push a task toward a deeper, wider outcome"
+  short_description: "Apply four ambition lenses or rewrite a prompt"
   icon_small: "../../assets/icon.png"
   icon_large: "../../assets/logo.png"
   brand_color: "#36C5A7"
-  default_prompt: "Use $apply-ambition to improve the outcome while preserving scope, settled choices, and useful evidence."
+  default_prompt: "Use $apply-ambition to strengthen this task through Altitude, Depth, Range and Speed; apply the useful methods, or return a self-contained prompt if I request a rewrite."
 
 policy:
   allow_implicit_invocation: true

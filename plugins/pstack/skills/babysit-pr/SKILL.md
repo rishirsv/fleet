@@ -17,6 +17,9 @@ which discussions remain open.
 Use native completion events or the supported scheduler; reuse an existing
 monitor. State the actual cadence, honoring a requested one. Keep the monitor
 read-only and quiet unless state becomes actionable, ready, merged or closed.
+Give the monitor the repository, PR, original goal, latest head, last observed
+check states, unresolved discussion IDs and notification destination. Retain
+that state between runs and suppress duplicate notices for a reported issue.
 Read full logs or comments only when relevant state changes. Do not add an
 agent to relay unchanged status or keep the main agent in an indefinite poll.
 If persistent scheduling is unavailable, use a bounded native wait or report
@@ -24,7 +27,10 @@ that monitoring could not be established. Claim it is active only after success.
 
 Discard old check results when the head changes. Investigate the actual failed
 run and verify feedback against current code before making an in-scope repair.
-Do not repair unrelated problems or speculate about inaccessible external logs.
+Confirm a check failure belongs to this PR. Classify feedback as a current
+defect, outdated, duplicate, incorrect or outside scope; record the reason for
+leaving it unresolved. Do not repair unrelated problems or speculate about
+inaccessible external logs.
 After a repair, run affected checks, commit and push as this requested workflow
 authorizes, and resume monitoring the new head. Update the base only when
 required by repository policy or a real conflict.
