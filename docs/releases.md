@@ -1,13 +1,13 @@
 # Release cloud plugins
 
 This procedure is for maintainers publishing an existing account or workspace
-plugin. Public users install local plugins through [INSTALL.md](../../INSTALL.md).
+plugin. Public users install local plugins through [INSTALL.md](../INSTALL.md).
 
 Dots is a standalone skills plugin. Dots packages contain no `.app.json` binding
 or `apps` declaration. Keep Git as the source for local and cloud releases.
 Fleet desktop profiles on both Macs use local Dots/Drafts and disable cloud
 copies in the local loader. Keep the account-wide cloud installations for web
-use. Follow [the desktop setup](../../INSTALL.md#plugins) when configuring a
+use. Follow [the desktop setup](../INSTALL.md#plugins) when configuring a
 profile; cloud desktop loading requires an explicit source choice.
 Source selection controls the local loader, not cloud publication or account
 sign-in. Diagnose cloud branding separately from desktop source selection.

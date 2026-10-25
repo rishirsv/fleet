@@ -216,15 +216,18 @@ sync_claude() {
   marketplaces="$(claude plugin marketplace list --json)"
   marketplace_status="$(python3 -c '
 import json, sys
+from pathlib import Path
 matches = [entry for entry in json.load(sys.stdin) if entry.get("name") == "dots"]
 if not matches:
     print("missing")
+elif len(matches) == 1 and matches[0].get("source") == "directory" and Path(matches[0].get("path", "")).resolve() == Path(sys.argv[1]).resolve():
+    print("present")
 elif len(matches) == 1 and matches[0].get("source") == "github" and matches[0].get("repo") == "rishirsv/dots":
     print("present")
 else:
-    raise SystemExit("Claude marketplace dots does not point to rishirsv/dots")
-' <<< "$marketplaces")"
-  [[ "$marketplace_status" == "present" ]] || claude plugin marketplace add rishirsv/dots --scope user >/dev/null
+    raise SystemExit("Claude marketplace dots does not point to this Fleet checkout or rishirsv/dots")
+' "$ROOT" <<< "$marketplaces")"
+  [[ "$marketplace_status" == "present" ]] || claude plugin marketplace add "$ROOT" --scope user >/dev/null
   claude plugin marketplace update dots >/dev/null
   marketplaces="$(claude plugin marketplace list --json)"
   marketplace_root="$(python3 -c '

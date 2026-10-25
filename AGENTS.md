@@ -30,7 +30,7 @@ plugins to fix desktop duplicates.
 
 Keep Dots a standalone skills plugin with no `.app.json` or `apps` binding.
 
-Follow [the cloud release procedure](docs/maintainers/cloud-releases.md).
+Follow [the cloud release procedure](docs/releases.md).
 Prefer Plugin Creator source/archive updates. Update the existing backend ID
 with its current `expected_release_id`; preserve identity, scope, and audience.
 Never create a replacement Dots plugin during an ordinary update. Archive

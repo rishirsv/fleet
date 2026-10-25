@@ -20,7 +20,7 @@ class DesignPackageTests(unittest.TestCase):
                 text = text.replace('claude.local.md', '').replace('claude.md', '')
             self.assertNotIn('claude', text, str(path))
         # The bundled implementation retains its host contract during relocation.
-        origin = json.loads((ROOT / 'docs/maintainers/design-provenance/origin.json').read_text())
+        origin = json.loads((ROOT / 'docs/provenance/design/origin.json').read_text())
         for name in ('index.html', 'artifact-type/app.js', 'artifact-type/app.css',
                      'artifact-type/demo.json', 'artifact-type/reference/sample-seazar-tokens.json'):
             expected = origin['sha256']['references/upstream/claude-design-system/' + name]

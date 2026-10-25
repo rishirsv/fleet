@@ -82,13 +82,14 @@ uninstall account-wide cloud plugins or disable their web use. Use
 `--source cloud` only when explicitly choosing a cloud desktop source; it
 requires the account's existing installations. Sync validates a fresh Codex
 loader and rejects duplicates; restart existing desktop sessions when needed.
-Claude uses the `rishirsv/dots` marketplace; `/reload-plugins` refreshes sessions.
+Claude uses this checkout as its local marketplace; existing `rishirsv/dots`
+registrations remain supported. `/reload-plugins` refreshes sessions.
 Sync compares installed files with the refreshed marketplace and reinstalls stale
 copies even when their version is unchanged, preserving data and disabled state.
 Plugin sync refuses dirty plugin/tooling source; `--allow-dirty` is for development.
 
 `scripts/sync-plugins.sh --all` refreshes both hosts. Local sync does not publish
-cloud releases; follow [cloud releases](docs/maintainers/cloud-releases.md).
+cloud releases; follow [cloud releases](docs/releases.md).
 Config sync installs the selected VS Code extensions; Codex/Claude plugin
 installation remains a separate step.
 
