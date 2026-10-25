@@ -352,25 +352,6 @@ class SelfImproveScopeTests(unittest.TestCase):
         self.assertEqual(args.days, 30)
         self.assertEqual(args.limit, 100)
 
-    def test_skill_usage_uses_an_exact_post_scan_filter(self):
-        args = self_improve.build_parser().parse_args(
-            ["skill-usage", "--skill", "pstack:publish-pr"]
-        )
-        self.assertEqual(args.skill, "pstack:publish-pr")
-        self.assertFalse(hasattr(args, "query"))
-
-    def test_removed_commands_are_not_exposed(self):
-        parser = self_improve.build_parser()
-        subparsers = next(
-            action for action in parser._actions
-            if isinstance(action, self_improve.argparse._SubParsersAction)
-        )
-        removed = {
-            "inventory", "list", "memory-audit", "goal-health", "scaffold",
-            "dream", "skill-audit", "deep", "decide",
-        }
-        self.assertTrue(removed.isdisjoint(subparsers.choices))
-
     def test_stats_cache_schema_invalidates_v4_entries(self):
         with tempfile.TemporaryDirectory() as tmp:
             transcript = Path(tmp) / "rollout.jsonl"

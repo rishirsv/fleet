@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "pstack",
-  "version": "0.2.272",
+  "version": "0.2.273",
   "description": "Focused skills for decisions, review, publishing, and workflow improvement.",
   "author": {
     "name": "Rishi"

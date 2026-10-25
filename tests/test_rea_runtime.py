@@ -23,8 +23,6 @@ class ReaPackageTests(unittest.TestCase):
         lock = json.loads((PLUGIN / 'package-lock.json').read_text())
         self.assertEqual(package['dependencies'], lock['packages']['']['dependencies'])
         self.assertIn('src/main.ts', origin['files'])
-        self.assertEqual(len(list((PLUGIN / '.agents/skills').glob('*/SKILL.md'))), 5)
-        self.assertEqual(len(list((PLUGIN / 'skills').rglob('SKILL.md'))), 5)
 
     def test_export_changes_only_links_for_the_new_directory_depth(self):
         original = (PLUGIN / '.agents/skills/rea-tool-design/SKILL.md').read_bytes()

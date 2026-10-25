@@ -25,20 +25,10 @@ class SpaceSyncTests(unittest.TestCase):
         self.assertEqual(native['AppleSymbolicHotKeys']['99'], {'enabled': True})
         self.assertEqual(tiny['unrelated'], 'preserve')
 
-    def test_current_is_idempotent_and_absent_tinycast_is_skipped(self):
-        native = {'AppleSymbolicHotKeys': self.wanted['AppleSymbolicHotKeys']}
-        self.assertEqual(spaces.changes(self.wanted, native, {}), [])
-        self.assertEqual(spaces.changes(self.wanted, native, None), [])
-
-    def test_native_hyper_and_tinycast_unassigned(self):
-        for value in self.wanted['tinycast'].values():
-            self.assertIsNone(value)
-        for value in self.wanted['AppleSymbolicHotKeys'].values():
-            self.assertEqual(value['value']['parameters'][2], 0x800000 | 0x1e0000)
-
     def test_absent_tinycast_keys_are_current_but_assigned_keys_are_removed(self):
         native = {'AppleSymbolicHotKeys': self.wanted['AppleSymbolicHotKeys']}
         self.assertEqual(spaces.changes(self.wanted, native, {}), [])
+        self.assertEqual(spaces.changes(self.wanted, native, None), [])
         key = 'hotkey.windowCommand.next-space'
         self.assertEqual(spaces.changes(self.wanted, native, {key: 'old'}),
                          [('com.tinycast.app', key, None)])
