@@ -60,14 +60,14 @@ failed verification remains pending. Local sync does not publish cloud.
 - Bump the owning `plugin.json` only when release content is final and ready
   to commit.
 - Use the active environment's default skill creator for creation/validation.
-  Dots quality guidance: `plugins/dots/skills/skill-standards/references/standards.md`.
 
 ## Validation
 
 Review changed files and run relevant deterministic checks. Skill changes also
 require the active environment's default skill validation.
 
-`scripts/verify.py --plugins` checks both packages. Use Python 3.10+.
+`scripts/verify.py --plugins` checks registered plugins and optional source
+packages. Use Python 3.10+.
 Run `scripts/verify.py --full` (also requires `uv`) only when explicitly requested,
 for marketplace/plugin packaging, shared integration or release infrastructure,
 or changes to the gate itself.

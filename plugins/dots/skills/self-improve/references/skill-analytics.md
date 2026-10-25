@@ -1,51 +1,22 @@
-# Skill-usage analytics
+# Skill evidence
 
-Use `skill-usage` once to select a fixed list of sessions to read for a named
-skill review.
+From this skill directory, use the read-only helper to select a fixed evidence set:
 
-```bash
-python3 scripts/self_improve.py skill-usage --skill dots:publish-pr --days 30 --limit 100
+```sh
+python3 scripts/self_improve.py --platform codex skill-usage --skill dots:publish-pr --days 30 --limit 100
 ```
 
-The exact skill filter is applied after the selected set of sessions is scanned.
-Do not use a session-title or prompt query to find invocations; it omits
-sessions where the skill ran without appearing in searchable metadata.
+Choose the platform explicitly. The skill filter applies after scanning the
+selected sessions; title-only searches miss invocations without a prompt mention.
+Mentions, structured invocations and correlated friction signals are different.
+Injected skill text is not independent evidence of use. Silent selection and
+unrecorded calls may be absent; label that coverage limit.
 
-## Signals
+Read every selected representative, including successful invocations. Establish
+whether the skill ran, what it changed and the actual outcome. Distinguish a
+skill causing a problem from merely appearing in the same task. Repeated clean
+runs can support keeping a method. Do not equate low measured use with no value.
 
-- **Mentions** count known `$skill` tokens in ordinary user or assistant prose.
-  Prompt drafts and quoted transcripts belong here.
-- **Invoked** counts deduplicated parent-session clusters with host-structured
-  evidence: a Codex `<skill><name>…</name>` injection, an exact structured
-  `skill` argument, or an exact skill tool name or namespace.
-- **Friction candidates** are invoked clusters with a tool-error marker or user
-  frustration cue somewhere in the thread.
-
-Injected skill bodies contribute only their exact `<name>` value. Their embedded
-instructions do not create mentions or friction signals. Before counting
-invocations, the helper combines duplicate copies, delegated children, and exact
-retries. Structured invocations remain visible when the named skill is no longer
-installed or came from a project checkout; the ledger labels them
-`historical/local` instead of discarding them.
-
-These signals are discovery aids, not telemetry. Description-based or otherwise
-silent invocations may be absent. Friction is correlation until the transcript
-shows that the skill caused or failed to prevent it.
-
-The output's cutoff time and representative session IDs define which sessions to
-read. Use every listed representative, including invocations without friction
-cues, rather than rerunning a query for the top results whose contents can
-change after new audit threads have been created.
-
-## Review
-
-For the named skill, read every invoked cluster in scope—not only the friction
-candidates. For each cluster:
-
-1. Establish the request, whether the skill actually ran, and the outcome.
-2. Decide whether any friction was caused by the skill, by its trigger, or by
-   unrelated work in the thread.
-3. Compare successful runs to failures and state the repeatable happy path.
-
-Prioritize repeated problems caused by the skill across invocation clusters. A
-heavily used skill with clean representative runs may need no change.
+The helper is discovery support, not authoritative billing or context telemetry.
+Inspect inherited copies, modern event schemas and opaque content before relying
+on counts. Preserve stable identifiers, fixed bounds and source coverage in the report.

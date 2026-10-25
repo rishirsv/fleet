@@ -1,7 +1,7 @@
 {
   "name": "dots",
-  "version": "0.2.270",
-  "description": "Focused workflows for planning, building, reviewing, and shipping software.",
+  "version": "0.2.271",
+  "description": "Focused skills for decisions, review, publishing, and workflow improvement.",
   "author": {
     "name": "Rishi"
   },
@@ -14,15 +14,15 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Dots",
-    "shortDescription": "Plan, build, review, and ship.",
-    "longDescription": "Focused skills and agent workflows for software development. Turn a request into a clear plan, implement the change, review the result, and ship it.",
+    "shortDescription": "Focused development tools",
+    "longDescription": "Focused operations for decisions, independent review, publishing, and evidence-grounded workflow improvement.",
     "developerName": "Rishi",
     "category": "Productivity",
     "capabilities": [
       "Read",
       "Write"
     ],
-    "defaultPrompt": "Use Dots to choose the smallest workflow for this task and carry it through.",
+    "defaultPrompt": "Use the focused Dots skill that fits this request.",
     "brandColor": "#FF4B0A",
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png",

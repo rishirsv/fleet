@@ -15,6 +15,7 @@ from urllib.parse import unquote
 
 
 ROOT = Path(__file__).resolve().parents[1]
+OPTIONAL_SOURCE_PACKAGES = ("wip/artifacts", "wip/verification")
 MARKDOWN_LINK = re.compile(r"!?\[[^\]]*\]\(([^)]+)\)")
 
 
@@ -210,16 +211,18 @@ def full_checks(codex_names: list[str], claude_names: list[str]) -> None:
     run("claude", "plugin", "validate", ".", "--strict")
     for name in claude_names:
         run("claude", "plugin", "validate", f"plugins/{name}", "--strict")
+    for package in OPTIONAL_SOURCE_PACKAGES:
+        run("claude", "plugin", "validate", package, "--strict")
     # Installation smoke tests must never alter the user's configured plugins.
     with tempfile.TemporaryDirectory(prefix="dots-codex-verify-") as tmp:
         env = {**os.environ, "CODEX_HOME": tmp}
         run("codex", "plugin", "marketplace", "add", str(ROOT), env=env)
         for name in codex_names:
             run("codex", "plugin", "add", f"{name}@dots", env=env)
-    run("node", "plugins/dots/skills/html/scripts/generate-theme.mjs", "--check")
-    run("node", "plugins/dots/skills/html/scripts/catalog.mjs", "--check")
+    run("node", "wip/artifacts/skills/html/scripts/generate-theme.mjs", "--check")
+    run("node", "wip/artifacts/skills/html/scripts/catalog.mjs", "--check")
     html_tests = sorted(str(p.relative_to(ROOT)) for p in
-                        (ROOT / "plugins/dots/skills/html/scripts").glob("*.test.mjs"))
+                        (ROOT / "wip/artifacts/skills/html/scripts").glob("*.test.mjs"))
     run("node", "--test", *html_tests)
     env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
     # Check package validation, browser config sync, and plugin runtime behavior.
@@ -230,7 +233,7 @@ def full_checks(codex_names: list[str], claude_names: list[str]) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--plugins", action="store_true", help="check both source packages without installation or suites")
+    mode.add_argument("--plugins", action="store_true", help="check source packages without installation or suites")
     mode.add_argument("--full", action="store_true", help="run the complete repository integration gate")
     args = parser.parse_args()
     try:
@@ -238,6 +241,8 @@ def main() -> int:
         errors = []
         for name in sorted(set(codex_names + claude_names)):
             errors.extend(validate_plugin(ROOT / "plugins" / name))
+        for package in OPTIONAL_SOURCE_PACKAGES:
+            errors.extend(validate_plugin(ROOT / package))
         if errors:
             for error in errors:
                 print(error, file=sys.stderr)

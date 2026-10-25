@@ -1,0 +1,12 @@
+{
+  "name": "verification",
+  "version": "0.1.0",
+  "description": "Author project-local runtime and formal verification skills.",
+  "author": {
+    "name": "Rishi"
+  },
+  "keywords": [
+    "verification",
+    "skills"
+  ]
+}

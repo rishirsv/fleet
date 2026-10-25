@@ -1,54 +1,25 @@
 # Dots
 
-Focused workflows for planning, building, reviewing, and shipping software in
-Codex and Claude Code. Install through the repository's
-[installation guide](https://github.com/rishirsv/fleet/blob/main/INSTALL.md).
+Focused operations for decisions, independent review, publishing and workflow
+improvement in Codex and Claude Code. Ordinary development uses the host's tools
+and repository instructions; Dots has no general router or required phase chain.
 
-## Working with Dots
+| Skill | Use for |
+|---|---|
+| Shape Idea | An open product or planning discussion |
+| Clarify Requirements | Resolve ambiguities before authorized work |
+| Apply Ambition | Improve an outcome without inflating scope |
+| Architecture Review | Structural audits and simplification |
+| Change Review | A pinned independent review and in-scope repairs |
+| Ask Model | A named model's CLI task with explicit ownership |
+| Publish PR | Commit, push and publish the requested work |
+| Babysit PR | Monitor and repair until a PR is ready |
+| Self Improve | Evidence-grounded workflow diagnosis or usage reflection |
 
-Select [Dots](skills/dots/SKILL.md) and describe the outcome, any constraints,
-and what would show it works. You do not need to choose a playbook or list
-skills. Dots selects the workflow and loads supporting guidance as needed.
+Explorer, Worker and Adversary are optional roles for bounded independent work.
+The parent keeps connected reasoning and integration. Codex reviewers explicitly
+start with `fork_turns: "none"`.
 
-Use `$dots` in Codex. The entrypoint is explicitly selected; individual focused
-skills can still apply according to their own invocation settings.
-
-| Intent | Example prompt |
-| --- | --- |
-| Investigate | `$dots why does logout leave the cached profile visible? Explain the cause; don't change code.` |
-| Plan | `$dots plan CSV export for the reports page. Preserve filters. Stop before implementation.` |
-| Build | `$dots add CSV export. The exported rows must match the active filters, including an empty result.` |
-| Fix | `$dots retries create duplicate notifications. Reproduce it, fix the cause, and show the before-and-after result.` |
-| Refactor | `$dots rename UserCtx to SessionContext. Keep behavior unchanged and account for every reference.` |
-| Review | `$dots review this branch for regressions. Report findings without editing files.` |
-
-Follow up with "do it" or "continue" when the outcome is already settled.
-To change direction, state the new task or boundary:
-
-```text
-New task: explain how the export queue retries failed jobs. Don't fix anything.
-```
-
-Dots selects the workflow again when the task changes. A question during a
-build does not authorize new implementation, and a plan-only request stops at
-the plan. Re-select Dots in a new chat; it does not install an always-on rule.
-
-Use a focused skill when you already know the operation, such as
-`$change-review medium review-only`. Select `$agent-workflow` when you want
-the delegated plan-to-PR flow. Ordinary implementation does not publish a PR
-unless you request it.
-
-## Choose a focused skill
-
-| Task | Skill |
-| --- | --- |
-| Understand an idea through a guided explanation | [Teach](skills/teach/SKILL.md) |
-| Explain code or investigate a decision | [How](skills/how/SKILL.md), [Why](skills/why/SKILL.md) |
-| Design a boundary or resolve an uncertain choice | [Architect](skills/architect/SKILL.md), [Prototype](skills/prototype/SKILL.md) |
-| Review architecture or a completed change | [Architecture Review](skills/architecture-review/SKILL.md), [Change Review](skills/change-review/SKILL.md) |
-| Investigate what a change could break elsewhere | [Blast Radius](skills/blast-radius/SKILL.md) |
-| Write repository docs or build an HTML report | [Repo Docs](skills/repo-docs/SKILL.md), [HTML](skills/html/SKILL.md) |
-| Publish or monitor a pull request | [Publish PR](skills/publish-pr/SKILL.md), [Babysit PR](skills/babysit-pr/SKILL.md) |
-
-See [Dots](skills/dots/SKILL.md) for the complete routing map. Each skill
-defines its own inputs, permissions, and checks.
+Artifact and verification authoring are preserved as optional source packages
+in Fleet's `wip/` area, outside Dots discovery and default installation. Local
+source changes do not publish cloud releases or refresh installed caches.

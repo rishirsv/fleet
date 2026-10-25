@@ -32,9 +32,6 @@ def load_module(name: str, path: Path):
 
 
 sessions = load_module("codex_sessions", PLUGIN_ROOT / "scripts" / "codex_sessions.py")
-handoff = load_module(
-    "handoff_context", PLUGIN_ROOT / "skills" / "handoff" / "scripts" / "handoff_context.py"
-)
 self_improve = load_module(
     "self_improve", PLUGIN_ROOT / "skills" / "self-improve" / "scripts" / "self_improve.py"
 )
@@ -88,72 +85,8 @@ class SessionAdapterTests(unittest.TestCase):
             [("message", "user", "current user"), ("message", "assistant", "legacy assistant")],
         )
 
-    def test_handoff_directory_scope_is_literal_and_database_is_read_only(self):
-        with tempfile.TemporaryDirectory() as tmp:
-            db = Path(tmp) / "state?#.sqlite"
-            with contextlib.closing(sqlite3.connect(db)) as conn:
-                conn.execute("CREATE TABLE threads (id TEXT, title TEXT, cwd TEXT, "
-                             "created_at INTEGER, updated_at INTEGER, rollout_path TEXT, "
-                             "git_branch TEXT, preview TEXT, first_user_message TEXT, archived INTEGER)")
-                for index, cwd in enumerate(("/work/app_%", "/work/app_%/sub", "/work/appXX/sub")):
-                    conn.execute("INSERT INTO threads VALUES (?, '', ?, 1, 2, '', '', '', '', 0)",
-                                 (str(index), cwd))
-                conn.commit()
-            args = SimpleNamespace(state_db=str(db), thread=None, cwd="/work/app_%",
-                                   query=None, include_archived=False, limit=10)
-            self.assertEqual({row.id for row in handoff.find_threads(args)}, {"0", "1"})
-            with contextlib.closing(handoff.connect(db)) as conn:
-                with self.assertRaises(sqlite3.OperationalError):
-                    conn.execute("DELETE FROM threads")
 
-    def test_handoff_preserves_custom_calls_and_outputs(self):
-        records = [
-            {"type": "response_item", "payload": {"type": "custom_tool_call",
-             "name": "apply_patch", "input": "*** Begin Patch\n*** Add File: example.py\n+pass"}},
-            {"type": "response_item", "payload": {"type": "custom_tool_call_output",
-             "output": "Success. Updated example.py"}},
-            {"type": "response_item", "payload": {"type": "custom_tool_call",
-             "name": "apply_patch", "input": "API_KEY=do-not-emit"}},
-        ]
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp) / "rollout.jsonl"
-            path.write_text("".join(json.dumps(record) + "\n" for record in records))
-            events = handoff.parse_transcript(path, max_events=20, char_limit=500)
-        self.assertEqual([event["kind"] for event in events], ["tool-call", "tool-output", "tool-call"])
-        self.assertIn("Add File: example.py", events[0]["text"])
-        self.assertIn("Success.", events[1]["text"])
-        self.assertNotIn("do-not-emit", str(events))
 
-    def test_handoff_redacts_metadata_and_tool_arguments_in_both_formats(self):
-        records = [
-            {
-                "timestamp": "1",
-                "type": "response_item",
-                "payload": {
-                    "type": "function_call",
-                    "name": "shell",
-                    "arguments": json.dumps({"cmd": "API_KEY=do-not-emit"}),
-                },
-            },
-            {
-                "timestamp": "2",
-                "type": "event_msg",
-                "payload": {"type": "agent_message", "message": "password=do-not-emit"},
-            },
-        ]
-        with tempfile.TemporaryDirectory() as tmp:
-            path = Path(tmp) / "rollout.jsonl"
-            path.write_text("".join(json.dumps(record) + "\n" for record in records))
-            events = handoff.parse_transcript(path, max_events=20, char_limit=500)
-        thread = handoff.Thread(
-            "id", "secret title", "/tmp", 0, 0, "/tmp/rollout", "main",
-            "authorization: do-not-emit", "access_token=do-not-emit",
-        )
-        markdown = handoff.render_markdown(thread, events)
-        rendered_json = handoff.render_json(thread, events)
-        for rendered in (markdown, rendered_json):
-            self.assertNotIn("do-not-emit", rendered)
-            self.assertGreaterEqual(rendered.count("[redacted sensitive line]"), 4)
 
     def test_self_improve_treats_prompt_tokens_as_mentions_not_invocations(self):
         records = [

@@ -1,82 +1,22 @@
-# Thread evidence
+# Evidence across tasks
 
-The helper narrows the read set; you verify the evidence and decide whether it
-supports a durable change.
+Fix the task set, sources and cutoff before inspecting outcomes. Include ordinary,
+successful and difficult cases, not only corrections. Deduplicate retries,
+conversation copies and delegated children under their parent; inherited events
+may be recaptured with new timestamps, so use stable call/message identifiers
+where available. Opaque or missing content is not readable evidence.
 
-## Evidence record
+For a candidate lesson, reconstruct the request, expected and actual behavior,
+user correction, governing source, observed file actions and verified outcome.
+A path mention is weaker than a structured read or edit. Read the transcript
+around helper signals before assigning a cause.
 
-Capture only fields that change the proposal decision:
+Before generalizing, identify independent occurrences of the same behavior,
+the closest responsible owner, a rule that does not copy incidental names or
+counts, and a counterexample that would make the rule too broad. Read relevant
+commits or review records when they could change that conclusion. One task can
+support a local correction or an explicit user preference, not a universal rule.
 
-| Field | What to capture |
-|---|---|
-| Trigger | What the user asked for |
-| Expected | What the workflow or skill should have caused |
-| Actual | What happened |
-| Correction | Direct user correction, accepted recovery, or repeated preference |
-| Governing files | Instructions, skills, docs, scripts, configs, or checks that shaped the result |
-| File activity | Files read, searched, edited, written, or merely mentioned |
-| Outcome | Validation result and whether the user accepted it |
-| Support | Thread clusters with duplicates removed and the repositories they cover |
-| Contradictions | Evidence that points toward a different rule |
-| Falsifier | What would show the diagnosis is wrong |
-
-Thread IDs, timestamps, and transcript paths identify where the evidence came
-from. Do not copy them into portable skill or instruction text unless the
-runtime task requires them.
-
-## Generalization gate
-
-For recurring repository mistakes, read relevant recent commits, reverts,
-review comments, agent instruction files, and comments that explain workarounds
-alongside the session evidence. Group the mistakes into classes. Count
-independent occurrences of the same failure, not repeated discussion of one
-incident.
-
-Before generalizing beyond the task:
-
-1. Describe the repeated failure in terms of what the agent does.
-2. State the rule without copying the incident's names, wording, counts, or
-   numeric heuristic unless the number is independently supported.
-3. Check the nearest adjacent skill or workflow and keep the rule with the
-   component that owns the behavior.
-4. Give a counterexample or a result that would show the rule is too broad or
-   the diagnosis is wrong.
-
-Reject or narrow a generalized proposal when it cannot pass all four checks.
-One task can still support a correction local to that task or an exact durable
-behavior the user explicitly requests. Preserve that behavior at its stated
-scope; do not replace it with a broader abstraction.
-
-## File references
-
-Rank file evidence by how it was observed:
-
-1. **Structured:** a Read, Edit, Write, search, notebook, or equivalent tool
-   supplied the path in a dedicated argument. Treat this as high confidence.
-2. **Command:** a shell command included a plausible path. Treat it as a lead;
-   commands can contain generated, quoted, or non-file tokens.
-3. **Mention:** user or assistant prose named a path. Treat it as context, not
-   proof that the file was opened or changed.
-
-Resolve relative paths against the thread working directory, retain the
-original spelling, deduplicate canonical paths, and report whether the path
-still exists. Never infer that a file was edited merely because it appeared in
-a diff, command output, or message.
-
-Include subagent files and transcripts under the parent thread. They are
-supporting evidence, not independent user support.
-
-## Triage
-
-Prioritize threads containing:
-
-- direct corrections or stable preferences;
-- repeated retries followed by an accepted workflow;
-- failed validation or tool problems tied to a named procedure;
-- instruction, skill, plugin, memory, documentation, or harness decisions;
-- files that recur across several related threads;
-- recent work in the current repository.
-
-Do not treat generic negative words, incidental error output, a skill name in a
-diff, or a path mention as proof of failure. Distinguish normal use of the skill
-from threads that develop the skill itself.
+Preserve contradictions and distinguish direct observations from inferred cost
+or friction. A concise evidence record needs only fields that change the proposed
+fix. Keep private task identifiers and raw transcripts out of portable guidance.

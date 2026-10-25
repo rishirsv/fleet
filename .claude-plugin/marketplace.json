@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "dots",
-      "description": "Opinionated development workflows and reusable skills for planning, building, reviewing, documenting, and shipping software.",
+      "description": "Focused skills for decisions, independent review, publishing, and workflow improvement.",
       "author": {
         "name": "Rishi"
       },

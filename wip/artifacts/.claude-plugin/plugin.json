@@ -1,0 +1,13 @@
+{
+  "name": "artifacts",
+  "version": "0.1.0",
+  "description": "Optional HTML and editorial document authoring workflows.",
+  "author": {
+    "name": "Rishi"
+  },
+  "keywords": [
+    "html",
+    "editorial",
+    "documents"
+  ]
+}

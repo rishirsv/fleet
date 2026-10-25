@@ -1,0 +1,26 @@
+{
+  "name": "artifacts",
+  "version": "0.1.0",
+  "description": "Optional HTML and editorial document authoring workflows.",
+  "author": {
+    "name": "Rishi"
+  },
+  "keywords": [
+    "html",
+    "editorial",
+    "documents"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Artifacts",
+    "shortDescription": "HTML and editorial documents",
+    "longDescription": "Create standalone HTML documents and visually rich native editorial Pages from supplied material.",
+    "developerName": "Rishi",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": "Create an HTML document or editorial Page from this material."
+  }
+}

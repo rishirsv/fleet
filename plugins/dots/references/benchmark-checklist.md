@@ -1,8 +1,7 @@
 # Benchmark checklist
 
 Use this reference before relying on a measured speedup, regression, or
-performance comparison. It checks the measurement; the
-[Performance](../playbooks/performance.md) playbook owns diagnosis and fixes.
+performance comparison. It checks reported measurement evidence; the active task owns diagnosis and fixes.
 
 Write the claim before running, including the workload, metric, unit, and
 comparison. Read the harness to identify what it times, counts, and excludes.

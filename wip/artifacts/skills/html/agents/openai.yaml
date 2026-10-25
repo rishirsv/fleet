@@ -1,0 +1,8 @@
+interface:
+  display_name: "HTML"
+  short_description: "Create HTML pages, linked page sets, and embed blocks"
+  brand_color: "#36C5A7"
+  default_prompt: "Use $html to turn this material into a self-contained HTML page or linked page set with useful diagrams and visual explanations, followed by the complete details and the standard visual style."
+
+policy:
+  allow_implicit_invocation: true

@@ -5,64 +5,28 @@ description: "Resolves ambiguous requirements before implementation through focu
 
 # Clarify Requirements
 
-Resolve only ambiguities that could change the work. Once they are resolved,
-continue implementation already authorized by the user; do not ask them to
-confirm the same decisions again. A clarification-only request ends with the
-shared understanding.
+Inspect the request, repository guidance, configuration, accepted references,
+and nearby code before asking. Never ask for an answer already available.
+Clarify only when plausible answers change the objective, definition of done
+(including edge cases), scope, constraints, or safety boundary.
 
-## Workflow
+Ask the smallest set of unresolved questions: at most three initially, most
+consequential first, none if evidence settles them. Keep questions short;
+number multiple questions. Offer distinct choices and a recommended default
+when useful, including “not sure, use the default” when it eases answering.
+Separate blocking decisions from optional preferences.
 
-Write questions and the summary with [Writing style](../../references/writing-style.md).
+While a blocking decision remains unresolved, continue only low-risk inspection;
+do not edit files or give a detailed implementation plan. If the user authorizes
+proceeding without answers, state consequential assumptions and continue without
+asking for confirmation again.
 
-### 1. Inspect before asking
+For meaningful scope or risk, briefly summarize the agreed outcome, definition
+of done, scope and non-goals, constraints, and remaining assumptions. Use plain,
+precise language. Establish requirements rather than an implementation plan.
 
-Read the request, relevant repository guidance, configuration, accepted
-references, and nearby implementation. Do not ask the user for an answer the
-available material already provides.
-
-A request still needs clarification when more than one plausible answer would
-change any of these:
-
-- the objective, including what should change and what should stay the same;
-- the definition of done, including important examples or edge cases;
-- the scope, including which files, components, or users are in or out;
-- the constraints, such as compatibility, performance, style, dependencies, or
-  timing; or
-- the safety boundary, including migration, rollout, rollback, or irreversible
-  effects.
-
-### 2. Ask the must-have questions
-
-Ask the smallest set of unresolved questions, at most three in the first pass.
-Ask none when the available evidence already settles them. First ask the
-question whose answer would change the most important part of the work.
-
-Make each question easy to answer:
-
-- keep it short and number it when there is more than one;
-- offer distinct choices when they are clearer than an open-ended question;
-- recommend a reasonable default when one genuinely fits the repository and
-  the user's direction;
-- include “not sure, use the default” when that lowers the cost of answering;
-  and
-- separate must-have questions from optional preferences when both exist.
-
-### 3. Pause only for answers that change the work
-
-Do not edit files or produce a detailed implementation plan while a must-have
-decision is unresolved. Low-risk repository inspection may continue.
-
-If the user tells you to proceed without answering, state the assumptions that
-could affect the result and continue. Do not require another confirmation after
-the user has already approved that path.
-
-### 4. Record the shared understanding when it helps
-
-For work with meaningful scope or risk, summarize the agreed outcome, definition
-of done, scope and non-goals, constraints, and remaining assumptions. Keep it
-short. This skill establishes the agreed requirements. It does not produce an
-implementation plan based on repository investigation.
-
-Finish when every blocking ambiguity is answered, explicitly deferred, or
-covered by an assumption the user authorized. If later evidence changes one of
-those decisions, report the change before continuing.
+Clarification is complete when blocking decisions are answered, explicitly
+deferred, or covered by user-authorized assumptions. Stop for clarification-only
+requests; otherwise continue implementation already authorized. Do not reopen
+settled decisions without new evidence; report evidence that changes a decision
+before continuing.
