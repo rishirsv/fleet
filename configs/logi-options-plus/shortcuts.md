@@ -24,7 +24,7 @@ application-specific Logitech profiles in this snapshot.
 
 1. Install Wispr Flow and Logi Options+ and sign into the existing accounts.
 2. Connect the MX Master 4 and MX Mechanical Mini.
-3. Run `scripts/logi-options/repair-shortcut.sh` from the Dots repository.
+3. Run `scripts/logi-options/repair-shortcut.sh` from the Fleet repository.
    This configures Wispr Flow **Right Control**, the MX Master 4 top button,
    and the wheel's middle click without using Logitech's shortcut recorder.
 4. Apply the remaining Logitech assignments and device settings below.

@@ -15,7 +15,7 @@ Usage: scripts/sync-configs.sh [--dry-run|--apply|--status] [--agents|--codex|--
 Preview by default. Selected targets cover Codex, Claude, VS Code, Karabiner,
 Ghostty, and Zsh. Merge Fleet's Codex settings into CODEX_HOME (or ~/.codex)
 and ~/.codex-personal when present. --profile selects just one profile.
-Each profile retains its cloud/local Dots/Drafts policy and machine-local state.
+Each profile retains its cloud/local pstack/Drafts policy and machine-local state.
 Apply validates settings and backs up existing config before writing.
 Sync also merges shared agent guidance and installs selected VS Code extensions.
 Codex/Claude plugin installation uses sync-plugins.sh. Sync does not push Git

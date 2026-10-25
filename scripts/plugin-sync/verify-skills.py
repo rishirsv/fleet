@@ -116,7 +116,7 @@ def loaded_skills(cwd):
 
     try:
         request(1, "initialize", {
-            "clientInfo": {"name": "dots_skill_verification", "version": "1.0"},
+            "clientInfo": {"name": "pstack_skill_verification", "version": "1.0"},
             "capabilities": {"experimentalApi": True},
         })
         # The desktop loads account plugins explicitly. A fresh CLI server

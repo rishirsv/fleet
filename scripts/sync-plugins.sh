@@ -112,23 +112,26 @@ sync_codex_home() {
 
   echo "Syncing $label"
   profile_home="${home:-$HOME/.codex}"
+  if [[ ! -f "$profile_home/pstack-plugin-source" && -f "$profile_home/dots-plugin-source" ]]; then
+    mv "$profile_home/dots-plugin-source" "$profile_home/pstack-plugin-source"
+  fi
   if [[ -n "$selection" ]]; then
     mkdir -p "$profile_home"
-    printf '%s\n' "$selection" > "$profile_home/dots-plugin-source"
+    printf '%s\n' "$selection" > "$profile_home/pstack-plugin-source"
   fi
   policy="$(codex_plugin_source "$profile_home")"
   uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" apply \
     --source "$policy" \
     --target "$profile_home/config.toml"
   # A local MCP plugin can coexist with cloud skills. The profile policy
-  # selects which marketplace packages are local, independently of Dots/Drafts.
+  # selects which marketplace packages are local, independently of pstack/Drafts.
   local_specs=("${(@f)$(uv run --quiet --with tomlkit==0.13.3 python -c '
 import sys, tomlkit
 from pathlib import Path
 policy = tomlkit.parse(Path(sys.argv[1]).read_text())["plugins"]
 for spec in sys.argv[2:]:
     name = spec.split("\t", 1)[0]
-    if policy.get(name + "@dots", {}).get("enabled", False):
+    if policy.get(name + "@pstack", {}).get("enabled", False):
         print(spec)
 ' "$policy" "${CODEX_SPECS[@]}")}")
   if (( ${#local_specs} )); then
@@ -141,18 +144,18 @@ for spec in sys.argv[2:]:
 import json, sys
 disabled = {p["pluginId"] for p in json.load(sys.stdin)["installed"] if p.get("enabled") is False}
 for spec in sys.argv[1:]:
-    if spec.split("\t", 1)[0] + "@dots" not in disabled:
+    if spec.split("\t", 1)[0] + "@pstack" not in disabled:
         print(spec)
 ' "${local_specs[@]}" <<< "$installed")}")
   fi
   for spec in "${active_specs[@]}"; do
     [[ -n "$spec" ]] || continue
     IFS=$'\t' read -r name version <<< "$spec"
-    codex_for "$home" plugin add "$name@dots" >/dev/null
+    codex_for "$home" plugin add "$name@pstack" >/dev/null
   done
 
   installed="$(codex_for "$home" plugin list --json)"
-  for stale in "${(@f)$(stale_ids dots "${CODEX_SPECS[@]}" <<< "$installed")}"; do
+  for stale in "${(@f)$(stale_ids pstack "${CODEX_SPECS[@]}" <<< "$installed")}"; do
     [[ -n "$stale" ]] && codex_for "$home" plugin remove "$stale" >/dev/null
   done
   installed="$(codex_for "$home" plugin list --json)"
@@ -164,7 +167,7 @@ policy = tomlkit.parse(Path(sys.argv[1]).read_text())["plugins"]
 expected = dict(item.split("\t", 1) for item in sys.argv[2:] if item)
 plugins = {p["pluginId"]: p for p in json.load(sys.stdin)["installed"]}
 installed = {key: value["version"] for key, value in plugins.items()}
-errors = ["%s@dots: expected %s, got %s" % (name, version, installed.get(name + "@dots", "not installed")) for name, version in expected.items() if installed.get(name + "@dots") != version]
+errors = ["%s@pstack: expected %s, got %s" % (name, version, installed.get(name + "@pstack", "not installed")) for name, version in expected.items() if installed.get(name + "@pstack") != version]
 errors += ["%s: duplicate copy is still enabled" % key for key, settings in policy.items() if settings.get("enabled") is False and plugins.get(key, {}).get("enabled") is True]
 if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(errors))
 ' "$policy" "${active_specs[@]}" <<< "$installed"
@@ -175,22 +178,22 @@ if errors: raise SystemExit("Codex verification failed:\n  " + "\n  ".join(error
     for spec in "${CODEX_SPECS[@]}"; do
       IFS=$'\t' read -r name version <<< "$spec"
       [[ "${local_specs[(r)$spec]:-}" != "" ]] && continue
-      if python3 -c 'import json,sys; raise SystemExit(not any(p["pluginId"] == sys.argv[1] for p in json.load(sys.stdin)["installed"]))' "$name@dots" <<< "$installed"; then
-        codex_for "$home" plugin remove "$name@dots" >/dev/null
+      if python3 -c 'import json,sys; raise SystemExit(not any(p["pluginId"] == sys.argv[1] for p in json.load(sys.stdin)["installed"]))' "$name@pstack" <<< "$installed"; then
+        codex_for "$home" plugin remove "$name@pstack" >/dev/null
       fi
     done
     # Desktop lists registered folder-marketplace entries even after uninstall.
     # Remove the marketplace only when no local runtime package needs it.
     marketplaces="$(codex_for "$home" plugin marketplace list --json)"
-    if (( ! ${#local_specs} )) && python3 -c 'import json,sys; raise SystemExit(not any(m["name"] == "dots" for m in json.load(sys.stdin)["marketplaces"]))' <<< "$marketplaces"; then
-      codex_for "$home" plugin marketplace remove dots >/dev/null
+    if (( ! ${#local_specs} )) && python3 -c 'import json,sys; raise SystemExit(not any(m["name"] == "pstack" for m in json.load(sys.stdin)["marketplaces"]))' <<< "$marketplaces"; then
+      codex_for "$home" plugin marketplace remove pstack >/dev/null
     fi
     # plugin remove also removes its config entry; retain explicit exclusions.
     uv run --quiet --script "$ROOT/scripts/plugin-sync/merge-codex-config.py" apply \
       --source "$policy" --target "$profile_home/config.toml"
   fi
 
-  agent_source="$ROOT/plugins/dots/agents"
+  agent_source="$ROOT/plugins/pstack/agents"
   agent_target="$profile_home/agents"
   if [[ ! -d "$agent_target" || -L "$agent_target" ]] || ! diff -qr "$agent_source" "$agent_target" >/dev/null; then
     mkdir -p "$profile_home"
@@ -211,34 +214,34 @@ sync_claude() {
   local spec name version plugin_id installed marketplaces marketplace_status marketplace_root stale details
   echo "Syncing Claude"
   node "$ROOT/scripts/plugin-sync/generate-agents.mjs" --check >/dev/null
-  claude plugin validate "$ROOT/plugins/dots" --strict >/dev/null
+  claude plugin validate "$ROOT/plugins/pstack" --strict >/dev/null
 
   marketplaces="$(claude plugin marketplace list --json)"
   marketplace_status="$(python3 -c '
 import json, sys
 from pathlib import Path
-matches = [entry for entry in json.load(sys.stdin) if entry.get("name") == "dots"]
+matches = [entry for entry in json.load(sys.stdin) if entry.get("name") == "pstack"]
 if not matches:
     print("missing")
 elif len(matches) == 1 and matches[0].get("source") == "directory" and Path(matches[0].get("path", "")).resolve() == Path(sys.argv[1]).resolve():
     print("present")
-elif len(matches) == 1 and matches[0].get("source") == "github" and matches[0].get("repo") == "rishirsv/dots":
+elif len(matches) == 1 and matches[0].get("source") == "github" and matches[0].get("repo") == "rishirsv/fleet":
     print("present")
 else:
-    raise SystemExit("Claude marketplace dots does not point to this Fleet checkout or rishirsv/dots")
+    raise SystemExit("Claude marketplace pstack does not point to this Fleet checkout or rishirsv/fleet")
 ' "$ROOT" <<< "$marketplaces")"
   [[ "$marketplace_status" == "present" ]] || claude plugin marketplace add "$ROOT" --scope user >/dev/null
-  claude plugin marketplace update dots >/dev/null
+  claude plugin marketplace update pstack >/dev/null
   marketplaces="$(claude plugin marketplace list --json)"
   marketplace_root="$(python3 -c '
 import json, sys
-print(next(entry["installLocation"] for entry in json.load(sys.stdin) if entry.get("name") == "dots"))
+print(next(entry["installLocation"] for entry in json.load(sys.stdin) if entry.get("name") == "pstack"))
 ' <<< "$marketplaces")"
 
   installed="$(claude plugin list --json)"
   for spec in "${CLAUDE_SPECS[@]}"; do
     IFS=$'\t' read -r name version <<< "$spec"
-    plugin_id="$name@dots"
+    plugin_id="$name@pstack"
     if python3 -c 'import json,sys; raise SystemExit(not any(p.get("id") == sys.argv[1] and p.get("scope") == "user" for p in json.load(sys.stdin)))' "$plugin_id" <<< "$installed"; then
       claude plugin update "$plugin_id" --scope user >/dev/null
     else
@@ -250,7 +253,7 @@ print(next(entry["installLocation"] for entry in json.load(sys.stdin) if entry.g
   done
 
   installed="$(claude plugin list --json)"
-  for stale in "${(@f)$(stale_ids dots "${CLAUDE_SPECS[@]}" <<< "$installed")}"; do
+  for stale in "${(@f)$(stale_ids pstack "${CLAUDE_SPECS[@]}" <<< "$installed")}"; do
     [[ -n "$stale" ]] && claude plugin uninstall "$stale" --scope user >/dev/null
   done
   installed="$(claude plugin list --json)"
@@ -258,13 +261,13 @@ print(next(entry["installLocation"] for entry in json.load(sys.stdin) if entry.g
 import json, sys
 expected = dict(item.split("\t", 1) for item in sys.argv[1:])
 plugins = {p["id"]: p for p in json.load(sys.stdin)}
-errors = ["%s@dots: expected %s, got %s" % (name, version, plugins.get(name + "@dots", {}).get("version", "not installed")) for name, version in expected.items() if plugins.get(name + "@dots", {}).get("version") != version]
+errors = ["%s@pstack: expected %s, got %s" % (name, version, plugins.get(name + "@pstack", {}).get("version", "not installed")) for name, version in expected.items() if plugins.get(name + "@pstack", {}).get("version") != version]
 if errors: raise SystemExit("Claude verification failed:\n  " + "\n  ".join(errors))
 ' "${CLAUDE_SPECS[@]}" <<< "$installed"
 
   for spec in "${CLAUDE_SPECS[@]}"; do
     IFS=$'\t' read -r name version <<< "$spec"
-    plugin_id="$name@dots"
+    plugin_id="$name@pstack"
     if python3 -c 'import json,sys; raise SystemExit(not any(p.get("id") == sys.argv[1] and p.get("enabled") is False for p in json.load(sys.stdin)))' "$plugin_id" <<< "$installed"; then
       echo "Skipping component loading for disabled Claude plugin $plugin_id"
       continue

@@ -1,25 +1,25 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "dots",
-  "description": "Dots plugins and reusable agent workflows.",
+  "name": "pstack",
+  "description": "pstack plugins and reusable agent workflows.",
   "owner": {
     "name": "Rishi"
   },
   "plugins": [
     {
-      "name": "dots",
+      "name": "pstack",
       "description": "Focused skills for decisions, independent review, publishing, and workflow improvement.",
       "author": {
         "name": "Rishi"
       },
-      "source": "./plugins/dots",
+      "source": "./plugins/pstack",
       "category": "productivity",
       "tags": [
         "development",
         "workflow",
         "skills"
       ],
-      "homepage": "https://github.com/rishirsv/dots/tree/main/plugins/dots"
+      "homepage": "https://github.com/rishirsv/fleet/tree/main/plugins/pstack"
     },
     {
       "name": "drafts",
@@ -34,7 +34,7 @@
         "books",
         "drafting"
       ],
-      "homepage": "https://github.com/rishirsv/dots/tree/main/plugins/drafts"
+      "homepage": "https://github.com/rishirsv/fleet/tree/main/plugins/drafts"
     },
     {
       "name": "design",

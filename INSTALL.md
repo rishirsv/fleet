@@ -65,7 +65,7 @@ drift without writing. Sync does not execute on another computer.
 
 ## Plugins
 
-Use local Dots/Drafts in desktop profiles on both Fleet Macs, including when
+Use local pstack/Drafts in desktop profiles on both Fleet Macs, including when
 signed in to the personal account. Keep the cloud installations for web use:
 
 ```sh
@@ -82,7 +82,7 @@ uninstall account-wide cloud plugins or disable their web use. Use
 `--source cloud` only when explicitly choosing a cloud desktop source; it
 requires the account's existing installations. Sync validates a fresh Codex
 loader and rejects duplicates; restart existing desktop sessions when needed.
-Claude uses this checkout as its local marketplace; existing `rishirsv/dots`
+Claude uses this checkout as its local marketplace; existing `rishirsv/fleet`
 registrations remain supported. `/reload-plugins` refreshes sessions.
 Sync compares installed files with the refreshed marketplace and reinstalls stale
 copies even when their version is unchanged, preserving data and disabled state.
@@ -216,7 +216,7 @@ Verify physical Hyper+Left/Right and gesture-button+left/right after restore.
 
 ## Reverse-Engineer application analysis
 
-Fleet packages upstream REA as `rea@dots`. Use `$reverse-engineer-anything` with
+Fleet packages upstream REA as `rea@pstack`. Use `$reverse-engineer-anything` with
 an application, artifact or behavior question. Its four upstream development
 skills are included too; Fleet adds no investigation skills.
 

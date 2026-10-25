@@ -1,10 +1,27 @@
 # Fleet desktops: use local installs and keep cloud copies available on the web.
+# Retired local identities can remain cached while older chats are using them.
 [plugins."dots@dots"]
-enabled = true
+enabled = false
 
 [plugins."drafts@dots"]
+enabled = false
+
+[plugins."design@dots"]
+enabled = false
+
+[plugins."rea@dots"]
+enabled = false
+
+[plugins."pstack@pstack"]
 enabled = true
 
+[plugins."drafts@pstack"]
+enabled = true
+
+[plugins."pstack@created-by-me-remote"]
+enabled = false
+
+# Preserve the exclusion while the existing cloud identity is renamed.
 [plugins."dots@created-by-me-remote"]
 enabled = false
 
@@ -20,14 +37,14 @@ enabled = false
 enabled = false
 
 # Design follows the selected profile source; cloud publication is separate.
-[plugins."design@dots"]
+[plugins."design@pstack"]
 enabled = true
 
 [plugins."design@created-by-me-remote"]
 enabled = false
 
 # REA needs a local process in either account profile.
-[plugins."rea@dots"]
+[plugins."rea@pstack"]
 enabled = true
 
 # Superseded standalone REA installation; Fleet owns the active runtime.

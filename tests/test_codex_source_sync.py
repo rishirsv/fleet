@@ -38,14 +38,14 @@ class CodexSourceSyncTests(unittest.TestCase):
             config.write_text('model = "unchanged"\n')
             policy = root / 'policy.toml'
             policy.write_text(
-                '[plugins."dots@created-by-me-remote"]\nenabled = true\n'
-                '[plugins."rea@dots"]\nenabled = true\n'
+                '[plugins."pstack@created-by-me-remote"]\nenabled = true\n'
+                '[plugins."rea@pstack"]\nenabled = true\n'
                 '[plugins."rea@rea-local"]\nenabled = false\n')
             skills = [
-                dict(name='dots:dots', path='/cloud/dots/SKILL.md', enabled=True,
-                     pluginId='dots@created-by-me-remote'),
+                dict(name='pstack:pstack', path='/cloud/pstack/SKILL.md', enabled=True,
+                     pluginId='pstack@created-by-me-remote'),
                 dict(name='rea:reverse-engineer-anything', path='/fleet/rea/SKILL.md',
-                     enabled=True, pluginId='rea@dots'),
+                     enabled=True, pluginId='rea@pstack'),
                 dict(name='rea:reverse-engineer-anything', path='/legacy/rea/SKILL.md',
                      enabled=True, pluginId='rea@rea-local'),
             ]
@@ -62,7 +62,7 @@ class CodexSourceSyncTests(unittest.TestCase):
             self.assertIn('loaded 2 Fleet plugin skills', repaired.stdout)
             self.assertIn('/legacy/rea/SKILL.md', config.read_text())
             self.assertNotIn('/fleet/rea/SKILL.md', config.read_text())
-            self.assertNotIn('/cloud/dots/SKILL.md', config.read_text())
+            self.assertNotIn('/cloud/pstack/SKILL.md', config.read_text())
             self.assertIn('model = "unchanged"', config.read_text())
 
     def test_repair_upgrade_source_switch_and_user_ownership(self):
@@ -76,12 +76,12 @@ class CodexSourceSyncTests(unittest.TestCase):
             config.write_text('model = "unchanged"\n' + user_rows)
             policy = root / 'policy.toml'
             def set_policy(cloud):
-                policy.write_text('[plugins."dots@dots"]\nenabled = ' + str(not cloud).lower() +
-                                  '\n[plugins."dots@created-by-me-remote"]\nenabled = ' + str(cloud).lower())
+                policy.write_text('[plugins."pstack@pstack"]\nenabled = ' + str(not cloud).lower() +
+                                  '\n[plugins."pstack@created-by-me-remote"]\nenabled = ' + str(cloud).lower())
             def run(version='1', repair=True):
-                skills = [dict(name='dots:dots', path=f'/cloud/{version}/SKILL.md', enabled=True,
-                               pluginId='dots@created-by-me-remote'),
-                          dict(name='dots:dots', path='/local/SKILL.md', enabled=True, pluginId='dots@dots')]
+                skills = [dict(name='pstack:pstack', path=f'/cloud/{version}/SKILL.md', enabled=True,
+                               pluginId='pstack@created-by-me-remote'),
+                          dict(name='pstack:pstack', path='/local/SKILL.md', enabled=True, pluginId='pstack@pstack')]
                 env = {**os.environ, 'CODEX_HOME': str(root), 'PATH': f'{root}:' + os.environ['PATH'],
                        'TEST_SKILLS': json.dumps(skills)}
                 args = ['uv', 'run', '--quiet', '--script', str(VERIFIER), '--policy', str(policy), '--cwd', str(root)]
@@ -95,7 +95,7 @@ class CodexSourceSyncTests(unittest.TestCase):
             result = run()
             self.assertEqual(result.returncode, 0, result.stderr)
             first = config.read_text()
-            self.assertIn('# fleet:source-exclusion dots@created-by-me-remote', first)
+            self.assertIn('# fleet:source-exclusion pstack@created-by-me-remote', first)
             self.assertIn(user_rows, first)
             self.assertIn('model = "unchanged"', first)
             self.assertEqual(len(list(root.glob('config.toml.bak.*'))), 1)

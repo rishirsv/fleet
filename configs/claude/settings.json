@@ -7,8 +7,8 @@
     "enabled": false
   },
   "enabledPlugins": {
-    "dots@dots": true,
-    "drafts@dots": true
+    "pstack@pstack": true,
+    "drafts@pstack": true
   },
   "theme": "auto",
   "tui": "fullscreen",

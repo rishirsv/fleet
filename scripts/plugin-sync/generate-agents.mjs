@@ -5,7 +5,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = dirname(dirname(dirname(fileURLToPath(import.meta.url))));
-const agentsDir = join(root, "plugins", "dots", "agents");
+const agentsDir = join(root, "plugins", "pstack", "agents");
 const args = process.argv.slice(2);
 const check = args[0] === "--check";
 
@@ -29,7 +29,7 @@ function renderAgent(source) {
   if (!prompt) throw new Error("missing developer_instructions");
 
   const skills = [...source.matchAll(/^path = "\.\.\/skills\/([^/]+)\/SKILL\.md"$/gm)]
-    .map((match) => `dots:${match[1]}`);
+    .map((match) => `pstack:${match[1]}`);
   const frontmatter = [
     "---",
     `name: ${name}`,

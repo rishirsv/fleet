@@ -3,7 +3,7 @@
 From this skill directory, use the read-only helper to select a fixed evidence set:
 
 ```sh
-python3 scripts/self_improve.py --platform codex skill-usage --skill dots:publish-pr --days 30 --limit 100
+python3 scripts/self_improve.py --platform codex skill-usage --skill pstack:publish-pr --days 30 --limit 100
 ```
 
 Choose the platform explicitly. The skill filter applies after scanning the

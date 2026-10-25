@@ -10,7 +10,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 VALIDATOR_PATH = REPO_ROOT / "scripts" / "verify.py"
-SPEC = importlib.util.spec_from_file_location("dots_validate_plugin", VALIDATOR_PATH)
+SPEC = importlib.util.spec_from_file_location("pstack_validate_plugin", VALIDATOR_PATH)
 assert SPEC and SPEC.loader
 validator = importlib.util.module_from_spec(SPEC)
 sys.modules[SPEC.name] = validator
@@ -56,13 +56,13 @@ def write_valid_plugin(root: Path) -> Path:
 class PluginValidationTests(unittest.TestCase):
     def test_valid_plugin_passes_package_integrity_checks(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "dots"
+            root = Path(tmp) / "pstack"
             write_valid_plugin(root)
             self.assertEqual(validator.validate_plugin(root), [])
 
     def test_body_examples_cannot_supply_frontmatter(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "dots"
+            root = Path(tmp) / "pstack"
             skill = write_valid_plugin(root)
             path = skill / "SKILL.md"
             for content in ("name: example\ndescription: Body only\n",
@@ -83,7 +83,7 @@ class PluginValidationTests(unittest.TestCase):
 
     def test_skill_name_must_match_directory_and_be_unique(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "dots"
+            root = Path(tmp) / "pstack"
             skill = write_valid_plugin(root)
             duplicate = root / "skills" / "other"
             (duplicate / "agents").mkdir(parents=True)
@@ -110,7 +110,7 @@ class PluginValidationTests(unittest.TestCase):
 
     def test_broken_local_links_and_icons_fail(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp) / "dots"
+            root = Path(tmp) / "pstack"
             skill = write_valid_plugin(root)
             (skill / "SKILL.md").write_text(
                 "---\nname: example\ndescription: \"Example skill.\"\n---\n\n"

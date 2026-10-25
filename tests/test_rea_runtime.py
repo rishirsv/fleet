@@ -81,7 +81,7 @@ class ReaPackageTests(unittest.TestCase):
     def test_new_computer_setup_refuses_existing_install(self):
         with tempfile.TemporaryDirectory() as tmp:
             cli = Path(tmp) / 'codex'
-            cli.write_text('#!/usr/bin/env python3\nimport json,sys\nassert sys.argv[1:]==["plugin","list","--json"]\nprint(json.dumps({"installed":[{"pluginId":"rea@dots"}]}))\n')
+            cli.write_text('#!/usr/bin/env python3\nimport json,sys\nassert sys.argv[1:]==["plugin","list","--json"]\nprint(json.dumps({"installed":[{"pluginId":"rea@pstack"}]}))\n')
             cli.chmod(0o755)
             result = subprocess.run([sys.executable, str(ROOT / 'scripts/setup-rea.py'), '--client', 'codex'],
                                     env={**os.environ, 'PATH': tmp + os.pathsep + os.environ['PATH']}, text=True, capture_output=True)

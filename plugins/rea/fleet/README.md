@@ -45,7 +45,7 @@ python3 scripts/setup-rea.py --client codex
 
 Use `--client claude` or `--client both` as needed. Setup runs upstream's
 `npm ci` and `npm run build:cached`, verifies the actual MCP server, then installs
-only `rea@dots`. It primes only that newly created installation with the verified
+only `rea@pstack`. It primes only that newly created installation with the verified
 build. It refuses any existing REA installation, including disabled ones.
 Start a new chat after installation.
 

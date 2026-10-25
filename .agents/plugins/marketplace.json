@@ -1,14 +1,14 @@
 {
-  "name": "dots",
+  "name": "pstack",
   "interface": {
-    "displayName": "Dots"
+    "displayName": "pstack"
   },
   "plugins": [
     {
-      "name": "dots",
+      "name": "pstack",
       "source": {
         "source": "local",
-        "path": "./plugins/dots"
+        "path": "./plugins/pstack"
       },
       "policy": {
         "installation": "AVAILABLE",

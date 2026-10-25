@@ -8,7 +8,7 @@ approval_policy = "never"
 sandbox_mode = "danger-full-access"
 
 # Codex settings rebuilt from explicit user choices.
-# Dots/Drafts source selection is managed by scripts/plugin-sync/.
+# pstack/Drafts source selection is managed by scripts/plugin-sync/.
 # Image generation uses the available image_gen tool and imagegen skill.
 
 [features]

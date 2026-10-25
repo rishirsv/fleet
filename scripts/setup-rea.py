@@ -19,11 +19,11 @@ def prepare_installed(client: str, built: Path) -> None:
     version = json.loads((ROOT / 'plugins/rea/plugin.json').read_text())['version']
     if client == 'codex':
         home = Path(os.environ.get('CODEX_HOME', str(Path.home() / '.codex')))
-        installed = home / 'plugins/cache/dots/rea' / version
+        installed = home / 'plugins/cache/pstack/rea' / version
     else:
         home = Path(os.environ.get('CLAUDE_CONFIG_DIR', str(Path.home() / '.claude')))
         registry = json.loads((home / 'plugins/installed_plugins.json').read_text())
-        entries = registry['plugins']['rea@dots']
+        entries = registry['plugins']['rea@pstack']
         entry = next(p for p in entries if p['scope'] == 'user')
         installed = Path(entry.get('readFromFolder') or entry['installPath'])
     # Do not write into an unrelated or unexpectedly resolved package.
@@ -61,10 +61,10 @@ def main() -> int:
         # REA alone: never invoke the Fleet-wide sync or upstream `rea setup`.
         if client == 'codex':
             commands = [[client, 'plugin', 'marketplace', 'add', str(ROOT)],
-                        [client, 'plugin', 'add', 'rea@dots']]
+                        [client, 'plugin', 'add', 'rea@pstack']]
         else:
             commands = [[client, 'plugin', 'marketplace', 'add', str(ROOT), '--scope', 'user'],
-                        [client, 'plugin', 'install', 'rea@dots', '--scope', 'user']]
+                        [client, 'plugin', 'install', 'rea@pstack', '--scope', 'user']]
         for command in commands:
             subprocess.run(command, check=True, env=env)
         prepare_installed(client, runtime)

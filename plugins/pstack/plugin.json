@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
-  "name": "dots",
-  "version": "0.2.271",
+  "name": "pstack",
+  "version": "0.2.272",
   "description": "Focused skills for decisions, review, publishing, and workflow improvement.",
   "author": {
     "name": "Rishi"
@@ -14,7 +14,7 @@
   "extensions": {
     "com.openai": {
       "interface": {
-        "displayName": "Dots",
+        "displayName": "pstack",
         "shortDescription": "Focused development tools",
         "longDescription": "Focused operations for decisions, independent review, publishing, and evidence-grounded workflow improvement.",
         "developerName": "Rishi",
@@ -23,7 +23,7 @@
           "Read",
           "Write"
         ],
-        "defaultPrompt": "Use the focused Dots skill that fits this request.",
+        "defaultPrompt": "Use the focused pstack skill that fits this request.",
         "brandColor": "#FF4B0A",
         "composerIcon": "./assets/icon.png",
         "logo": "./assets/logo.png",

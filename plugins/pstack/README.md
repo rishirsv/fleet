@@ -1,8 +1,8 @@
-# Dots
+# pstack
 
 Focused operations for decisions, independent review, publishing and workflow
 improvement in Codex and Claude Code. Ordinary development uses the host's tools
-and repository instructions; Dots has no general router or required phase chain.
+and repository instructions; pstack has no general router or required phase chain.
 
 | Skill | Use for |
 |---|---|
@@ -21,5 +21,8 @@ The parent keeps connected reasoning and integration. Codex reviewers explicitly
 start with `fork_turns: "none"`.
 
 Artifact and verification authoring are preserved as optional source packages
-in Fleet's `wip/` area, outside Dots discovery and default installation. Local
+in Fleet's `wip/` area, outside pstack discovery and default installation. Local
 source changes do not publish cloud releases or refresh installed caches.
+
+This is Rishi’s plugin, renamed from Dots. It is maintained separately from
+Cursor’s pstack; adapted material retains its upstream license and provenance.

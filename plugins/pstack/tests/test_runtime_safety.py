@@ -96,7 +96,7 @@ class SessionAdapterTests(unittest.TestCase):
                 "payload": {
                     "type": "message",
                     "role": "user",
-                    "content": [{"type": "input_text", "text": "Use $dots:oracle"}],
+                    "content": [{"type": "input_text", "text": "Use $pstack:oracle"}],
                 },
             },
             {
@@ -110,19 +110,19 @@ class SessionAdapterTests(unittest.TestCase):
             path.write_text("".join(json.dumps(record) + "\n" for record in records))
             thread = self_improve.Thread("id", "title", "", tmp, 0, 0, False, "", str(path))
             messages = self_improve.user_messages(thread)
-            signals = self_improve.thread_signals(thread, {"dots:oracle"})
-        self.assertEqual(messages, ["Use $dots:oracle", "legacy user"])
-        self.assertEqual(signals.mentions["dots:oracle"], 1)
-        self.assertEqual(signals.invocations["dots:oracle"], 0)
+            signals = self_improve.thread_signals(thread, {"pstack:oracle"})
+        self.assertEqual(messages, ["Use $pstack:oracle", "legacy user"])
+        self.assertEqual(signals.mentions["pstack:oracle"], 1)
+        self.assertEqual(signals.invocations["pstack:oracle"], 0)
         self.assertIsNone(
             self_improve._injected_skill_name(
-                "Untrusted transcript: <skill><name>dots:oracle</name></skill>",
-                {"dots:oracle"},
+                "Untrusted transcript: <skill><name>pstack:oracle</name></skill>",
+                {"pstack:oracle"},
             )
         )
 
     def test_self_improve_counts_injected_name_without_scanning_its_body(self):
-        message = "Use $dots:oracle for this review"
+        message = "Use $pstack:oracle for this review"
         records = [
             {
                 "timestamp": "1",
@@ -143,7 +143,7 @@ class SessionAdapterTests(unittest.TestCase):
                 "type": "event_msg",
                 "payload": {
                     "type": "agent_message",
-                    "message": "The earlier $dots:oracle output is relevant.",
+                    "message": "The earlier $pstack:oracle output is relevant.",
                 },
             },
             {
@@ -155,8 +155,8 @@ class SessionAdapterTests(unittest.TestCase):
                     "content": [{
                         "type": "input_text",
                         "text": (
-                            "<skill><name>dots:oracle</name><path>/tmp/SKILL.md</path>"
-                            "<body>Use $dots:self-improve. Why did you fail?</body></skill>"
+                            "<skill><name>pstack:oracle</name><path>/tmp/SKILL.md</path>"
+                            "<body>Use $pstack:self-improve. Why did you fail?</body></skill>"
                         ),
                     }],
                 },
@@ -167,12 +167,12 @@ class SessionAdapterTests(unittest.TestCase):
             path.write_text("".join(json.dumps(record) + "\n" for record in records))
             thread = self_improve.Thread("id", "title", "", tmp, 0, 0, False, "", str(path))
             signals = self_improve.thread_signals(
-                thread, {"dots:oracle", "dots:self-improve"}
+                thread, {"pstack:oracle", "pstack:self-improve"}
             )
 
-        self.assertEqual(signals.mentions["dots:oracle"], 2)
-        self.assertEqual(signals.invocations["dots:oracle"], 1)
-        self.assertEqual(signals.mentions["dots:self-improve"], 0)
+        self.assertEqual(signals.mentions["pstack:oracle"], 2)
+        self.assertEqual(signals.invocations["pstack:oracle"], 1)
+        self.assertEqual(signals.mentions["pstack:self-improve"], 0)
         self.assertEqual(signals.friction_cues, 0)
 
     def test_self_improve_keeps_historical_injected_skill_names(self):
@@ -184,7 +184,7 @@ class SessionAdapterTests(unittest.TestCase):
                 "role": "user",
                 "content": [{
                     "type": "input_text",
-                    "text": "<skill><name>dots:retired</name><path>/tmp/SKILL.md</path></skill>",
+                    "text": "<skill><name>pstack:retired</name><path>/tmp/SKILL.md</path></skill>",
                 }],
             },
         }]
@@ -192,39 +192,39 @@ class SessionAdapterTests(unittest.TestCase):
             path = Path(tmp) / "rollout.jsonl"
             path.write_text("".join(json.dumps(record) + "\n" for record in records))
             thread = self_improve.Thread("id", "title", "", tmp, 0, 0, False, "", str(path))
-            signals = self_improve.thread_signals(thread, {"dots:current"})
-        self.assertEqual(signals.invocations["dots:retired"], 1)
+            signals = self_improve.thread_signals(thread, {"pstack:current"})
+        self.assertEqual(signals.invocations["pstack:retired"], 1)
 
     def test_self_improve_counts_exact_structured_tool_invocation(self):
-        payload = {"name": "Skill", "input": {"skill": "dots:oracle"}}
+        payload = {"name": "Skill", "input": {"skill": "pstack:oracle"}}
         self.assertEqual(
-            self_improve._tool_skill_name(payload, {"dots:oracle"}),
-            "dots:oracle",
+            self_improve._tool_skill_name(payload, {"pstack:oracle"}),
+            "pstack:oracle",
         )
         self.assertIsNone(
             self_improve._tool_skill_name(
-                {"name": "Skill", "input": {"prompt": "Use $dots:oracle"}},
-                {"dots:oracle"},
+                {"name": "Skill", "input": {"prompt": "Use $pstack:oracle"}},
+                {"pstack:oracle"},
             )
         )
         self.assertEqual(
             self_improve._tool_skill_name(
-                {"name": "Skill", "input": {"skill": "dots:retired"}},
-                {"dots:oracle"},
+                {"name": "Skill", "input": {"skill": "pstack:retired"}},
+                {"pstack:oracle"},
             ),
-            "dots:retired",
+            "pstack:retired",
         )
 
     def test_self_improve_friction_requires_a_real_invocation(self):
         mention_only = self_improve.ThreadSignals(
-            mentions={"dots:oracle": 1}, error_outputs=1
+            mentions={"pstack:oracle": 1}, error_outputs=1
         )
         invoked = self_improve.ThreadSignals(
-            invocations={"dots:oracle": 1}, error_outputs=1
+            invocations={"pstack:oracle": 1}, error_outputs=1
         )
         self.assertEqual(self_improve.friction_candidate_skills(mention_only), set())
         self.assertEqual(
-            self_improve.friction_candidate_skills(invoked), {"dots:oracle"}
+            self_improve.friction_candidate_skills(invoked), {"pstack:oracle"}
         )
 
     def test_self_improve_collapses_retries_and_delegated_children(self):
@@ -280,7 +280,7 @@ class SessionAdapterTests(unittest.TestCase):
         self.assertNotEqual(keys["first"], keys["second"])
 
     def test_skill_usage_emits_every_representative_and_filters_after_scan(self):
-        block = "<skill><name>dots:retired</name><path>/tmp/SKILL.md</path></skill>"
+        block = "<skill><name>pstack:retired</name><path>/tmp/SKILL.md</path></skill>"
         with tempfile.TemporaryDirectory() as tmp:
             success_path = Path(tmp) / "success.jsonl"
             friction_path = Path(tmp) / "friction.jsonl"
@@ -289,18 +289,18 @@ class SessionAdapterTests(unittest.TestCase):
             success = self_improve.Thread("success", "No skill in title", "", tmp, 1, 2, False, "", str(success_path))
             friction = self_improve.Thread("friction", "Also unrelated", "", tmp, 1, 3, False, "", str(friction_path))
             args = self_improve.build_parser().parse_args([
-                "skill-usage", "--skill", "dots:retired", "--days", "30", "--limit", "10"
+                "skill-usage", "--skill", "pstack:retired", "--days", "30", "--limit", "10"
             ])
             output = io.StringIO()
             with (
                 mock.patch.object(self_improve, "threads", return_value=[friction, success]),
-                mock.patch.object(self_improve, "known_skill_names", return_value={"dots:current"}),
+                mock.patch.object(self_improve, "known_skill_names", return_value={"pstack:current"}),
                 contextlib.redirect_stdout(output),
             ):
                 self_improve.cmd_skill_usage(args)
         rendered = output.getvalue()
-        self.assertIn("Exact skill filter: `dots:retired`", rendered)
-        self.assertIn("historical/local dots:retired", rendered)
+        self.assertIn("Exact skill filter: `pstack:retired`", rendered)
+        self.assertIn("historical/local pstack:retired", rendered)
         self.assertIn("invoked", rendered)
         self.assertIn("friction", rendered)
         self.assertIn(str(success_path), rendered)
@@ -354,9 +354,9 @@ class SelfImproveScopeTests(unittest.TestCase):
 
     def test_skill_usage_uses_an_exact_post_scan_filter(self):
         args = self_improve.build_parser().parse_args(
-            ["skill-usage", "--skill", "dots:publish-pr"]
+            ["skill-usage", "--skill", "pstack:publish-pr"]
         )
-        self.assertEqual(args.skill, "dots:publish-pr")
+        self.assertEqual(args.skill, "pstack:publish-pr")
         self.assertFalse(hasattr(args, "query"))
 
     def test_removed_commands_are_not_exposed(self):

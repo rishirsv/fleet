@@ -33,8 +33,8 @@ class DesignPackageTests(unittest.TestCase):
             self.assertFalse((DESIGN / name).exists(), name)
         self.assertEqual({p.parent.name for p in (DESIGN / 'skills').glob('*/SKILL.md')},
                          {'design', 'design-review', 'design-context', 'design-research'})
-        self.assertFalse((ROOT / 'plugins/dots/skills/ui-design').exists())
-        self.assertFalse((ROOT / 'plugins/dots/skills/ui-review').exists())
+        self.assertFalse((ROOT / 'plugins/pstack/skills/ui-design').exists())
+        self.assertFalse((ROOT / 'plugins/pstack/skills/ui-review').exists())
 
 
 if __name__ == '__main__':

@@ -1,7 +1,7 @@
 {
   "repository": "https://github.com/cursor/plugins",
   "revision": "e5136d82418d2db3165ea1050d17577cd618cc05",
-  "license": "plugins/dots/licenses/pstack-MIT.txt",
+  "license": "plugins/pstack/licenses/pstack-MIT.txt",
   "files": [
     {
       "source": "pstack/skills/create-formal-verification-skill/SKILL.md",
@@ -19,7 +19,7 @@
     },
     {
       "source": "pstack/skills/benchmark-checklist/SKILL.md",
-      "destination": "plugins/dots/references/benchmark-checklist.md",
+      "destination": "plugins/pstack/references/benchmark-checklist.md",
       "source_sha256": "6a767e788a60428fa14e645ee10fe2e49896e514ff654f668b1d824deb9038e8",
       "revision": "e43c7ee26e0038c6c1fa8380dd34ce86ff94cb2a",
       "adaptations": "Rewrite as a conditional reference owned by the existing Performance playbook, not a new skill or mandatory workflow. Retain limiter, fair tuning, physical bounds, correct completed work, repeated comparisons, end-to-end relevance, and honest verdicts. Use host-available tools, reuse artifacts, distinguish configuration comparisons, and do not treat five runs as statistical significance. Cite Brendan Gregg original seven-question article."

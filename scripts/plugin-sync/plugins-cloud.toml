@@ -1,12 +1,25 @@
 # Optional cloud desktop source, selected only by explicit request.
 # Fleet desktops normally use plugin-exclusions.toml; web installs are separate.
+# Retire the previous local marketplace even when its cache is still in use.
 [plugins."dots@dots"]
 enabled = false
 
 [plugins."drafts@dots"]
 enabled = false
 
-[plugins."dots@created-by-me-remote"]
+[plugins."design@dots"]
+enabled = false
+
+[plugins."rea@dots"]
+enabled = false
+
+[plugins."pstack@pstack"]
+enabled = false
+
+[plugins."drafts@pstack"]
+enabled = false
+
+[plugins."pstack@created-by-me-remote"]
 enabled = true
 
 [plugins."drafts@created-by-me-remote"]
@@ -22,14 +35,14 @@ enabled = false
 
 # Design is local-source only until its first cloud publication.
 # Keep local copies off on cloud profiles without requiring a nonexistent release.
-[plugins."design@dots"]
+[plugins."design@pstack"]
 enabled = false
 
 [plugins."design@created-by-me-remote"]
 enabled = false
 
 # REA needs a local process in either account profile.
-[plugins."rea@dots"]
+[plugins."rea@pstack"]
 enabled = true
 
 # Superseded standalone REA installation; Fleet owns the active runtime.

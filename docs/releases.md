@@ -3,9 +3,9 @@
 This procedure is for maintainers publishing an existing account or workspace
 plugin. Public users install local plugins through [INSTALL.md](../INSTALL.md).
 
-Dots is a standalone skills plugin. Dots packages contain no `.app.json` binding
+pstack is a standalone skills plugin. pstack packages contain no `.app.json` binding
 or `apps` declaration. Keep Git as the source for local and cloud releases.
-Fleet desktop profiles on both Macs use local Dots/Drafts and disable cloud
+Fleet desktop profiles on both Macs use local pstack/Drafts and disable cloud
 copies in the local loader. Keep the account-wide cloud installations for web
 use. Follow [the desktop setup](../INSTALL.md#plugins) when configuring a
 profile; cloud desktop loading requires an explicit source choice.
@@ -16,7 +16,7 @@ must not publish an account release.
 
 Resolve the target plugin's exact backend ID from its installation metadata or
 authorized plugin discovery. Maintainers may keep their deployment IDs in
-`~/.config/dots/cloud-plugins.json`, outside Git. Verify each ID against the
+`~/.config/pstack/cloud-plugins.json`, outside Git. Verify each ID against the
 signed-in account; do not reuse another maintainer's private plugin.
 
 Use Plugin Creator's supported tools without ChatGPT web login:
@@ -56,7 +56,7 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    supported browser tools. Compare the exact plugin and release IDs and the
    four logo/composer URL fields. The detail or owner response can return hosted
    images while the installed response returns null for the same release.
-   Reinstalling Dots and Drafts did not repair that mismatch in an observed
+   Reinstalling pstack and Drafts did not repair that mismatch in an observed
    release. Preserve screenshots and a summary of the mismatching fields outside
    Git, and report host verification as blocked. Do not repeat identical ZIP
    uploads or add an app binding to work around the mismatch.
@@ -84,7 +84,7 @@ Calling `verify-skills.py` without `--repair-source-exclusions` remains read-onl
 
 ## Diagnose missing cloud icons
 
-On 2026-10-15, uploading the committed Dots 0.2.256 ZIP through **Upload new
+On 2026-10-15, uploading the committed Dots (now pstack) 0.2.256 ZIP through **Upload new
 version** created a new release ID without changing the version. The detail
 response returned all four hosted image URLs, but the installed response for
 the same release returned null. The web UI continued to use its folder fallback.

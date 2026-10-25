@@ -1,11 +1,11 @@
 {
   "name": "drafts",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Develop, draft, and revise prose through a focused writing workflow.",
   "author": {
     "name": "Rishi"
   },
-  "repository": "https://github.com/rishirsv/dots",
+  "repository": "https://github.com/rishirsv/fleet",
   "skills": "./skills/",
   "keywords": [
     "writing",
@@ -32,7 +32,7 @@
     "composerIcon": "./assets/icon.png",
     "logo": "./assets/logo.png",
     "screenshots": [],
-    "websiteURL": "https://github.com/rishirsv/dots/tree/main/plugins/drafts",
+    "websiteURL": "https://github.com/rishirsv/fleet/tree/main/plugins/drafts",
     "logoDark": "./assets/logo-dark.png",
     "composerIconDark": "./assets/logo-dark.png"
   }

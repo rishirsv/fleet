@@ -214,11 +214,11 @@ def full_checks(codex_names: list[str], claude_names: list[str]) -> None:
     for package in OPTIONAL_SOURCE_PACKAGES:
         run("claude", "plugin", "validate", package, "--strict")
     # Installation smoke tests must never alter the user's configured plugins.
-    with tempfile.TemporaryDirectory(prefix="dots-codex-verify-") as tmp:
+    with tempfile.TemporaryDirectory(prefix="pstack-codex-verify-") as tmp:
         env = {**os.environ, "CODEX_HOME": tmp}
         run("codex", "plugin", "marketplace", "add", str(ROOT), env=env)
         for name in codex_names:
-            run("codex", "plugin", "add", f"{name}@dots", env=env)
+            run("codex", "plugin", "add", f"{name}@pstack", env=env)
     run("node", "wip/artifacts/skills/html/scripts/generate-theme.mjs", "--check")
     run("node", "wip/artifacts/skills/html/scripts/catalog.mjs", "--check")
     html_tests = sorted(str(p.relative_to(ROOT)) for p in
@@ -226,7 +226,7 @@ def full_checks(codex_names: list[str], claude_names: list[str]) -> None:
     run("node", "--test", *html_tests)
     env = {**os.environ, "PYTHONDONTWRITEBYTECODE": "1"}
     # Check package validation, browser config sync, and plugin runtime behavior.
-    for suite in ("tests", "plugins/dots/tests"):
+    for suite in ("tests", "plugins/pstack/tests"):
         run(sys.executable, "-m", "unittest", "discover", "-s", suite, "-p", "test_*.py", env=env)
 
 

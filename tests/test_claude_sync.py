@@ -59,26 +59,26 @@ class ClaudeSyncTests(unittest.TestCase):
             with patch.object(cache, "installed_plugin", return_value=plugin), \
                  patch.object(cache, "verify", side_effect=[False, True]), \
                  patch.object(cache.subprocess, "run") as run:
-                cache.sync(source, "dots@dots")
+                cache.sync(source, "pstack@pstack")
             self.assertEqual([call.args[0] for call in run.call_args_list], [
-                ["claude", "plugin", "uninstall", "dots@dots", "--scope", "user", "--keep-data"],
-                ["claude", "plugin", "install", "dots@dots", "--scope", "user"],
-                ["claude", "plugin", "disable", "dots@dots", "--scope", "user"],
+                ["claude", "plugin", "uninstall", "pstack@pstack", "--scope", "user", "--keep-data"],
+                ["claude", "plugin", "install", "pstack@pstack", "--scope", "user"],
+                ["claude", "plugin", "disable", "pstack@pstack", "--scope", "user"],
             ])
             with patch.object(cache, "installed_plugin", return_value=plugin), \
                  patch.object(cache, "verify", side_effect=[False, False]), \
                  patch.object(cache.subprocess, "run"):
                 with self.assertRaisesRegex(ValueError, "still differs"):
-                    cache.sync(source, "dots@dots")
+                    cache.sync(source, "pstack@pstack")
 
     def test_only_user_installation_is_selected(self):
-        user = {"id": "dots@dots", "scope": "user"}
-        project = {"id": "dots@dots", "scope": "project"}
+        user = {"id": "pstack@pstack", "scope": "user"}
+        project = {"id": "pstack@pstack", "scope": "project"}
         with patch.object(cache.subprocess, "check_output", return_value=json.dumps([project, user])):
-            self.assertEqual(cache.installed_plugin("dots@dots"), user)
+            self.assertEqual(cache.installed_plugin("pstack@pstack"), user)
         with patch.object(cache.subprocess, "check_output", return_value=json.dumps([project])):
             with self.assertRaisesRegex(ValueError, "one user installation"):
-                cache.installed_plugin("dots@dots")
+                cache.installed_plugin("pstack@pstack")
 
     def test_current_cache_does_not_reinstall(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -88,7 +88,7 @@ class ClaudeSyncTests(unittest.TestCase):
             with patch.object(cache, "installed_plugin", return_value={}), \
                  patch.object(cache, "verify", return_value=True), \
                  patch.object(cache.subprocess, "run") as run:
-                cache.sync(source, "dots@dots")
+                cache.sync(source, "pstack@pstack")
             run.assert_not_called()
 
 

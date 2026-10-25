@@ -30,9 +30,9 @@ including local file preparation and compatible-host publishing instructions.
 
 The package has no required app or MCP connections. Browser, native-preview,
 Figma and research integrations are optional capabilities of the active host.
-No Dots install is required. HTML documents and technical experiments remain
-in Dots. Personal/product state stays outside this plugin.
+No pstack install is required. Optional HTML and verification authoring packages
+live in Fleet’s `wip/` directory. Personal/product state stays outside this plugin.
 
-Local package version: 0.1.2. Marketplace appearance is prepared; this does not
+Local package version: 0.1.3. Marketplace appearance is prepared; this does not
 mean the plugin is publicly listed or approved. Cloud publication, retirement of old Dots UI
 skills and fresh desktop verification are separate release steps.

@@ -1,6 +1,6 @@
 # Fleet
 
-Source for Dots and Drafts plugins and selected portable configuration.
+Source for pstack and Drafts plugins and selected portable configuration.
 For setup and sync behavior, see [INSTALL.md](INSTALL.md).
 
 ## Ownership
@@ -19,21 +19,21 @@ For setup and sync behavior, see [INSTALL.md](INSTALL.md).
 
 ## Plugin boundaries
 
-Use local Dots/Drafts on both Fleet Macs, including personal-account desktop
+Use local pstack/Drafts on both Fleet Macs, including personal-account desktop
 profiles. Disable their cloud copies only in each desktop profile's local
 loader; keep the account-wide cloud installations available on the web.
 `scripts/sync-plugins.sh --codex --source local` records the desktop choice in
-`dots-plugin-source`, which later config and plugin syncs preserve. Verify
+`pstack-plugin-source`, which later config and plugin syncs preserve. Verify
 the local source and zero duplicates on each computer. Use cloud as a desktop
 source only when explicitly requested. Never uninstall account-wide cloud
 plugins to fix desktop duplicates.
 
-Keep Dots a standalone skills plugin with no `.app.json` or `apps` binding.
+Keep pstack a standalone skills plugin with no `.app.json` or `apps` binding.
 
 Follow [the cloud release procedure](docs/releases.md).
 Prefer Plugin Creator source/archive updates. Update the existing backend ID
 with its current `expected_release_id`; preserve identity, scope, and audience.
-Never create a replacement Dots plugin during an ordinary update. Archive
+Never create a replacement pstack plugin during an ordinary update. Archive
 updates cannot delete files: report retired files that remain. Verify expected
 cloud skills/content and a fresh desktop loader with one source and zero
 duplicates. Report cloud publication and desktop verification separately;

@@ -21,7 +21,9 @@ def inspect(profile=None):
     if not profile and personal.is_dir() and personal not in profiles:
         profiles.append(personal)
     for directory in profiles:
-        selection = directory / 'dots-plugin-source'
+        selection = directory / 'pstack-plugin-source'
+        if not selection.is_file():
+            selection = directory / 'dots-plugin-source'
         source = selection.read_text().strip() if selection.is_file() else 'local'
         checks.append((f'{directory.name} plugin source: {source}', source in {'cloud', 'local'},
                        'Choose cloud or local with sync-plugins.sh --codex --source.'))

@@ -245,7 +245,7 @@ def validate_codex_schema(text: str, source: Path) -> None:
     if executable is None:
         raise ConfigError("cannot validate config because codex is not installed")
 
-    with tempfile.TemporaryDirectory(prefix="dots-codex-schema-") as directory:
+    with tempfile.TemporaryDirectory(prefix="pstack-codex-schema-") as directory:
         home = Path(directory)
         config = home / "config.toml"
         config.write_text(text, encoding="utf-8")

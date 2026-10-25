@@ -71,7 +71,7 @@ valid_logi_rows=$(sqlite3 "$LOGI_DB" \
 jq -e '.prefs.user.shortcuts | type == "object"' "$WISPR_CONFIG" >/dev/null || \
   die "Expected Wispr shortcuts at .prefs.user.shortcuts"
 
-work_dir=$(mktemp -d "${TMPDIR:-/tmp}/dots-wispr-logitech.XXXXXX")
+work_dir=$(mktemp -d "${TMPDIR:-/tmp}/pstack-wispr-logitech.XXXXXX")
 logi_current="$work_dir/logi-current.json"
 logi_desired="$work_dir/logi-desired.json"
 wispr_desired="$work_dir/wispr-desired.json"
