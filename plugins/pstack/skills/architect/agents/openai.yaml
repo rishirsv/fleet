@@ -1,0 +1,7 @@
+interface:
+  display_name: "Architect"
+  short_description: "Design types, signatures and module boundaries"
+  default_prompt: "Use $architect to design types, signatures and module boundaries."
+
+policy:
+  allow_implicit_invocation: true

@@ -1,4 +1,6 @@
-# Session history
+# Sessions
+
+## Read the prior trail
 
 Use supported read-only interfaces first: list candidate chats, then read the
 smallest useful matching set. Archived work may need a separate listing. Do not
@@ -37,3 +39,15 @@ and disabled persistence create gaps. Tolerate unknown events, report malformed
 JSONL with file and line, and distinguish unavailable, empty and opaque content.
 Generated summaries and old reports support selection; reading them is not a
 fresh transcript audit.
+
+## Resume prior work
+
+**You own the resume point. Read the prior trail, don't redo it.**
+
+1. Locate the prior trail. Use the retrieval guidance above. Stay within the requested workspace, topic and time window. Read the metadata overview and last messages first, then scan back for the decision points. Parse a long transcript in a subagent when delegation is available and authorized; otherwise read bounded relevant regions in the main thread. Keep the decision evidence and resume point.
+2. Reconstruct operational state. The branch and worktree, what already landed (`git log`, `git diff` against the base), the open todos, the decisions made. The prior trail is authoritative input. Resist the bias to re-derive it.
+3. Diff done vs pending. Compare what shipped against what was planned, name the resume point, do not re-run the prior repro or redo completed work. A "let me verify from scratch" pass means you're treating the trail as untrustworthy when it's authoritative.
+4. Route the remaining work to the matching skill or playbook and pick the verdict: continue the execution, ship a finished recommendation, ratify or override a prior conclusion, or postmortem a failed run. The pickup playbook ends here. The routed playbook owns the rest.
+5. Verify the inherited claims against the original goal on the real artifact. Check claims needed for the next action, such as the current branch, PR status or existing changes; do not repeat completed checks without a new change, failure or concrete unresolved risk. A passing prior self-report is not the proof.
+
+**Reply:** where the prior agent stopped, what you inherited vs redid (ideally nothing redone), the resume point, and the outcome.

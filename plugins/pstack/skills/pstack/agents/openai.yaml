@@ -1,0 +1,7 @@
+interface:
+  display_name: "pstack"
+  short_description: "Route work through the bundled pstack skills"
+  default_prompt: "Use $pstack to route work through the bundled pstack skills."
+
+policy:
+  allow_implicit_invocation: true

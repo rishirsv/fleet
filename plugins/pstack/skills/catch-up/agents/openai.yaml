@@ -1,0 +1,7 @@
+interface:
+  display_name: "Catch Up"
+  short_description: "Catch up on changes and decisions in this chat"
+  default_prompt: "Use $catch-up to catch up on changes and decisions in this chat."
+
+policy:
+  allow_implicit_invocation: true

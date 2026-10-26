@@ -1,6 +1,6 @@
 ---
 name: self-improve
-description: "Diagnoses agent workflow friction or reports usage from session evidence. Use when the user selects $self-improve; applies supported fixes when requested."
+description: "Diagnoses agent workflow friction, reflects on session lessons, corrects recurring repository mistakes, or reports usage from session evidence. Use for $self-improve, reflect, or requests to prevent repeated agent mistakes; applies supported fixes when requested."
 ---
 
 # Self-improve
@@ -11,11 +11,14 @@ Counts select evidence to inspect; they do not establish causes or quality.
 
 Read only the branch needed:
 
+- Lessons from the current session: [reflect.md](references/reflect.md).
+- Repeated repository mistakes to prevent: [correct.md](references/correct.md).
+
 - Workflow, harness, cost or context problems: [workflow-audit.md](references/workflow-audit.md).
 - Repeated work or a broader conclusion: [thread-evidence.md](references/thread-evidence.md).
 - A named skill: also [skill-analytics.md](references/skill-analytics.md).
 - Agent instruction changes: [instructions.md](references/instructions.md).
-- Earlier tasks: [session history](../../references/session-history.md).
+- Earlier tasks: [sessions](../../references/sessions.md), including retrieval and resuming prior work.
 
 Reconstruct the request, intended outcome, actions, corrections and checks.
 Distinguish verified results from completion claims and observed causes from

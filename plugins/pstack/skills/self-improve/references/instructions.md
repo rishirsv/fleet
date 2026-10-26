@@ -10,8 +10,9 @@ repository, tool mechanics with the tool, workflows with their skill and persona
 preferences with personal guidance. Before adding a correction, determine whether
 an existing rule was missing, unavailable, ambiguous or bypassed.
 
-Prefer removing split ownership, then deterministic types/checks/tests, before
-prose. State why stronger enforcement is unavailable or disproportionate. Keep
+Use [correct](correct.md) for the enforcement hierarchy when a recurring
+repository mistake is established. State why stronger enforcement is unavailable
+or disproportionate. Keep
 instructions for real decisions and constraints the environment cannot supply;
 delete duplicate generic guidance instead of replacing it with a larger index.
 

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Figure It Out"
+  short_description: "Execute substantial work through uncertainty"
+  default_prompt: "Use $figure-it-out to execute substantial work through uncertainty."
+
+policy:
+  allow_implicit_invocation: false

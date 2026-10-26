@@ -1,0 +1,7 @@
+interface:
+  display_name: "Swarm"
+  short_description: "Coordinate independent parallel work and evidence"
+  default_prompt: "Use $swarm to coordinate independent parallel work and evidence."
+
+policy:
+  allow_implicit_invocation: true

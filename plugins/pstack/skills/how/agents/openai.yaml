@@ -1,0 +1,7 @@
+interface:
+  display_name: "How"
+  short_description: "Explain architecture and runtime behavior"
+  default_prompt: "Use $how to explain architecture and runtime behavior."
+
+policy:
+  allow_implicit_invocation: true
