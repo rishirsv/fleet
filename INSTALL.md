@@ -75,6 +75,15 @@ scripts/sync-plugins.sh --codex --source local
 scripts/sync-plugins.sh --claude
 ```
 
+Codex sync generates `~/.agents/plugins/marketplace.json` from Fleet's catalog,
+keeping plugin source in this checkout. Codex recognizes this personal location
+and avoids listing the same plugin in both the personal and marketplace groups.
+For an existing cloud copy, record its exact backend ID by plugin name in the
+profile's `plugin-local-identities.json` (for example, `{"pstack":"plugins_…"}`).
+Sync restores Codex's local-source identity mapping from this file, so the
+desktop uses the local entry and artwork while the cloud installation remains
+available on the web. IDs and machine paths stay outside Git.
+
 The source choice is saved per profile and preserved by later syncs. Set it
 for each desktop profile with `CODEX_HOME=/path/to/profile` when needed;
 `--source` changes only the current profile's choice. Local mode does not

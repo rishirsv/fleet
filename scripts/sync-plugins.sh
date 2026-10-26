@@ -45,7 +45,7 @@ done
 
 sync_paths=(plugins)
 (( ${+TARGETS[codex]} )) && sync_paths+=(scripts/sync-plugins.sh scripts/plugin-sync/merge-codex-config.py scripts/plugin-sync/source.sh scripts/plugin-sync/verify-skills.py scripts/plugin-sync/plugin-exclusions.toml scripts/plugin-sync/plugins-cloud.toml)
-(( ${+TARGETS[codex]} )) && sync_paths+=(.agents/plugins/marketplace.json)
+(( ${+TARGETS[codex]} )) && sync_paths+=(.agents/plugins/marketplace.json scripts/plugin-sync/personal-marketplace.py)
 (( ${+TARGETS[claude]} )) && sync_paths+=(.claude-plugin/marketplace.json scripts/sync-plugins.sh scripts/plugin-sync/generate-agents.mjs scripts/plugin-sync/claude-cache.py)
 dirty_source="$(git -C "$ROOT" status --porcelain=v1 --untracked-files=all -- "${sync_paths[@]}")"
 if [[ -n "$dirty_source" ]]; then
@@ -135,7 +135,8 @@ for spec in sys.argv[2:]:
         print(spec)
 ' "$policy" "${CODEX_SPECS[@]}")}")
   if (( ${#local_specs} )); then
-    codex_for "$home" plugin marketplace add "$ROOT" >/dev/null
+    uv run --quiet --with tomlkit==0.13.3 python "$ROOT/scripts/plugin-sync/personal-marketplace.py" "$ROOT" "$profile_home"
+    codex_for "$home" plugin marketplace add "$HOME" >/dev/null
   fi
   installed="$(codex_for "$home" plugin list --json)"
   active_specs=()
