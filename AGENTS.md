@@ -28,6 +28,10 @@ the local source and zero duplicates on each computer. Use cloud as a desktop
 source only when explicitly requested. Never uninstall account-wide cloud
 plugins to fix desktop duplicates.
 
+For duplicate desktop cards, map each plugin name to its cloud ID in `<profile>/plugin-local-identities.json`.
+Run plugin sync to restore identity links and register Fleet through `~/.agents/plugins/marketplace.json`; no app patch is needed.
+Verify one card and sidebar entry with the local icon; zero duplicate skills alone does not prove the UI is fixed.
+
 Keep pstack a standalone skills plugin with no `.app.json` or `apps` binding.
 
 Follow [the cloud release procedure](docs/releases.md).
