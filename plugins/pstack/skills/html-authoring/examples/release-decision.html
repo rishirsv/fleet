@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Notes · Release decision</title><link rel="stylesheet" href="../assets/base.css">
+</head>
+<body>
+<main class="stack-lg">
+<header class="stack">
+<h1>Autosave now or next week?</h1>
+<p class="muted">Fictional Notes app · Example data</p>
+<p class="lead">Lost drafts create urgency. The prototype still has two ways to leave people without a reliable copy.</p>
+</header>
+<aside class="callout stack">
+<h2>Recommendation</h2><strong>Target next week, with both issues blocking release.</strong>
+<p>Use the extra week to prevent stale offline edits from replacing newer work and make save failures visible. Ship only after those fixes are verified; a date alone is not a release gate.</p>
+</aside>
+<section class="stack" aria-labelledby="facts-title">
+<h2 id="facts-title">Provided facts</h2>
+<dl class="facts">
+<div>
+<dt>Beta users</dt>
+<dd>120</dd>
+</div>
+<div>
+<dt>Lost-draft reports last month</dt>
+<dd>18</dd>
+</div>
+<div>
+<dt>Autosave interval</dt>
+<dd>10 sec</dd>
+</div>
+</dl>
+<p>Two issues remain unresolved: offline edits can overwrite newer server copies, and save failures currently show no visible state.</p>
+<p class="muted">No fix estimate, failure frequency, or evidence that autosave prevents all draft loss was supplied.</p>
+</section>
+<section class="stack" aria-labelledby="compare-title">
+<h2 id="compare-title">Compare the release choices</h2>
+<div class="split">
+<article class="stack rule">
+<h3>Ship now</h3>
+<p><strong>Potential benefit:</strong> beta users get frequent saving sooner.</p>
+<p><strong>Tradeoff:</strong> known overwrite risk remains, while failed saves can appear successful by omission.</p>
+<p><strong>Assessment:</strong> defer general release. The supplied facts do not establish a safe workaround.</p>
+</article>
+<article class="stack rule">
+<h3>Target next week</h3>
+<p><strong>Potential benefit:</strong> time to fix and verify both failure paths.</p>
+<p><strong>Tradeoff:</strong> users wait longer for autosave; completion within a week is unconfirmed.</p>
+<p><strong>Gate:</strong> verify conflict handling, visible failure state, and successful recovery before shipping.</p>
+</article>
+</div>
+</section>
+<section class="stack" aria-labelledby="flow-title">
+<h2 id="flow-title">Where a draft can fail</h2>
+<figure>
+<div class="flow scroll" tabindex="0" aria-label="Sync diagram"><svg viewBox="0 0 860 210" role="img" aria-label="Conceptual sync flow: editor sends an autosave every ten seconds to the server. Offline edits can later overwrite newer server copies. A failed save has no visible editor state."><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" style="fill:currentColor;stroke:none"></path></marker></defs><rect x="20" y="35" width="180" height="55" rx="4"></rect><text x="110" y="68" text-anchor="middle">Editor draft</text><rect x="625" y="35" width="210" height="55" rx="4"></rect><text x="730" y="68" text-anchor="middle">Server copy</text><line x1="200" y1="49" x2="625" y2="49" marker-end="url(#arrow)"></line><text x="412" y="32" text-anchor="middle">Autosave · every 10 seconds</text><line x1="625" y1="80" x2="200" y2="80" marker-end="url(#arrow)" stroke-dasharray="5 5"></line><text x="412" y="108" text-anchor="middle">Save failure → no visible state</text><rect x="20" y="145" width="180" height="45" rx="4"></rect><text x="110" y="173" text-anchor="middle">Offline edits</text><path d="M 200 167 H 730 V 90" marker-end="url(#arrow)"></path><text x="430" y="155" text-anchor="middle">Later sync can overwrite newer work</text></svg>
+</div>
+<figcaption>Conceptual flow derived from the provided behavior. Storage, transport, and conflict handling details were not supplied. The dashed return path denotes an unreported failure, not a confirmed protocol.</figcaption>
+</figure>
+</section>
+<section class="panel stack" aria-labelledby="decision-title">
+<h2 id="decision-title">Your release decision</h2>
+<p class="muted">Changes stay in this page until reload. Export your decision as JSON.</p>
+<div class="split">
+<fieldset class="stack">
+<legend>Issues that block release</legend><label class="check" for="offline"><input id="offline" type="checkbox" checked>Offline edits overwrite newer server copies</label><label class="check" for="failure"><input id="failure" type="checkbox" checked>Save failures have no visible state</label>
+</fieldset>
+<div class="stack"><label for="timing">Target</label><select id="timing"><option value="next_week">Next week</option><option value="now">Now</option></select><label for="reason">Decision note</label><textarea id="reason">Fix and verify both issues before release.</textarea>
+</div>
+</div>
+<p id="status" class="status" aria-live="polite">
+</p>
+<div class="row"><button id="export" type="button">Export decision JSON</button><span id="feedback" class="muted" role="status"></span>
+</div>
+<details>
+<summary>Inspect export</summary><pre id="preview"></pre></details>
+</section>
+</main><script src="../assets/export.js"></script><script>
+const offline=document.getElementById('offline'),failure=document.getElementById('failure'),timing=document.getElementById('timing'),reason=document.getElementById('reason');
+function decision(){const blockers=[];if(offline.checked)blockers.push('offline_overwrites_newer_server_copy');if(failure.checked)blockers.push('save_failure_not_visible');return {app:'Fictional Notes',target:timing.value,releaseBlocked:blockers.length>0,unresolvedBlockingIssues:blockers,note:reason.value};}
+function update(){const d=decision();document.getElementById('status').textContent=d.releaseBlocked?`Release blocked by ${d.unresolvedBlockingIssues.length} unresolved issue${d.unresolvedBlockingIssues.length===1?'':'s'}.`:'No issues selected as blockers. Both known issues remain unresolved.';document.getElementById('preview').textContent=JSON.stringify(d,null,2);document.getElementById('feedback').textContent='';}
+[offline,failure,timing,reason].forEach(el=>el.addEventListener('input',update));document.getElementById('export').addEventListener('click',()=>{htmlAuthoring.downloadJSON(decision(), 'notes-release-decision.json');document.getElementById('feedback').textContent='Decision JSON download requested.';});update();
+</script></body>
+</html>

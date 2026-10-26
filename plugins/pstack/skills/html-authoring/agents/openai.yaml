@@ -1,0 +1,7 @@
+interface:
+  display_name: "HTML Authoring"
+  short_description: "Create HTML documents and interactive tools"
+  default_prompt: "Use $html-authoring to turn this material into a standalone HTML artifact."
+
+policy:
+  allow_implicit_invocation: true
