@@ -62,7 +62,9 @@ Use Plugin Creator's supported tools without ChatGPT web login:
    uploads or add an app binding to work around the mismatch.
    Do not report a release complete while a surface still shows a fallback.
 5. Refresh the desktop plugin inventory and verify a fresh loader uses the
-   selected source without duplicates. The current `verify-skills.py`
+   selected source without duplicates. Also check the live composer's skill
+   picker: a fresh loader can pass while the desktop retains a stale catalog.
+   The current `verify-skills.py`
    checks availability and known duplicates, not complete release contents.
    Report cloud publication separately from desktop verification. Restart only
    after active chats finish if desktop retains stale skills.
@@ -71,9 +73,11 @@ Use Plugin Creator's supported tools without ChatGPT web login:
 
 Some Codex builds load cloud skills even with the corresponding profile's
 `plugins.<id>.enabled = false`. Fleet sync verifies the actual skill loader.
-If the loader ignores that policy, sync adds path exclusions in that profile's
+Sync adds path exclusions for reported and cached copies in that profile's
 `skills.config`, marked `# fleet:source-exclusion <plugin-id> <path-hash>`, and verifies
-again in a fresh process. It backs up the config before writing.
+again in a fresh process. Cached versions remain excluded even when a fresh
+loader omits them; the running desktop may still have them in its catalog.
+Sync backs up the config before writing.
 
 Sync removes its unchanged marked entries when their cache paths retire or
 the selected source changes. Unmarked entries and user-modified entries remain

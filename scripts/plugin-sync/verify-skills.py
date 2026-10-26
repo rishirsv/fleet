@@ -32,7 +32,19 @@ def reconcile_source_exclusions(config, skills, policy):
         if skill.get("pluginId") in policy
         and not policy[skill["pluginId"]]["enabled"]
     }
-    # Source switches and new cache versions retire only our unchanged entries.
+    # A running desktop can still hold a cloud catalog that a fresh loader omits.
+    # Cover every cached version until it is removed or the source is selected.
+    for plugin_id, settings in policy.items():
+        if settings["enabled"]:
+            continue
+        name, marketplace = plugin_id.rsplit("@", 1)
+        cache = config.parent / "plugins" / "cache" / marketplace / name
+        for path in sorted(cache.glob("*/skills/*/SKILL.md")):
+            unwanted.setdefault(str(path), {
+                "path": str(path), "pluginId": plugin_id,
+                "name": f"{name}:{path.parent.name}", "enabled": True,
+            })
+    # Source switches and removed cache versions retire only unchanged entries.
     for index in range(len(rows) - 1, -1, -1):
         row = rows[index]
         marker = row.trivia.comment

@@ -28,6 +28,39 @@ for line in sys.stdin:
 
 
 class CodexSourceSyncTests(unittest.TestCase):
+    def test_cached_cloud_versions_stay_excluded_when_fresh_loader_omits_them(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            binary = root / 'codex'
+            binary.write_text(FAKE_CODEX)
+            binary.chmod(0o755)
+            config = root / 'config.toml'
+            config.write_text('model = "unchanged"\n')
+            policy = root / 'policy.toml'
+            policy.write_text('[plugins."pstack@created-by-me-remote"]\nenabled = false\n')
+            cached = []
+            for version in ('1', '2'):
+                path = root / 'plugins/cache/created-by-me-remote/pstack' / version / 'skills/bro/SKILL.md'
+                path.parent.mkdir(parents=True)
+                path.write_text('---\nname: bro\n---\n')
+                cached.append(path)
+            env = {**os.environ, 'CODEX_HOME': str(root),
+                   'PATH': f'{root}:' + os.environ['PATH'], 'TEST_SKILLS': '[]'}
+            args = ['uv', 'run', '--quiet', '--script', str(VERIFIER),
+                    '--policy', str(policy), '--cwd', str(root), '--repair-source-exclusions']
+            for _ in range(2):
+                result = subprocess.run(args, env=env, text=True, capture_output=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                for path in cached:
+                    self.assertIn(str(path), config.read_text())
+            self.assertEqual(len(list(root.glob('config.toml.bak.*'))), 1)
+            # Retire only a version actually removed from the cache.
+            cached[0].unlink()
+            result = subprocess.run(args, env=env, text=True, capture_output=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertNotIn(str(cached[0]), config.read_text())
+            self.assertIn(str(cached[1]), config.read_text())
+
     def test_local_runtime_coexists_with_cloud_skills_and_excludes_legacy_copy(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
