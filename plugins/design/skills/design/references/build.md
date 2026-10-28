@@ -9,6 +9,15 @@ required, which references provide inspiration, and which choices are open to
 change. Preserve existing product decisions unless the brief calls for
 replacing them; resolve meaningful conflicts before committing to a direction.
 
+## Test an open product idea
+
+When asked to evaluate an unsettled idea, or when a material product assumption
+is genuinely unresolved, identify the intended user, their problem, existing
+alternatives, the proposed change, and what evidence would challenge it. Ask
+focused questions only where answers change the decision; label assumptions and
+continue with work that does not depend on them. Do not turn a clear build
+request into an unsolicited interview or present speculation as research.
+
 ## Plan the direction
 
 For new work or a redesign, write a compact plan before building:
@@ -42,6 +51,12 @@ hierarchy, task flow, states, and accessibility before delivering; a separate
 audit report is not required. For an accepted visual target, use [design
 QA](design-qa.md). For a focused refinement, inspect the exact changed workflow
 at a representative viewport and exercise the affected interaction.
+
+Before treating an exploratory prototype as production-ready, carry the chosen
+variant and its settings into the real component. Exercise its actual content,
+interaction, accessibility, supported devices, and performance as relevant to
+the change; report missing evidence instead of treating the prototype as proof.
+Use the target platform's checks rather than assuming web-specific mechanics.
 
 Correct material issues within the requested scope, then inspect the affected
 result again. Then use [finish review](../../../references/finish-review.md)

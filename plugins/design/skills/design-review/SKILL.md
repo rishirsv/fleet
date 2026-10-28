@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: "Reviews interfaces, flows, mockups, Figma frames, screenshots, or design descriptions for usability, visual quality, accessibility and copy. Use for design critique, UI change review, UX-copy review, or component stress testing."
+description: "Reviews interfaces, flows, mockups, Figma frames, screenshots, or design descriptions for usability, visual quality, accessibility and copy. Use for design critique, UI change review, UX-copy review, component stress testing, motion reviews or motion opportunities."
 ---
 
 # Design review
@@ -23,6 +23,7 @@ sources. Do not edit in a review-only request.
 | Judge visual quality, UX, accessibility, or readiness | [Design audit](references/design-audit.md) |
 | Find UI regressions in a diff, branch, commit, or pull request | [Change audit](references/change-audit.md), with the design audit's criteria and result |
 | Stress test or harden a component | [Component stress](references/component-stress.md) |
+| Review existing motion, audit motion across a product, or find motion opportunities | [Motion review](references/motion-review.md) |
 
 Checking a build against an accepted design belongs to `$design`'s design QA.
 The independent finishing handoff for implemented UI belongs to `$design`'s
