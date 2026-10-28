@@ -34,6 +34,10 @@ its consumers, and what would be removed. Search for the same decision under
 different names: defaults, validation, serialization, cache keys and lifecycle
 rules. Distinguish duplicated policy from similar code with different contracts.
 
+For a requested hard cut or an internal draft contract replacement, use the
+[hard-cut playbook](../../playbooks/hard-cut.md) to assess obsolete paths and
+required compatibility boundaries. Return recommendations within the audit's scope.
+
 At code level, DRY the structure, not every line. Types and data models should converge. Three similar statements still beat a premature abstraction. Prefer explicit over clever.
 
 Information leakage makes multiple modules depend on the same internal decision. A representation, policy, or protocol detail appears in more than one place, so changing it requires coordinated edits.

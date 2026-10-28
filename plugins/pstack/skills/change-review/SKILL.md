@@ -114,11 +114,27 @@ and surviving owner. For wrappers and caches, verify forwarding reaches the
 intended instance without recursion. For shared writers, inspect atomicity or
 serialization and whether independent outputs can remove unnecessary sharing.
 
+For persistent writes, inspect relevant sequences: a lost response followed by
+the same retry, a changed payload with the same operation identity, and a delayed
+retry after deletion. Check resulting values and required replay or deletion
+semantics. Success codes and row counts alone do not prove that data survived
+without duplication, overwrite, or resurrection.
+
+For asynchronous work, check whether a late result can overwrite newer input or
+reach a different screen or session. Follow the framework's failure contract
+through every consumer. Typed errors are valid when handled. Rejected writes,
+permission denials, and incomplete results must not appear saved or complete.
+Cleanup must remain reachable after cancellation, timeout, or disconnect.
+
 For downstream risk, name the fact safety depends on. Look beyond symbol
 searches at persisted data, wire formats, configuration, generated code,
 scheduled jobs and other consumers. An empty text search alone does not prove
 absence. Preserve real external and user-data compatibility while removing
 obsolete internal paths.
+
+When reviewing a requested hard cut or an internal draft contract replacement,
+use the [hard-cut playbook](../../playbooks/hard-cut.md) to judge obsolete paths
+and compatibility exceptions within the diff's scope.
 
 ### Security
 
@@ -184,6 +200,10 @@ invariant's owner; another layer needs a distinct failure mode. Before deleting
 tests, identify surviving coverage for privacy, persistence, concurrency, retry,
 lifecycle and external-system contracts. Existing passing results establish
 only the behavior exercised. Exact UI claims need rendered evidence.
+
+For test placement, temporary probes, or deleted coverage, use
+[test consolidation](../../playbooks/test-consolidation.md). During review, inspect
+and report within the existing scope without running its implementation steps.
 
 ### Keep only supported findings
 

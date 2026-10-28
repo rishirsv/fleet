@@ -9,9 +9,30 @@ simplification.
 Use the repository's actual responsibilities and modules. Do not impose a
 generic layer scheme.
 
+Read the repository's architecture and boundary records, then trace the actual
+call and state flow. If records and code disagree, name the difference. Label
+ownership inferred from code when the records leave it unresolved.
+
 Choose by who must enforce the invariant, not where the symptom appeared.
 Allow separate presentation or transport representations when they protect
 different contracts. A shared representation is not automatically a shared policy.
+
+For a disputed placement, distinguish these owners using concrete modules and symbols:
+
+- The runtime owner executes or coordinates the behavior today.
+- The first-fix owner is where the immediate defect can be corrected without
+  leaving other callers inconsistent.
+- The canonical long-term owner enforces the rule for every relevant caller.
+
+These owners may coincide. When they differ, explain why the immediate fix is
+insufficient, which responsibility moves, which competing owner disappears, and
+which boundary code remains. A recommendation does not authorize that move.
+
+Runtime dispatch does not automatically own reusable product policy. Place
+presentation state with its UI owner, platform behavior with its platform owner,
+and vendor details with the integration. Use the repository's actual contracts
+to decide exceptions. Do not move pure logic into shared code merely because it
+could be reused.
 
 ## Design the boundary
 

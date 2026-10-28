@@ -75,6 +75,8 @@ Match the task to a playbook below and read its full steps. The playbook owns th
 - **Session pickup.** Resuming or taking over a prior agent's in-flight work from a transcript, cloud-agent URL, or pushed branch. Read [session pickup](../../references/sessions.md#resume-prior-work).
 - **Bug fix.** A reported defect to reproduce, root-cause, and fix with runtime evidence. Read [bug fix](../../playbooks/bug-fix.md).
 - **Feature.** New or changed behavior, built from a named data shape. Read [feature](../../playbooks/feature.md).
+- **Hard cut.** A requested hard cut or an internal draft refactor that replaces a contract with one canonical implementation. Read [hard cut](../../playbooks/hard-cut.md).
+- **Test consolidation.** Place durable coverage in its owning suite and merge or remove temporary probes from the current task. Read [test consolidation](../../playbooks/test-consolidation.md).
 - **Prototype.** A throwaway sketch to settle a design, behavioral or timing decision. Read [prototype](../../playbooks/prototype.md).
 - **Worktree cleanup.** Reclaiming local disk by pruning merged or abandoned git worktrees. Read [worktree cleanup](../../playbooks/worktree-cleanup.md).
 
