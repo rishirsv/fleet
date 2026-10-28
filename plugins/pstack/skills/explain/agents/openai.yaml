@@ -1,0 +1,7 @@
+interface:
+  display_name: "Explain"
+  short_description: "Understand how the parts connect and why it follows"
+  default_prompt: "Use $explain to explain this in plain language, including how the parts connect, why the result follows, and what it means for me."
+
+policy:
+  allow_implicit_invocation: true

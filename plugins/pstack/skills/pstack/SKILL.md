@@ -16,7 +16,7 @@ Read the matched skill in full. The routed skill owns its workflow, output contr
 - Push an outcome further or rewrite an ambitious prompt → [apply-ambition](../apply-ambition/SKILL.md).
 - How does this work, where should it live, or which package owns it → [how](../how/SKILL.md).
 - Why was this built this way → [why](../why/SKILL.md).
-- Teach me this, or help me really understand it → [teach](../teach/SKILL.md).
+- Teach me a subject that needs fresh investigation → [teach](../teach/SKILL.md).
 - Explicitly asked to figure out a substantial task with an uncertain execution path → [figure-it-out](../figure-it-out/SKILL.md).
 - Design types, signatures and module boundaries before implementation → [architect](../architect/SKILL.md).
 - Parallel coverage, independent candidates or a model race → [swarm](../swarm/SKILL.md).
@@ -25,7 +25,7 @@ Read the matched skill in full. The routed skill owns its workflow, output contr
 - A named model's CLI task → [ask-model](../ask-model/SKILL.md).
 - Commit, push and open or update a PR → [publish-pr](../publish-pr/SKILL.md).
 - Watch a PR and fix checks or feedback until ready → [babysit-pr](../babysit-pr/SKILL.md). A one-time status request stays a one-time check.
-- Restate the last reply in plain language → [bro](../bro/SKILL.md).
+- Explain an answer, concept, or decision from this conversation in plain language → [explain](../explain/SKILL.md).
 - Catch up on this chat and decisions waiting on the user → [catch-up](../catch-up/SKILL.md).
 - Recall recent working context across chats → [recall](../recall/SKILL.md).
 - Reflect on a session, correct recurring repository mistakes, or diagnose workflow friction → [self-improve](../self-improve/SKILL.md).

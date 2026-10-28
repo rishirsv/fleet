@@ -13,7 +13,7 @@ skill or playbook. Ordinary development uses the host's tools and repository ins
 | How | Explain architecture, ownership and runtime flow |
 | Why | Investigate design rationale with cited evidence |
 | Teach | Explain what something is, how it works and why |
-| Bro | Restate the last reply in plain language |
+| Explain | Understand a concept or decision from the conversation, including how and why |
 | Catch-up | Explain changes in this chat and decisions waiting on the user |
 | Recall | Reconstruct recent working context |
 | Shape Idea | An open product or planning discussion |
