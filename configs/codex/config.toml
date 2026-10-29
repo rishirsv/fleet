@@ -68,9 +68,24 @@ preventSleepWhileRunning = true
 followUpQueueMode = "queue"
 defaultTerminalLocation = "right"
 appearanceTheme = "system"
+appearanceDarkCodeThemeId = "vercel"
 
 [desktop.appearanceLightChromeTheme.fonts]
 code = '"Paper Mono", ui-monospace, "SFMono-Regular"'
 
+[desktop.appearanceDarkChromeTheme]
+accent = "#006efe"
+accentSource = "custom"
+contrast = 50
+ink = "#ededed"
+opaqueWindows = true
+surface = "#000000"
+
 [desktop.appearanceDarkChromeTheme.fonts]
-code = '"Paper Mono", ui-monospace, "SFMono-Regular"'
+code = '"Geist Mono", ui-monospace, "SFMono-Regular"'
+ui = "Geist, Inter"
+
+[desktop.appearanceDarkChromeTheme.semanticColors]
+diffAdded = "#00AD3A"
+diffRemoved = "#F13342"
+skill = "#9540D5"
