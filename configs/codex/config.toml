@@ -72,6 +72,7 @@ appearanceDarkCodeThemeId = "vercel"
 
 [desktop.appearanceLightChromeTheme.fonts]
 code = '"Paper Mono", ui-monospace, "SFMono-Regular"'
+ui = '"Paper Mono", ui-monospace, "SFMono-Regular"'
 
 [desktop.appearanceDarkChromeTheme]
 accent = "#006efe"
@@ -82,8 +83,8 @@ opaqueWindows = true
 surface = "#000000"
 
 [desktop.appearanceDarkChromeTheme.fonts]
-code = '"Geist Mono", ui-monospace, "SFMono-Regular"'
-ui = "Geist, Inter"
+code = '"Paper Mono", ui-monospace, "SFMono-Regular"'
+ui = '"Paper Mono", ui-monospace, "SFMono-Regular"'
 
 [desktop.appearanceDarkChromeTheme.semanticColors]
 diffAdded = "#00AD3A"
