@@ -53,11 +53,11 @@ on macOS when syncing Codex, VS Code, or Ghostty. IAB sync merges the selected
 preferences from `configs/codex/browser.toml`, preserving profile-specific site
 rules and other browser settings. Font size is 16 throughout;
 apps use different sizing units, so visual adjustment may still be needed.
-Codex uses Paper Mono for interface and code text in both modes. VS Code uses
-Paper Mono in its configurable text surfaces, including editors, terminals,
-previews and notebooks; its menus, tabs and sidebar use the built-in interface
-font because VS Code has no supported setting for it. Its dark theme mirrors
-Codex's black surfaces and blue accent. Built-in AI features and Copilot
+Codex uses Paper Mono for code and the system font for interface text in both
+modes. VS Code uses Paper Mono for code editors, terminals, debug consoles and
+notebook output. Interface text, chat prose, Markdown previews and notebook
+prose use their default system fonts. Its dark theme mirrors Codex's black
+surfaces and blue accent. Built-in AI features and Copilot
 extensions are disabled with `chat.disableAIFeatures`.
 
 Shared guidance uses a managed block and preserves existing global instructions.
