@@ -102,6 +102,14 @@ cloud releases; follow [cloud releases](docs/releases.md).
 Config sync installs the selected VS Code extensions; Codex/Claude plugin
 installation remains a separate step.
 
+## Chrome theme
+
+Fleet keeps the Codex Black and Blue Chrome theme in `configs/chrome-theme`.
+On each computer, open `chrome://extensions`, enable Developer mode, choose
+**Load unpacked**, and select that folder in the Fleet checkout. Chrome loads
+the theme for the current profile. After a theme change is pulled, load the
+folder again to apply it; Fleet sync alone does not install or reload it.
+
 Retained mouse/keyboard setup is in [Logi Options](configs/logi-options-plus/shortcuts.md).
 
 ## Shortcuts and shell

@@ -1,0 +1,64 @@
+{
+  "manifest_version": 3,
+  "version": "1.0.0",
+  "name": "Codex Black and Blue",
+  "theme": {
+    "colors": {
+      "frame": [
+        13,
+        13,
+        13
+      ],
+      "frame_inactive": [
+        13,
+        13,
+        13
+      ],
+      "toolbar": [
+        0,
+        0,
+        0
+      ],
+      "tab_text": [
+        237,
+        237,
+        237
+      ],
+      "bookmark_text": [
+        237,
+        237,
+        237
+      ],
+      "ntp_background": [
+        0,
+        0,
+        0
+      ],
+      "ntp_text": [
+        237,
+        237,
+        237
+      ],
+      "ntp_link": [
+        0,
+        110,
+        254
+      ],
+      "button_background": [
+        0,
+        110,
+        254
+      ],
+      "omnibox_background": [
+        23,
+        23,
+        23
+      ],
+      "omnibox_text": [
+        237,
+        237,
+        237
+      ]
+    }
+  }
+}
