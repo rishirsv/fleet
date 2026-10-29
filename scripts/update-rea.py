@@ -13,6 +13,10 @@ import sys
 
 PLUGIN = Path(__file__).resolve().parents[1] / 'plugins/rea'
 LOCK = 'fleet/upstream.json'
+# Upstream's distribution manifests target its npm package. Fleet owns the
+# corresponding plugin configuration and launches the bundled source build.
+UPSTREAM_PACKAGING = {'.claude-plugin/marketplace.json', '.claude-plugin/plugin.json',
+                      '.codex-plugin/mcp.json', '.codex-plugin/plugin.json'}
 sys.path.insert(0, str(PLUGIN / 'fleet'))
 from skill_exports import exported_skills, package_skills
 
@@ -49,6 +53,8 @@ def refresh(ref, plugin=PLUGIN):
             header, name = entry.split(b'\t', 1)
             mode, kind, digest = header.decode().split()
             name = name.decode()
+            if name in UPSTREAM_PACKAGING:
+                continue
             if kind == 'commit':
                 submodules[name] = digest
             elif mode in ('100644', '100755'):

@@ -1,6 +1,6 @@
 # Fleet's REA package
 
-This plugin is a complete, unmodified export of
+This plugin is an unmodified source export of
 [morluto/rea](https://github.com/morluto/rea), plus plugin manifests and this
 `fleet/` directory. There is no additional Fleet investigation workflow.
 Use `$reverse-engineer-anything` to start an investigation.
@@ -14,7 +14,8 @@ Use `$reverse-engineer-anything` to start an investigation.
 | `../skills/rea-*/` | Exported upstream development skills; only relative documentation links are relocated |
 | This directory and the root plugin/MCP manifests | Fleet packaging only |
 
-The complete upstream file inventory, exported-file checksums, Git blob IDs,
+Upstream distribution manifests are omitted because Fleet owns its plugin
+configuration and launches the bundled source build. The imported file inventory, checksums, Git blob IDs,
 commit and tree identity are recorded in [upstream.json](upstream.json).
 The upstream README, license, instructions, build scripts and lockfile remain
 unchanged. Read the upstream instructions before working with the source.
@@ -33,7 +34,7 @@ Install separately:
 - Python 3.10+ (`python3`). Upstream refresh requires Python with tar extraction
   filters (3.12+, or a maintained 3.10/3.11 security release).
 - Node.js and npm using the versions in `../.nvmrc` and `../package.json`.
-  This source revision pins Node 24.18.0 and npm 11.16.0.
+  See those files for the versions required by the current source revision.
 - Codex CLI or Claude Code, signed in, for plugin registration.
 - Network access to npm for the first dependency installation.
 
@@ -90,7 +91,8 @@ The refresh fetches upstream into a temporary Git repository and exports the
 selected revision. It first refuses locally modified upstream files or skill
 copies. It replaces only inventoried upstream files, removes upstream deletions,
 refreshes the development skills and records the new provenance. Fleet manifests
-and helpers are preserved; a new upstream path colliding with them blocks refresh.
+and helpers are preserved. Known upstream distribution manifests are omitted;
+other new upstream paths colliding with Fleet packaging block refresh.
 The normal source build then regenerates the public skill. No hand-maintained
 upstream patches or alternate compiler recipe are involved.
 
