@@ -1,6 +1,6 @@
 ---
 name: design
-description: "Designs, builds, refines, and recreates web or native product interfaces. Use for UI design, visual exploration, UX copy or microcopy, button and error-message wording, and developer handoff specifications from a design."
+description: "Designs, builds, refines, and recreates web or native product interfaces. Use for UI design, product idea evaluation, visual exploration, UX copy or microcopy, button and error-message wording, motion terminology, and developer handoff specifications from a design."
 ---
 
 # Design
@@ -77,10 +77,12 @@ Read only the references the current decision needs.
 | Outcome | Read |
 |---|---|
 | Build a new interface or substantially redesign one | [Plan and build](references/build.md) |
+| Challenge an open product idea before building | [Test an open product idea](references/build.md#test-an-open-product-idea) |
 | Build or refine a conversion-focused landing page | `$landing-page-design` for offer, audience, structure, and copy; retain this skill's shared craft guidance |
 | Animate an accepted static design or product visual, or export a showcase | `$design-to-motion` for fidelity, choreography, and capture |
 | Refine a settled interface | [Build or refine](references/build.md#build-or-refine); reuse established context |
 | Explore directions or compare variants | [Ideation](references/ideation.md) |
+| Name a motion effect or explain a motion term | [Animation vocabulary](references/animation-vocabulary.md) |
 | Recreate an accepted image, mockup, or live page | [Recreate a reference](references/recreate.md) |
 | Check or correct a build against an accepted design | [Design QA](references/design-qa.md) |
 

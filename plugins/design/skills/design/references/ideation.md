@@ -100,10 +100,18 @@ content. Reuse editable fixtures so a content change can be compared across
 variants. Generated fixtures find design weaknesses; feedback from people who
 use the product shows their needs and experience.
 
-When several parameters interact, build a temporary tuning panel beside the
-preview. Name the animation phases and expose only the values under comparison.
-Preserve the selected values in the implementation and remove the panel from
-product UI unless the user requested it as a feature.
+When a visual or interaction decision depends on feel, consider a small,
+interactive playground rather than static variants alone. Start with a plausible
+direction; expose only the parameters that meaningfully change the decision,
+such as timing, distance, density, or content. Use the target platform when
+native behavior matters. Let the user compare named configurations under the
+same conditions, and save the selected values in a reusable form. Do not treat
+the controls themselves as production UI unless requested.
+
+Name animation phases and keep realistic fixtures. Verify that the playground
+renders and responds, then transfer the chosen settings into the actual
+implementation and inspect it there. If the user asked only to explore, leave
+the playground and selections reviewable without shipping a choice.
 
 ## Compare and continue
 

@@ -4,6 +4,36 @@ Use motion to explain change, maintain spatial continuity, give feedback, or
 express the interface's character. Preserve established motion conventions when
 refining a product.
 
+## Decide before building
+
+Work in this order: decide whether motion is useful; name its purpose; choose
+the simplest available mechanism and properties; set timing or physics; then
+define interruption, exit, and reduced-motion behavior. Existing product and
+platform conventions take precedence over starting values in this guide.
+
+**Should this animate at all?** Consider frequency, function, and attention.
+A frequent keyboard or navigation action normally needs to respond immediately;
+rare onboarding or success moments can support more expression. Do not move
+content the user is trying to read or manipulate for decoration. Instant change
+is a valid result.
+
+**What is the purpose?** Name feedback, spatial consistency, state indication,
+preventing a jarring change, explanation, or delight. If no purpose survives
+the frequency and function checks, leave it still. Explanatory or decorative
+motion may suit a showcase or marketing context where it would distract from a
+repeated product task.
+
+**Choose the ingredients.** Reuse the project's motion tokens and platform
+controls. Prefer a light mechanism appropriate to the target; avoid a new
+animation dependency for a simple state change. Use an origin at the triggering
+control for anchored surfaces, and consider a small initial scale with opacity
+rather than growing an element from nothing. Test these choices in context;
+platform behavior and accessible alternatives take priority over a formula.
+
+Use [motion review](../../design-review/references/motion-review.md) for a
+focused review, product-wide audit, or search for opportunities. Use
+[animation vocabulary](animation-vocabulary.md) to name an effect.
+
 ## Give motion a job
 
 Identify the trigger, what changes, and what the user should understand. Routine
@@ -91,3 +121,5 @@ settings.
 Use the simplest mechanism that supports the behavior: CSS for local state
 transitions, a scripted timeline for sequencing, or the project's animation
 system for gestures and springs.
+
+The decision sequence draws on Emil Kowalski's public [animate skill](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/animate/SKILL.md), adapted for multiple platforms. See [license](../../../references/emil-kowalski-LICENSE.txt).
