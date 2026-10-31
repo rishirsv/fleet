@@ -78,6 +78,7 @@ Read only the references the current decision needs.
 |---|---|
 | Build a new interface or substantially redesign one | [Plan and build](references/build.md) |
 | Build or refine a conversion-focused landing page | `$landing-page-design` for offer, audience, structure, and copy; retain this skill's shared craft guidance |
+| Create a scripted product walkthrough or staged UI illustration | `$prototype` for the scene; retain this skill’s product and craft guidance |
 | Animate an accepted static design or product visual, or export a showcase | `$design-to-motion` for fidelity, choreography, and capture |
 | Refine a settled interface | [Build or refine](references/build.md#build-or-refine); reuse established context |
 | Explore directions or compare variants | [Ideation](references/ideation.md) |

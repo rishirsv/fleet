@@ -1,0 +1,7 @@
+interface:
+  display_name: "Prototype"
+  short_description: "Create scripted product walkthroughs"
+  default_prompt: "Use $prototype to create a scripted product walkthrough."
+
+policy:
+  allow_implicit_invocation: true
