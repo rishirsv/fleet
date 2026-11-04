@@ -38,10 +38,8 @@ which choices you made. Do not infer adoption of unresolved choices from a
 request to plan or build.
 
 Finish when choices needed for the next requested step are settled or explicitly
-deferred and no pending finding could change the direction. Summarize the
-outcome, decisions and reasons, exclusions, unresolved choices and next step
-using the relevant fields from the
-[Idea Snapshot](references/snapshot.md); omit empty boilerplate. If requested,
+deferred and no pending finding could change the direction. Write the intent
+using [this guidance](references/intent.md). If requested,
 use [Breakdown](references/breakdown.md) to produce end-to-end, independently
 checkable slices with dependencies and acceptance criteria.
 Continue an already authorized next step; otherwise stop at the agreed outcome.

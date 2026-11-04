@@ -1,7 +1,7 @@
 # Breakdown
 
 When the user wants the settled tree split into tickets or specifications,
-derive them from the Idea Snapshot without reopening settled decisions.
+derive them from the intent without reopening settled decisions.
 
 Cut **vertical slices**: each delivers one narrow behavior end to end through
 every layer it touches, and can be demonstrated or checked on its own. Put any
@@ -17,7 +17,7 @@ For each slice, give:
 - **Delivers:** <the behavior that works when this is done, in user terms>
 - **Blocked by:** <slice numbers, or "None">
 - **Acceptance checks:** <observable conditions that prove it works>
-- **Decisions carried:** <snapshot decisions and guardrails this slice relies on>
+- **Decisions carried:** <intent decisions and constraints this slice relies on>
 ```
 
 Leave out file paths and code, which go stale; include a prototype snippet only
