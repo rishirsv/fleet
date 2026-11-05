@@ -1,0 +1,16 @@
+REA growth — adapted from treg / tools-registry
+Copyright (c) 2026 Superdesign (superdesign.dev)
+Source: https://github.com/superdesigndev/treg/blob/e4f41c1a2f57b1c0c54084996687a904888b904b/skills/rea-growth/SKILL.md
+Upstream skill blob: 5419ab02eb97881ef62755c03fd60d819bf79c8f
+Requested source: https://treg.to/rea-growth
+License: Apache License 2.0 with Additional Terms; the complete upstream LICENSE is included unchanged.
+
+Fleet modifications, 2026-11-05: setup and payment consent, zero-cost default,
+bounded fallback costs, evidence qualifications, and self-contained plugin packaging.
+No affiliation with or endorsement by Superdesign or the companies investigated.
+
+The upstream Additional Terms restrict hosted, managed, and embedded services
+for third parties, including commercial product distribution, without prior written
+permission from the licensor. This addition is for the user's local plugin workflow;
+it does not grant permission for a hosted service or commercial redistribution.
+The parent plugin's MIT metadata does not relicense these files.

@@ -40,7 +40,7 @@ def ensure_runtime(*, plugin=PLUGIN, build=True):
                TURBO_TELEMETRY_DISABLED='1')
     subprocess.run([npm, 'ci'], cwd=plugin, env=env, check=True)
     subprocess.run([npm, 'run', 'build:cached'], cwd=plugin, env=env, check=True)
-    # Turbo may restore an entire skills output tree. Assemble the five public
+    # Turbo may restore an entire skills output tree. Assemble upstream and Fleet
     # plugin exports after that restoration, without changing upstream sources.
     package_skills(plugin)
     subprocess.run([node, str(plugin / 'fleet/smoke.mjs'), str(plugin)], cwd=plugin, env=env, check=True)

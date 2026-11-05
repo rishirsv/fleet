@@ -1,7 +1,7 @@
 {
   "name": "rea",
-  "version": "0.1.5",
-  "description": "Understand how shipped software works through local, evidence-based analysis.",
+  "version": "0.1.6",
+  "description": "Investigate shipped software locally and study company growth from public evidence.",
   "author": {
     "name": "Rishi"
   },

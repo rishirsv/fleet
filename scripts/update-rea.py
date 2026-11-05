@@ -33,7 +33,7 @@ def check(plugin=PLUGIN):
     package_files = {p.relative_to(packaged) for p in packaged.rglob('*')
                      if p.is_file() and p.relative_to(packaged).parts[0] != 'reverse-engineer-anything'}
     if set(expected) != package_files or any((packaged / p).read_bytes() != data for p, data in expected.items()):
-        raise RuntimeError('Packaged skills differ from upstream .agents/skills; regenerate them.')
+        raise RuntimeError('Packaged skills differ from upstream or Fleet sources; regenerate them.')
     return origin
 
 
@@ -63,6 +63,9 @@ def refresh(ref, plugin=PLUGIN):
                 raise RuntimeError(f'Unsupported upstream entry {name}: {mode}')
         # New upstream paths must never overwrite Fleet's manifests or helpers.
         for name in files:
+            parts = Path(name).parts
+            if parts[:2] == ('.agents', 'skills') and len(parts) > 2 and (plugin / 'fleet/skills' / parts[2]).exists():
+                raise RuntimeError(f'Fleet skill collides with upstream skill: {parts[2]}')
             if name.startswith(('fleet/', 'skills/', '.codex-plugin/', '.claude-plugin/')) or name in ('plugin.json', 'mcp.json', '.mcp.json'):
                 raise RuntimeError(f'Upstream now owns {name}; review the package boundary before updating.')
             if name not in old['files'] and (plugin / name).exists():

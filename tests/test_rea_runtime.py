@@ -53,6 +53,11 @@ class ReaPackageTests(unittest.TestCase):
             files = {p.relative_to(repo).as_posix(): dict(sha256=hashlib.sha256(p.read_bytes()).hexdigest(), mode='100644')
                      for p in repo.rglob('*') if p.is_file() and '.git' not in p.relative_to(repo).parts}
             (plugin / 'fleet/upstream.json').write_text(json.dumps(dict(repository=str(repo), files=files)))
+            wrapper = plugin / 'fleet/skills/rea-growth'
+            wrapper.mkdir(parents=True)
+            (wrapper / 'SKILL.md').write_text('Fleet growth skill\n')
+            (wrapper / 'LICENSE').write_text('third-party license\n')
+            update.package_skills(plugin)
             (plugin / 'plugin.json').write_text('Fleet manifest')
             (plugin / 'removed.txt').write_text('local edit\n')
             with self.assertRaisesRegex(RuntimeError, 'Upstream file differs'):
@@ -74,12 +79,45 @@ class ReaPackageTests(unittest.TestCase):
             self.assertEqual((plugin / '.codex-plugin/plugin.json').read_text(), 'Fleet manifest')
             self.assertEqual((plugin / 'skills/rea-tool-design/SKILL.md').read_text(), 'updated skill\n')
             update.check(plugin)
+            self.assertEqual((plugin / 'skills/rea-growth/SKILL.md').read_text(), 'Fleet growth skill\n')
+            self.assertEqual((plugin / 'skills/rea-growth/LICENSE').read_text(), 'third-party license\n')
+            # A source build/cache restore can erase the whole exported tree.
+            shutil.rmtree(plugin / 'skills')
+            update.package_skills(plugin)
+            update.check(plugin)
+            self.assertEqual((plugin / 'skills/rea-growth/LICENSE').read_text(), 'third-party license\n')
+            (plugin / 'skills/rea-growth/LICENSE').write_text('drift')
+            with self.assertRaisesRegex(RuntimeError, 'Packaged skills differ'):
+                update.check(plugin)
+            update.package_skills(plugin)
+            (source / 'rea-growth').mkdir()
+            (source / 'rea-growth/SKILL.md').write_text('upstream collision')
+            git('add', '.')
+            git('commit', '--quiet', '-m', 'skill collision')
+            with self.assertRaisesRegex(RuntimeError, 'collides with upstream'):
+                update.refresh('HEAD', plugin)
+            self.assertEqual((plugin / 'skills/rea-growth/SKILL.md').read_text(), 'Fleet growth skill\n')
+            self.assertEqual((plugin / 'fleet/upstream.json').read_text(), json.dumps(update.check(plugin), indent=2) + '\n')
+            shutil.rmtree(source / 'rea-growth')
             (repo / 'plugin.json').write_text('collision')
             git('add', '.')
             git('commit', '--quiet', '-m', 'collision')
             with self.assertRaisesRegex(RuntimeError, 'package boundary'):
                 update.refresh('HEAD', plugin)
             self.assertEqual((plugin / 'plugin.json').read_text(), 'Fleet manifest')
+
+    def test_wrapper_collision_preserves_exports(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            plugin = Path(tmp)
+            upstream = plugin / '.agents/skills/rea-growth'
+            wrapper = plugin / 'fleet/skills/rea-growth'
+            exported = plugin / 'skills/rea-growth'
+            for path in (upstream, wrapper, exported):
+                path.mkdir(parents=True)
+                (path / 'SKILL.md').write_text('keep this export')
+            with self.assertRaisesRegex(RuntimeError, 'collides with upstream'):
+                update.package_skills(plugin)
+            self.assertEqual((exported / 'SKILL.md').read_text(), 'keep this export')
 
     def test_new_computer_setup_refuses_existing_install(self):
         with tempfile.TemporaryDirectory() as tmp:
