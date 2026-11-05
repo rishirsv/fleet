@@ -118,7 +118,7 @@ def validate_plugin(root: Path) -> list[str]:
 
     names: dict[str, Path] = {}
     for skill_dir in skill_dirs:
-        name = validate_skill(skill_dir, errors, upstream=upstream.exists())
+        name = validate_skill(skill_dir, errors, upstream=upstream.exists() and not (root / "fleet/skills" / skill_dir.name).exists())
         if name is not None:
             if name in names:
                 errors.append(f"{skill_dir / 'SKILL.md'}: duplicate skill name {name!r}; first used by {names[name]}")

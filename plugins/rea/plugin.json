@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "rea",
-  "version": "0.1.5",
-  "description": "Understand how shipped software works through local, evidence-based analysis.",
+  "version": "0.1.6",
+  "description": "Investigate shipped software locally and study company growth from public evidence.",
   "author": {
     "name": "Rishi"
   },
@@ -18,7 +18,7 @@
       "interface": {
         "displayName": "Reverse-Engineer",
         "shortDescription": "See how software works",
-        "longDescription": "Trace how shipped software works. Inspect native, managed, JavaScript and Electron applications, compare versions, and connect findings to evidence. Use those findings to guide reconstruction. Powered by local REA analysis; native analysis engines are configured separately.",
+        "longDescription": "Trace how shipped software works. Inspect native, managed, JavaScript and Electron applications, compare versions, and connect findings to evidence. Use those findings to guide reconstruction. Powered by local REA analysis; native analysis engines are configured separately. Use REA Growth for company growth and content strategy; optional treg access requires separate setup and an approved data budget.",
         "developerName": "Rishi",
         "category": "Developer Tools",
         "capabilities": [

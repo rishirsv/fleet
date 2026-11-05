@@ -1,0 +1,6 @@
+interface:
+  display_name: "REA Growth"
+  short_description: "Study company growth and content strategy"
+  default_prompt: "Use $rea-growth to investigate this company's growth and propose evidence-backed plays within my approved budget."
+policy:
+  allow_implicit_invocation: true
