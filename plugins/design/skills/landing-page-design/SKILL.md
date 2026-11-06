@@ -13,8 +13,9 @@ This skill has two halves. **Part A** ([strategy and structure](references/strat
 
 ## Scope
 
-Use for conversion-focused landing pages and marketing campaigns. Use `$design`
-for general interface work and `$design-review` for an audit without edits.
+Use for conversion-focused landing pages and marketing campaigns. A homepage,
+brand site, or informational page belongs to `$design`, as does general
+interface work; use `$design-review` for an audit without edits.
 For an existing landing page, preserve its established identity and change only
 what the requested outcome needs.
 
@@ -32,8 +33,8 @@ color, spacing, or motion system.
 # PART B — Visual system
 
 Build within the product’s identity. For a new page, choose a distinctive
-visual direction from its subject, using Design’s
-[direction](../design/references/direction.md), and carry it through
+visual direction from its subject, using the
+[design skill](../design/SKILL.md)'s grounding and plan, and carry it through
 consistently. Use a small set of role-based values rather than importing a
 fixed aesthetic.
 

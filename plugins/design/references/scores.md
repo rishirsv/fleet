@@ -21,7 +21,7 @@ and mark an area the change made worse.
 
 ## Anchors
 
-**Layout and hierarchy** ([Layout](../skills/design/references/layout.md), [direction](../skills/design/references/direction.md))
+**Layout and hierarchy** ([Layout](../skills/design/references/layout.md), [design skill](../skills/design/SKILL.md))
 
 - 10: one clear starting point, grouping carried by space, shared edges, and the structure holds at every size in the sweep.
 - 7: clear structure with a few uneven gaps, a competing element, or one size where it strains.

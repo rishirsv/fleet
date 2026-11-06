@@ -20,7 +20,8 @@ only:
   affected, with explicit required coverage and any known access gaps.
 - Current captures and interaction evidence, with their paths and capture
   context, plus relevant existing test or detector findings when available.
-- The absolute paths of this file, [craft floor](craft-floor.md), and
+- The absolute paths of this file, [craft floor](craft-floor.md), the
+  [design skill](../skills/design/SKILL.md) for its generic defaults, and
   [visual proof](evidence.md). For a visual target also pass
   [design QA](../skills/design/references/design-qa.md).
 
