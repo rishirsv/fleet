@@ -17,5 +17,5 @@ process narration. Do not add sharing prompts or approval gates to completed wor
 ## Report the route
 
 In one short line, say which skills and references you used, for example:
-"Used walkthrough for the hero mock, checked with visual proof and finish review."
+"Used ideation for the hero, checked with visual proof and finish review."
 When rules conflict, say which one you followed.

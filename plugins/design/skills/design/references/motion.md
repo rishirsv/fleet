@@ -12,8 +12,7 @@ Two failure modes, and the first is worse:
 Make the call and state the reasoning in one line rather than presenting motion options as a menu. The values below are starting points: existing product and platform conventions and tokens take precedence, and a parallel motion system beside them is a defect.
 
 Use [motion review](../../design-review/references/motion-review.md) for a
-focused review, product-wide audit, search for opportunities, or removal. Use
-[animation vocabulary](animation-vocabulary.md) to name an effect.
+focused review, product-wide audit, search for opportunities, or removal.
 
 ## Should this animate at all?
 

@@ -1,6 +1,6 @@
 ---
 name: design
-description: "Design, build, refine, or recreate web and native product UI. Use for new screens, redesigns, homepages, visual directions, UX copy, motion terms, or handoff specs."
+description: "Design, build, refine, or recreate web and native product UI. Use for new screens, redesigns, homepages, visual directions, UX copy, or handoff specs."
 ---
 
 # Design
@@ -110,9 +110,6 @@ Keep the tone conversational: plain verbs, sentence case, no filler, with tone m
 | Recreate an accepted image, mockup, or live page | [Recreate a reference](references/recreate.md) |
 | Check a build against an accepted design | [Design QA](references/design-qa.md) |
 | Conversion or campaign landing page | `$landing-page-design` |
-| Scripted walkthrough or staged UI illustration | `$walkthrough` |
-| Animate an accepted static design or export a showcase | `$design-to-motion` |
-| Name a motion effect or explain a motion term | [Animation vocabulary](references/animation-vocabulary.md) |
 | UX copy as the task itself | [UX-copy guide](../../references/ux-copy.md) |
 | Engineering handoff specification | [Handoff guide](../../references/handoff.md); creating one does not authorize publishing it |
 | Audit, review a UI change, or stress test a component | `$design-review` |

@@ -38,9 +38,6 @@ visual direction from its subject, using the
 consistently. For layout, type, color, interaction, icons, and motion
 questions, use that skill's lookup table.
 
-Use `$design-to-motion` when the requested outcome includes an animated product
-visual or showcase.
-
 ## Content and states
 
 Write real draft copy in the product’s voice. Use supplied proof for commercial
