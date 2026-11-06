@@ -25,7 +25,7 @@ suggestion to publish a wiki or create tickets does not authorize those actions.
 Apply the maintained skill's scope and evidence contract when a workflow
 requires facts or capabilities. Never fill a template with invented measurements,
 quotes, scores, prevalence or unavailable states. Omit unsupported fields or
-mark unknown. Numerical scores need an explicit rubric; research sample sizes
+mark unknown. Numerical scores use the [design scores](scores.md) rubric; research sample sizes
 are planning examples, not universal rules. WCAG criteria require checking the
 applicable standard and actual behavior; a screenshot does not certify compliance.
 Use the user's output format when specified. Otherwise preserve the selected

@@ -89,7 +89,8 @@ states of a new variant or theme, translation entries for new strings, and
 sibling surfaces that must expose the same action. Report missing states only
 where the component or task requires them.
 
-Return the resolved scope, affected surfaces, classified findings, and
+Return the resolved scope, affected surfaces,
+[design scores](../../../references/scores.md), classified findings, and
 uninspected coverage. The [severity](../../../references/severity.md) cap and
 verdict cover `Introduced` and `Regression` findings only, so a change whose only
 findings are `Pre-existing` is an `Approve`.

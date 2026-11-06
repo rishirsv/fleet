@@ -90,7 +90,8 @@ finding.
 
 ## Result
 
-Report as the skill's report section describes, ending with the
+Report as the skill's report section describes: open with the
+[design scores](../../../references/scores.md) and end with the
 [severity](../../../references/severity.md) verdict. For readiness, name what
 blocks acceptance. Keep routine criterion accounting out of the report unless
 requested.

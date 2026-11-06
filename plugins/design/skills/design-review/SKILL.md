@@ -60,7 +60,8 @@ independently useful findings when some evidence is missing.
 Write findings with [Writing style](../../references/reporting.md).
 
 For a selected workflow, use its Output structure by default,
-marking unsupported fields unknown. Otherwise lead with the overall assessment
+marking unsupported fields unknown. Design and change audits open with the
+[design scores](../../references/scores.md). Otherwise lead with the overall assessment
 and highest-impact changes. Each finding
 gives its location or journey step, evidence, user impact, proposed correction,
 and the verification it needs. Rate each finding and end with a verdict using

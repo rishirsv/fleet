@@ -5,8 +5,8 @@ quote relevant copy, and connect observations to the user's task. Use plain
 language. Separate measured facts, observations, inferences and preferences.
 
 For findings give location, evidence, impact, correction and
-[severity](severity.md). Do not
-invent scores, measurements, user prevalence or compliance claims. State which
+[severity](severity.md). Score only against the [rubric](scores.md); do not
+invent measurements, user prevalence or compliance claims. State which
 routes, viewports and interactions were inspected and which remain unverified.
 For delivery link the implementation and relevant evidence. Record blockers and
 material differences; do not imply publication or production readiness from a
