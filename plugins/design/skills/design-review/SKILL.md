@@ -23,7 +23,7 @@ sources. Do not edit in a review-only request.
 | Judge visual quality, UX, or readiness | [Design audit](references/design-audit.md) |
 | Find UI regressions in a diff, branch, commit, or pull request | [Change audit](references/change-audit.md), with the design audit's criteria and result |
 | Stress test or harden a component | [Component stress](references/component-stress.md) |
-| Review existing motion, audit motion across a product, find motion opportunities, or remove motion that feels slow | [Motion review](references/motion-review.md) |
+| Review, audit, add, or remove motion | [Motion review](references/motion-review.md) |
 
 Checking a build against an accepted design belongs to `$design`'s design QA.
 The independent finishing handoff for implemented UI belongs to `$design`'s
