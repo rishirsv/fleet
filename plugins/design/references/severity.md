@@ -45,6 +45,8 @@ When the work under review adds what **Delete** would fix, that is a finding, an
 
 One root cause is one finding, with every confirmed location in the same row. Report at most 15 findings. Never pad toward the cap; a short review or no findings is a valid result.
 
+Number findings in rank order so the user can answer "fix 1, 2 and 5". When fixes follow a review, fix only the numbers chosen.
+
 ## Verdict
 
 End a review with one of two:
@@ -54,4 +56,4 @@ End a review with one of two:
 
 `Approve` covers only what was inspected. Name every area not reviewed in the verdict line.
 
-Adapted from Jakub Krehel's public better-interface (jakubkrehel/skills, commit 60bf140); the accessibility escalation triggers are left out. See [license](jakub-krehel-LICENSE.txt).
+Adapted from Jakub Krehel's public better-interface (jakubkrehel/skills, commit 60bf140), with the accessibility escalation triggers left out, and numbered findings from Raphael Salaja's public audit (raphaelsalaja/skills, commit 31031e9). See the [Krehel](jakub-krehel-LICENSE.txt) and [Salaja](raphael-salaja-LICENSE.txt) licenses.
