@@ -168,7 +168,7 @@ component, then rerun the failing cases and the other cases the correction could
 affect. Keep the test page or native preview fixtures available, state how to
 open them, and list checks that remain unverified.
 
-Scenario axes adapted from Jakub Krehel's public [break](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/break); field map,
+Scenario axes adapted from Jakub Krehel's public break (jakubkrehel/skills, commit 60bf140); field map,
 worst-case values and failure signatures from Emil Kowalski's public
-[break-ui](https://github.com/emilkowalski/skills/tree/c8a79627b59d72d764d6ab6f2c87c09a48169833/skills/break-ui). See the [Krehel](../../../references/jakub-krehel-LICENSE.txt)
+break-ui (emilkowalski/skills, commit c8a7962). See the [Krehel](../../../references/jakub-krehel-LICENSE.txt)
 and [Kowalski](../../../references/emil-kowalski-LICENSE.txt) licenses.

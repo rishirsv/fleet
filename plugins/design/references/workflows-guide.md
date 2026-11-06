@@ -45,7 +45,7 @@ existing format. Do not claim to publish or emulate the proprietary runtime.
 
 ## Accessibility interpretation
 
-WCAG 2.1 target size 2.5.5 is an advisory when auditing AA. [W3C defines 2.5.5 as Level AAA](https://www.w3.org/WAI/WCAG21/Understanding/target-size.html).
+WCAG 2.1 target size 2.5.5 is an advisory when auditing AA. W3C defines 2.5.5 as Level AAA.
 Report its 44-by-44 CSS-pixel recommendation as AAA/advisory when auditing AA,
 including its exceptions. Check the requested standard/version before assigning
 conformance failures. Report the actual automated tool's scope and gaps rather than assuming a fixed

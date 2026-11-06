@@ -47,6 +47,6 @@ bottlenecks from guesses and do not transfer web compositor rules to native UI.
   why they should stay still. Do not invent durations where feel or platform
   behavior requires testing.
 
-Based on Emil Kowalski's public [review-animations, improve-animations, and
-find-animation-opportunities](https://github.com/emilkowalski/skills/tree/2d228630ba1446365f614a108cb8252f1feda202/skills),
+Based on Emil Kowalski's public review-animations, improve-animations, and
+find-animation-opportunities (emilkowalski/skills, commit 2d22863),
 adapted for web and native product interfaces.

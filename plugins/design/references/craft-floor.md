@@ -62,5 +62,5 @@ detector, engine, config, or checklist artifact. A clean floor is a minimum;
 it does not establish that the design achieves the brief.
 
 Informed by Paul Bakaus's Impeccable
-[craft floor](https://github.com/pbakaus/impeccable/blob/4281ac224087af05d4d9f0ab20c16a62a345493e/skill/reference/craft-floor.md)
-and [finish reviewer](https://github.com/pbakaus/impeccable/blob/4281ac224087af05d4d9f0ab20c16a62a345493e/skill/agents/impeccable-finish-reviewer.md).
+craft floor (pbakaus/impeccable, commit 4281ac2)
+and finish reviewer (pbakaus/impeccable, commit 4281ac2).

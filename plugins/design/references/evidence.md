@@ -62,6 +62,6 @@ Name the width in every finding.
 | A dialog's `Save` below a 375px screen | `max-height: 100dvh` with the body scrolling |
 | "The header overlaps" | "At 768, the header overlaps the search field" |
 
-Adapted from Raphael Salaja's public [viewports](https://github.com/raphaelsalaja/skills/tree/31031e9246a56cadb18e017521ff7e0c16c68050/skills/viewports);
+Adapted from Raphael Salaja's public viewports (raphaelsalaja/skills, commit 31031e9);
 [overflow.js](viewports/overflow.js) is copied unchanged. See
 [license](raphael-salaja-LICENSE.txt).

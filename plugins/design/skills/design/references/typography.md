@@ -171,8 +171,8 @@ Keep text selectable by default. `::selection` can carry brand into the reading 
 | Mixed-direction value such as a name, number or URL without `<bdi>` or `dir` | Wrap it in `<bdi>` |
 | `user-select: none` or `select-none` on a layout root or text container | Remove it; keep it only on a drag or gesture surface |
 
-Adapted from Jakub Krehel's public [better-typography](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/better-typography);
+Adapted from Jakub Krehel's public better-typography (jakubkrehel/skills, commit 60bf140);
 the files in [typography/](typography/) are copied unchanged.
 The truncate, wrap or clamp choice is from Emil Kowalski's public
-[break-ui](https://github.com/emilkowalski/skills/tree/c8a79627b59d72d764d6ab6f2c87c09a48169833/skills/break-ui) ([license](../../../references/emil-kowalski-LICENSE.txt)).
+break-ui (emilkowalski/skills, commit c8a7962) ([license](../../../references/emil-kowalski-LICENSE.txt)).
 See [license](../../../references/jakub-krehel-LICENSE.txt).

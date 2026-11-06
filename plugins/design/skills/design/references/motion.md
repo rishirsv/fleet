@@ -122,4 +122,4 @@ Use the simplest mechanism that supports the behavior: CSS for local state
 transitions, a scripted timeline for sequencing, or the project's animation
 system for gestures and springs.
 
-The decision sequence draws on Emil Kowalski's public [animate skill](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/animate/SKILL.md), adapted for multiple platforms. See [license](../../../references/emil-kowalski-LICENSE.txt).
+The decision sequence draws on Emil Kowalski's public animate skill (emilkowalski/skills, commit 2d22863), adapted for multiple platforms. See [license](../../../references/emil-kowalski-LICENSE.txt).

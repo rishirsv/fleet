@@ -4,7 +4,7 @@ Put every existing animation on trial, then delete or reduce the ones that can't
 
 ## Operating Posture
 
-The premise is Emil Kowalski's ["You Don't Need Animations"](https://emilkowal.ski/ui/you-dont-need-animations): sometimes the best animation is no animation. Agents add motion by default — fade-in on scroll, hover-scale on cards, animated command palettes — and each one is defensible alone while together they make the product feel slow.
+The premise: sometimes the best animation is no animation. Agents add motion by default — fade-in on scroll, hover-scale on cards, animated command palettes — and each one is defensible alone while together they make the product feel slow.
 
 So the burden of proof is reversed. An animation stays only if it passes the gate. "It's already there" and "it looks nice" are not defenses.
 
@@ -147,5 +147,5 @@ This section is what separates this skill from deleting every transition in the 
 
 List orphaned code removed and any dependency you propose dropping. Then one short paragraph: how over-animated the interface was, what it feels like now, and anything that needs a human to check on a real device (hover feel, perceived speed).
 
-Adapted from Emil Kowalski's public [remove-animations](https://github.com/emilkowalski/skills/tree/c8a79627b59d72d764d6ab6f2c87c09a48169833/skills/remove-animations).
+Adapted from Emil Kowalski's public remove-animations (emilkowalski/skills, commit c8a7962).
 See [license](../../../references/emil-kowalski-LICENSE.txt).

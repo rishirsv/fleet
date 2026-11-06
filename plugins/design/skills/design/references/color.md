@@ -83,7 +83,7 @@ page, suppress transitions for the swap.
 | Color tokens set under both `prefers-color-scheme` and a `.dark` class | Pick one switching mechanism and use it throughout |
 | `oklch()` chroma beyond sRGB with no sRGB value declared before it | Declare the sRGB value first, then the vivid one inside `@media (color-gamut: p3)` |
 
-Adapted from Jakub Krehel's public [better-colors](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/better-colors);
+Adapted from Jakub Krehel's public better-colors (jakubkrehel/skills, commit 60bf140);
 the files in [color/](color/) are copied unchanged, except two links to his
 contrast reference, which this plugin does not include.
 See [license](../../../references/jakub-krehel-LICENSE.txt).

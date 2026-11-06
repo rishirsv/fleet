@@ -9,7 +9,7 @@ opinionated defaults and simplified web performance descriptions; profile the
 target platform and follow the motion guidance when choosing an implementation.
 
 The glossary below is copied from Emil Kowalski's public
-[animation-vocabulary](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/animation-vocabulary/SKILL.md).
+animation-vocabulary (emilkowalski/skills, commit 2d22863).
 See [license](../../../references/emil-kowalski-LICENSE.txt).
 
 ## Glossary

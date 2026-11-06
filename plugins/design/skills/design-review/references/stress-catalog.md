@@ -134,6 +134,6 @@ Not data, but checked the same way: flip to the worst case, then change these.
 | `dir="rtl"` | Icons, chevrons, padding, and the order of trailing actions |
 | Touch device | Hover-only actions (the ••• that appears on hover) are unreachable |
 
-Copied from Emil Kowalski's public [break-ui](https://github.com/emilkowalski/skills/tree/c8a79627b59d72d764d6ab6f2c87c09a48169833/skills/break-ui) CATALOG.md;
+Copied from Emil Kowalski's public break-ui (emilkowalski/skills, commit c8a7962) CATALOG.md;
 the only change is the link to the field map. See
 [license](../../../references/emil-kowalski-LICENSE.txt).
