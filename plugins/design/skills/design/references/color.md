@@ -2,29 +2,88 @@
 
 Inspect existing brand colors, semantic roles, surface hierarchy, and themes.
 Preserve their meaning unless changing the system is part of the request.
+Choose colors by role and intended atmosphere, and choose accent strength,
+neutrals, and saturation to fit the brief.
 
-Choose colors by role and intended atmosphere. Choose accent strength, neutrals,
-saturation, and the number of accents to fit the brief.
+Never estimate a color you could compute. Notation, a tinted neutral and a gradient's interpolation space are project choices, not findings. A broken role mapping and an out-of-gamut step are findings. Perceived lightness throughout means OKLCH `L`, from `0` to `1`. Icon color belongs to [Icons](icons.md).
 
-Build each needed color family from its actual uses: choose the main action or
-identity color, the darkest foreground, and the lightest tinted surface in
-context, then add only the intermediate steps the interface needs. Adjust hue,
-saturation, and lightness by eye as well as by measurement; equal numeric steps
-rarely produce equal perceived steps. Name tokens by role when that role is more
-stable than the specific color value.
+## Match the project's color system
+
+Reuse the project's tokens and notation. A consistent hex system beats hex with `oklch()` scattered through it.
+
+For a new system, `oklch()` is the best default, because its numbers behave the way the ramp rules below describe. Everywhere else, a color library produces the same ramp in the project's own notation ([color-formats.md](color/color-formats.md)).
+
+## A system is ramps, not colors
+
+One neutral ramp, one accent ramp and only the status ramps the product actually renders. A `warning` ramp nothing imports is maintenance for zero pixels. A second accent hue earns its place only when two things must be distinguishable at a glance. Otherwise use more steps of the one accent ramp.
+
+## Every step has a job
+
+A ramp is not a gradient to pick from by eye. Each step exists because a role needs it: page background, component hover, border, solid fill, body text. Do not generate a step no role consumes. Both the Tailwind `50`–`950` and Radix `1`–`12` conventions map to those roles ([palette-structure.md](color/palette-structure.md)).
+
+## Name primitives by hue, semantics by role
+
+Primitives name a value (`--blue-600`) and are never applied in a component. Semantic tokens name a job (`--color-text-secondary`), point at a primitive and are the only tier components reference. That seam is what lets a theme repoint colors without touching components ([token-naming.md](color/token-naming.md)).
+
+## Use a token only in its role
+
+Never borrow a token because its value is right today. A separator used as a text color works until borders get lighter, and then the text goes with them. If a role has no token, add the token.
+
+## Hold the hue across the ramp
+
+A ramp holds one hue end to end, peaks in vividness mid-ramp and steps more finely at the light end. Build it with a color library, never by eye ([palette-generation.md](color/palette-generation.md)).
+
+## One color, one meaning
+
+Use a color for one purpose across the whole interface, treating anything within `15°` of OKLCH hue as the same color ([color-usage.md](color/color-usage.md)). Never let color be the only carrier of meaning. Pair it with an icon or a label.
+
+## Fill exactly one action per view
+
+When filled color encodes primary emphasis, one primary action gets it and peers stay neutral. Put the color on the background, not the label. A filled button reads as primary across the room; accent-colored text on a neutral button reads as a link.
+
+Keep an established hierarchy that already signals emphasis another way. Several colored backgrounds are fine when they encode distinct states or categories rather than competing as peers.
+
+## Foregrounds on color and imagery
 
 Choose foregrounds relative to their surface. A generic gray or reduced-opacity
 white can look muddy or disabled on a colored background and can vary over
 imagery. Select a foreground for the actual background with the intended
-prominence and passing contrast in every state.
+prominence.
 
 For text over imagery, test the full range of expected crops and user-provided
 content. Reposition the text or focal crop when possible; otherwise control the
 local background with a scrim, gradient, or image treatment.
 
-Apply changes consistently through the governing token system. Check text,
-controls, focus, selection, and status contrast in their actual contexts and
-themes. Pair color with a shape, icon, or text cue for essential information.
-Paint the document canvas from the same theme state as the app so overscroll
-and short pages match. When a theme switch animates the whole page, suppress
-transitions for the swap.
+## Pick a gradient's interpolation space
+
+The space is a look, not a correctness setting. Default to `in oklab`, and reach for `in oklch` when a two-hue gradient goes gray in the middle ([color-usage.md](color/color-usage.md)).
+
+## Themes
+
+Check text, controls, focus, selection, and status contrast in their actual
+contexts and themes. Paint the document canvas from the same theme state as the
+app so overscroll and short pages match. When a theme switch animates the whole
+page, suppress transitions for the swap.
+
+## Before you finish
+
+| Pattern | Fix |
+| --- | --- |
+| A hex, `rgb(` or `oklch(` literal in a component file where a token exists | Reuse or add the role token, in the project's notation |
+| One `oklch(` value in a codebase otherwise written in hex | Write it in the established notation unless a migration is in scope |
+| `var(--blue-600)` or `bg-blue-600` in a component file | Point a semantic token at the primitive and use that |
+| A semantic name containing a hue or a component, as in `--color-blue-button` or `--color-sidebar-gray` | Rename it for its role: `--color-accent-solid`, `--color-bg-surface` |
+| `--color-primary` and `--color-text-primary` both defined | Rename the brand token `accent` |
+| A `border` or `separator` token inside `color:`, or a `text` token inside `background:` | Add a token for the missing role |
+| `hsl(` ramp values that differ only in lightness | Rebuild with a constant perceived hue, in the project's notation |
+| `50`–`200` stepping as far apart in OKLCH `L` as mid-ramp steps do | Tighten the light end to about `0.04`–`0.05` per step |
+| One chroma or saturation number copied across every hue's ramp | Use the same proportion of each hue's own maximum |
+| A status hue within `15°` of the accent hue | Move it at least `15°` away, or give the destructive action a distinct treatment |
+| Dark tokens equal to the light ramp in reverse step order | Lower the accent's chroma, widen the dark end and remeasure every pair |
+| Color tokens set under both `prefers-color-scheme` and a `.dark` class | Pick one switching mechanism and use it throughout |
+| `oklch()` chroma beyond sRGB with no sRGB value declared before it | Declare the sRGB value first, then the vivid one inside `@media (color-gamut: p3)` |
+
+Adapted from Jakub Krehel's public [better-colors](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/better-colors);
+the files in [color/](color/) are copied unchanged, except two links to his
+contrast reference, which this plugin does not include.
+See [license](../../../references/jakub-krehel-LICENSE.txt).
