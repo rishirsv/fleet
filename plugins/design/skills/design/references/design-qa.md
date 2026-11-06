@@ -48,8 +48,12 @@ Never add a token, a component variant or an arbitrary value to hit a number. As
 ## Compare
 
 Compare the target and implementation at matching dimensions and states. Use
-matching crops and account for device frames and browser controls. Use a shared
-comparison view or detail crops where they make differences easier to judge.
+matching crops and account for device frames and browser controls. Put both in
+one comparison view rather than judging them one after the other, and add
+detail crops where small differences matter. Match pixel density first: scale a
+2x capture to a 1x target, or capture at the target's density, and record both
+sizes and the scale used. A difference caused only by density, browser chrome,
+or a device frame is not a finding.
 
 Cover every applicable rubric category and exercise required controls and
 states. Captures establish appearance; navigation, recovery, keyboard behavior,
@@ -65,7 +69,7 @@ evidence explicitly.
 | Q2 | Typography | Family and fallback, weight, size, line height, tracking, optical balance, wrapping, truncation, and text density. Separate rendering-environment differences from correctable ones; do not infer an exact font from an indistinct capture. |
 | Q3 | Color and surfaces | Palette and token mapping, foreground and background balance, gradients, opacity, state colors, borders, radii, shadows, and elevation. Contrast usability belongs to Q8. |
 | Q4 | Images and icons | Account for every target asset: subject, crop, scale, aspect ratio, sharpness, compression, transparency edges, masks, style, stroke, and optical size. Flag missing assets and approximations. |
-| Q5 | Copy and content | Preserve approved copy, labels, and content structure. Distinguish dynamic data from fixed copy; check standalone meaning, realism, and instructions or invented claims shown in product copy. Text geometry belongs to Q2. |
+| Q5 | Copy and content | Preserve approved copy, labels, and content structure. Distinguish dynamic data from fixed copy; check standalone meaning, realism, and instructions or invented claims shown in product copy. Flag the brief leaking into the product: prompt wording, design notes, or demo and prototype controls shown as product UI. Text geometry belongs to Q2. |
 | Q6 | Required behavior | Navigation, links, buttons, tabs, menus, selections, forms, filters, tooltips, media, and other required actions produce the intended result. Check hover, active, selected, and disabled states, transitions, validation, loading, empty, error, and success behavior, recovery, data preservation, feedback timing, and motion interruption. Add states only where the control needs them. |
 | Q7 | Adaptive layout | At supported sizes, orientations, and content extremes, essential information and controls stay usable with no collisions, unintended overflow, clipping, collapsed regions, or destructive reordering. Use supplied targets where they exist and established adaptation requirements elsewhere. Zoom and text scaling belong to Q8. |
 | Q8 | Accessibility conformance | Contrast, semantics, labels, alt text, reading order, keyboard and focus behavior, target sizes, non-color status cues, reduced motion, timing, text scaling, zoom, and assistive-technology requirements. Name untested requirements; visual similarity cannot establish conformance. |

@@ -51,6 +51,9 @@ appearance; use the brief and product context for behavior it cannot show.
 
 ## Capture a live reference
 
+Recreate only a site the user owns or has permission to copy. When the source
+belongs to someone else, say so once before capturing.
+
 Open the source in the in-app browser or the user's chosen browser. Confirm the
 intended route and state before treating it as evidence; an unexpected login,
 redirect, error, or loading screen is not the target. Try another available
