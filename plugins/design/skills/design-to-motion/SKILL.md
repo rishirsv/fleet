@@ -15,7 +15,7 @@ This skill has three parts. **Part A** ([fidelity](references/fidelity.md)) rebu
 
 Apply to any request to animate a static design: Figma frames, UI cards, dashboards, app screens, marketing heroes, product mockups, and designs placed on a photo background. Preserve the user’s explicit choices, accepted design, and incumbent design system. On a website, read the [context contract](../../references/context-contract.md), [craft floor](../../references/craft-floor.md), and [product motion guidance](../design/references/motion.md). Faithful recreation of an accepted target follows the craft floor’s reference exception; showcase timing does not become a site-wide interaction rule.
 
-For a scripted product walkthrough built as a mock UI, use `$prototype`. Use this skill when faithfully animating an accepted design or exporting its showcase.
+For a scripted product walkthrough built as a mock UI, use `$walkthrough`. Use this skill when faithfully animating an accepted design or exporting its showcase.
 
 **Not for** interaction motion inside a shipping product (hovers, menus, toasts). For that, use Design’s [product motion guidance](../design/references/motion.md). **Companion skill:** `$landing-page-design` for conversion strategy when the animation will live on a landing page.
 

@@ -27,7 +27,7 @@ For anything bigger than a one-line fix:
    references matter; offer [ideation](references/ideation.md) when the
    direction is open.
 2. **While building:** the [craft floor](../../references/craft-floor.md) and
-   [craft references](#choose-the-craft), `$prototype` for faux UI and
+   [craft references](#choose-the-craft), `$walkthrough` for faux UI and
    marketing visuals, and [Motion](references/motion.md) for new motion.
 3. **Before saying done:** [prove the result](#prove-the-result) in the running
    app, including its layout checks for layout changes, `$design-review`'s
@@ -57,7 +57,7 @@ Read only the references the current decision needs.
 | Build a new interface or substantially redesign one | [Direction](references/direction.md), then [Plan and build](references/build.md) |
 | Challenge an open product idea before building | [Test an open product idea](references/build.md#test-an-open-product-idea) |
 | Build or refine a conversion-focused landing page | `$landing-page-design` for offer, audience, structure, and copy; retain this skill's shared craft guidance |
-| Create a scripted product walkthrough or staged UI illustration | `$prototype` for the scene; retain this skill’s product and craft guidance |
+| Create a scripted product walkthrough or staged UI illustration | `$walkthrough` for the scene; retain this skill’s product and craft guidance |
 | Animate an accepted static design or product visual, or export a showcase | `$design-to-motion` for fidelity, choreography, and capture |
 | Refine a settled interface | [Build or refine](references/build.md#build-or-refine); reuse established context |
 | Explore directions or compare variants | [Direction](references/direction.md) and [Ideation](references/ideation.md) |
