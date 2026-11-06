@@ -90,6 +90,7 @@ finding.
 
 ## Result
 
-Report as the skill's report section describes. For readiness, name what blocks
-acceptance. Keep routine criterion accounting out of the report unless
+Report as the skill's report section describes, ending with the
+[severity](../../../references/severity.md) verdict. For readiness, name what
+blocks acceptance. Keep routine criterion accounting out of the report unless
 requested.

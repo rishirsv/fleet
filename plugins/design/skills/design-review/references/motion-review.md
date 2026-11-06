@@ -37,7 +37,8 @@ bottlenecks from guesses and do not transfer web compositor rules to native UI.
 ## Report
 
 - **Focused review:** location, evidence, user impact, specific correction and
-  verification for each finding, then a scoped verdict and coverage gaps.
+  verification for each finding, then a
+  [severity](../../../references/severity.md) verdict and coverage gaps.
 - **Product audit:** inventory the inspected surfaces, group causes, prioritize
   by user impact, and provide implementation-ready plans with paths or
   components, intended behavior, and verification. Do not change source unless

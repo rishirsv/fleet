@@ -74,14 +74,15 @@ the same defect twice.
 
 ## Severity
 
+Use the plugin's [severity](../../../references/severity.md) scale. For fidelity:
+
 | Level | Consequence |
 |---|---|
-| P0 | Core task impossible, severe accessibility failure, or unusable layout |
-| P1 | Major mismatch or usability regression |
-| P2 | Material visual difference, inconsistent behavior, or a layout or refinement defect |
-| P3 | Minor refinement that does not block the declared acceptance scope |
+| HIGH | Core task impossible, unusable layout, major mismatch, or usability regression |
+| MEDIUM | Material visual difference, inconsistent behavior, or a layout or refinement defect |
+| LOW | Minor refinement that does not block the declared acceptance scope |
 
-Classify persistent controls hidden by overflow as P2 or higher. Use the same
+Classify persistent controls hidden by overflow as MEDIUM or higher. Use the same
 severity for differences that materially change major proportions, wrapping,
 density, or first-viewport content.
 
@@ -97,8 +98,8 @@ respecting any user-specified limit. A comparison-only request reports findings
 without entering the loop. One iteration is **compare → fix → capture → compare
 again**:
 
-1. Compare the current implementation with the target and prioritize P0–P2
-   findings.
+1. Compare the current implementation with the target and prioritize HIGH and
+   MEDIUM findings.
 2. Apply the material corrections within scope.
 3. Capture the revised implementation at matching viewports and states, and
    exercise affected behavior.
@@ -113,8 +114,8 @@ request needs no additional reviewer and authorizes no fixes.
 
 Build, lint, deployment, and preview troubleshooting do not count as design
 iterations. Recheck other areas a change could affect. Stop when the requested
-limit (or finish review's default budget) is reached, no actionable P0–P2
-findings remain, or a concrete blocker prevents progress. If the same defect
+limit (or finish review's default budget) is reached, no actionable HIGH or
+MEDIUM findings remain, or a concrete blocker prevents progress. If the same defect
 survives two attempted fixes without new
 evidence, investigate its cause or report why progress is blocked. Do not
 repeat a whole audit for a local repair unless its effects warrant it. A clean
@@ -127,8 +128,8 @@ adaptations, unverified checks, and iterations completed (with any user-specifie
 limit). For each correction, keep the original finding, change made, and post-fix result in
 the task's existing notes or artifact.
 
-Use **passed** when no actionable P0–P2 defect or required evidence gap remains
-in the declared scope; P3 follow-ups may remain. Otherwise use **blocked** and
+Use **passed** when no actionable HIGH or MEDIUM defect or required evidence gap
+remains in the declared scope; LOW follow-ups may remain. Otherwise use **blocked** and
 name what remains, including fixes not authorized in a comparison-only request.
 Reaching the iteration limit does not make unresolved QA pass. A fidelity pass
 does not certify the quality of the source design or untested accessibility and

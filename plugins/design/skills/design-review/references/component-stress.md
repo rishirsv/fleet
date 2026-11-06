@@ -161,7 +161,7 @@ column is almost always it. Truncation and tabular numerals are in
 | Scrolling 1,000 rows stutters | Every row rendered | A lazy list, or pagination, and say which | Virtualize |
 | Content renders raw `<b>`, `&amp;`, or `**text**` | Wrong escaping layer | Escape or parse once, at render; never render user data as markup | Never `dangerouslySetInnerHTML` user data |
 
-Report one row per break, worst first. Severity: **Broken** (content unreadable, action unreachable, wrong data shown), **Ugly** (readable but visibly wrong: squished avatar, wrapped badge), **Fragile** (fine now, one realistic step from breaking: no limit, no fallback). Then list the breaks with more than one right answer (truncate vs wrap for a field, what an empty role should show, whether a 1,000-row list paginates or virtualizes), one line each with a recommendation, and the worst cases the component already handles.
+Report one row per break, worst first, rated with [severity](../../../references/severity.md): `HIGH` when content is unreadable, an action unreachable or wrong data shown; `MEDIUM` when it is readable but visibly wrong (squished avatar, wrapped badge); `LOW` when it is fine now but one realistic step from breaking (no limit, no fallback). Then list the breaks with more than one right answer (truncate vs wrap for a field, what an empty role should show, whether a 1,000-row list paginates or virtualizes), one line each with a recommendation, and the worst cases the component already handles.
 
 A test-only request reports findings. When fixes are also requested, correct the
 component, then rerun the failing cases and the other cases the correction could

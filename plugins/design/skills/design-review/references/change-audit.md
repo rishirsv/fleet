@@ -90,7 +90,9 @@ sibling surfaces that must expose the same action. Report missing states only
 where the component or task requires them.
 
 Return the resolved scope, affected surfaces, classified findings, and
-uninspected coverage.
+uninspected coverage. The [severity](../../../references/severity.md) cap and
+verdict cover `Introduced` and `Regression` findings only, so a change whose only
+findings are `Pre-existing` is an `Approve`.
 
 Adapted from Jakub Krehel's public interface-review (jakubkrehel/skills, commit 60bf140).
 See [license](../../../references/jakub-krehel-LICENSE.txt).

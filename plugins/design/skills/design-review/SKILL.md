@@ -63,8 +63,9 @@ For a selected workflow, use its Output structure by default,
 marking unsupported fields unknown. Otherwise lead with the overall assessment
 and highest-impact changes. Each finding
 gives its location or journey step, evidence, user impact, proposed correction,
-and the verification it needs. Prioritize by consequence; structural and
-behavioral problems often matter more than cosmetic ones. Quote copy and name
+and the verification it needs. Rate each finding and end with a verdict using
+[severity](../../references/severity.md); structural and behavioral problems
+often matter more than cosmetic ones. Quote copy and name
 elements: "Four equally prominent actions obscure where to start" gives a
 correction a target, where "improve hierarchy" does not. Distinguish observed
 effects from hypotheses about users, and name strengths a correction could
