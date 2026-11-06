@@ -22,9 +22,29 @@ hard constraints and distinguish missing evidence from freedom to invent.
 
 For an established product, vary structure, emphasis, and interaction within its
 identity unless a new style is requested. For broad exploration, vary both
-concept and visual system. Give each direction a descriptive name and briefly
-explain its main idea. Make differences that change the experience; a change in
-accent color alone is insufficient.
+concept and visual system.
+
+Each variant is a different answer to the same brief, not a different tint.
+Pick **one primary axis** and give each variant a different position on it:
+
+| Axis | Owner | What varies |
+| --- | --- | --- |
+| Structure | [Layout](layout.md) | Grouping, order, column count, what collapses |
+| Density | [Layout](layout.md) | Spacing scale, how much fits |
+| Emphasis | [Color](color.md) | Where filled color goes, what recedes |
+| Type | [Typography](typography.md) | Scale steps, weight contrast, measure |
+| Voice | [UX copy](../../../references/ux-copy.md) | Labels, tone, how much copy |
+
+Secondary choices follow from the axis rather than varying on their own. A dense
+variant may need a smaller type step, and that is coherence, not a second axis.
+Write the set down before building: a name that says what the direction is
+(`Quiet`, `Editorial`, `Dense`, never `Option A`) and its position on the axis.
+The set is ready when no two variants share a position.
+
+Every variant clears the same floor: the [craft floor](../../../references/craft-floor.md)
+and the escalation triggers in [severity](../../../references/severity.md). The
+floor is not an axis and never trades against one. Where a direction can only
+work by breaking it, say so and drop the direction.
 
 Default to three variants unless the user specifies a count or the question
 needs a smaller comparison. Keep subject, core content, task, and viewport
@@ -115,8 +135,9 @@ the playground and selections reviewable without shipping a choice.
 
 ## Compare and continue
 
-Show the variants with a short comparison of their defining choice, benefit, and
-trade-off. Recommend the direction that best meets the brief and explain why.
+Show the variants with a short comparison of their position on the axis, when
+each is right, and what it costs. Say which width you judged at; the answer can
+change between a phone and a wide window. Recommend the direction that best meets the brief and explain why.
 Judge each option against the brief instead of a single aesthetic preference.
 
 For ideation-only requests, stop with the reviewable options and ask which to
@@ -134,3 +155,5 @@ Continue from the selected prototype source instead of rebuilding it. For a
 selected image, follow the recreation workflow. Once an accepted visual target
 exists, design QA governs fidelity and correction iterations; ideation needs no
 fidelity pass before a target is chosen.
+
+The variant axis and shared floor are adapted from Jakub Krehel's public variant (jakubkrehel/skills, commit 60bf140). See [license](../../../references/jakub-krehel-LICENSE.txt).
