@@ -17,13 +17,13 @@ create separate files only when the user requests them.
 
 ## Choose the workflow
 
-- Use **Product rethink** for a v2 vision, a rethink of an existing experience,
+- Use **Product design** for a v2 vision, a rethink of an existing experience,
   or a requested phased discovery process.
 - When the user brings approved intent and asks for a spec, go directly to
   [Spec handoff](references/requirements-and-design.md#spec-handoff). Carry
   forward prior decisions and surface any new conflict that affects the spec.
 - For a bounded idea or decision, use the interview below. A request for a
-  spec alone does not trigger Product rethink. When the interview settles the
+  spec alone does not trigger Product design. When the interview settles the
   intent and the user has accepted it, use Spec handoff if requested.
 
 ## Decision interview
@@ -57,7 +57,7 @@ they do not block, update the intent, and continue only an authorized next step.
 If requested, use [Breakdown](references/breakdown.md) for independently checkable slices with
 dependencies and acceptance criteria; otherwise stop at the agreed outcome.
 
-## Product rethink
+## Product design
 
 Read [Requirements and design](references/requirements-and-design.md). Run the
 phases in order and label each by number and name. Scale the length of rounds,

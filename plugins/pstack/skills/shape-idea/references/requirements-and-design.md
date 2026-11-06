@@ -48,14 +48,14 @@ conflicts with a constraint, state the impact and who needs to decide. Carry
 unresolved questions into the spec with what each blocks.
 
 Save the spec alongside the intent or at the user's requested location. In
-Product rethink, cover three to five hero flows from trigger to outcome, with
+Product design, cover three to five hero flows from trigger to outcome, with
 differences from today. Give each user story a flow, a priority, and checkable
 acceptance criteria. Include dependencies, consequential edge states, and
 how to verify the outcome on the relevant surface. Scale the spec to the scope
 when used on its own. Flag evidence still needed and preserve the distinction
 between an approved direction and a measured result.
 
-For the Product rethink handoff, summarize the problem, vision, hero flows,
+For the Product design handoff, summarize the problem, vision, hero flows,
 success measures, top risks, and next decision in one page. Include a short
 implementation prompt that points to both files and names the verification
 expected from the build. Present the spec for owner review.
