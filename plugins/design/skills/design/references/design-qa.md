@@ -7,6 +7,7 @@ design itself should change, use `$design-review`.
 ## Contents
 
 - [Inputs](#inputs)
+- [Map the design onto the project](#map-the-design-onto-the-project)
 - [Compare](#compare)
 - [Rubric](#rubric)
 - [Classify findings](#classify-findings)
@@ -28,6 +29,21 @@ Continue checks supported by available evidence without inventing the missing
 target. For a comparison request, report findings without changing the
 implementation. For a build or correction request, make corrections within the
 requested scope.
+
+## Map the design onto the project
+
+Before building from a design file, map every design value to what exists:
+
+| In the design | In code |
+| --- | --- |
+| A bound variable or style | The token with the same name or the same value |
+| A raw value that equals a token | That token |
+| A raw value with no token | The nearest existing token, listed in the report as rounded |
+| A component instance | The project's component of that name, with the variant the design shows |
+| A component instance with no project equivalent | Plain markup in place, listed as a deviation, and ask whether a component should exist |
+| A one-off group of layers | Plain markup in place, not a new component |
+
+Never add a token, a component variant or an arbitrary value to hit a number. Ask which way to go when rounding would visibly change the design: more than `2pt` on spacing or size, or a color landing on a different step. Build the frames, breakpoints and states the file draws; a state it does not draw is not yours to design, so leave the component's default and list it as missing. A diff wider than the design is the most common way this goes wrong.
 
 ## Compare
 
@@ -123,6 +139,16 @@ initial comparison needs no correction cycle.
 
 ## Result
 
+Report each compared element as matching, rounded to a token, or deviating, then
+list, one line each, what is unwired (rendering from fixtures until the data
+exists), the states the design does not draw, and where the design breaks a
+rule, with the reference that owns it:
+
+| Element | Design | Built | Status |
+| --- | --- | --- | --- |
+| Card padding | 20 | `spacing-5` | Matches |
+| Title size | 15 | 14, `body-sm` | Rounded to token |
+
 Record source and implementation evidence, comparison scope, findings, agreed
 adaptations, unverified checks, and iterations completed (with any user-specified
 limit). For each correction, keep the original finding, change made, and post-fix result in
@@ -134,3 +160,5 @@ name what remains, including fixes not authorized in a comparison-only request.
 Reaching the iteration limit does not make unresolved QA pass. A fidelity pass
 does not certify the quality of the source design or untested accessibility and
 behavior.
+
+Design-to-project mapping adapted from Jakub Krehel's public build-design (jakubkrehel/skills, commit 60bf140). See [license](../../../references/jakub-krehel-LICENSE.txt).

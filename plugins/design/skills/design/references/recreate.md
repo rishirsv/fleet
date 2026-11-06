@@ -26,8 +26,18 @@ browser-openable local HTML with CSS and JavaScript.
   reference viewport and supported sizes. Infer the platform from the task and
   project; the screenshot's aspect ratio does not decide it.
 
-Use this workflow when the reference is the target to reproduce. For inspiration
-or redesign requests, preserve only the aspects the user selected.
+Use this workflow when the reference is the target to reproduce. "One to one",
+"exact" or "like this" means every value comes from the reference, and a
+guessed value is a finding. "Inspired by" means carry the concept and use the
+project's own tokens; for inspiration or redesign requests, preserve only the
+aspects the user selected. Rebuild the part the user named and nothing around
+it, and carry the idea, not the brand: another product's logo, names and colors
+stay behind unless the user asked for them.
+
+Open the reference itself, never a memory of it. When the reference is a native
+or desktop app, inspect that app, not its marketing site. Inventory every state
+it has (hover, pressed, focus, open, empty, loading, error, selected, disabled)
+and its transitions; rebuilding the resting state alone is a finding.
 
 ## Resolve an image or mockup
 
@@ -200,3 +210,5 @@ remaining differences or unverified behavior. If the iteration limit leaves QA
 blocked, deliver the reviewable prototype with that status. Keep the preview
 server running while the user needs it. Local delivery is sufficient;
 publishing is a separate request.
+
+Reference-matching rules adapted from Raphael Salaja's public match (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

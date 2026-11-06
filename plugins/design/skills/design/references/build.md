@@ -34,6 +34,29 @@ generic defaults, and note what changed. Share the plan and any assumption that
 could change the design in a short note, then build from the revised plan
 without waiting for approval; the user can correct the direction as you work.
 
+## Build with what exists
+
+Build the ask and nothing beside it. Add no sections, badges, counts, captions,
+footers, icons inside buttons or sounds the user did not request, and no toast
+or dialog for an action whose result is already on screen. Use the native
+element before a custom one and a fixed value before a setting nobody will
+change. A cut the user has not approved is a proposal, not an edit.
+
+Build in this order: the project's own components, icons and tokens first, then
+a maintained library or a platform feature, then custom code. Search the shared
+components before writing UI and name what you found; a new component, style or
+icon that duplicates one the project has is a finding. Use a component's
+variants rather than restyling it locally, and keep one style per kind of thing:
+one menu, one table, one dialog shell. When a fix applies to every instance,
+make it inside the shared component, then find every sibling that patched the
+same problem locally, remove those patches and list the files. Read a
+component's documentation and use its current API before relying on it; check
+that a library is maintained before installing it, and port the pattern when it
+isn't.
+
+When the user says remove, delete the code with its styles, variables, routes
+and menu entries rather than deferring it.
+
 ## Build or refine
 
 For a focused refinement, keep the settled direction and change only what the
@@ -64,3 +87,5 @@ for the final independent comparison and verified corrections, including when
 the builder's own check is clean. Keep the handoff proportional to the change;
 do not reopen settled design decisions or audit unrelated screens. Report open
 findings and evidence gaps at any stop; stopping does not establish readiness.
+
+Build-with-what-exists rules adapted from Raphael Salaja's public restraint and reuse (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

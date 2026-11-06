@@ -27,7 +27,8 @@ unless another treatment improves the actual task.
 Match control type to the choice: navigation changes location, buttons perform
 actions, selections change values. Give controls persistent, meaningful labels.
 By default, give each region where the user makes a choice one visually
-dominant action. Style secondary and destructive actions according to their
+dominant action, and put secondary actions behind a menu once there are more
+than three. Style secondary and destructive actions according to their
 role. State the action and its object when context alone would not make the
 outcome clear. Carry essential meaning in visible text or shape so it works
 without hover, color, or an unexplained icon.
