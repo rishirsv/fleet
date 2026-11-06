@@ -1,9 +1,3 @@
----
-name: design-handoff
-description: Generate developer handoff specs from a design. Use when a design is ready for engineering and needs a spec sheet covering layout, design tokens, component props, interaction states, responsive breakpoints, edge cases, and animation details.
-argument-hint: "<Figma URL or design description>"
----
-
 # $design handoff
 
 Read [Workflow guidance](workflows-guide.md) for evidence, output formats, tool availability, and authorization before applying this workflow.
