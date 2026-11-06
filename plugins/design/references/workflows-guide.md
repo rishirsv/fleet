@@ -1,7 +1,7 @@
 # Workflow guidance
 
 Read the full selected workflow when doing that job. Its templates and domain
-guidance are available through the four active skills; reference files are not
+guidance are available through the plugin's skills; reference files are not
 separately loaded skills and do not install connector configurations.
 
 | Job | Full reference | Skill |
