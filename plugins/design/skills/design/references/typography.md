@@ -25,7 +25,7 @@ make values easy to compare. Tune these uses separately.
 
 Rarely use more than three fonts; marketing pages can carry more than apps. Weight and size carry hierarchy, so each extra one dilutes it. Pair for contrast. A serif headline over a sans body reads as deliberate, two near-identical sans-serifs read as a mistake.
 
-Below `18pt`, use weight `400` (regular) or heavier. Weights `100`–`300` belong at `28pt` and up, checked against the background even there. Categories, `Display` and `Text` cuts and fallbacks are in [choosing-fonts.md](typography/choosing-fonts.md). Monospace inside running text drops to `0.9×` the surrounding size, so inline code doesn't tower over its sentence.
+Below `18pt`, use weight `400` (regular) or heavier. Weights `100`–`300` belong at `28pt` and up, checked against the background even there. Monospace inside running text drops to `0.9×` the surrounding size, so inline code doesn't tower over its sentence.
 
 ## Ship the faces the design uses
 
@@ -33,26 +33,26 @@ When a family lacks a weight or style, the renderer synthesizes one and distorts
 
 ## Typed font settings over raw tags
 
-Set weight, numeric style and optical size through the platform's typed font settings, not raw OpenType tags; typed settings keep working when a fallback font renders. Leave optical sizing automatic unless the design deliberately decouples it from size. Reserve raw tags for custom axes and features with no typed setting, such as a stylistic set. Axes and features are in [variable-fonts-and-opentype.md](typography/variable-fonts-and-opentype.md).
+Set weight, numeric style and optical size through the platform's typed font settings, not raw OpenType tags; typed settings keep working when a fallback font renders. Leave optical sizing automatic unless the design deliberately decouples it from size. Reserve raw tags for custom axes and features with no typed setting, such as a stylistic set.
 
 ## Use a type scale with semantic names
 
 Define a small set of sizes and deviate from it as little as possible. Pair each size with its line-height and weight, so a role is one decision instead of three. Prefer the platform's text styles where they exist, so text follows the reader's size setting.
 
-Solo, default names are fine when the usage rules are clear. On a team, name sizes by use (`body-sm`) so the rules survive other people. A [role-based starting scale](typography/spacing-and-sizing.md#type-scale) is in the reference.
+Solo, default names are fine when the usage rules are clear. On a team, name sizes by use (`body-sm`) so the rules survive other people.
 
 Fluid display sizing can support expansive layouts when its minimum and maximum
 preserve hierarchy.
 
 ## Heading sizes descend with level
 
-Map heading levels to descending steps of the scale, so a subordinate heading never overpowers its parent. Deep levels may share a size where the scale runs out of steps, as long as weight or letter-spacing keeps them distinct. A heading is never smaller than body text unless it is a deliberate overline. See the [level mapping](typography/spacing-and-sizing.md#heading-hierarchy).
+Map heading levels to descending steps of the scale, so a subordinate heading never overpowers its parent. Deep levels may share a size where the scale runs out of steps, as long as weight or letter-spacing keeps them distinct. A heading is never smaller than body text unless it is a deliberate overline.
 
 ## Line-height by role
 
 Display text `1.1`, headings `1.2`–`1.3`, body copy `1.5`–`1.6`, as multiples of the font size. Express line-height relative to size so it scales when the text does; a fixed height does not.
 
-Tight line-height is for short text. Anything that wraps to three or more lines needs at least `1.4`, even in a height-constrained row. See the [card description example](typography/spacing-and-sizing.md#line-height-for-wrapping-text).
+Tight line-height is for short text. Anything that wraps to three or more lines needs at least `1.4`, even in a height-constrained row.
 
 Use paragraph spacing or indentation, and use both only for a reason.
 
@@ -64,7 +64,7 @@ Kerning is built into the font and on by default. Turning it off is never a fix.
 
 ## Cap the measure
 
-Cap long-form text at 60–75 characters per line. Any unit works, as long as a cap exists and the line length lands in range, including on wide windows and iPad. See [unit choices](typography/wrapping-and-punctuation.md#measure-line-length).
+Cap long-form text at 60–75 characters per line. Any unit works, as long as a cap exists and the line length lands in range, including on wide windows and iPad.
 
 ## Wrap deliberately
 
@@ -98,7 +98,7 @@ Every long string forces this choice. Make it per field, not globally:
 
 Store text in natural case and apply case in styling, so a redesign never means rewriting copy.
 
-Rendered text uses typographic characters, never their keyboard stand-ins. Curly quotes, en dashes, the ellipsis character and non-breaking spaces are in the [substitution table](typography/wrapping-and-punctuation.md#smart-punctuation). Code keeps straight quotes.
+Rendered text uses typographic characters, never their keyboard stand-ins: curly quotes, en dashes, the ellipsis character and non-breaking spaces. Code keeps straight quotes.
 
 ## Underlines from the font
 
@@ -116,7 +116,7 @@ UI text can go smaller. Start inputs and menus at `14pt` and captions at `13pt`,
 
 ## Language and direction
 
-Mark the language of content so the system picks the right quotes, hyphenation and pronunciation. Set direction for the interface and wherever it changes inside content. Isolate a mixed-direction value such as a name, number or URL, and never reorder digits by hand. How long paragraphs and numbers behave is in [wrapping-and-punctuation.md](typography/wrapping-and-punctuation.md#internationalization).
+Mark the language of content so the system picks the right quotes, hyphenation and pronunciation. Set direction for the interface and wherever it changes inside content. Isolate a mixed-direction value such as a name, number or URL, and never reorder digits by hand.
 
 ## Trim text boxes in tight containers
 
@@ -134,16 +134,15 @@ Disable selection only on a draggable or gesture-driven surface where accidental
 
 ## On the web
 
-- Use CSS properties over raw tags: `font-weight: 650`, not `font-variation-settings: "wght" 650`; `font-variant-numeric: tabular-nums`, not `font-feature-settings: "tnum" 1`. Leave `font-optical-sizing: auto`. [variable-fonts-and-opentype.md](typography/variable-fonts-and-opentype.md#disable-synthesis-narrowly) shows narrow synthesis control.
+- Use CSS properties over raw tags: `font-weight: 650`, not `font-variation-settings: "wght" 650`; `font-variant-numeric: tabular-nums`, not `font-feature-settings: "tnum" 1`. Leave `font-optical-sizing: auto`.
 - Wrapping: `text-wrap: balance` (Chromium ignores it past six lines), `text-wrap: pretty`, `overflow-wrap: break-word` (`anywhere` inside a flex or grid row, the only value that also lets the box shrink), `white-space: nowrap`, `text-align: start`.
 - Truncation: `overflow: hidden`, `text-overflow: ellipsis` and `white-space: nowrap` for one line; `display: -webkit-box`, `-webkit-box-orient: vertical`, `-webkit-line-clamp` and `overflow: hidden` for several.
 - Case with `text-transform`; underlines with `text-underline-position: from-font` and `text-decoration-thickness: from-font`.
 - Language and direction with `lang`, `dir` and `<bdi>`.
 - iOS Safari zooms the whole page when an input's text is smaller than `16px`. Either size the input up on mobile, which changes how it looks on small screens, or keep `font-size: 16px` and scale it to the intended size, which is identical at every viewport but more code. Choose the one the design needs and name the other.
 - Apply `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` once on the root, never per component.
-- `text-box: trim-both cap alphabetic` trims text boxes as a progressive enhancement ([support](typography/spacing-and-sizing.md#text-trimming-with-text-box)).
+- `text-box: trim-both cap alphabetic` trims text boxes as a progressive enhancement.
 - `::selection` for selection styling.
-- The files in [typography/](typography/) are web recipes.
 
 | Web pattern | Fix |
 | --- | --- |
@@ -167,8 +166,7 @@ Disable selection only on a draggable or gesture-driven surface where accidental
 | Mixed-direction value such as a name, number or URL without `<bdi>` or `dir` | Wrap it in `<bdi>` |
 | `user-select: none` or `select-none` on a layout root or text container | Remove it; keep it only on a drag or gesture surface |
 
-Adapted from Jakub Krehel's public better-typography (jakubkrehel/skills, commit 60bf140);
-the files in [typography/](typography/) are copied unchanged.
+Adapted from Jakub Krehel's public better-typography (jakubkrehel/skills, commit 60bf140).
 The truncate, wrap or clamp choice is from Emil Kowalski's public
 break-ui (emilkowalski/skills, commit c8a7962) ([license](../../../references/emil-kowalski-LICENSE.txt)).
 See [license](../../../references/jakub-krehel-LICENSE.txt).

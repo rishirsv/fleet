@@ -19,7 +19,7 @@ One neutral ramp, one accent ramp and only the status ramps the product actually
 
 ## Every step has a job
 
-A ramp is not a gradient to pick from by eye. Each step exists because a role needs it: window background, hovered or pressed component, border, solid fill, body text. Do not generate a step no role consumes. Both the Tailwind `50`–`950` and Radix `1`–`12` conventions map to those roles ([palette-structure.md](color/palette-structure.md)).
+A ramp is not a gradient to pick from by eye. Each step exists because a role needs it: window background, hovered or pressed component, border, solid fill, body text. Do not generate a step no role consumes. Both the Tailwind `50`–`950` and Radix `1`–`12` conventions map to those roles.
 
 ## Name primitives by hue, semantics by role
 
@@ -31,11 +31,11 @@ Never borrow a token because its value is right today. A separator used as a tex
 
 ## Hold the hue across the ramp
 
-A ramp holds one hue end to end, peaks in vividness mid-ramp and steps more finely at the light end. Build it with a color library, never by eye ([palette-generation.md](color/palette-generation.md)).
+A ramp holds one hue end to end, peaks in vividness mid-ramp and steps more finely at the light end. Build it with a color library, never by eye.
 
 ## One color, one meaning
 
-Use a color for one purpose across the whole interface, treating anything within `15°` of OKLCH hue as the same color ([color-usage.md](color/color-usage.md)). Never let color be the only carrier of meaning. Pair it with an icon or a label.
+Use a color for one purpose across the whole interface, treating anything within `15°` of OKLCH hue as the same color. Never let color be the only carrier of meaning. Pair it with an icon or a label.
 
 ## Fill exactly one action per view
 
@@ -56,7 +56,7 @@ local background with a scrim, gradient, or image treatment.
 
 ## Pick a gradient's interpolation space
 
-The space is a look, not a correctness setting. Where the platform lets you choose, default to a perceptual space (OKLab), and reach for OKLCH when a two-hue gradient goes gray in the middle; on the web, `in oklab` and `in oklch` ([color-usage.md](color/color-usage.md)).
+The space is a look, not a correctness setting. Where the platform lets you choose, default to a perceptual space (OKLab), and reach for OKLCH when a two-hue gradient goes gray in the middle; on the web, `in oklab` and `in oklch`.
 
 ## Themes
 
@@ -68,8 +68,6 @@ the root and one `theme-color` per scheme). When a theme switch animates the who
 page, suppress transitions for the swap.
 
 ## Web patterns
-
-The files in [color/](color/) are web recipes.
 
 | Pattern | Fix |
 | --- | --- |
@@ -87,7 +85,5 @@ The files in [color/](color/) are web recipes.
 | Color tokens set under both `prefers-color-scheme` and a `.dark` class | Pick one switching mechanism and use it throughout |
 | `oklch()` chroma beyond sRGB with no sRGB value declared before it | Declare the sRGB value first, then the vivid one inside `@media (color-gamut: p3)` |
 
-Adapted from Jakub Krehel's public better-colors (jakubkrehel/skills, commit 60bf140);
-the files in [color/](color/) are copied unchanged, except links to his
-contrast, color-format and token-naming references, which this plugin does not include.
+Adapted from Jakub Krehel's public better-colors (jakubkrehel/skills, commit 60bf140).
 See [license](../../../references/jakub-krehel-LICENSE.txt).
