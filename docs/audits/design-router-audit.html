@@ -1,0 +1,684 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design plugin vs. the Playful Design router and Jakub Krehel: audit</title>
+<style>
+:root{
+  --bg:#fbfaf8; --surface:#ffffff; --sunk:#f3f1ed; --line:#e4e0d8; --line-strong:#cfc9bd;
+  --ink:#1d1b18; --ink-2:#5b564d; --ink-3:#8a8478;
+  --accent:#e94b35; --accent-ink:#b8321f; --accent-wash:#fdece8;
+  --covered:#2f8a57; --covered-wash:#e3f3ea;
+  --partial:#c98a12; --partial-wash:#fbf0d9;
+  --missing:#d2402c; --missing-wash:#fbe5e1;
+  --elsewhere:#4f6fb5; --elsewhere-wash:#e5ebf7;
+  --skip:#9a948a; --skip-wash:#eeece8;
+  --web:#3d7fb8; --swift:#e0692b; --agn:#6a5fb3;
+  --radius:10px; --read:68ch;
+  --sans:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  color-scheme:light dark;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#151413; --surface:#1d1c1a; --sunk:#232120; --line:#33302c; --line-strong:#47433d;
+  --ink:#f1eee8; --ink-2:#b9b3a8; --ink-3:#8a8478;
+  --accent:#f26a55; --accent-ink:#ff8b78; --accent-wash:#3a201b;
+  --covered:#5cc28a; --covered-wash:#1c3326;
+  --partial:#e3ab3e; --partial-wash:#3a2f17;
+  --missing:#f0705c; --missing-wash:#3d211c;
+  --elsewhere:#86a3e6; --elsewhere-wash:#1f2840;
+  --skip:#8e887e; --skip-wash:#2a2826;
+  --web:#6fb0ea; --swift:#f39055; --agn:#a69bf0;
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased;padding-bottom:96px}
+a{color:var(--accent-ink)}
+code,.mono{font-family:var(--mono);font-size:.86em}
+h1,h2,h3,h4{text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(28px,4vw,42px);letter-spacing:-.02em;font-weight:700}
+h2{font-size:24px;letter-spacing:-.01em;font-weight:680;margin-bottom:6px}
+h3{font-size:17px;font-weight:650}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+section{padding:44px 0;border-top:1px solid var(--line)}
+.lede{color:var(--ink-2);max-width:var(--read);margin-top:6px}
+nav.toc{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+nav.toc .wrap{display:flex;gap:4px;overflow-x:auto;padding-top:8px;padding-bottom:8px}
+nav.toc a{color:var(--ink-2);text-decoration:none;font-size:13px;padding:5px 10px;border-radius:999px;white-space:nowrap}
+nav.toc a:hover,nav.toc a:focus-visible{background:var(--sunk);color:var(--ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+header{padding:48px 0 28px}
+.verdict{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:22px}
+.verdict div{padding:14px 16px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line)}
+.verdict b{display:block;font-size:14px;margin-bottom:2px}
+.verdict span{color:var(--ink-2);font-size:13.5px}
+
+/* strip */
+.strip{display:flex;gap:3px;margin-top:26px;flex-wrap:wrap}
+.strip button{all:unset;cursor:pointer;width:22px;height:34px;border-radius:4px;position:relative}
+.strip button:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.strip .gap{width:10px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:12px;font-size:13px;color:var(--ink-2)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+.s-covered{background:var(--covered)} .s-partial{background:var(--partial)} .s-missing{background:var(--missing)} .s-elsewhere{background:var(--elsewhere)} .s-skip{background:var(--skip)}
+.pri.done{background:var(--covered);color:#fff}
+.tally{display:flex;gap:18px;margin-top:6px;font-variant-numeric:tabular-nums;font-size:13px;color:var(--ink-2)}
+.tally b{color:var(--ink);font-size:20px;margin-right:4px}
+
+/* map */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 14px}
+.chip{all:unset;cursor:pointer;font-size:13px;padding:5px 11px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink-2)}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:22px;align-items:start}
+@media (max-width:920px){.mapgrid{grid-template-columns:1fr}}
+.areas{display:grid;gap:18px}
+.area h4{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:8px;font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.tile{all:unset;cursor:pointer;display:flex;flex-direction:column;gap:6px;padding:10px 11px 9px;border-radius:8px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--c);min-width:0}
+.tile:hover{border-color:var(--line-strong);border-left-color:var(--c)}
+.tile[aria-current="true"]{box-shadow:0 0 0 2px var(--ink);}
+.tile:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tile .n{font-family:var(--mono);font-size:12.5px;font-weight:600;overflow-wrap:anywhere}
+.tile .m{display:flex;gap:5px;flex-wrap:wrap;font-size:11px;color:var(--ink-3)}
+.tile.dim{opacity:.22}
+.pf{font-size:10.5px;font-weight:600;padding:1px 6px;border-radius:999px;border:1px solid currentColor;line-height:1.5}
+.pf-agn{color:var(--agn)} .pf-web{color:var(--web)} .pf-swift{color:var(--swift)} .pf-mixed{color:var(--ink-3)}
+.detail{position:sticky;top:60px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 18px 16px;max-height:calc(100vh - 80px);overflow:auto}
+.detail .k{font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);font-weight:600;margin:14px 0 4px}
+.detail ul{margin:0;padding-left:18px}
+.detail li{margin:3px 0}
+.status{display:inline-block;font-size:12px;font-weight:650;padding:2px 9px;border-radius:999px}
+.st-covered{background:var(--covered-wash);color:var(--covered)} .st-partial{background:var(--partial-wash);color:var(--partial)} .st-missing{background:var(--missing-wash);color:var(--missing)} .st-elsewhere{background:var(--elsewhere-wash);color:var(--elsewhere)} .st-skip{background:var(--skip-wash);color:var(--skip)}
+blockquote{margin:10px 0 0;padding:8px 12px;border-left:3px solid var(--accent);background:var(--accent-wash);border-radius:0 6px 6px 0;font-size:14px}
+blockquote cite{display:block;font-style:normal;color:var(--ink-3);font-size:12px;margin-top:3px}
+
+/* fleet skills */
+.skills{display:grid;gap:14px}
+.skill{display:grid;grid-template-columns:220px minmax(0,1fr) minmax(0,1fr);gap:20px;padding:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+@media (max-width:860px){.skill{grid-template-columns:1fr}}
+.skill .id{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--accent-ink)}
+.skill .sz{font-size:12.5px;color:var(--ink-3);margin-top:4px;font-variant-numeric:tabular-nums}
+.skill h5{margin:0 0 6px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.skill ul{margin:0;padding-left:18px}
+.skill li{margin:4px 0}
+.skill .gaps li::marker{color:var(--missing)}
+.feeds{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.feeds button{all:unset;cursor:pointer;font-family:var(--mono);font-size:11px;padding:1px 6px;border-radius:4px;background:var(--sunk);color:var(--ink-2)}
+.feeds button:hover,.feeds button:focus-visible{background:var(--ink);color:var(--bg)}
+
+/* size chart */
+.chart{margin-top:18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px}
+.bar{display:grid;grid-template-columns:150px minmax(0,1fr) 54px;gap:10px;align-items:center;margin:6px 0;font-size:13px}
+.bar .t{height:16px;border-radius:3px;background:var(--sunk);position:relative;overflow:hidden}
+.bar .t span{position:absolute;inset:0 auto 0 0;background:var(--ink-3);border-radius:3px}
+.bar .t span.over{background:var(--missing)}
+.bar .v{font-variant-numeric:tabular-nums;text-align:right;color:var(--ink-2)}
+.bar .nm{font-family:var(--mono);font-size:12.5px}
+.chart .mark{position:relative;height:0}
+.axisnote{font-size:12.5px;color:var(--ink-3);margin-top:10px}
+
+/* compare */
+.cmp{display:grid;gap:18px}
+.pair{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.pair header{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline}
+.pair header p{color:var(--ink-2);font-size:13.5px;max-width:70ch}
+.cols{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:860px){.cols{grid-template-columns:1fr}}
+.cols>div{padding:14px 18px;min-width:0}
+.cols>div+div{border-left:1px solid var(--line)}
+@media (max-width:860px){.cols>div+div{border-left:0;border-top:1px solid var(--line)}}
+.src{font-size:11.5px;letter-spacing:.05em;text-transform:uppercase;font-weight:650;color:var(--ink-3);margin-bottom:8px}
+.src code{text-transform:none;letter-spacing:0}
+.txt{font-size:13.5px;line-height:1.55;color:var(--ink);white-space:pre-wrap;font-family:var(--sans)}
+mark{background:var(--partial-wash);color:inherit;border-bottom:2px solid var(--partial);padding:0 1px}
+.txt.empty{color:var(--ink-3);font-style:italic}
+.tbl{width:100%;border-collapse:collapse;font-size:12.5px}
+.tbl td,.tbl th{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left;vertical-align:top}
+.tbl th{color:var(--ink-3);font-weight:600}
+.tbl code{font-size:12px}
+.loss{padding:10px 18px;background:var(--sunk);font-size:13px;color:var(--ink-2);border-top:1px solid var(--line)}
+.loss b{color:var(--ink)}
+
+/* landing grid */
+.lanes{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface)}
+.lanes table{border-collapse:collapse;width:100%;min-width:820px}
+.lanes th,.lanes td{border-bottom:1px solid var(--line);padding:10px 12px;vertical-align:top;text-align:left}
+.lanes thead th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);background:var(--sunk);position:sticky;top:0}
+.lanes thead th.agn{color:var(--agn)} .lanes thead th.web{color:var(--web)} .lanes thead th.swift{color:var(--swift)}
+.lanes td.file{font-family:var(--mono);font-size:12.5px;white-space:nowrap;color:var(--ink-2)}
+.lanes td.file b{color:var(--ink);font-weight:600}
+.lanes .new{font-size:10.5px;font-family:var(--sans);font-weight:700;color:var(--accent-ink);margin-left:6px;letter-spacing:.04em}
+.fk{all:unset;cursor:pointer;display:inline-block;font-size:12px;padding:3px 8px;margin:2px 3px 2px 0;border-radius:6px;border:1px solid var(--line-strong);background:var(--bg)}
+.fk:hover,.fk:focus-visible{border-color:var(--ink)}
+.fk.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+
+/* forks */
+.forktools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0}
+.forks{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.fork{position:relative;display:flex;flex-direction:column;gap:8px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius)}
+.fork.on{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.fork .top{display:flex;gap:10px;align-items:flex-start}
+.fork input{width:18px;height:18px;margin:2px 0 0;accent-color:var(--accent);flex:none}
+.fork label{font-weight:650;font-size:15px;cursor:pointer}
+.fork .why{color:var(--ink-2);font-size:13.5px}
+.fork dl{margin:0;display:grid;grid-template-columns:62px minmax(0,1fr);gap:4px 10px;font-size:12.5px}
+.fork dt{color:var(--ink-3);font-weight:600}
+.fork dd{margin:0;min-width:0;overflow-wrap:anywhere}
+.fork .tags{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:11.5px}
+.pri{font-weight:700;font-size:11px;padding:1px 7px;border-radius:999px}
+.pri-1{background:var(--accent-wash);color:var(--accent-ink)} .pri-2{background:var(--sunk);color:var(--ink-2)} .pri-3{background:transparent;color:var(--ink-3);border:1px dashed var(--line-strong)}
+.size{font-family:var(--mono);color:var(--ink-3)}
+
+/* decisions */
+.decisions{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.dec{padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);display:flex;flex-direction:column;gap:10px}
+.dec .vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px}
+.dec .vs div{padding:8px 10px;border-radius:6px;background:var(--sunk)}
+.dec .vs small{display:block;color:var(--ink-3);font-size:11.5px;font-weight:600;margin-bottom:2px}
+.dec fieldset{border:0;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:6px}
+.dec legend{font-size:12px;color:var(--ink-3);margin-bottom:4px;font-weight:600}
+.dec label{font-size:13px;padding:4px 10px;border:1px solid var(--line-strong);border-radius:999px;cursor:pointer}
+.dec input{position:absolute;opacity:0;pointer-events:none}
+.dec input:checked+span{font-weight:650}
+.dec label:has(input:checked){background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.dec label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.dec .rec{font-size:13px;color:var(--ink-2)}
+
+/* hygiene */
+.hyg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.hy{padding:16px;border-radius:var(--radius);background:var(--surface);border:1px solid var(--line)}
+.hy h3{font-size:15px;margin-bottom:6px}
+.hy p{font-size:13.5px;color:var(--ink-2)}
+.hy .bg{display:grid;grid-template-columns:1fr;gap:6px;margin-top:10px;font-size:12.5px}
+.hy .bg div{padding:7px 9px;border-radius:6px;font-family:var(--mono);font-size:11.8px;overflow-wrap:anywhere}
+.hy .bad{background:var(--missing-wash)} .hy .good{background:var(--covered-wash)}
+.hy .bad::before{content:"Before  ";font-family:var(--sans);font-weight:700;color:var(--missing)}
+.hy .good::before{content:"After  ";font-family:var(--sans);font-weight:700;color:var(--covered)}
+
+/* elsewhere */
+.else{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.else div{padding:12px 14px;border-radius:8px;border:1px dashed var(--line-strong);font-size:13.5px}
+.else b{font-family:var(--mono);font-size:13px}
+.else p{color:var(--ink-2);margin-top:3px}
+
+/* tray */
+.tray{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--ink);color:var(--bg);box-shadow:0 -6px 24px rgb(0 0 0 / .18)}
+.tray .wrap{display:flex;gap:14px;align-items:center;padding-top:12px;padding-bottom:12px;flex-wrap:wrap}
+.tray .count{font-weight:700;font-variant-numeric:tabular-nums}
+.tray .sum{color:color-mix(in srgb,var(--bg) 70%,var(--ink));font-size:13px;flex:1;min-width:200px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.btn{all:unset;cursor:pointer;font-size:13.5px;font-weight:650;padding:8px 14px;border-radius:8px;background:var(--accent);color:#fff}
+.btn.ghost{background:transparent;color:inherit;border:1px solid currentColor}
+.btn:focus-visible{outline:2px solid var(--bg);outline-offset:2px}
+.btn.sm{font-size:12.5px;padding:5px 10px;background:var(--sunk);color:var(--ink)}
+dialog{border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);width:min(820px,94vw);padding:0}
+dialog::backdrop{background:rgb(0 0 0 / .4)}
+dialog .dh{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+dialog textarea{width:100%;height:58vh;border:0;padding:16px 18px;font:12.5px/1.55 var(--mono);background:var(--bg);color:var(--ink);resize:vertical}
+dialog .df{display:flex;gap:8px;justify-content:flex-end;padding:12px 18px;border-top:1px solid var(--line);align-items:center}
+.toast{font-size:13px;color:var(--covered)}
+.foot{color:var(--ink-3);font-size:12.5px;padding:30px 0}
+</style>
+</head>
+<body>
+
+<nav class="toc" aria-label="Sections"><div class="wrap">
+  <a href="#map">Coverage map</a><a href="#fleet">Your 7 skills</a><a href="#compare">Text side by side</a><a href="#landing">Where forks land</a><a href="#forks">Pick forks</a><a href="#decide">Decisions</a><a href="#hygiene">Skill writing</a><a href="#elsewhere">Not for Design</a>
+</div></nav>
+
+<header class="wrap">
+  <h1>Your design plugin vs. the Playful Design router and Jakub Krehel</h1>
+  <p class="lede">59 skills compared with the 7 in <code>plugins/design</code> v0.1.5: the router's 45 (43 bundled, the router, and Emil's own <code>prototype</code>) plus Jakub Krehel's 14 (<code>jakubkrehel/skills</code> at <code>60bf140</code>). Each tile is one skill, colored by how much of it your plugin already has. <a href="design-examples.html">See the forks applied to example designs →</a></p>
+  <div class="strip" id="strip" aria-label="All 59 skills by coverage"></div>
+  <div class="legend">
+    <span><i class="s-covered"></i>Covered</span><span><i class="s-partial"></i>Partial: idea present, specifics missing</span><span><i class="s-missing"></i>Missing</span><span><i class="s-elsewhere"></i>Belongs in another plugin</span><span><i class="s-skip"></i>Skip</span>
+  </div>
+  <div class="tally" id="tally"></div>
+  <div class="verdict">
+    <div><b>Strong where it is judgment</b><span>Grounding, anti-generic taste, evidence, independent finish review and research are deeper than anything in the router.</span></div>
+    <div><b>Thin where it is numbers and instruments</b><span>Hit sizes, wait timings, spring values, contrast measured on screen, viewport sweeps, frame budgets: the router states them; your plugin has the idea and leaves out the numbers.</span></div>
+    <div><b>No Swift half</b><span><code>platforms.md</code> covers Apple design rules only. Nothing covers Swift concurrency, <code>@Observable</code>, haptics or spring physics in SwiftUI terms.</span></div>
+    <div><b>Paraphrasing lost capability</b><span>Earlier forks (<code>motion.md</code>, <code>prototype</code>) reworded upstream text and dropped tables, values and failure lists along the way.</span></div>
+    <div><b>Jakub's text, uncredited</b><span><code>typography.md</code>, <code>icons.md</code> and <code>change-audit.md</code> follow his skills heading by heading, with his numbers removed and no MIT notice. F34 fixes the credit.</span></div>
+  </div>
+</header>
+
+<section id="map"><div class="wrap">
+  <h2>Coverage map</h2>
+  <p class="lede">Select a tile to see what the skill does, what your plugin has, and the exact fork. Filter by status or by platform.</p>
+  <div class="filters" role="group" aria-label="Filters">
+    <button class="chip" data-f="all" aria-pressed="true">All</button>
+    <button class="chip" data-f="missing" aria-pressed="false">Missing</button>
+    <button class="chip" data-f="partial" aria-pressed="false">Partial</button>
+    <button class="chip" data-f="covered" aria-pressed="false">Covered</button>
+    <button class="chip" data-f="out" aria-pressed="false">Elsewhere / skip</button>
+    <span style="width:12px"></span>
+    <button class="chip" data-p="agn" aria-pressed="false">Framework-agnostic</button>
+    <button class="chip" data-p="web" aria-pressed="false">Web only</button>
+    <button class="chip" data-p="swift" aria-pressed="false">Swift / native</button>
+  </div>
+  <div class="mapgrid">
+    <div class="areas" id="areas"></div>
+    <aside class="detail" id="detail" aria-live="polite"></aside>
+  </div>
+</div></section>
+
+<section id="fleet"><div class="wrap">
+  <h2>Your 7 skills: how they work now, and the gaps</h2>
+  <p class="lede">Gap bullets name the router or Jakub skill that fills each one. Select a name to open it in the map.</p>
+  <div class="skills" id="skills"></div>
+  <div class="chart" aria-label="SKILL.md entrypoint size">
+    <h3>Entrypoint size (lines in SKILL.md)</h3>
+    <p class="lede" style="font-size:13.5px">The GPT-6 guidance asks for a root file that only routes, with detail in references. Two skills put their whole procedure in the entrypoint.</p>
+    <div id="bars" style="margin-top:12px"></div>
+    <p class="axisnote">Scale: 0–520 lines. Red = more than 150 lines in the entrypoint, the point where these files stop routing and start carrying a whole procedure. For comparison, router skills average about 130 lines.</p>
+  </div>
+</div></section>
+
+<section id="compare"><div class="wrap">
+  <h2>The actual text, side by side</h2>
+  <p class="lede">Four places where the router's wording carries something your plugin's wording doesn't. Highlighted spans mark what a paraphrase would lose.</p>
+  <div class="cmp">
+
+    <article class="pair">
+      <header><h3>Gesture physics</h3><p>Your plugin states the principle. <code>apple-design</code> gives the rule a reviewer can check, and adds the warning about CSS transitions.</p></header>
+      <div class="cols">
+        <div><div class="src">Yours · <code>design/references/motion.md</code></div>
+<div class="txt">Retarget from the currently rendered position. Carry velocity when the animation system supports it. Rapid toggles, reversal, and repeated activation should converge on the latest requested state without snaps, queued animations, or delayed callbacks restoring an old state.
+
+During direct manipulation, track input without easing behind it. Preserve the grab offset and support cancellation.</div></div>
+        <div><div class="src">Router · <code>apple-design §3</code> (Emil Kowalski, MIT)</div>
+<div class="txt">- Always animate from the <mark>presentation (current) value</mark>, never the target value. On interrupt, read the element's live on-screen transform and start the new animation from there.
+- <mark>Avoid CSS transitions and @keyframes for anything gesture-driven</mark> — they can't be smoothly grabbed and reversed mid-flight.
+- When a gesture reverses, <mark>blend velocity — don't hard-cut it</mark>.
+- <mark>Decompose 2D motion into independent X and Y springs.</mark></div></div>
+      </div>
+      <div class="loss"><b>Not in your plugin anywhere:</b> spring values (move 1.0/0.4, sheet 0.8/0.3), velocity handoff <code>v/(target−current)</code>, momentum projection with d≈0.998, the rubber-band formula and ~10px hysteresis. All of them map directly onto SwiftUI springs.</div>
+    </article>
+
+    <article class="pair">
+      <header><h3>Stress data</h3><p>Your plugin lists categories of data to try. <code>break-ui</code> supplies the actual values, each with the failure it causes.</p></header>
+      <div class="cols">
+        <div><div class="src">Yours · <code>design-review/references/component-stress.md</code></div>
+<table class="tbl"><tr><th>Scenario</th><th>What it catches</th></tr>
+<tr><td>Empty string</td><td>Collapsed boxes, floating labels with nothing to float over</td></tr>
+<tr><td>One word</td><td>Buttons and badges sized to their longest expected content</td></tr>
+<tr><td>One unbreakable string</td><td>A long URL or <code>Donaudampfschiffahrtsgesellschaft</code></td></tr>
+<tr><td>Emoji, alone and mixed</td><td>Line-height jumps, truncation splitting a character</td></tr>
+<tr><td>RTL text</td><td>Direction handling, punctuation on the wrong side</td></tr></table></div>
+        <div><div class="src">Router · <code>break-ui/CATALOG.md</code> (Emil Kowalski, MIT)</div>
+<table class="tbl"><tr><th>Value</th><th>Breaks</th></tr>
+<tr><td><code>Christopher Alexander Montgomery III</code></td><td>Long with a suffix; <mark>naive first + last initials give CI</mark></td></tr>
+<tr><td><code>Đặng Thị Ngọc Hân</code></td><td>Stacked diacritics; <mark>clipped by tight line-height + overflow: hidden</mark></td></tr>
+<tr><td><code>王秀英</code></td><td>CJK, no spaces; "first + last word" initials logic finds one word</td></tr>
+<tr><td><code>🦊 Fox</code></td><td>Emoji first; <mark>.charAt(0) returns half a surrogate pair</mark></td></tr>
+<tr><td><em>(missing)</em></td><td>No name at all, only an email; the UI must fall back</td></tr></table></div>
+      </div>
+      <div class="loss"><b>Also lost:</b> the Phase 1 map (each field's source, type, schema limit and whether it is optional), the rule "unbounded is itself a finding", and the truncate / wrap / clamp decision. The catalog is plain data, so it works on any platform as written.</div>
+    </article>
+
+    <article class="pair">
+      <header><h3>Viewport sweep</h3><p>Your plugin says to check breakpoints. <code>viewports</code> defines the sweep, so a skipped check shows up as a finding.</p></header>
+      <div class="cols">
+        <div><div class="src">Yours · <code>references/evidence.md</code></div>
+<div class="txt">Include a narrow viewport for responsive work, and use 320px when supported or requested. Check affected breakpoints and unintended horizontal overflow; wide content should scroll within its own container. An untested width remains a coverage gap rather than an implied pass.</div></div>
+        <div><div class="src">Router · <code>viewports</code> (Raphael Salaja, MIT)</div>
+<div class="txt">The widths are exact: <mark>320, 375, 768, 1024 and 1440, plus 1px either side of each project breakpoint</mark>. A width reasoned from the media queries is a finding.
+…
+4. Tap at touch widths — <mark>a delete button that shows only on row hover</mark> is viewports-no-hover-only-controls.
+5. Shorten the height — <mark>Render 812×375</mark>. Open each dialog, sheet and menu at that size.
+6. Double the text</div></div>
+      </div>
+      <div class="loss"><b>A native block is needed:</b> the smallest and largest iPhone, iPad Split View and Slide Over, landscape, Dynamic Type from xSmall to AX5 (the native version of 200% text), and the macOS minimum window size. <code>overflow.js</code> only runs in a web page.</div>
+    </article>
+
+    <article class="pair">
+      <header><h3>Removing motion</h3><p>Your plugin can review and add motion but has no mode for taking it out. <code>remove-animations</code> lists what breaks when you delete an animation.</p></header>
+      <div class="cols">
+        <div><div class="src">Yours · nearest is <code>references/craft-floor.md</code></div>
+<div class="txt">No routine bounce/elastic motion, identical fade-up entrances on every section, or hover lifts on every card. Keep content visible before motion and make any expressive motion belong to the chosen direction.</div></div>
+        <div><div class="src">Router · <code>remove-animations</code> Removal Hazards (Emil Kowalski, MIT)</div>
+<div class="txt">- <mark>Hidden start states.</mark> … Delete the animation without deleting the start state and the element stays invisible forever.
+- <mark>Code that waits for the animation.</mark> transitionend listeners … setTimeout calls sized to a duration.
+- <mark>Exit animations that delay unmount.</mark>
+- <mark>Layout animations hiding a jump.</mark> Remove it and the jump appears.
+- <mark>Focus timed after motion.</mark>
+- <mark>Tests and selectors.</mark></div></div>
+      </div>
+      <div class="loss"><b>Fork at the seams:</b> keep the six hazard names and their consequences verbatim. Move <code>AnimatePresence</code> and <code>onExitComplete</code> into a labelled web example, and add the SwiftUI case: a <code>.transition</code> holding a view during removal, and a <code>withAnimation</code> completion.</div>
+    </article>
+  </div>
+</div></section>
+
+<section id="landing"><div class="wrap">
+  <h2>Where forks land</h2>
+  <p class="lede">Each row is a file in <code>plugins/design</code>. Rules stay framework-agnostic in the middle column; code specifics go into labelled Web or Swift blocks. Select a fork here or in the list below to queue it.</p>
+  <div class="lanes"><table>
+    <thead><tr><th>Target file</th><th class="agn">Agnostic rules</th><th class="web">Web block</th><th class="swift">Swift block</th></tr></thead>
+    <tbody id="lanes"></tbody>
+  </table></div>
+</div></section>
+
+<section id="forks"><div class="wrap">
+  <h2>Pick the forks to implement</h2>
+  <p class="lede">Each card names the source sections to copy verbatim, where they go, and what changes at the seams. Your picks build an implementation brief in the bar at the bottom of the page.</p>
+  <div class="forktools">
+    <button class="btn sm" id="pickHigh">Select priority 1</button>
+    <button class="btn sm" id="pickNone">Clear</button>
+    <span style="color:var(--ink-3);font-size:13px">Size: <span class="mono">S</span> under 100 lines of forked text, <span class="mono">M</span> 100–300, <span class="mono">L</span> over 300 or bundled tools.</span>
+  </div>
+  <div class="forks" id="forkList"></div>
+</div></section>
+
+<section id="decide"><div class="wrap">
+  <h2>Decisions to settle before forking</h2>
+  <p class="lede">These are places where a router skill contradicts your plugin or another router skill. Your answers are added to the brief.</p>
+  <div class="decisions" id="decisions"></div>
+</div></section>
+
+<section id="hygiene"><div class="wrap">
+  <h2>Writing the forks to the skill guidelines</h2>
+  <p class="lede">From your skill creator and OpenAI's <a href="https://developers.openai.com/blog/rethinking-skills-and-prompts-for-gpt-6-astra">Rethinking skills and prompts for GPT-6</a>. A verbatim fork keeps the rules; these seams keep the forks short.</p>
+  <div class="hyg">
+    <div class="hy"><h3>The root file only routes</h3><p>The article's phrase is "make the root document a minimal router." Forked text goes into references and never into SKILL.md. <code>design-to-motion</code> (519 lines) should become a short router over three files: Part A fidelity, Part B motion, Part C capture.</p>
+      <div class="bg"><div class="bad">SKILL.md holds A1–C2, a 40-item checklist and output format</div><div class="good">SKILL.md: two contexts + "Read references/fidelity.md before touching motion"</div></div></div>
+    <div class="hy"><h3>Descriptions name triggers, not catalogs</h3><p>All 7 descriptions run 221–267 characters and list many nouns. The article says descriptions "should be as short as possible", with specific triggers that don't overlap.</p>
+      <div class="bg"><div class="bad">design: "…UI design, product idea evaluation, visual exploration, UX copy or microcopy, button and error-message wording, motion terminology, and developer handoff…"</div><div class="good">design: "Design, build or refine web and native product UI. Use for new screens, redesigns, variants, recreating a reference, UX copy and handoff specs."</div></div></div>
+    <div class="hy"><h3>Strip the persona and the absolutes</h3><p>Emil's skills open with an "Initial Response" greeting, and several say "No approximated values" or "Never present motion options as a menu." Cut them at the seam. Keep the values, labelled as starting points, as your <code>motion.md</code> already does.</p>
+      <div class="bg"><div class="bad">"When this skill is first invoked … respond only with: I'm ready to help…"</div><div class="good">(removed; the skill starts at its first rule)</div></div></div>
+    <div class="hy"><h3>Rule IDs label findings; they don't make rules stricter</h3><p>Raphael's broken/replacement pairs (<code>viewports-short-heights</code>) give a reviewer a concrete example to apply. Keep them in review references, where findings cite them. Leave them out of build guidance, where they turn into a rigid checklist.</p>
+      <div class="bg"><div class="bad">Rule IDs on every build instruction in defaults.md</div><div class="good">Review finding: "Save is off-screen at 812×375 [viewports-short-heights]"</div></div></div>
+    <div class="hy"><h3>Only stop where the user has a real choice</h3><p>The article warns that "a requirement to stop for review" makes the model stop early. Keep the stops where the user genuinely decides, such as picking a variant or choosing which fixes to apply. Drop the stops in <code>improve-animations</code>' plan step and Raphael's audit gate.</p>
+      <div class="bg"><div class="bad">"Stop. Wait for the user to choose before writing plans."</div><div class="good">Number the findings; apply the ones the user picks, or all of them when the request asked for fixes.</div></div></div>
+    <div class="hy"><h3>Point to references only when they are needed</h3><p><code>design-review</code> currently says "read the full critique guide … the full accessibility guide … the full UX-copy guide". New references should be linked from the routing tables only, with each link saying when to read it.</p>
+      <div class="bg"><div class="bad">"For accessibility, read the full accessibility guide."</div><div class="good">"Keyboard walk → accessibility.md#keyboard-walk, when focus or shortcuts changed."</div></div></div>
+  </div>
+</div></section>
+
+<section id="elsewhere"><div class="wrap">
+  <h2>Not for the design plugin</h2>
+  <p class="lede">Useful skills that belong to another Fleet plugin, or that you can skip.</p>
+  <div class="else">
+    <div><b>scope</b><p>Already covered by your global AGENTS.md. Only the before/after feature inventory for refactors is worth adding to <code>build.md</code>.</p></div>
+    <div><b>rule</b><p>Goes to pstack <code>self-improve</code>: write a broken/fixed pair for each rule, then sweep existing code that breaks it.</p></div>
+    <div><b>prose</b><p>Goes to Drafts. "Mark guesses as guesses" and "never invent the author's experience" fit <code>line-edit</code> and <code>ai-check</code>.</p></div>
+    <div><b>ship</b><p>Goes to pstack <code>publish-pr</code>. Only "a UI PR carries a screenshot" is design-related.</p></div>
+    <div><b>ask-sonner</b><p>A manual for one React toast library. At most, a single row in the library list.</p></div>
+    <div><b>bots</b><p>Specific to Grok portfolio pages. Its privacy-stripping checklist is the only reusable part.</p></div>
+    <div><b>blank-page</b><p>Tied to one author's tool and downloads files from the network. Optionally take "describe the mechanism, not the adjective" and the "turn" beat.</p></div>
+    <div><b>avatar</b><p>Niche. Fork it only if you need mascots. Its <code>face.js</code> maths would port to a SwiftUI <code>TimelineView</code>.</p></div>
+  </div>
+</div></section>
+
+<div class="wrap foot">Sources: playful-design/router (cloned 2026-11-05; 43 skills plus the router, each an unmodified MIT copy), emilkowalski/skills (for <code>prototype</code>), and Fleet <code>plugins/design</code> at f93ce580 in worktree <code>docs/design-router-audit</code>. Coverage is a reading of the text, not a test run of either plugin. Excerpts are quoted from the MIT-licensed skills with attribution.</div>
+
+<div class="tray" role="region" aria-label="Selected forks"><div class="wrap">
+  <span class="count" id="trayCount">0 forks picked</span>
+  <span class="sum" id="traySum">Pick forks below, or select priority 1.</span>
+  <button class="btn" id="openBrief">Build implementation brief</button>
+</div></div>
+
+<dialog id="brief" aria-labelledby="briefTitle">
+  <div class="dh"><h3 id="briefTitle">Implementation brief</h3><button class="btn sm" id="closeBrief">Close</button></div>
+  <textarea id="briefText" aria-label="Implementation brief text" spellcheck="false"></textarea>
+  <div class="df"><span class="toast" id="copied" role="status"></span><button class="btn sm" id="dlBrief">Download .md</button><button class="btn" id="copyBrief">Copy brief</button></div>
+</dialog>
+
+<script>
+const AREAS=[["standards","Always-on standards"],["verify","Verification instruments"],["motion","Motion"],["explore","Explore, recreate, build"],["platform","Platform"],["workflow","Workflow & writing"]];
+const S=(id,area,by,st,pf,inv,lines,does,fleet,fork,quote,forks)=>({id,area,by,st,pf,inv,lines,does,fleet,fork,quote,forks:forks||[]});
+const R=[
+S("scope","standards","Raphael Salaja","elsewhere","agn","auto",67,["Splits the request into numbered asks and reports each as done or not","Reads the request narrowly and keeps values the user gave (16px stays 16px)","Lists existing features before a refactor and rechecks them after"],"Your global AGENTS.md covers scope. Your plugin has \"change only what the task requires\" in build.md.","Only the before/after feature inventory, into build.md#build-or-refine.","Fixing a clip by removing the width animation is scope-no-collateral.",["F25"]),
+S("restraint","standards","Raphael Salaja","partial","agn","auto",68,["Flags interface nobody asked for: badges, counts, captions, sounds","No toast or dialog when the result is already on screen","Removing a feature means deleting its styles, routes and menu entries too"],"craft-floor.md bans decoration, and SKILL.md has a Hierarchy and restraint section. Missing: the no-redundant-feedback rule and cleanup after a removal.","\"No feedback the screen already gives\" goes into interaction.md#own-each-state, phrased for any platform.","Do not add a toast or a dialog for an action whose result is already on screen.",["F25"]),
+S("reuse","standards","Raphael Salaja","partial","agn","auto",72,["Order: project components, then a maintained library or the platform, then custom","Fix shared problems inside the shared component, then check its siblings","One menu, one table, one dialog style"],"build.md and design-context say to reuse the stack. Missing: fixing inside the primitive with a sibling sweep, and no local restyles.","Fork three sections into build.md: \"Fix it once, in the primitive\", \"Shipped components stay as shipped\" and \"One style per kind\". Pair Intl with Foundation FormatStyle.","When a fix applies to every instance, make it inside the shared component.",["F25"]),
+S("copy","standards","Raphael Salaja","partial","agn","auto",66,["Fewest words: \"Start Download\" becomes \"Start\" on a download screen","Display names, never ids (instagram_graph → Instagram)","Status tense matches the moment: Searching, then Searched"],"ux-copy.md and interaction.md#labels-and-messages cover clarity. It conflicts with your casing: the router uses Title Case, your plugin uses sentence case.","Fork the display-names, state-tense, one-line-description and number-not-noun rules. Don't fork Title Case or the em-dash ban as universal rules.","\"Searched\" while the search still runs is copy-state-tense.",["F24"]),
+S("defaults","standards","Raphael Salaja","partial","mixed","auto",282,["Targets ≥24px, aiming for 40 with a mouse and 44 on touch; extended hit areas never overlap","Feedback within 400ms; a spinner waits 150–300ms to appear, then stays 300–500ms","Forms validate on submit, busy buttons keep their label, Enter submits, mobile inputs ≥16px","About 50 rules plus a recipes.md of CSS and JS fixes"],"Scattered across craft-floor, typography, color and interaction. None of the numbers appear, and 44pt is only an AAA advisory in accessibility.md.","Agnostic rules go into a new design/references/defaults.md. Web-only rules and recipes.md go into a Web block. Native values: 44pt + .contentShape, .monospacedDigit, FormatStyle, AccessibilityNotification, SceneStorage, .sensoryFeedback.","Submit stays enabled until the request starts. On submit, show each error beside its field.",["F2"]),
+S("color","standards","Raphael Salaja","partial","mixed","auto",81,["Text under 24px needs 4.5:1, larger text 3:1; field edges and meaningful icons 3:1","Reads the ratio from the composited color actually drawn, never the token's hex","Dark mode is its own palette: raised surfaces get lighter, accents get their own values","contrast.js measures every text node in the page"],"color.md has role tokens and scrims; the ratios are only in accessibility.md. Missing: on-screen measurement, alpha neutrals, dark-mode raising, and the accent reserved for actions.","Fork five sections verbatim into color.md. Keep contrast.js as the web tool. Add a native procedure: sample pixels from a simulator screenshot or use Accessibility Inspector, never the Color asset value.","A ratio is read from the colour the screen draws, never guessed from a token's name.",["F3"]),
+S("verify","verify","Raphael Salaja","covered","agn","auto",62,["A build or typecheck isn't proof; open the running result","Reproduce the problem before editing","Report where the user can see it, and what wasn't checked"],"Covered by evidence.md, finish-review.md and the design-qa iteration loop, which are stronger than the router here. Missing: \"reproduce first\" and \"say where to see it\".","Two short paragraphs into evidence.md.","A third guess at one property is verify-root-cause-on-repeat.",["F5"]),
+S("viewports","verify","Raphael Salaja","partial","mixed","auto",73,["Exact widths 320/375/768/1024/1440, plus 1px either side of every breakpoint","Tap at touch widths to find controls that only appear on hover","Short height 812×375 with every dialog opened; text at 200%","overflow.js finds sideways scroll, clipped text and small targets"],"evidence.md says \"320px when supported\" and \"check affected breakpoints\". No fixed set, no short-height pass, no native matrix.","Steps 1–7 go into evidence.md as the shared procedure, with a Web widths block and a Swift block: device sizes, Split View, Dynamic Type xS–AX5, macOS minimum window.","A width reasoned from the media queries is a finding.",["F5"]),
+S("alignment","verify","Raphael Salaja","partial","mixed","manual",91,["A 1–4px miss is a finding; a deliberate group break is ≥2× the gap","Text centers on cap height and baseline; icons center on the label's cap height","Inner radius = outer radius − inset; circles need about 10% more size to look equal","measure.js and report.html measure rendered boxes and glyph ink"],"layout.md has \"tune optical alignment\". No threshold, no concentric-radius rule, no measuring step.","The rules go into layout.md. The procedure becomes design-review/references/alignment.md. Native: crop @2x/@3x screenshots and use Xcode's view debugger.","A miss of 1–4px is a finding, because it reads as a mistake while a 16px indent reads as intent.",["F7"]),
+S("keyboard","verify","Raphael Salaja","partial","mixed","manual",85,["Tab forward and back; stops follow reading order","Arrow keys inside menus, tabs and radio groups; Escape closes; focus lands on a neighbor after a delete","tabstops.js records each stop and catches focus lost to body","Warns that synthetic key events never move focus"],"accessibility.md has a keyboard table. No walk procedure, no trusted-input warning, no numbered walk report.","Steps 2–7 become an accessibility.md \"Keyboard walk\" section. Swift block: Full Keyboard Access, @FocusState, .focusSection, .keyboardShortcut(.cancelAction), XCUITest typeKey.","A dispatched DOM KeyboardEvent never moves focus, so a walk with no stops means the keys never arrived.",["F6"]),
+S("audit","verify","Raphael Salaja","partial","agn","manual",77,["Runs every check and records each one as Skipped (with a reason) or Clean","Merges findings by root cause and ranks them by severity, then reach","Numbers the fixes; the user picks \"1, 2 and 5\"","report.html has Pick and Copy Picks buttons"],"design-audit.md already merges findings by root cause. Missing: numbered pickable fixes and a coverage table for each check.","\"Number the fixes\" and the report.md coverage table go into reporting.md.","Fixing everything before the user picks is audit-fix-what-was-picked.",["F20"]),
+S("break-ui","verify","Emil Kowalski","partial","agn","auto",175,["Maps each rendered value to its source, type and schema limit; \"unbounded\" is itself a finding","One worst-case fixture entered at the data boundary, plus empty, one and 1,000+ rows","CATALOG.md: about 135 lines of real values that break UI","Reports Broken / Ugly / Fragile, plus decisions for you"],"component-stress.md has the same axes, but with abstract values. No catalog, no mapping of schema limits, no truncate/wrap/clamp rule.","CATALOG.md copied verbatim as stress-catalog.md. Phase 1 goes into component-stress.md. Add a native column to the failure-signature table: .lineLimit, .truncationMode, PersonNameComponents.","Demo data is chosen, usually without anyone noticing, to make the design look good.",["F4"]),
+S("web-design-guidelines","verify","Vercel","missing","web","auto",39,["Fetches 104 rules from an unpinned main branch on every run","Rules cover accessibility, focus, forms, animation, typography, performance, dark mode and i18n","Prints file:line findings"],"There's no web code-lint pass. The rules overlap accessibility.md, but most are React and DOM specific.","Vendor a pinned copy of command.md as design-review/references/web-guidelines.md. Never fetch it live.","Fetch fresh guidelines before each review.",["F23"]),
+S("frames","verify","Raphael Salaja","missing","mixed","manual",71,["Throttles the CPU 4× and repeats the interaction 3 times","Budgets: no frame past one refresh; no long animation frame over 50ms; response within 200ms","observe.js records frame gaps, long frames with attribution, interaction latency and layout shift","A second trace must prove the fix"],"motion-review.md only says \"profile in a platform-appropriate way\".","Steps and budgets go into motion-review.md as a Performance section. Web: observe.js. Swift: the Instruments Animation Hitches template.","'Feels smooth' with no numbers is a finding.",["F11"]),
+S("emil-design-eng","motion","Emil Kowalski","partial","mixed","auto",676,["Frequency table: an action used 100+ times a day gets no animation","Custom curves, durations under 300ms, and slow press with snappy release","clip-path, 3D and spring mouse-tracking techniques","Debugging: 2–5× slow motion, frame by frame, review the next day"],"motion.md has the philosophy. Missing: the techniques, the debugging steps, and the Before/After/Why review table.","Techniques and debugging go into a new motion-techniques-web.md. \"Cohesion\" and \"review the next day\" go into motion.md.","Pressing should be slow when it needs to be deliberate… but release should always be snappy",["F8","F12"]),
+S("motion","motion","Raphael Salaja","partial","mixed","auto",208,["Closes faster than it opens (200ms in, 150ms out); press scale 0.98","App chrome fades and never slides; entrances don't replay on route change","Measure the inner element, animate the outer; icon swaps scale 0.25→1 with a 4px blur","41 broken → replacement rule pairs"],"motion.md says to keep exits quieter than entrances. No numbers, and nothing on chrome, replay or icon swaps.","Six sections go into motion.md verbatim. Severity and Block/Approve go into motion-review.md. Drop the motion-blur rules (they need one specific package).","Switching pages does not replay entrances.",["F8","F10"]),
+S("animate","motion","Emil Kowalski","partial","mixed","auto",207,["A 7-step gate starting with whether it should animate at all","Tool ladder: CSS transition → @starting-style → CSS animation → WAAPI → Motion","Spring presets, a \"Never Ship\" table, and recipes for 14 components"],"Your motion.md is a paraphrase of this skill. It dropped the tool ladder, Never Ship, the curves, the duration table and the recipes.","Never Ship and the easing/duration rules go into motion.md, made agnostic. The ladder and RECIPES go into motion-techniques-web.md.","The gate below exists to produce zero lines of code sometimes. That's a success, not a dodge.",["F8","F12"]),
+S("animate-expo","motion","Emil Kowalski","missing","mixed","auto",263,["Springs as damping ratio: default {400ms, 1}, snap-back 0.8, sheet {300, 0.8}","Bounce only when the gesture carried momentum","Haptics: fire on the same frame, one per action, never the only feedback","Press-in feedback, press-out commit; judge feel on a release build"],"motion.md has one line on haptics. Nothing on mobile springs.","The spring table, bounce rule and haptics rules go into motion.md, with SwiftUI equivalents (.spring(duration:bounce:), .sensoryFeedback). Skip the Reanimated material.","Overshoot on a menu that faded in feels wrong; overshoot on a card you flicked feels right.",["F8"]),
+S("animation-performance","motion","Emil Kowalski","partial","mixed","auto",222,["Symptom → fix table; property cost tiers (composite / paint / layout)","Cheaper swaps (box-shadow → drop-shadow), with will-change as a last resort","Frame budgets: 16.7ms at 60Hz, 8ms at 120Hz"],"motion-review.md warns against carrying web rules over to native. No pipeline or checklist.","Frame budget and diagnosis go into motion-review.md. The web pipeline goes into motion-techniques-web.md.","Sprinkling will-change and calling it fixed. It's the last step, not the first.",["F11","F12"]),
+S("animation-vocabulary","motion","Emil Kowalski","covered","agn","auto",181,["Maps a loose description to the right motion term","Contrasts close terms and says when a match is approximate"],"Your animation-vocabulary.md is byte-identical to the glossary. The instructions and examples were condensed.","Optional: instructions 3–5 and Example 2. Keep the pin current.","Read for intent, not keywords.",[]),
+S("find-animation-opportunities","motion","Emil Kowalski","partial","agn","auto",140,["Read-only, with a four-question gate","Caps a whole app at 5–7 suggestions","\"Where to Hunt\": feedback gaps, state that jumps, groups that appear at once, gesture seams"],"motion-review.md has an opportunities mode and requires rejected candidates. Missing: the cap and the hunt list.","The hunt list and the cap go into motion-review.md under Opportunities.","An opportunity finder that suggests motion everywhere is worse than useless",["F10"]),
+S("improve-animations","motion","Emil Kowalski","partial","agn","auto",109,["Audits across eight categories, then re-reads each finding at its file:line","Plans precise enough for an executor with no context","Severity: HIGH breaks the feel, MEDIUM is noticeably off, LOW is polish"],"motion-review.md mentions a product audit and plans in one line.","AUDIT.md's categories and PLAN-TEMPLATE go into a new motion-audit.md. Drop the executor that writes to plans/.","turn each into a plan so precise that a model with zero context can execute it without taste of its own.",["F10"]),
+S("remove-animations","motion","Emil Kowalski","missing","agn","auto",166,["Burden of proof reversed: motion has to justify staying","Keyboard actions or 100+ a day → delete; tens a day → reduce","Six removal hazards; orphan cleanup; a required list of what was kept"],"No subtraction mode. The craft floor bans a few patterns, and that's all.","The Gate, Reducing, Removal Hazards and Cleanup become a fourth motion-review mode.","Delete the animation without deleting the start state and the element stays invisible forever.",["F9"]),
+S("review-animations","motion","Emil Kowalski","partial","agn","manual",120,["Ten non-negotiable standards and 14 triggers to flag on sight","Fix order: delete, reduce, easing, origin, interruptible, GPU, asymmetry, polish, a11y","Before/After/Why table; explicit Block or Approve"],"motion-review.md has the gate and a scoped verdict, and adds things the router lacks: observe, scrub, coverage.","The fix order goes in nearly verbatim; the standards (made generic) and the Block/Approve criteria also go into motion-review.md.","Default to flagging. Approval is earned, not assumed.",["F10"]),
+S("apple-design","motion","Emil Kowalski","partial","mixed","auto",290,["Respond on pointer-down, keep the grab offset, animate from the presentation value","Spring table (move 1.0/0.4, sheet 0.8/0.3), velocity handoff, momentum projection, rubber-band","Materials, reduced transparency, increased contrast, audio-haptic rules"],"motion.md states the ideas abstractly, without formulas. platforms.md has no motion physics.","§3, 5, 6 and 9 formulas go into motion.md (they map to SwiftUI springs). The materials go into a Web block only. Skip §16 until its source is verified.","Always animate from the presentation (current) value, never the target value.",["F8"]),
+S("deconstruct","motion","Raphael Salaja","missing","agn","manual",91,["Named states with the events that enter and leave them","One track per property: from, to, delay, duration, easing; springs kept as springs","viewer.html: scrub, onion skin, curve editor, Copy Timeline"],"motion.md says to describe stages, but gives no format.","Steps 1–4 become motion-breakdown.md. The data model works for SwiftUI timings too. viewer.html is web-only.","A spring flattened into a guessed bezier is deconstruct-keep-the-curve.",["F22"]),
+S("blank-page","motion","Cekura (Stewdio)","skip","agn","auto",227,["Turns a one-line motion idea into a prompt: 5 stills + 3 motion references","Numbered beats with a required \"turn\"","find_refs.py scrapes Pinterest, Are.na and Sketchfab"],"Not present. It's tied to one author's tool.","Optional: \"describe the mechanism, not the adjective\" and the turn beat, into design-to-motion.","A good brief is references plus beats.",[]),
+S("gather","explore","Raphael Salaja","missing","agn","auto",134,["One-line brief, split into parts, 2–3 word queries on the same platform as the work","One agent per source; at least 20 references from at least 3 sources; your own saves first","collect.mjs + board.html: More Like This, Copy Picks"],"No reference-gathering step anywhere in the plugin.","Fork the whole skill as design-research/references/gather.md plus its tools. Swap its connector list for your tools.md connectors.","A reference shows how one part could work.",["F16"]),
+S("match","explore","Raphael Salaja","covered","agn","auto",65,["Opens the real source, using the native app rather than its marketing page","\"One to one\" means every value measured; \"inspired by\" means your own tokens","compare.html: Match / Differs / Not Verified for each value"],"recreate.md and design-qa.md go deeper than this skill. Missing: copy only the named part, carry the concept not the brand, and match the platform.","\"One to one means exact values\" goes into recreate.md; compare.html is referenced from design-qa.","Judging a desktop app by its marketing page is match-same-platform.",["F17"]),
+S("prototype","explore","Raphael Salaja","partial","web","manual",66,["Five variants that differ in approach, built in the real app on one route","Labels say how each variant differs, never \"Variant 3\"","switcher.js keeps variants mounted, with a Show All grid and a Pick button; losers are deleted after the pick"],"ideation.md builds isolated HTML boards. No in-app switcher, no pruning after a pick.","The prune step and switcher.js go into ideation.md \"Variants in the running app\". The name clashes with your StageShow skill.","Leftover variants after a pick is prototype-prune-after-pick.",["F15"]),
+S("prototype (Emil)","explore","Emil Kowalski","partial","web","manual",98,["Three variants by default, five at most; each has a name and a stated axis","Shows one variant at a time at full size; never thumbnails","Hands off with a Variant / Axis / When it wins / Cost table and never pre-picks; riff and keep"],"ideation.md already defaults to three. It recommends a favorite, where Emil never pre-picks.","Phases 3–6 and the invocation variants go into ideation.md. Ship one picker, not both.","three tints of the same idea waste the picker",["F15"]),
+S("lab","explore","Raphael Salaja","partial","web","manual",68,["One dev-only /lab route that imports the real components","Every state forced open: hover, pressed, focus, loading, empty, error","lab.js: source links to file:line, tuning sliders, Shift+C copies changed values"],"component-stress renders real components for stress data, not as a state inventory.","Becomes a \"State lab\" mode in component-stress, with lab.js. Swift: #Preview variants.","Hold hover and focus with force on the entry, such as force=\"hover\".",["F19"]),
+S("stageshow","explore","Benji Taylor","covered","web","auto",149,["7-step build: place, look, a 3–5 beat story, gold example, screen, motion, rehearse","film.mjs --gate, poster frame, REHEARSAL.md handover","69 examples, a React kit, and teaching pairs"],"Vendored as your prototype skill. The shared files are identical, but your 26-line SKILL.md dropped the workflow, the gold tables and \"Common failures\", and 30 examples are missing while the references still cite them.","Restore upstream Workflow 1–7 and Common failures. Re-vendor 8 generic examples or remove their citations.","film.mjs --gate ending rehearsal passed is necessary, not sufficient.",["F21"]),
+S("icons","explore","Raphael Salaja","partial","agn","auto",126,["Measures the set's spec from every existing icon: stroke, caps, grid, padding, ink","Draws only missing glyphs, beside their siblings; stops if fewer than 3 share a viewBox","Morph-ready paths; sheet.html lints and writes icon-spec.md"],"icons.md covers using icons, not drawing them.","Steps 1–9 and sheet.html become icon-drawing.md, with a row in the craft table. The grid rules also apply to custom SF Symbols.","Drawing before icon-spec.md exists… is icons-measure-the-spec.",["F18"]),
+S("sketchbook","explore","Raphael Salaja","missing","agn","manual",92,["Batches of 6–9 live micro-interactions, including 1–2 wildcards","A /sketchbook gallery with Keep and Kill; taste.md records the reasons"],"Nearest is ideation's tuning panels.","Optional. Save the taste through design-context rather than a new file.","Include 1 or 2 experiments that sit outside the taste summary.",[]),
+S("avatar","explore","Raphael Salaja","skip","web","manual",141,["Flat silhouette with capsule eyes; blink and breathe timings","One rAF loop, paused offscreen, still under reduced motion"],"Not present.","Niche. Fork only for mascots.","A character whose eyes move while its body holds still is a finding.",[]),
+S("pick-ui-library","platform","Emil Kowalski","missing","web","manual",85,["One curated pick per job: Base UI, cmdk, Sonner, input-otp, Virtuoso, NumberFlow…","Checks package.json first and never churns an existing dependency","Common mismatches: hand-built toasts, a div dialog"],"No library guidance.","\"The list\" and \"Common mismatches\" go into a Web block in build.md. A Swift list would need its own source.","If it uses a competitor (e.g. react-window instead of Virtuoso), flag the recommendation but don't churn the dependency",["F13"]),
+S("ask-sonner","platform","Emil Kowalski","skip","web","auto",88,["A Sonner toast API manual with a troubleshooting table"],"Not present.","Out of scope.","theme defaults to 'light' and does not track the OS.",[]),
+S("write-swift","platform","Emil Kowalski","missing","swift","auto",396,["Defaults in order: struct/enum → concrete type → some P → main actor → async → actor","Swift 6.2: async no longer leaves the actor; nonisolated is the default for libraries","SwiftUI concurrency: copy values into @Sendable closures; withAnimation stays synchronous","@Observable, Swift Testing, macros, migration"],"platforms.md covers Apple design rules only. Nothing at the language level.","§6 (SwiftUI concurrency) goes verbatim into platforms.md, along with the defaults order and @Observable. The rest becomes a separately loaded swift.md.","In Swift 6.2, marking a function async does not move it off the current actor.",["F14"]),
+S("mobile-native","platform","Emil Kowalski","missing","web","auto",311,["Symptom → fix: tap delay, gray tap flash, dvh/svh, 16px inputs, overscroll","Baseline meta and CSS block; safe areas; theme-color for each scheme","Test on real hardware"],"Only one line on painting the overscroll canvas, in color.md.","The symptom table, baseline and Never Ship go verbatim into a new mobile-web.md, linked from platforms.md.","most 'the app feels janky on mobile' reports are not animation problems",["F13"]),
+S("playful-design-router","workflow","Playful Design","partial","agn","auto",98,["Always-on standards applied to every UI change","Order of work: before building → while → before saying done → after","\"Keep it proportional\"; a one-line route report"],"Your design SKILL.md routes by outcome and craft, and finish-review is a stronger done gate. Missing: the before/after phases, always-on standards and a route report.","§4 goes nearly verbatim into SKILL.md as \"Order of work\", mapped to your evidence, design-qa and finish review. §5 goes into reporting.md.","Keep it proportional. A copy tweak needs scope and copy, not the whole pipeline.",["F1"]),
+S("rule","workflow","Raphael Salaja","elsewhere","agn","auto",59,["After \"always\", \"never\" or the same correction twice, writes a 1–3 sentence rule with a pair","Sweeps existing code that breaks the new rule"],"Belongs in pstack self-improve.","Not for Design.","When they correct the same thing twice, propose a rule.",[]),
+S("prose","workflow","Raphael Salaja","elsewhere","agn","auto",149,["First person; each decision names the option it beat","Says how each fact is known and never invents the author's experience"],"Belongs in Drafts.","Not for Design.","Writing for someone else, add no anecdote, feeling or attempt they did not describe.",[]),
+S("ship","workflow","Raphael Salaja","elsewhere","agn","manual",71,["Conventional commits, one PR per bug, a screenshot on UI PRs, watches CI"],"Belongs in pstack publish-pr.","Not for Design.","A pull request that changes UI carries a screenshot.",[]),
+S("bots","workflow","Raphael Salaja","skip","web","manual",131,["Builds Grok Bot portfolio pages with a soft-body pile"],"Not present.","Out of scope.","A copy link comes only from a published template the user pasted back.",[]),
+S("better-interface","verify","Jakub Krehel","partial","agn","auto",132,["Routes one review through six domain skills in a fixed order: accessibility, layout, writing, typography, color, UI", "13 escalation triggers are HIGH on sight, such as no accessible name, no visible focus, or loss at 320px or 200% zoom", "Prefers the cheaper fix: delete, use the platform, reuse, correct the value, then add", "One finding per root cause, at most 15, ending Block or Approve"],"design-audit.md merges findings by root cause and ranks by consequence. Missing: the trigger list that can't be averaged down, the cheaper-fix ladder, the cap and an explicit Block or Approve.","Escalation triggers, Prefer the cheaper fix and Consolidate systemic findings go into design-audit.md verbatim. The domain order maps onto your references.","A cap may shorten a report; it may never be why a blocker went unreported.",["F27"]),
+S("better-ui","standards","Jakub Krehel","partial","mixed","auto",133,["Exact values: press scales to 0.96 over 150ms ease-out, and a disabled button never scales", "Entrances stagger 100ms with 4px blur and a 12px rise over 300ms; exits take 150ms with a fixed −12px", "Icon swaps cross-fade: scale 0.25→1, blur 4px→0, spring 0.3s with bounce 0", "Outer radius = inner radius + padding; image outlines are pure black or white at 10%"],"motion.md, icons.md and color.md state the ideas: respond promptly, one SVG recolored per state, suppress transitions on a theme switch. icons.md keeps this skill's headings. None of the values survived.","The values go into motion.md as agnostic numbers, with CSS and Motion recipes in a Web block. Surface rules go into layout.md, and the Before you finish table into craft-floor.md.","The values below are exact, not ranges to approximate.",["F28", "F8"]),
+S("better-typography","standards","Jakub Krehel","partial","mixed","auto",165,["Exact floors: unitless line-height, weight 400+ under 18px, a 60–75 character measure, 16px inputs on iOS", "Line-height by role: display 1.1, headings 1.2–1.3, body 1.5–1.6, and at least 1.4 once text wraps to three lines", "Tracking: −0.01 to −0.02em at 24px and up, 0.05em on small uppercase labels", "A 19-row detection table: px line-height, balance on paragraphs, ... instead of …"],"typography.md follows this skill section by section (load the real faces, properties over raw tags, tabular numerals, underlines, selection) but keeps none of its numbers.","Measured, not preferred and the numeric sections replace the matching paragraphs in typography.md. The CSS cheat sheet becomes a Web block; Dynamic Type equivalents go in a Swift block.","Letter-spacing, pairing and scale ratios are heuristics.",["F29", "F34"]),
+S("better-colors","standards","Jakub Krehel","partial","mixed","auto",95,["A system is ramps: one neutral, one accent, and only the status ramps the product renders", "Primitives are named by hue, semantic tokens by role; components use only semantic tokens", "Hues within 15° in OKLCH count as one color; one filled action per view", "Measure the rendered pair, report the failing ratio, and leave the colors alone unless asked"],"color.md (30 lines) has role tokens and contrast in context. No ramp structure, token tiers, hue separation or measured-pair rule.","All principles go into color.md, with palette-generation and token-naming as references. Pairs with Raphael's color (F3).","Never report a contrast value you did not measure, and never estimate a color you could compute.",["F3", "F30"]),
+S("better-accessibility","standards","Jakub Krehel","partial","mixed","auto",139,["WCAG 2.2 A and AA: a finding cites a criterion number or a task an assistive-technology user can't finish", "24×24px AA targets (2.5.8), aiming for 44 on touch and 40 on desktop; focus never hidden under sticky chrome (2.4.11)", "Validate on submit and never disable submit; errors use aria-invalid and aria-describedby", "Two walks: keyboard only, then screen reader"],"accessibility.md is a WCAG 2.1 AA audit template, and workflows-guide treats target size as AAA advisory. Missing: the WCAG 2.2 criteria (2.5.8, 2.4.11, 2.5.7 dragging), the two walks and the detection table.","Criteria, not conventions and the two walks go into accessibility.md. The web detection table goes in a Web block; VoiceOver and Dynamic Type in a Swift block.","When unsure, take the platform default over a custom rebuild, and remove ARIA rather than add it.",["F31"]),
+S("better-layout","standards","Jakub Krehel","partial","mixed","auto",97,["The gap between groups is at least 2× the gap within one", "Logical properties wherever direction matters; the RTL mirror is a test", "Hidden content gets a cue: the next item peeks 16–32px past a scroll edge", "Plan for growth: max-width and min-height, tested with pseudo-localization and German"],"layout.md groups by proximity and alignment and uses spacing tokens. Missing: the 2× rule, clearance numbers, peeks, logical properties and the detection table.","Principles go into layout.md verbatim; the detection table into a Web block; SwiftUI leading and trailing edges and safe areas into a Swift block.","A value that differs from these starting points is not one.",["F32"]),
+S("better-writing","standards","Jakub Krehel","partial","agn","auto",151,["Inventory the existing strings first: the nouns, verbs and case already in use", "Undo beats confirmation for frequent reversible actions; a confirmation names the action and the object", "Build strings whole, with ICU plurals and Intl formatting", "Settings describe the ON state; errors say how to fix it, beside the field"],"ux-copy.md covers confirmations, errors and empty states. Missing: the string inventory, undo before confirmation, ICU plurals and the ON-state rule.","Inventory, Undo beats confirmation, Build strings whole and Settings describe the ON state go into ux-copy.md.","Rewording that merely suits your taste is not a finding.",["F33"]),
+S("interface-review","verify","Jakub Krehel","partial","agn","manual",149,["Scope is the branch range plus uncommitted work; it never falls back to HEAD~1 on its own", "Expands each changed file to at most five consumers and names the ones it skipped", "Reads the removed lines; statuses are Introduced, Regression and Pre-existing (at most three)", "Never checks out or stashes; fetches refs and reads them in place"],"change-audit.md closely paraphrases this skill: the same headings, the removed-signals table and the three statuses. Missing: the five-consumer cap, the limit of three pre-existing findings, blame against the range, and the scope block.","Restore the dropped specifics in change-audit.md and credit the source.","A changed file is evidence, not the review subject.",["F27", "F34"]),
+S("break","verify","Jakub Krehel","partial","web","manual",85,["One component per run; scenarios come from its props, keeping only axes whose cue matches", "A harness route renders every scenario at once, with the real component untouched", "Look once, mark each break on the page, report Scenario / Observed / Owner", "\"Everything survived\" is a complete report"],"component-stress.md has the scenarios. Missing: inferring axes from props and naming the dropped ones, the one-look harness, and the owner column.","Axis inference and the harness rules go into component-stress.md, and scenarios.md sits beside the break-ui catalog (F4).","A predicted failure is not a finding.",["F4"]),
+S("state-machine","verify","Jakub Krehel","missing","mixed","manual",90,["Finds every state in the component's own branches: data, account and feature", "A throwaway route with the real component, product-shaped fixtures and a grouped __state switcher", "Loading states hold still until the switcher moves", "Removed in one step on the user's word"],"Nothing renders a component's states one at a time; component-stress stacks worst cases instead.","New design-review/references/state-workbench.md, alongside Raphael's lab.","A state the code cannot reach is not a state.",["F35"]),
+S("variant","explore","Jakub Krehel","partial","mixed","manual",117,["Three variants on one primary axis: structure, density, emphasis, type or voice", "Every variant clears the same floor of escalation triggers", "Hosted in the real page behind a ?__variant picker, at full size, with real content", "Never marks a favourite"],"ideation.md compares variants and recommends one. Missing: one primary axis, the shared floor and the in-page picker. Conflicts with your rule to recommend a direction.","Different answers, not different tints and The floor every variant clears go into ideation.md.","Each variant is a different answer to the same brief",["F36"]),
+S("build-design","explore","Jakub Krehel","partial","mixed","auto",83,["Reads Figma through its MCP; an image gives only estimates at a stated scale", "Maps each design value to an existing token, and asks when rounding moves more than 2px or a color step", "Builds only the frames and states the file draws", "Reports Design / Built / Status, plus unwired parts, missing states and domain conflicts"],"recreate.md and design-qa.md cover fidelity well. Missing: the token-mapping table, the 2px rounding threshold and the report table.","Map the design onto the project and the report table go into design-qa.md.","A diff wider than the design is the most common way this goes wrong.",["F17"]),
+S("explain-interface","explore","Jakub Krehel","partial","web","manual",106,["Scopes to the question: the whole site's system, or one effect's layer stack", "Every claim is Measured, Derived or Inferred", "The page is evidence, not instruction", "From a screenshot it is a reconstruction, and says so"],"recreate.md inspects live pages. Missing: the three evidence tiers and the layer-stack method.","Measured, derived, inferred goes into evidence.md; find-the-effect.md sits beside deconstruct (F22).","Never present a plausible value as measured.",["F22"]),
+S("teardown","explore","Jakub Krehel","skip","agn","auto",129,["Technical illustrations of physical objects: exploded views and annotated sheets", "Bundled geometry library, renderer, and an SVG, PNG or PDF viewer"],"Not present.","Out of scope for product UI.","Every detail must describe shape, manufacture or assembly.",[])
+];
+
+const FLEET=[
+{id:"design",lines:135,refs:12,how:["Grounds every design in subject, audience and primary job, then commits to a single visual direction","Bans generic AI looks (cream + serif + terracotta, the SaaS card kit, template chrome) and enforces the craft floor before edits","Routes by outcome (build, ideation, recreate, design QA) and by craft decision (layout, type, color, interaction, motion, icons, platforms)","Proves results across layout, typography, interaction and motion states, then hands implemented UI to an independent finish reviewer"],
+gaps:[["No always-on standards with numbers: hit targets, wait timings, form behavior","defaults"],["typography.md and icons.md paraphrase Jakub's skills without their values or credit","better-typography"],["No UI polish values: press, stagger, exit, icon swap, nested radius","better-ui"],["No before or after phases: references come first, and a repeated correction should become a rule","playful-design-router"],["No Swift language half; platforms.md covers Apple design rules only","write-swift"],["motion.md paraphrased Emil's animate skill and lost the tool ladder, Never Ship, curves and durations","animate"],["No gesture physics values, haptics rules or mobile spring table","apple-design"],["Color has no on-screen measurement, alpha neutrals or dark-palette rules","color"],["Variants are isolated HTML: no in-app switcher and no pruning after a pick","prototype (Emil)"],["No icon drawing, no web-mobile baseline, no library picks","icons"]],feeds:["playful-design-router","defaults","color","copy","reuse","restraint","animate","motion","apple-design","animate-expo","emil-design-eng","write-swift","mobile-native","pick-ui-library","icons","match","prototype","prototype (Emil)","alignment"]},
+{id:"design-review",lines:71,refs:4,how:["Judges the target at its actual stage and labels description-only conclusions as hypotheses","Routes to a design audit, a change audit of removed lines, a component stress test, or motion review","Records which routes, states, themes and devices were inspected, and reports what couldn't be","Every finding has a location, evidence, user impact, a correction and the verification it needs"],
+gaps:[["No measuring instruments for contrast, overflow, tab stops, alignment or frames, web or native","viewports"],["No escalation triggers or cheaper-fix ladder; a blocker can be ranked down","better-interface"],["change-audit.md lost the consumer cap, scope block and credit","interface-review"],["Stress testing uses abstract scenarios, with no worst-case catalog or schema-limit mapping","break-ui"],["No keyboard walk procedure and no alignment threshold","keyboard"],["Motion review has no mode for removing motion, no fix order, no Block/Approve and no frame budgets","remove-animations"],["Findings aren't numbered for the user to pick from; there's no coverage table per check","audit"],["No state lab that forces every state of real components open","lab"]],feeds:["break-ui","viewports","keyboard","alignment","audit","frames","lab","remove-animations","review-animations","find-animation-opportunities","improve-animations","animation-performance","web-design-guidelines"]},
+{id:"design-context",lines:61,refs:0,how:["Saves, recalls, updates or forgets product facts with source, date and intended use","Keeps preferences, measured values, research and assumptions separate","Audits, documents or extends a design system from its actual tokens and callers","Builds or syncs the bundled design-system artifact"],
+gaps:[["Doesn't fix shared problems inside the primitive with a sweep of its siblings","reuse"],["No taste record built from experiments (kept or killed, with reasons)","sketchbook"]],feeds:["reuse","sketchbook"]},
+{id:"design-research",lines:55,refs:0,how:["Plans studies around a named decision and the observation that would change it","Synthesizes supplied research with an evidence ledger: observed, reported, inferred or assumption","Scans a named product's public complaints, removing duplicates and dating each report","Never invents interviews or a customer's voice"],
+gaps:[["No visual reference gathering: no moodboard from Mobbin, Are.na or your own saves, and no board for picking","gather"]],feeds:["gather"]},
+{id:"prototype",lines:26,refs:0,how:["Builds scripted StageShow scenes, and says the cursor is staged, not the real app","Grounds the scene in product tokens, then plans 3–5 beats and a payoff","Copies the vendored React kit into a working project and adapts an example","Rehearses at the intended size and narrow, with reduced motion as a useful final still"],
+gaps:[["Dropped the upstream 7-step workflow, gold tables and Common failures list","stageshow"],["Doesn't mention film.mjs --gate, the poster frame or REHEARSAL.md","stageshow"],["30 examples weren't vendored, but the references still cite them","stageshow"],["Its name clashes with the variant-picker \"prototype\" skills","prototype"]],feeds:["stageshow","prototype","prototype (Emil)"]},
+{id:"design-to-motion",lines:519,refs:0,how:["Part A rebuilds the exact frame; Part B is the motion system; Part C records and exports","Decides between showcase and website contexts first; text sections never animate","Empty state → loading choreography → story loops → seamless repeat","Deterministic capture to MP4 and GIF"],
+gaps:[["A 519-line entrypoint; parts A, B and C should be references","playful-design-router"],["Web only (IntersectionObserver); no native showcase path","write-swift"],["No timeline format for breaking down a reference animation before rebuilding it","deconstruct"]],feeds:["deconstruct","blank-page"]},
+{id:"landing-page-design",lines:224,refs:0,how:["One offer, one audience, one primary action","Part A: intake, structure, layouts, conversion rules, copy, build order, SEO and AEO","Part B: applies Design's craft to that strategy","Output format and checklist"],
+gaps:[["224-line entrypoint; strategy and visual system could be separate references","playful-design-router"],["No reference-gathering step before structure","gather"]],feeds:["gather"]}
+];
+
+const FORKS=[
+{id:"F1",done:1,p:1,sz:"S",t:"Order of work and route report",why:"Adds the missing before and after phases and a one-line report of the skills used, without adding procedure.",src:"playful-design-router §2 (as pointers), §4 nearly verbatim, §5",to:"design/SKILL.md (new \"Order of work\"), references/reporting.md",seam:"Map \"before saying done\" to evidence.md, design-qa and finish-review. Drop install tables and the installed-skill check.",lane:[["design/SKILL.md","agn"],["references/reporting.md","agn"]]},
+{id:"F2",p:1,sz:"L",t:"Interface defaults with numbers",why:"The biggest concrete gap: targets, wait timings, forms, dialogs, hotkeys, sound, live updates.",src:"defaults: 15 agnostic sections verbatim; 16 web sections + recipes.md",to:"design/references/defaults.md (new), platforms.md Web block",seam:"Swift block: 44pt + .contentShape, .monospacedDigit(), FormatStyle, AccessibilityNotification.Announcement, SceneStorage, .sensoryFeedback. Reconcile the pill rule with craft-floor.",lane:[["design/references/defaults.md","agn","new"],["design/references/defaults.md","web","new"],["design/references/defaults.md","swift","new"]]},
+{id:"F3",p:1,sz:"M",t:"Color measured on screen",why:"Contrast read from what's drawn, alpha neutrals, dark mode as its own palette, accent reserved for actions.",src:"color: Measure the colour on screen; Field edges and icons clear 3:1; Neutrals are translucent; Dark mode is its own palette; The accent marks action",to:"design/references/color.md; contrast.js as a web tool",seam:"Swift block: sample simulator screenshot pixels or use Accessibility Inspector, never the Color asset value. Copy Salaja's MIT licence.",lane:[["design/references/color.md","agn"],["design/references/color.md","web"],["design/references/color.md","swift"]]},
+{id:"F4",p:1,sz:"M",t:"Worst-case catalog for stress tests",why:"Real values that break UI, each with what it breaks. It's plain data and works on any platform.",src:"break-ui CATALOG.md verbatim; Phase 1 Map the surface; Hard Rules 1–2; Truncate, wrap, or clamp",to:"design-review/references/stress-catalog.md (new), component-stress.md, typography.md",seam:"Add a Swift column to the failure-signature table: .lineLimit, .truncationMode(.middle), .layoutPriority, PersonNameComponents. Drop the Initial Response and the persona.",lane:[["design-review/references/stress-catalog.md","agn","new"],["design-review/references/component-stress.md","agn"],["design-review/references/component-stress.md","swift"]]},
+{id:"F5",p:1,sz:"M",t:"Viewport and Dynamic Type sweep",why:"Replaces \"check affected breakpoints\" with a defined sweep, so a skipped size shows up as a finding.",src:"viewports steps 1–7; verify \"See the problem first\" and \"Report what you saw\"",to:"references/evidence.md",seam:"Web widths block plus overflow.js. Swift block: smallest and largest iPhone, iPad Split View and Slide Over, landscape, Dynamic Type xS–AX5, macOS minimum window.",lane:[["references/evidence.md","agn"],["references/evidence.md","web"],["references/evidence.md","swift"]]},
+{id:"F6",p:2,sz:"M",t:"Keyboard walk",why:"A procedure for checking focus order, plus the warning that synthetic key events don't move focus.",src:"keyboard steps 2–7",to:"references/accessibility.md (new section)",seam:"Web block: tabindex, inert, skip link, tabstops.js. Swift block: Full Keyboard Access, @FocusState, .focusSection(), .keyboardShortcut(.cancelAction), XCUITest typeKey.",lane:[["references/accessibility.md","agn"],["references/accessibility.md","web"],["references/accessibility.md","swift"]]},
+{id:"F7",p:2,sz:"M",t:"Alignment thresholds",why:"The 1–4px rule, cap-height centering, concentric radii and the 10% optical rule.",src:"alignment steps 3–5 (rules); full procedure",to:"design/references/layout.md; design-review/references/alignment.md (new)",seam:"Web: measure.js. Swift: crop @2x/@3x screenshots and use Xcode's view debugger. Drop the remote font from report.html if you keep it.",lane:[["design/references/layout.md","agn"],["design-review/references/alignment.md","web","new"],["design-review/references/alignment.md","swift","new"]]},
+{id:"F8",p:1,sz:"L",t:"Motion values, physics and haptics",why:"Restores the numbers motion.md dropped when it paraphrased the source, and adds gesture formulas that map onto SwiftUI springs.",src:"animate §5 + Never Ship; motion: closes faster, chrome fades, no replay, size from second element, icon cross-fade; apple-design §3/5/6/9/13; animate-expo spring table, bounce rule, haptics",to:"design/references/motion.md",seam:"Label values as starting points. One value per conflict (see Decisions). Swift block: .spring(duration:bounce:), .sensoryFeedback, UIImpactFeedbackGenerator. Web block: AnimatePresence and similar names.",lane:[["design/references/motion.md","agn"],["design/references/motion.md","web"],["design/references/motion.md","swift"]]},
+{id:"F9",p:1,sz:"M",t:"Remove-motion review mode",why:"A subtraction mode with its own risks: hidden start states, waiting code, delayed unmount, layout shifts that motion was hiding.",src:"remove-animations: The Gate, Reducing, Removal Hazards, Cleanup",to:"design-review/references/motion-review.md (fourth mode)",seam:"Recast AnimatePresence and onExitComplete as \"an exit that keeps the element mounted\". Add SwiftUI .transition and withAnimation completion.",lane:[["design-review/references/motion-review.md","agn"],["design-review/references/motion-review.md","swift"]]},
+{id:"F10",p:2,sz:"L",t:"Stricter motion review and audit",why:"A fix order, explicit Block/Approve, a hunt list capped at 5–7, eight audit categories and a plan template.",src:"review-animations fix order + ten standards + Block/Approve; find-animation-opportunities Where to Hunt + cap; improve-animations AUDIT.md + PLAN-TEMPLATE; motion Reporting",to:"motion-review.md; design-review/references/motion-audit.md (new)",seam:"Make the CSS values in the standards generic. Drop the executor that writes plans/ files (it conflicts with read-only review).",lane:[["design-review/references/motion-review.md","agn"],["design-review/references/motion-audit.md","agn","new"]]},
+{id:"F11",p:2,sz:"M",t:"Frame budgets and traces",why:"Replaces \"profile in a platform-appropriate way\" with budgets and a second trace that proves the fix.",src:"frames: A trace, never a feeling + steps 1–5; animation-performance Frame Budget + Diagnose",to:"design-review/references/motion-review.md (Performance)",seam:"Web: observe.js (Chromium only). Swift: Instruments Animation Hitches, measured on a release build and the slowest supported device.",lane:[["design-review/references/motion-review.md","web"],["design-review/references/motion-review.md","swift"]]},
+{id:"F12",p:3,sz:"L",t:"Web motion techniques",why:"Keeps CSS, WAAPI and Motion know-how available without putting web-only material in the agnostic files.",src:"emil-design-eng clip-path, transform, debugging; animate tool ladder + RECIPES.md; animation-performance pipeline and traps",to:"design/references/motion-techniques-web.md (new)",seam:"Remove the pointers to skills that don't exist in your plugin. Keep React and Framer names as labelled examples.",lane:[["design/references/motion-techniques-web.md","web","new"]]},
+{id:"F13",p:2,sz:"M",t:"Mobile web baseline and library picks",why:"Most \"janky on mobile\" reports come from tap delay, tap flash or viewport units, not animation.",src:"mobile-native Symptom Table, Baseline, Never Ship; pick-ui-library The list, Common mismatches",to:"design/references/mobile-web.md (new), build.md Web block",seam:"Mark the Next.js and Tailwind notes. Native libraries need their own list; leave that open.",lane:[["design/references/mobile-web.md","web","new"],["design/references/build.md","web"]]},
+{id:"F14",p:1,sz:"L",t:"Swift half of the platform split",why:"You work in Swift. The plugin has no concurrency, @Observable or SwiftUI isolation guidance.",src:"write-swift §6 verbatim, defaults hierarchy, §15 @Observable; §1–5 and §7–16 as a separate file",to:"design/references/platforms.md; design/references/swift.md (new)",seam:"Add a craft-table row \"Swift or SwiftUI code\". Add a platform switch to build.md that sends native work to platforms.md and swift.md instead of HTML.",lane:[["design/references/platforms.md","swift"],["design/references/swift.md","swift","new"],["design/references/build.md","agn"]]},
+{id:"F15",p:2,sz:"M",t:"Variants in the running app",why:"Real variants on one route in your own app, labelled by axis, with the losers deleted after a pick.",src:"Emil prototype phases 3–6 + invocation variants; Raphael prototype prune step + switcher.js",to:"design/references/ideation.md (new section)",seam:"Pick one picker. Settle whether the skill recommends a favorite. Resolve the name clash (see Decisions).",lane:[["design/references/ideation.md","agn"],["design/references/ideation.md","web"]]},
+{id:"F16",p:2,sz:"L",t:"Reference gathering",why:"The plugin has no step that gathers references before designing.",src:"gather: whole skill + sources.md, collect.mjs, board.html",to:"design-research/references/gather.md (new) + tools",seam:"Replace the connector list with tools.md connector discovery. Keep Mobbin's stop rule for usage limits. Needs Node.",lane:[["design-research/references/gather.md","agn","new"],["design-research/references/gather.md","web","new"]]},
+{id:"F17",p:3,sz:"S",t:"Recreate rules",why:"Copy only the named part, carry the concept not the brand, and recreate on the same platform as the source.",src:"match: One to one means exact values, steps 4–5; compare.html",to:"design/references/recreate.md, design-qa.md",seam:"Nothing to change; it's agnostic.",lane:[["design/references/recreate.md","agn"]]},
+{id:"F18",p:3,sz:"M",t:"Icon drawing",why:"Draw missing glyphs that match the existing set by measuring its spec first.",src:"icons steps 1–9 + sheet.html",to:"design/references/icon-drawing.md (new)",seam:"Note that the grid and stroke rules also apply to custom SF Symbols.",lane:[["design/references/icon-drawing.md","agn","new"]]},
+{id:"F19",p:3,sz:"M",t:"State lab",why:"See every state of the real components on one page.",src:"lab steps 1–6 + lab.js",to:"design-review/references/component-stress.md (State lab mode)",seam:"Swift block: #Preview variants with forced states.",lane:[["design-review/references/component-stress.md","web"],["design-review/references/component-stress.md","swift"]]},
+{id:"F20",p:2,sz:"S",t:"Numbered, pickable findings",why:"Lets you reply \"fix 1, 2 and 5\", with a coverage line for each check.",src:"audit \"Number the fixes\"; report.md coverage table",to:"references/reporting.md",seam:"Don't copy the per-skill table, since it names Raphael's skills.",lane:[["references/reporting.md","agn"]]},
+{id:"F21",p:2,sz:"M",t:"Restore the StageShow workflow",why:"Your 26-line wrapper dropped the procedure that makes scenes pass rehearsal.",src:"stageshow SKILL.md Workflow 1–7, Common failures, gold/specimen tables",to:"prototype/SKILL.md (or a references file), vendor/examples",seam:"Re-vendor the 8 brand-free examples (backgrounds, chrome, controls, looks, hero-grid, ruled-bento, staggered-bento, glass), or remove their citations.",lane:[["prototype/SKILL.md","web"]]},
+{id:"F22",p:3,sz:"M",t:"Motion breakdown timeline",why:"A format for picking apart a reference animation before rebuilding it.",src:"deconstruct steps 1–4 + pair table; viewer.html",to:"design/references/motion-breakdown.md (new)",seam:"The data model is agnostic, so record SwiftUI timings the same way. viewer.html is web-only.",lane:[["design/references/motion-breakdown.md","agn","new"]]},
+{id:"F23",p:3,sz:"S",t:"Pinned web guidelines",why:"104 web lint rules, without fetching instructions live from an unpinned branch.",src:"vercel-labs/web-interface-guidelines command.md (pinned commit)",to:"design-review/references/web-guidelines.md (new)",seam:"Pin the commit and keep NOTICE. Web only.",lane:[["design-review/references/web-guidelines.md","web","new"]]},
+{id:"F24",p:2,sz:"S",t:"Copy rules",why:"Display names over ids, tense that matches the state, the number instead of the noun.",src:"copy: display names, state tense, one-line description, number not noun",to:"design/references/interaction.md#labels-and-messages",seam:"Casing follows the platform and product (see Decisions).",lane:[["design/references/interaction.md","agn"]]},
+{id:"F25",p:2,sz:"S",t:"Restraint and reuse rules",why:"No redundant feedback, delete everything a removal leaves behind, fix inside the primitive and sweep its siblings.",src:"restraint: No feedback the screen already gives, Remove means delete (UI half); reuse: Fix it once, Shipped components stay, One style per kind; scope: feature inventory",to:"interaction.md, build.md",seam:"\"Native element\" becomes \"system control\", with <video controls> and AVKit as the examples.",lane:[["design/references/interaction.md","agn"],["design/references/build.md","agn"]]},
+{id:"F26",done:1,p:1,sz:"M",t:"Skill hygiene pass",why:"Turns the long entrypoints into routers and makes the descriptions specific.",src:"(your own files)",to:"design-to-motion/SKILL.md → references/fidelity.md, motion-system.md, capture.md; landing-page-design; all descriptions",seam:"No content removed; it moves into references. Then run the default skill validator.",lane:[["design-to-motion/SKILL.md","agn"]]},
+{"id": "F27", "p": 1, "sz": "M", "t": "Review severity and fix order", "why": "Blockers can't be averaged down, fixes start with deletion, and every review ends Block or Approve.", "src": "better-interface: Escalation triggers, Prefer the cheaper fix, Consolidate systemic findings, Before you finish", "to": "design-review/references/design-audit.md, change-audit.md", "seam": "Map the six better-* owners to your references. Keep your P0–P3 or adopt HIGH/MEDIUM/LOW (see decision on rule IDs).", "lane": [["design-review/references/design-audit.md", "agn"], ["design-review/references/change-audit.md", "agn"]]},
+{"id": "F28", "p": 1, "sz": "M", "t": "UI polish values", "why": "Press, stagger, exit, icon swap, radius and outline values your motion and icon references dropped.", "src": "better-ui: every principle verbatim; animations.md, enter-exit.md, icon-transitions.md, surfaces.md", "to": "design/references/motion.md, icons.md, layout.md (+ Web block)", "seam": "Values stay agnostic; CSS, Tailwind and Motion recipes go in a Web block. Settle the press-scale conflict first.", "lane": [["design/references/motion.md", "agn"], ["design/references/motion.md", "web"], ["design/references/icons.md", "agn"]]},
+{"id": "F29", "p": 1, "sz": "S", "t": "Typography numbers", "why": "Restores the floors and ratios that typography.md paraphrased away.", "src": "better-typography: Measured, not preferred and every numeric section; css-cheat-sheet.md", "to": "design/references/typography.md", "seam": "Replace the paraphrased paragraphs with the source text. CSS in a Web block, Dynamic Type sizes in a Swift block.", "lane": [["design/references/typography.md", "agn"], ["design/references/typography.md", "web"], ["design/references/typography.md", "swift"]]},
+{"id": "F30", "p": 2, "sz": "M", "t": "Color system structure", "why": "Ramps, token tiers, hue separation and the measured-pair rule.", "src": "better-colors: all principles; palette-structure.md, token-naming.md, contrast.md", "to": "design/references/color.md (+ new color-system.md)", "seam": "Merge with F3 so contrast thresholds appear once.", "lane": [["design/references/color.md", "agn"]]},
+{"id": "F31", "p": 1, "sz": "M", "t": "WCAG 2.2 accessibility", "why": "Moves the audit from WCAG 2.1 to 2.2, with the two walks and detection patterns.", "src": "better-accessibility: Criteria, not conventions; every principle; forms.md, focus-and-keyboard.md, hit-areas.md", "to": "references/accessibility.md, workflows-guide.md", "seam": "Replace the 2.5.5 AAA note with 2.5.8 AA. Web detection table in a Web block; VoiceOver and Dynamic Type in a Swift block.", "lane": [["references/accessibility.md", "agn"], ["references/accessibility.md", "web"], ["references/accessibility.md", "swift"]]},
+{"id": "F32", "p": 2, "sz": "S", "t": "Layout numbers and RTL", "why": "The 2× grouping rule, clearance, peeks and logical properties.", "src": "better-layout: every principle; detection table", "to": "design/references/layout.md", "seam": "CSS detection table in a Web block; SwiftUI leading and trailing edges in a Swift block.", "lane": [["design/references/layout.md", "agn"], ["design/references/layout.md", "web"]]},
+{"id": "F33", "p": 2, "sz": "S", "t": "Interface writing rules", "why": "String inventory, undo before confirmation, whole strings with plurals, ON-state toggles.", "src": "better-writing: Inventory the existing strings first, Undo beats confirmation, Build strings whole, Settings describe the ON state", "to": "references/ux-copy.md", "seam": "Keep ux-copy's structure; add these as sections. Casing follows the label-casing decision.", "lane": [["references/ux-copy.md", "agn"]]},
+{"id": "F34", "p": 1, "sz": "S", "t": "Credit Jakub Krehel", "why": "typography.md, icons.md and change-audit.md derive from his MIT skills with no notice.", "src": "jakubkrehel/skills LICENSE (MIT) at the commit you fork from", "to": "references/jakub-krehel-LICENSE.txt, NOTICE", "seam": "Add the licence and a NOTICE line naming the files that derive from his text. Do this before or with any Jakub fork.", "lane": [["references/jakub-krehel-LICENSE.txt", "agn", true]]},
+{"id": "F35", "p": 3, "sz": "M", "t": "State workbench", "why": "Renders each real state of a component behind a switcher while you work on it.", "src": "state-machine: steps 2–6 and switcher.md", "to": "design-review/references/state-workbench.md (new)", "seam": "Web route rules in a Web block; SwiftUI previews per state in a Swift block.", "lane": [["design-review/references/state-workbench.md", "web", true], ["design-review/references/state-workbench.md", "swift", true]]},
+{"id": "F36", "p": 2, "sz": "S", "t": "Variant axis and floor", "why": "Variants that differ on one axis and all clear the same accessibility floor.", "src": "variant: Different answers, not different tints; The floor every variant clears; Name the axis before writing code", "to": "design/references/ideation.md", "seam": "Settle the favourite decision first.", "lane": [["design/references/ideation.md", "agn"]]}
+];
+
+const DECISIONS=[
+{id:"case",t:"Label casing",a:["Router (copy)","Title Case for labels"],b:["Your plugin","Sentence case (\"Start free trial\")"],opts:["Follow the platform: Title Case for macOS menus and buttons, sentence case on the web","Sentence case everywhere","Title Case everywhere"],rec:0},
+{id:"pill",t:"Pill buttons",a:["Router (defaults)","Rounded, never pill"],b:["Your craft floor","Pills reserved for compact controls"],opts:["Keep your craft-floor rule","Adopt never-pill"],rec:0},
+{id:"vals",t:"Conflicting motion values",a:["motion (Salaja) · better-ui (Krehel)","Press 0.98 · stagger <50ms (Salaja); press 0.96 over 150ms · stagger 100ms (Krehel)"],b:["Emil skills","Press 0.97 · stagger 30–80ms · hover with ease, ≤150ms"],opts:["Use Emil's values, labelled as starting points","Use Krehel's values, stated as exact","Use Salaja's values","Keep all three as a range"],rec:0},
+{id:"name",t:"The prototype name clash",a:["Router","prototype = variant picker"],b:["Your plugin","prototype = StageShow scripted scenes"],opts:["Rename yours to stageshow; variants live in ideation.md","Keep the names; variants live in ideation.md only","Rename yours to walkthrough"],rec:0},
+{id:"ids",t:"Rule IDs like viewports-short-heights",a:["Raphael skills","An ID on every rule; findings cite them"],b:["Your plugin","P0–P3 severity, no IDs"],opts:["Keep IDs in review references only","Drop IDs everywhere","Keep IDs everywhere"],rec:0},
+{id:"pick",t:"Pre-picking a favorite variant",a:["Emil prototype · Krehel variant","Never pre-pick; state each variant's cost and let the user choose"],b:["Your ideation.md","Recommend a direction with its trade-off"],opts:["Recommend, but show each variant's case first","Never pre-pick"],rec:0}
+];
+
+const C={covered:"var(--covered)",partial:"var(--partial)",missing:"var(--missing)",elsewhere:"var(--elsewhere)",skip:"var(--skip)"};
+const L={covered:"Covered",partial:"Partial",missing:"Missing",elsewhere:"Elsewhere",skip:"Skip"};
+const PF={agn:"Agnostic",web:"Web",swift:"Swift",mixed:"Mixed"};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const picked=new Set(), answers={};
+DECISIONS.forEach(d=>answers[d.id]=d.rec);
+let fStatus="all", fPlat=null, current=null;
+
+function renderStrip(){
+  const strip=document.getElementById("strip");let html="";
+  AREAS.forEach(([a],i)=>{ if(i) html+='<span class="gap"></span>';
+    R.filter(r=>r.area===a).forEach(r=>{html+=`<button style="background:${C[r.st]}" title="${esc(r.id)}: ${L[r.st]}" aria-label="${esc(r.id)}, ${L[r.st]}" data-open="${esc(r.id)}"></button>`;});});
+  strip.innerHTML=html;
+  const n=k=>R.filter(r=>r.st===k).length;
+  document.getElementById("tally").innerHTML=["covered","partial","missing","elsewhere","skip"].map(k=>`<span><b>${n(k)}</b>${L[k].toLowerCase()}</span>`).join("");
+}
+function match(r){
+  if(fStatus==="out"&&!(r.st==="elsewhere"||r.st==="skip"))return false;
+  if(fStatus!=="all"&&fStatus!=="out"&&r.st!==fStatus)return false;
+  if(fPlat&&!(r.pf===fPlat||(r.pf==="mixed"&&fPlat!=="agn")))return false;
+  return true;
+}
+function renderMap(){
+  document.getElementById("areas").innerHTML=AREAS.map(([a,name])=>{
+    const items=R.filter(r=>r.area===a);
+    return `<div class="area"><h4>${name}</h4><div class="tiles">${items.map(r=>`<button class="tile${match(r)?"":" dim"}" style="--c:${C[r.st]}" data-open="${esc(r.id)}" aria-current="${current===r.id}"><span class="n">${esc(r.id)}</span><span class="m"><span class="pf pf-${r.pf}">${PF[r.pf]}</span><span>${L[r.st]}</span>${r.inv==="manual"?"<span>· manual</span>":""}</span></button>`).join("")}</div></div>`;}).join("");
+}
+function renderDetail(id){
+  const r=R.find(x=>x.id===id)||R.find(x=>x.st==="missing");current=r.id;
+  const forks=r.forks.map(f=>FORKS.find(x=>x.id===f)).filter(Boolean);
+  document.getElementById("detail").innerHTML=`
+    <div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap"><h3 class="mono" style="font-size:17px">${esc(r.id)}</h3><span class="status st-${r.st}">${L[r.st]}</span></div>
+    <p style="color:var(--ink-3);font-size:12.5px;margin-top:4px">${esc(r.by)} · ${r.lines} lines · ${r.inv==="manual"?"runs only when called by name":"model-invoked"} · <span class="pf pf-${r.pf}">${PF[r.pf]}</span></p>
+    <div class="k">What it does</div><ul>${r.does.map(d=>`<li>${esc(d)}</li>`).join("")}</ul>
+    <div class="k">In your plugin</div><p>${esc(r.fleet)}</p>
+    <div class="k">Fork</div><p>${esc(r.fork)}</p>
+    ${forks.length?`<div style="margin-top:8px">${forks.map(f=>`<button class="fk${picked.has(f.id)?" on":""}" data-toggle="${f.id}" aria-pressed="${picked.has(f.id)}">${f.id} · ${esc(f.t)}</button>`).join("")}</div>`:""}
+    <blockquote>“${esc(r.quote)}”<cite>${esc(r.id)} · ${esc(r.by)}</cite></blockquote>`;
+  renderMap();
+}
+function renderSkills(){
+  document.getElementById("skills").innerHTML=FLEET.map(s=>`<article class="skill" id="sk-${s.id}">
+    <div><div class="id">$${s.id}</div><div class="sz">${s.lines} lines · ${s.refs} references</div>
+      <div class="feeds" aria-label="Router skills that feed this">${s.feeds.map(f=>`<button data-open="${esc(f)}">${esc(f)}</button>`).join("")}</div></div>
+    <div><h5>How it works now</h5><ul>${s.how.map(h=>`<li>${esc(h)}</li>`).join("")}</ul></div>
+    <div><h5>Gaps</h5><ul class="gaps">${s.gaps.map(([g,src])=>`<li>${esc(g)} <button class="fk" style="font-size:11px;padding:0 6px" data-open="${esc(src)}">${esc(src)}</button></li>`).join("")}</ul></div>
+  </article>`).join("");
+  const max=520;
+  document.getElementById("bars").innerHTML=FLEET.map(s=>`<div class="bar"><span class="nm">${s.id}</span><span class="t"><span class="${s.lines>150?"over":""}" style="width:${(s.lines/max*100).toFixed(1)}%"></span></span><span class="v">${s.lines}</span></div>`).join("");
+}
+function renderLanes(){
+  const rows={};
+  FORKS.forEach(f=>f.lane.forEach(([file,col,isNew])=>{rows[file]=rows[file]||{agn:[],web:[],swift:[],isNew:false};if(!rows[file][col].includes(f.id))rows[file][col].push(f.id);if(isNew)rows[file].isNew=true;}));
+  const order=Object.keys(rows).sort();
+  document.getElementById("lanes").innerHTML=order.map(file=>{const r=rows[file];const parts=file.split("/");const base=parts.pop();
+    const cell=ids=>ids.map(id=>{const f=FORKS.find(x=>x.id===id);return `<button class="fk${picked.has(id)?" on":""}" data-toggle="${id}" aria-pressed="${picked.has(id)}" title="${esc(f.t)}">${id} ${esc(f.t)}</button>`}).join("");
+    return `<tr><td class="file">${esc(parts.join("/"))}/<b>${esc(base)}</b>${r.isNew?'<span class="new">NEW</span>':""}</td><td>${cell(r.agn)}</td><td>${cell(r.web)}</td><td>${cell(r.swift)}</td></tr>`;}).join("");
+}
+function renderForks(){
+  document.getElementById("forkList").innerHTML=FORKS.map(f=>{
+    const from=R.filter(r=>r.forks.includes(f.id)).map(r=>r.id);
+    return `<article class="fork${picked.has(f.id)?" on":""}" id="fork-${f.id}">
+      <div class="top"><input type="checkbox" id="cb-${f.id}" data-toggle="${f.id}" ${picked.has(f.id)?"checked":""}><label for="cb-${f.id}">${f.id} · ${esc(f.t)}</label></div>
+      <div class="tags"><span class="pri pri-${f.p}">Priority ${f.p}</span>${f.done?'<span class="pri done">Done on branch</span>':""}<span class="size">${f.sz}</span>${[...new Set(f.lane.map(l=>l[1]))].map(p=>`<span class="pf pf-${p}">${PF[p]}</span>`).join("")}</div>
+      <p class="why">${esc(f.why)}</p>
+      <dl><dt>Fork</dt><dd>${esc(f.src)}</dd><dt>Into</dt><dd class="mono" style="font-size:11.8px">${esc(f.to)}</dd><dt>Seams</dt><dd>${esc(f.seam)}</dd>${from.length?`<dt>From</dt><dd>${from.map(x=>`<button class="fk" style="font-size:11px;padding:0 6px" data-open="${esc(x)}">${esc(x)}</button>`).join("")}</dd>`:""}</dl>
+    </article>`;}).join("");
+}
+function renderDecisions(){
+  document.getElementById("decisions").innerHTML=DECISIONS.map(d=>`<div class="dec"><h3 style="font-size:15px">${esc(d.t)}</h3>
+    <div class="vs"><div><small>${esc(d.a[0])}</small>${esc(d.a[1])}</div><div><small>${esc(d.b[0])}</small>${esc(d.b[1])}</div></div>
+    <fieldset><legend>Choose</legend>${d.opts.map((o,i)=>`<label><input type="radio" name="d-${d.id}" value="${i}" ${answers[d.id]===i?"checked":""}><span>${esc(o)}${i===d.rec?" (recommended)":""}</span></label>`).join("")}</fieldset></div>`).join("");
+}
+function renderTray(){
+  const n=picked.size;const list=FORKS.filter(f=>picked.has(f.id));
+  document.getElementById("trayCount").textContent=`${n} fork${n===1?"":"s"} picked`;
+  document.getElementById("traySum").textContent=n?list.map(f=>f.id+" "+f.t).join(" · "):"Pick forks below, or select priority 1.";
+}
+function brief(){
+  const list=FORKS.filter(f=>picked.has(f.id));
+  const lines=["# Design plugin: fork router skills","",
+  "Work in the worktree /Users/reesh/Code/fleet-design-audit (branch docs/design-router-audit). Source skills: clone https://github.com/playful-design/router (skills/<name>) for Emil's prototype, https://github.com/emilkowalski/skills, and for Jakub Krehel's skills, https://github.com/jakubkrehel/skills (skills/<name>). Record the commit you fork from.","",
+  "## Method","- Fork text verbatim. Edit only at the seams: strip greetings, personas, absolute \"no approximated values\" lines and pointers to skills that don't exist here.",
+  "- Keep rules framework-agnostic. Put code specifics in labelled Web and Swift blocks inside the same reference.",
+  "- Keep SKILL.md files as minimal routers. Forked text goes into references, linked from the routing tables with a one-line \"when to read\".",
+  "- Copy the MIT licence for each author whose text is forked (Emil Kowalski is already present; add Raphael Salaja and Jakub Krehel and, if used, Vercel's NOTICE). Pin upstream commits in a NOTICE.",
+  "- Validate with the default skill validator and `python3 scripts/verify.py --plugins`. Bump plugins/design version only when the content is final.","",
+  "## Decisions"];
+  DECISIONS.forEach(d=>lines.push(`- ${d.t}: ${d.opts[answers[d.id]]}`));
+  lines.push("","## Forks ("+list.length+")");
+  list.forEach(f=>{lines.push("",`### ${f.id} ${f.t} (priority ${f.p}, ${f.sz})`,f.why,`- Fork: ${f.src}`,`- Into: ${f.to}`,`- Seams: ${f.seam}`);});
+  if(!list.length)lines.push("","(none picked)");
+  lines.push("","## Done when","- Each picked fork is in its target file with the upstream wording intact apart from the listed seam edits.","- No router-only references remain (installed-skill checks, missing sibling skills, remote fetches).","- Validators pass, and the changed skills route to the new references.");
+  return lines.join("\n");
+}
+function toggle(id){picked.has(id)?picked.delete(id):picked.add(id);renderForks();renderLanes();renderTray();if(current)renderDetail(current);}
+
+document.addEventListener("click",e=>{
+  const o=e.target.closest("[data-open]");
+  if(o){renderDetail(o.dataset.open);if(!o.closest("#map"))document.getElementById("map").scrollIntoView();return;}
+  const t=e.target.closest("[data-toggle]");
+  if(t&&t.tagName!=="INPUT"){toggle(t.dataset.toggle);return;}
+  const c=e.target.closest(".chip");
+  if(c){ if(c.dataset.f){fStatus=c.dataset.f;document.querySelectorAll(".chip[data-f]").forEach(b=>b.setAttribute("aria-pressed",b===c));}
+    else{fPlat=fPlat===c.dataset.p?null:c.dataset.p;document.querySelectorAll(".chip[data-p]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.p===fPlat));}
+    renderMap();}
+});
+document.addEventListener("change",e=>{
+  if(e.target.matches("input[type=checkbox][data-toggle]"))toggle(e.target.dataset.toggle);
+  if(e.target.matches(".dec input")){answers[e.target.name.slice(2)]=+e.target.value;}
+});
+document.getElementById("pickHigh").onclick=()=>{FORKS.filter(f=>f.p===1).forEach(f=>picked.add(f.id));renderForks();renderLanes();renderTray();};
+document.getElementById("pickNone").onclick=()=>{picked.clear();renderForks();renderLanes();renderTray();};
+const dlg=document.getElementById("brief");
+document.getElementById("openBrief").onclick=()=>{document.getElementById("briefText").value=brief();document.getElementById("copied").textContent="";dlg.showModal();};
+document.getElementById("closeBrief").onclick=()=>dlg.close();
+document.getElementById("copyBrief").onclick=async()=>{const ta=document.getElementById("briefText");try{await navigator.clipboard.writeText(ta.value);document.getElementById("copied").textContent="Copied";}catch{ta.select();document.getElementById("copied").textContent="Selected; press ⌘C to copy";}};
+document.getElementById("dlBrief").onclick=()=>{const b=new Blob([document.getElementById("briefText").value],{type:"text/markdown"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="design-fork-brief.md";a.click();URL.revokeObjectURL(a.href);document.getElementById("copied").textContent="Download requested";};
+
+renderStrip();renderSkills();renderLanes();renderForks();renderDecisions();renderTray();renderDetail("remove-animations");
+</script>
+</body>
+</html>
