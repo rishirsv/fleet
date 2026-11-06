@@ -91,6 +91,14 @@ For one line, `overflow: hidden`, `text-overflow: ellipsis` and `white-space: no
 A truncated value needs a way back to the full text when omitted content
 matters; hover alone fails touch and keyboard users.
 
+Every long string forces this choice. Make it per field, not globally:
+
+- **Wrap** text the user needs in full to identify something: names, titles in a detail view. Two lines is usually fine; four is a sign the column is too narrow.
+- **Truncate at the end** for secondary metadata where the start carries the meaning: role, description, last message preview.
+- **Truncate in the middle** when items differ at the *end*: file names (`Q3-report…v12-final.pdf`), emails sharing a long domain, paths, hashes. End-truncation makes them identical.
+- **Clamp** (`line-clamp: 2`) for multi-line previews in cards, so card heights stay predictable.
+- **Never truncate** numbers, amounts, dates, or anything the user compares. Give them the room.
+
 ## Natural case, typographic punctuation
 
 Store text in natural case and set case with `text-transform`, so a redesign never means rewriting copy.
@@ -166,4 +174,6 @@ Keep text selectable by default. `::selection` can carry brand into the reading 
 
 Adapted from Jakub Krehel's public [better-typography](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/better-typography);
 the files in [typography/](typography/) are copied unchanged.
+The truncate, wrap or clamp choice is from Emil Kowalski's public
+[break-ui](https://github.com/emilkowalski/skills/tree/c8a79627b59d72d764d6ab6f2c87c09a48169833/skills/break-ui) ([license](../../../references/emil-kowalski-LICENSE.txt)).
 See [license](../../../references/jakub-krehel-LICENSE.txt).

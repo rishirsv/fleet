@@ -6,6 +6,8 @@ or layout failure.
 ## Contents
 
 - [Select reachable scenarios](#select-reachable-scenarios)
+- [Map the surface](#map-the-surface)
+- [Worst-case values](#worst-case-values)
 - [Scenario axes](#scenario-axes)
 - [Render the real component](#render-the-real-component)
 - [Inspect and report](#inspect-and-report)
@@ -21,6 +23,35 @@ Pick the applicable axes below and add project-specific extremes, bounded by
 real data and supported layouts. Keep a short scenario plan beside the test page
 or native preview fixtures and record exclusions that affect coverage. Test the
 selected cases without combining every property.
+
+## Map the surface
+
+Read the component and list every value it renders, with its source:
+
+| Field | Source | Type | Limit | Optional? |
+| --- | --- | --- | --- | --- |
+| `name` | `member.name` | string | 255 (`schema.ts:14`) | No |
+| `email` | `member.email` | string | none found | No |
+| `role` | `member.title` | string | 120 | Yes |
+| `status` | enum | `active` / `invited` / `expired` | — | No |
+| `count` | `workspace.memberCount` | int | — | No |
+
+Include the values people forget: counts in headers, relative timestamps, badge and status text, button labels that come from data, tooltips, avatar images, the list itself (its length is a value too).
+
+Look up limits in the validation schema (Zod, Yup, Valibot), database migrations, API types, and form `maxLength` attributes. Note where the frontend and backend disagree; a 50-character input that saves to a 255-character column means something longer will turn up eventually, through an import or the API.
+
+**Completion criterion:** every rendered value is in the table, with a source and either a limit or "unbounded".
+
+## Worst-case values
+
+Two failure modes, and the first is worse:
+
+1. **Nonsense data.** `"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"` and 5,000-character names prove nothing. The designer will rightly say "that never happens" and stop listening. Every worst-case value must be something a real user could plausibly produce, or the longest value the backend actually accepts.
+2. **Stopping at long text.** Long names are the obvious break. The ones that ship are the short name that leaves an orphaned dash, the missing avatar, the count of exactly 1 ("1 members"), the empty list, the badge whose text got translated.
+
+Each worst-case value is either a realistic example (a real naming pattern, a real email shape) or the actual limit from the validation schema, database column, or API contract. If you find no limit, that's a finding in itself: say "unbounded" and test something long but believable. Pick values from the [worst-case catalog](stress-catalog.md).
+
+A single worst-case dataset should hit every row of the catalog that applies to this component at once. Mix them across rows (row 1 is the long name, row 2 is the long email, row 3 is the one-letter name), as real data does.
 
 ## Scenario axes
 
@@ -106,10 +137,38 @@ Render every selected scenario and exercise the relevant input, focus, and state
 transitions. Report a failure only after observing it, marked beside its
 scenario, and record unavailable checks separately.
 
-Report the failing scenario and what visibly or behaviorally broke. If all
-checks pass, report only the tested scope.
+Each of these signatures appears in the screenshot. The cause in the middle
+column is almost always it. Truncation and tabular numerals are in
+[Typography](../../design/references/typography.md).
+
+| What you see | Cause | Fix |
+| --- | --- | --- |
+| Avatar or icon squished into an oval or pill | Flex child shrinking | `flex-shrink: 0` on the avatar, icon, and any fixed-size box |
+| Text overflows its box instead of wrapping or truncating | Flex/grid child has `min-width: auto` | `min-width: 0` on the text column (`minmax(0, 1fr)` in grid) |
+| Email or URL runs past the edge | No break opportunities in the string | `overflow-wrap: anywhere` on that element |
+| Trailing action (••• menu, button) pushed off-screen or clipped | Middle content took all the space | `min-width: 0` on the middle, `flex-shrink: 0` on the action |
+| Badge wraps onto two lines | Badge allowed to shrink | `white-space: nowrap; flex-shrink: 0` on the badge, and decide what yields instead |
+| Avatar centered against a three-line name looks adrift | `align-items: center` on rows of varying height | Top-align (`align-items: flex-start`) once text can wrap, |
+| Last row cut off at a hard edge mid-glyph | Fixed-height container with no fade or scroll affordance | Visible scrollbar or a fade mask, and ensure `overflow` is intended |
+| Long word breaks mid-word in a heading | `word-break: break-all` | `overflow-wrap: anywhere` breaks only when it has to |
+| Wrong initials (`"J"` for "Jo", `"CI"` for "… Montgomery III", `"�"` for an emoji-first name) | `.split(' ')[0][0]` style code | Initials from grapheme clusters (`Intl.Segmenter`), first + last word, fallback icon |
+| Orphaned `—` or empty line where the role was | Placeholder rendered for a missing optional field | Omit the line, or reserve its height intentionally |
+| "1 members", "0 member" | Hardcoded plural | `Intl.PluralRules`, or separate strings per count |
+| `1284`, `1,284.000000001`, `NaN`, `undefined` | Raw number rendered | `Intl.NumberFormat` with the user's locale; guard null |
+| Long translated button label overflows | Fixed-width button | Width from content with `min-width`, never a fixed `width` |
+| Diacritics or tall scripts (Vietnamese, Thai) clipped top or bottom | Tight `line-height` with `overflow: hidden` | Looser `line-height` or no clipping on text boxes |
+| Broken-image icon in the avatar | No `onError` fallback | Fall back to initials; `object-fit: cover` for any aspect ratio |
+| Scrolling 1,000 rows stutters | Every row rendered | Virtualize, or paginate, and say which |
+| Content renders raw `<b>`, `&amp;`, or `**text**` | Wrong escaping layer | Escape once, at render; never `dangerouslySetInnerHTML` user data |
+
+Report one row per break, worst first. Severity: **Broken** (content unreadable, action unreachable, wrong data shown), **Ugly** (readable but visibly wrong: squished avatar, wrapped badge), **Fragile** (fine now, one realistic step from breaking: no limit, no fallback). Then list the breaks with more than one right answer (truncate vs wrap for a field, what an empty role should show, whether a 1,000-row list paginates or virtualizes), one line each with a recommendation, and the worst cases the component already handles.
 
 A test-only request reports findings. When fixes are also requested, correct the
 component, then rerun the failing cases and the other cases the correction could
 affect. Keep the test page or native preview fixtures available, state how to
 open them, and list checks that remain unverified.
+
+Scenario axes adapted from Jakub Krehel's public [break](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/break); field map,
+worst-case values and failure signatures from Emil Kowalski's public
+[break-ui](https://github.com/emilkowalski/skills/tree/c8a79627b59d72d764d6ab6f2c87c09a48169833/skills/break-ui). See the [Krehel](../../../references/jakub-krehel-LICENSE.txt)
+and [Kowalski](../../../references/emil-kowalski-LICENSE.txt) licenses.
