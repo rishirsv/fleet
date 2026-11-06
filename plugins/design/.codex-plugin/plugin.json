@@ -1,6 +1,6 @@
 {
   "name": "design",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Design, build, and review product interfaces with grounded context and research.",
   "author": {
     "name": "Rishi"
@@ -8,14 +8,13 @@
   "keywords": [
     "design",
     "product",
-    "research",
-    "accessibility"
+    "research"
   ],
   "skills": "./skills/",
   "interface": {
     "displayName": "Design",
     "shortDescription": "From intent to interface",
-    "longDescription": "Create distinctive web and native interfaces, refine existing products, recreate visual references, and review real workflows. Keep product context and design-system sources organized. Turn user research into evidence-backed decisions. Includes complete workflows for critique, accessibility, UX copy, design systems, research, and developer handoff.",
+    "longDescription": "Create distinctive web and native interfaces, refine existing products, recreate visual references, and review real workflows. Keep product context and design-system sources organized. Turn user research into evidence-backed decisions. Includes complete workflows for critique, UX copy, design systems, research, and developer handoff.",
     "developerName": "Rishi",
     "category": "Productivity",
     "capabilities": [

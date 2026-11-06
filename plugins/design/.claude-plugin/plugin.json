@@ -1,6 +1,6 @@
 {
   "name": "design",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Design, build, and review product interfaces with grounded context and research.",
   "author": {
     "name": "Rishi"
@@ -8,7 +8,6 @@
   "keywords": [
     "design",
     "product",
-    "research",
-    "accessibility"
+    "research"
   ]
 }
