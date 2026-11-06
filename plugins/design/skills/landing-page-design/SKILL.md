@@ -66,7 +66,7 @@ No dead links or placeholder actions presented as functional.
 
 ## Finish and verify
 
-Check the affected layout at narrow and wide widths, real and extreme copy,
+Check the affected layout with the [viewport sweep](../../references/evidence.md#viewport-sweep), real and extreme copy,
 keyboard navigation, forms, and reduced motion. Include metadata, favicon,
 social previews, legal links, and error routes where the page’s delivery scope
 requires them; use existing destinations and content rather than inventing

@@ -88,9 +88,9 @@ and label inferred values. Creating a handoff does not authorize publishing it.
 Follow [visual proof](../../references/evidence.md) for any claim about how
 the interface renders or behaves. Inspect the states the change affects:
 
-- Layout: narrow and wide containers, widths just above and below each
-  breakpoint, real and extreme content, text scaling, and sticky regions over
-  focused content. Check that the hierarchy survives as well as the fit.
+- Layout: the [viewport sweep](../../references/evidence.md#viewport-sweep),
+  real and extreme content, text scaling, and sticky regions over focused
+  content. Check that the hierarchy survives as well as the fit.
 - Typography: long strings, localized expansion, fallback fonts, supported
   text sizes, and reflow when fonts load.
 - Interaction: the main path, errors, retries, cancellation, dismissal, and
