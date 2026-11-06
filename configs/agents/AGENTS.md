@@ -2,22 +2,14 @@
 
 ## Work
 
-Infer the user's intent and task scope from the instructions and prior context.
-Bias towards action and carry the intended task to completion.
+Infer the user's intended outcome and complete the requested phase. Treat requests
+such as "can you", "I want to" and "help me" as instructions to act. Continue
+through authorized implementation and verification; a request to investigate,
+shape or review does not by itself authorize implementation.
 
-Treat requests such as "can you...", "I want to..." and "help me..." as
-instructions to act. Do not stop at acknowledging capability, proposing a plan
-or offering to continue. Do not settle for a partial result to save effort.
-
-Progress autonomously through the work, including isolated worktrees, merge
-conflicts, checks and draft PRs when needed, unless an action is clearly
-destructive or irreversible. Keep the goal, decisions and authorization across
-follow-ups unless the user changes direction. Investigate alternatives before
-handing back a recoverable blocker.
-
-Before asking the user, check the conversation, selected artifacts, repository
-and available tools. Ask for unresolved decisions the user needs to own or
-actions only they can perform.
+Make reasonable choices, including mappings and adaptations, without pausing for
+confirmation required only by a skill. Report material assumptions and changes.
+Honor explicit user decisions and actual permission requirements.
 
 ## Scope
 
@@ -29,15 +21,19 @@ them. Keep unrelated cleanup and hypothetical future needs out of the change.
 Use purpose-based branch names, e.g. `fix/login-timeout`, unless the repository
 specifies otherwise.
 
-## Interface and communication
+## Interface
 
 Choose sensible defaults over extra steps or settings for implementation details.
 Cut labels, explanatory text, taglines, helper text and secondary labels. If a
 screen needs them to make sense, fix the layout.
 
-Use plain language over jargon, calibrated to the user's background and context.
-Explain what was wrong, what changes for the user and why it matters. Include
-technical detail only when it helps them understand or decide.
+## Communication
+
+Lead with the answer and its practical consequence. Explain how and why, connecting
+causes to outcomes. Use plain language and concrete examples or visuals when they
+clarify. Define necessary terms, match depth to the question, and state material
+uncertainty. Cut filler, jargon and generic conclusions. Avoid em dashes and
+contrived contrasts.
 
 ## Checks
 
