@@ -5,9 +5,8 @@ established faces, roles, and rendered content before editing. Write every fix
 in the project's styling system; the [cheat sheet](typography/css-cheat-sheet.md)
 maps each declaration to its Tailwind utility.
 
-The words belong to the [UX-copy guide](../../../references/ux-copy.md),
-semantic heading structure to the [accessibility guide](../../../references/accessibility.md)
-and spatial layout to [Layout](layout.md). Contrast belongs to [Color](color.md).
+The words belong to the [UX-copy guide](../../../references/ux-copy.md) and
+spatial layout to [Layout](layout.md). Contrast belongs to [Color](color.md).
 
 ## Measured, not preferred
 
@@ -75,7 +74,7 @@ Inspect real copy at the widths where it breaks.
 
 - `text-wrap: balance` evens out headings and short descriptions. Never on paragraphs, and Chromium ignores it past six lines.
 - `text-wrap: pretty` keeps a lone word off the last line. Safe on any paragraph, long-form included.
-- `overflow-wrap: break-word` where a long word, link or ID could escape the container.
+- `overflow-wrap: break-word` where a long word, link or ID could escape the container. Inside a flex or grid row use `anywhere`, the only value that also lets the box shrink.
 - `white-space: nowrap` on labels and badges where a line break looks broken, as long as they still fit at supported text sizes.
 
 Keep interface text at `text-align: start`. `justify` belongs only in specific editorial layouts. Let text wrap naturally instead of hard-coding line breaks for one string or viewport.

@@ -72,7 +72,7 @@ user leaves.
 ## Choose timing and physics
 
 Choose timing by distance, element size, urgency, and frequency of use. Roughly
-100–150ms for small animated feedback and 200–350ms for compact transitions are
+100–150ms for small animated feedback and 200–300ms for compact transitions are
 starting points for tuning. Larger sequences may need longer; exits should clear
 the way promptly without becoming abrupt.
 
