@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay · Fleet</title>
+<style>
+  :root {
+    --bg: #f5f6f7;
+    --surface: #ffffff;
+    --line: #e4e7eb;
+    --line-strong: #cdd3da;
+    --text: #15191e;
+    --muted: #5b636d;
+    --faint: #8b939c;
+    --accent: #1d5bb8;
+    --accent-hover: #174b99;
+    --accent-soft: #e9f0fb;
+    --red: #b3261e;
+    --red-soft: #fcebea;
+    --amber: #8f5400;
+    --amber-soft: #fdf2df;
+    --green: #1b7443;
+    --slate: #3d4a5c;
+    --slate-soft: #e9edf2;
+    --radius: 8px;
+    --row-h: 52px;
+    --panel-w: 420px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .num { font-variant-numeric: tabular-nums; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  /* Shell */
+  .topbar {
+    height: 52px; display: flex; align-items: center; gap: 12px;
+    padding: 0 24px; background: var(--surface); border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 8px; font-weight: 650; font-size: 16px; letter-spacing: -0.01em; }
+  .brand-mark { width: 22px; height: 22px; border-radius: 6px; background: var(--accent); display: grid; place-items: center; }
+  .topbar .today { margin-left: auto; color: var(--muted); }
+
+  .app { display: grid; grid-template-columns: minmax(0, 1fr); min-height: calc(100vh - 52px); }
+  .main { padding: 24px; min-width: 0; max-width: 1280px; width: 100%; margin: 0 auto; }
+  .app.has-panel .main { margin: 0; max-width: none; }
+
+  /* KPIs */
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .kpi {
+    text-align: left; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 14px 16px; display: grid; gap: 2px; transition: border-color .15s, box-shadow .15s;
+  }
+  .kpi:hover:not(:disabled) { border-color: var(--line-strong); }
+  .kpi[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
+  .kpi:disabled { cursor: default; }
+  .kpi-label { color: var(--muted); font-weight: 500; }
+  .kpi-value { font-size: 28px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.15; }
+  .kpi-value small { font-size: 14px; font-weight: 500; color: var(--faint); letter-spacing: 0; margin-left: 4px; }
+  .kpi.is-overdue .kpi-value { color: var(--red); }
+  .kpi.is-overdue.is-zero .kpi-value { color: var(--text); }
+
+  /* Toolbar */
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .search { position: relative; flex: 1 1 260px; max-width: 360px; }
+  .search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--faint); pointer-events: none; }
+  .search input {
+    width: 100%; height: 38px; padding: 0 12px 0 34px; border: 1px solid var(--line-strong);
+    border-radius: 6px; background: var(--surface);
+  }
+  .search input::-webkit-search-cancel-button { cursor: pointer; }
+  .select {
+    height: 38px; padding: 0 30px 0 12px; border: 1px solid var(--line-strong); border-radius: 6px;
+    background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235b636d' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 11px center;
+    appearance: none; -webkit-appearance: none;
+  }
+  .select.is-active { border-color: var(--accent); background-color: var(--accent-soft); }
+  .link-btn { border: 0; background: none; color: var(--accent); padding: 8px 6px; border-radius: 4px; font-weight: 500; }
+  .link-btn:hover { text-decoration: underline; }
+
+  /* Card */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+  .card-head {
+    min-height: 52px; display: flex; align-items: center; gap: 12px; padding: 8px 12px 8px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .card-head .count { color: var(--muted); }
+  .card-head .count strong { color: var(--text); font-weight: 600; }
+  .card-head .actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+  .btn {
+    height: 36px; padding: 0 14px; border-radius: 6px; border: 1px solid var(--line-strong);
+    background: var(--surface); font-weight: 550; display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  }
+  .btn:hover:not(:disabled) { background: var(--bg); }
+  .btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: var(--accent-hover); }
+  .btn:disabled { opacity: .6; cursor: default; }
+  .btn-quiet { border-color: transparent; background: transparent; }
+
+  /* Banner */
+  .banner {
+    display: flex; gap: 12px; align-items: flex-start; padding: 12px 12px 12px 16px;
+    background: var(--red-soft); color: #5c1410; border-bottom: 1px solid #f3c9c5;
+  }
+  .banner svg { flex: none; margin-top: 2px; color: var(--red); }
+  .banner-text { flex: 1; }
+  .banner-text strong { display: block; font-weight: 600; color: var(--red); }
+  .banner .btn { height: 32px; background: var(--surface); border-color: #e7b1ab; color: var(--red); }
+  .icon-btn {
+    width: 32px; height: 32px; border: 0; border-radius: 6px; background: transparent;
+    display: grid; place-items: center; color: var(--muted); flex: none;
+  }
+  .icon-btn:hover { background: rgba(0,0,0,.06); color: var(--text); }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  th, td { text-align: left; padding: 0 12px; height: var(--row-h); border-bottom: 1px solid var(--line); vertical-align: middle; }
+  thead th {
+    height: 40px; font-weight: 550; color: var(--muted); font-size: 13px; background: #fafbfc;
+    position: sticky; top: 0; z-index: 1;
+  }
+  th.num, td.num { text-align: right; }
+  .sort-btn {
+    border: 0; background: none; padding: 4px 0; font-weight: inherit; color: inherit;
+    display: inline-flex; align-items: center; gap: 4px;
+  }
+  .sort-btn:hover { color: var(--text); }
+  .sort-btn .arrow { opacity: 0; font-size: 11px; width: 10px; }
+  th[aria-sort] .sort-btn { color: var(--text); }
+  th[aria-sort] .sort-btn .arrow { opacity: 1; }
+  tbody tr:last-child td { border-bottom: 0; }
+
+  .c-check { width: 48px; padding: 0 0 0 8px; }
+  .c-id { width: 130px; }
+  .c-type { width: 22%; }
+  .c-depot { width: 16%; }
+  .c-odo { width: 120px; }
+  .c-due { width: 170px; }
+  .c-status { width: 130px; }
+
+  .check { display: grid; place-items: center; width: 40px; height: 40px; cursor: pointer; border-radius: 6px; }
+  .check:hover { background: rgba(0,0,0,.04); }
+  .check input { width: 17px; height: 17px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+
+  tbody tr.row { cursor: pointer; transition: background-color .12s; }
+  tbody tr.row:hover { background: #f8f9fb; }
+  tbody tr.row.is-selected { background: var(--accent-soft); }
+  tbody tr.row.is-open { background: #eef3fb; box-shadow: inset 3px 0 0 var(--accent); }
+  tbody tr.row.is-failed { box-shadow: inset 3px 0 0 var(--red); }
+  tbody tr.row.is-saving td:not(.c-status):not(.c-check) { opacity: .55; }
+  tbody tr.row.is-flash { animation: flash 1.4s ease-out; }
+  @keyframes flash { from { background: #dff2e6; } to { background: transparent; } }
+
+  .vid { font-weight: 600; font-variant-numeric: tabular-nums; }
+  .sub { display: block; color: var(--muted); font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  td { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .type-inline { display: none; }
+
+  .due-date { font-variant-numeric: tabular-nums; }
+  .due-overdue .due-date, .due-overdue .sub { color: var(--red); }
+  .due-overdue .due-date { font-weight: 600; }
+  .due-soon .sub { color: var(--amber); }
+
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px; border-radius: 12px;
+    font-size: 12.5px; font-weight: 550; white-space: nowrap;
+  }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pill-service { color: var(--green); background: #e8f4ed; }
+  .pill-shop { color: var(--slate); background: var(--slate-soft); }
+  .pill-saving { color: var(--muted); background: var(--bg); }
+  .pill-saving::before { display: none; }
+  .pill-failed { color: var(--red); background: var(--red-soft); }
+
+  .spinner {
+    width: 12px; height: 12px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent;
+    animation: spin .7s linear infinite; display: inline-block; flex: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Skeleton */
+  .sk { display: block; height: 12px; border-radius: 4px; background: linear-gradient(90deg, #eceef1 0%, #f5f6f8 50%, #eceef1 100%); background-size: 200% 100%; animation: shimmer 1.3s ease-in-out infinite; }
+  .sk + .sk { margin-top: 7px; }
+  @keyframes shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+  .kpi .sk-value { height: 30px; width: 56px; margin-top: 2px; }
+
+  /* Empty */
+  .empty { padding: 56px 24px; text-align: center; }
+  .empty h3 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
+  .empty p { margin: 0 0 16px; color: var(--muted); }
+  tbody tr.empty-row:hover { background: none; }
+  tbody tr.empty-row td { height: auto; white-space: normal; }
+
+  /* Panel */
+  .panel {
+    background: var(--surface); border-left: 1px solid var(--line); display: none; flex-direction: column;
+    min-width: 0; height: calc(100vh - 52px); position: sticky; top: 0;
+  }
+  .app.has-panel { grid-template-columns: minmax(0, 1fr) var(--panel-w); }
+  .app.has-panel .panel { display: flex; }
+  .panel-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 16px 14px 20px; border-bottom: 1px solid var(--line); }
+  .panel-head h2 { margin: 0; font-size: 20px; font-weight: 650; letter-spacing: -0.01em; outline: none; }
+  .panel-head p { margin: 2px 0 0; color: var(--muted); }
+  .panel-head .icon-btn { margin-left: auto; }
+  .panel-body { overflow-y: auto; padding: 16px 20px 24px; flex: 1; }
+  .shop-note { display: flex; gap: 10px; align-items: center; padding: 10px 12px; background: var(--slate-soft); border-radius: 6px; margin-bottom: 16px; color: var(--slate); }
+  .shop-note strong { font-weight: 600; }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin: 0 0 18px; }
+  .facts dt { color: var(--muted); font-size: 12.5px; margin-bottom: 2px; }
+  .facts dd { margin: 0; font-weight: 550; font-variant-numeric: tabular-nums; }
+  .facts .due-overdue dd { color: var(--red); }
+  .facts .due-soon dd { color: var(--amber); }
+  .panel .btn-primary { width: 100%; justify-content: center; height: 40px; }
+  .panel h3 { font-size: 13px; font-weight: 600; color: var(--muted); margin: 26px 0 8px; text-transform: none; }
+  .history { list-style: none; margin: 0; padding: 0; }
+  .history li { display: grid; grid-template-columns: 96px 1fr; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+  .history li:first-child { border-top: 0; }
+  .history time { color: var(--muted); font-variant-numeric: tabular-nums; font-size: 13px; padding-top: 1px; }
+  .history .work { font-weight: 550; }
+  .history .meta { color: var(--muted); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+  .history .note { margin-top: 3px; font-size: 13px; }
+  .history li.is-new .work::after { content: "Today"; margin-left: 8px; font-size: 11.5px; font-weight: 600; color: var(--green); }
+  .panel-error { color: var(--red); background: var(--red-soft); border-radius: 6px; padding: 10px 12px; margin-top: 10px; }
+
+  .backdrop { display: none; }
+
+  /* Toast */
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px); opacity: 0; pointer-events: none;
+    background: #1d2228; color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 500;
+    box-shadow: 0 6px 24px rgba(0,0,0,.18); transition: opacity .18s, transform .18s; z-index: 50; display: flex; align-items: center; gap: 8px;
+  }
+  .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+  .toast svg { color: #7ed3a0; }
+
+  /* Overlay panel below wide desktop */
+  @media (max-width: 1279px) {
+    .app.has-panel { grid-template-columns: minmax(0, 1fr); }
+    .app.has-panel .main { max-width: 1280px; margin: 0 auto; }
+    .panel {
+      position: fixed; top: 0; right: 0; bottom: 0; height: 100vh; width: min(var(--panel-w), 100vw);
+      z-index: 40; box-shadow: -12px 0 32px rgba(15, 20, 30, .14); border-left: 0;
+    }
+    .app.has-panel .backdrop { display: block; position: fixed; inset: 0; background: rgba(15, 20, 30, .28); z-index: 30; }
+  }
+
+  /* Tablet */
+  @media (max-width: 960px) {
+    .topbar { padding: 0 16px; }
+    .main { padding: 16px; }
+    .c-type { display: none; }
+    .type-inline { display: block; }
+    .c-id { width: 34%; }
+    .c-depot { width: 22%; }
+    .c-odo { width: 110px; }
+    .c-due { width: 150px; }
+    .c-status { width: 116px; }
+    th, td { padding: 0 10px; }
+    .search { max-width: none; flex-basis: 100%; }
+    .kpi-value { font-size: 24px; }
+  }
+  @media (max-width: 700px) {
+    .c-depot, .c-odo { display: none; }
+    .c-id { width: auto; }
+  }
+  @media (hover: none) {
+    :root { --row-h: 56px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0s !important; animation-iteration-count: 1 !important; transition-duration: 0s !important; }
+    .spinner { animation: none; border-right-color: currentColor; opacity: .5; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <span class="brand-mark" aria-hidden="true">
+      <svg width="12" height="12" viewBox="0 0 12 12"><path d="M1 6h7M5 2.5 8.5 6 5 9.5M10.5 1.5v9" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </span>
+    Relay
+  </div>
+  <span class="today" id="today"></span>
+</header>
+
+<div class="app" id="app">
+  <main class="main">
+    <h1 class="sr-only">Fleet vehicles</h1>
+    <section class="kpis" id="kpis" aria-label="Fleet summary"></section>
+
+    <div class="toolbar" role="search">
+      <label class="search">
+        <span class="sr-only">Search vehicles</span>
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="m11 11 3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input id="q" type="search" placeholder="Search ID, model or depot" autocomplete="off">
+      </label>
+      <label><span class="sr-only">Status</span>
+        <select id="status" class="select">
+          <option value="all">All statuses</option>
+          <option value="in-service">In service</option>
+          <option value="overdue">Overdue</option>
+          <option value="due-soon">Due within 14 days</option>
+          <option value="in-shop">In shop</option>
+        </select>
+      </label>
+      <label><span class="sr-only">Depot</span>
+        <select id="depot" class="select"><option value="all">All depots</option></select>
+      </label>
+      <button class="link-btn" id="clear" type="button" hidden>Clear filters</button>
+    </div>
+
+    <section class="card" aria-label="Vehicles">
+      <div class="card-head">
+        <span class="count" id="count" aria-live="polite"></span>
+        <div class="actions" id="bulk" hidden>
+          <button class="btn btn-quiet" id="deselect" type="button">Clear selection</button>
+          <button class="btn btn-primary" id="mark" type="button">Mark serviced</button>
+        </div>
+      </div>
+      <div id="banner"></div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="c-check"><label class="check"><input type="checkbox" id="all" aria-label="Select all shown vehicles"></label></th>
+              <th class="c-id" data-sort="id"><button class="sort-btn" type="button">Vehicle<span class="arrow"></span></button></th>
+              <th class="c-type" data-sort="type"><button class="sort-btn" type="button">Type<span class="arrow"></span></button></th>
+              <th class="c-depot" data-sort="depot"><button class="sort-btn" type="button">Depot<span class="arrow"></span></button></th>
+              <th class="c-odo num" data-sort="odo"><button class="sort-btn" type="button">Odometer<span class="arrow"></span></button></th>
+              <th class="c-due" data-sort="due"><button class="sort-btn" type="button">Next service<span class="arrow"></span></button></th>
+              <th class="c-status" data-sort="status"><button class="sort-btn" type="button">Status<span class="arrow"></span></button></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="panel" id="panel" aria-label="Vehicle details"></aside>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  'use strict';
+
+  /* ---------- Dates & formatting ---------- */
+  const DAY = 86400000;
+  const startOfDay = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
+  const TODAY = startOfDay(new Date());
+  const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+  const daysFrom = d => Math.round((startOfDay(d) - TODAY) / DAY);
+  const fmtShort = d => d.toLocaleDateString('en-US', d.getFullYear() === TODAY.getFullYear()
+    ? { month: 'short', day: 'numeric' } : { month: 'short', day: 'numeric', year: 'numeric' });
+  const fmtLong = d => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  const fmtMi = n => n.toLocaleString('en-US') + ' mi';
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  function dueInfo(v) {
+    const n = daysFrom(v.nextDue);
+    if (n < 0) return { key: 'overdue', rel: `${plural(-n, 'day')} overdue` };
+    if (n === 0) return { key: 'soon', rel: 'Due today' };
+    if (n <= 14) return { key: 'soon', rel: `in ${plural(n, 'day')}` };
+    return { key: 'ok', rel: `in ${plural(n, 'day')}` };
+  }
+
+  /* ---------- Mock backend ---------- */
+  function mulberry32(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  const rng = mulberry32(4012);
+  const pick = arr => arr[Math.floor(rng() * arr.length)];
+
+  const TYPES = [
+    { key: 'gt', label: 'Garbage truck', prefix: 'GT', start: 101, count: 12, interval: 90, mpd: 46,
+      models: ['2018 Mack LR', '2020 Peterbilt 520', '2022 Mack LR Electric'],
+      repairs: [['Packer cylinder resealed', 'Leak at rod seal, packer slow to retract'], ['Hydraulic hose replaced', 'Arm lift hose chafed through'], ['Arm sensor replaced', 'Intermittent grab fault'], ['Brake chambers replaced', 'Failed pre-trip air leak test']] },
+    { key: 'bus', label: 'Bus', prefix: 'BUS', start: 201, count: 14, interval: 60, mpd: 148,
+      models: ['2016 Gillig Low Floor', '2019 New Flyer Xcelsior', '2023 New Flyer XE40'],
+      repairs: [['Wheelchair ramp motor replaced', 'Ramp stalled at half deploy'], ['Front door actuator adjusted', 'Door slow to close'], ['HVAC compressor replaced', 'No cooling, operator report'], ['Brake pads and rotors', 'Front axle at 3 mm']] },
+    { key: 'plow', label: 'Snow plow', prefix: 'PL', start: 301, count: 6, interval: 120, mpd: 21,
+      models: ['2015 International 7400', '2019 Western Star 4700'],
+      repairs: [['Cutting edge replaced', 'Edge worn past wear line'], ['Spreader auger rebuilt', 'Auger seized with salt'], ['Plow pump replaced', 'Low lift pressure']] },
+    { key: 'van', label: 'Utility van', prefix: 'UV', start: 401, count: 8, interval: 180, mpd: 37,
+      models: ['2021 Ford Transit 350', '2023 Ford E-Transit'],
+      repairs: [['Battery replaced', 'Failed load test'], ['Ladder rack repaired', 'Rear clamp bent'], ['Tires replaced', 'Rear pair at 3/32"']] },
+  ];
+  const TYPE = Object.fromEntries(TYPES.map(t => [t.key, t]));
+  const DEPOTS = ['North Yard', 'Central Garage', 'Riverside', 'Eastgate'];
+  const TECHS = ['M. Okafor', 'J. Alvarez', 'D. Kim', 'R. Patel', 'S. Nguyen', 'T. Brennan'];
+  const SHOP = {
+    'GT-106': 'Transmission rebuild', 'BUS-209': 'Rear axle seal leak', 'BUS-213': 'Collision repair, left mirror and panel',
+    'PL-303': 'Pre-season hydraulic overhaul', 'UV-405': 'Check engine light, EVAP fault',
+  };
+
+  const DB = [];
+  TYPES.forEach(t => {
+    for (let i = 0; i < t.count; i++) {
+      const id = `${t.prefix}-${t.start + i}`;
+      const model = pick(t.models);
+      const age = Math.max(1, TODAY.getFullYear() - parseInt(model, 10));
+      const r = rng();
+      let dueIn;
+      if (r < 0.13) dueIn = -1 - Math.floor(rng() * 26);
+      else if (r < 0.30) dueIn = Math.floor(rng() * 15);
+      else dueIn = 15 + Math.floor(rng() * (t.interval - 15));
+      const nextDue = addDays(TODAY, dueIn);
+      const lastService = addDays(nextDue, -t.interval);
+      const odometer = Math.round(age * 365 * t.mpd * (0.8 + rng() * 0.4) + rng() * 900);
+
+      const history = [];
+      let date = lastService, miles = odometer - Math.round(daysFrom(lastService) * -1 * t.mpd * (0.9 + rng() * 0.2));
+      const entries = 4 + Math.floor(rng() * 3);
+      for (let k = 0; k < entries; k++) {
+        const work = k % 4 === 2 ? 'Annual DOT inspection' : (k % 2 === 0 ? 'PM-A service' : 'PM-B service');
+        history.push({ date, work, miles: Math.max(0, miles), tech: pick(TECHS), note: k === 0 && work !== 'Annual DOT inspection' ? 'Oil, filters, fluids, brake check' : '' });
+        if (rng() < 0.4) {
+          const [rw, rn] = pick(t.repairs);
+          const gap = 8 + Math.floor(rng() * (t.interval - 16));
+          history.push({ date: addDays(date, -gap), work: rw, miles: Math.max(0, miles - Math.round(gap * t.mpd)), tech: pick(TECHS), note: rn });
+        }
+        const step = t.interval + Math.round((rng() - 0.5) * 10);
+        date = addDays(date, -step);
+        miles -= Math.round(step * t.mpd * (0.85 + rng() * 0.3));
+      }
+      history.sort((a, b) => b.date - a.date);
+
+      DB.push({
+        id, type: t.key, model, depot: pick(DEPOTS),
+        odometer, nextDue, interval: t.interval,
+        shop: SHOP[id] ? { reason: SHOP[id], since: addDays(TODAY, -1 - Math.floor(rng() * 8)) } : null,
+        history,
+      });
+    }
+  });
+
+  const clone = v => ({ ...v, nextDue: new Date(v.nextDue), shop: v.shop ? { ...v.shop } : null, history: undefined });
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  let saveAttempts = 0;
+
+  const api = {
+    async listVehicles() { await wait(1100); return DB.map(clone); },
+    async history(id) { await wait(450); return DB.find(v => v.id === id).history.map(h => ({ ...h, date: new Date(h.date) })); },
+    // Simulates a flaky connection: the first save of the session times out for one vehicle.
+    async markServiced(ids) {
+      await wait(800);
+      saveAttempts++;
+      const failId = saveAttempts === 1 ? ids[ids.length - 1] : null;
+      const saved = [], failed = [];
+      ids.forEach(id => {
+        if (id === failId) { failed.push(id); return; }
+        const v = DB.find(x => x.id === id);
+        const prev = v.history[0];
+        v.history.unshift({ date: new Date(TODAY), work: prev && prev.work === 'PM-A service' ? 'PM-B service' : 'PM-A service', miles: v.odometer, tech: 'You', note: v.shop ? `Released from shop: ${v.shop.reason}` : '' });
+        v.nextDue = addDays(TODAY, v.interval);
+        v.shop = null;
+        saved.push(clone(v));
+      });
+      return { saved, failed };
+    },
+  };
+
+  /* ---------- State ---------- */
+  const state = {
+    loading: true, vehicles: [], q: '', status: 'all', depot: 'all',
+    sort: { key: 'due', dir: 1 }, selected: new Set(), saving: new Set(), failed: new Set(),
+    error: null, openId: null, history: {}, historyError: {},
+  };
+
+  const $ = id => document.getElementById(id);
+  const els = { kpis: $('kpis'), rows: $('rows'), count: $('count'), bulk: $('bulk'), mark: $('mark'), all: $('all'),
+    q: $('q'), status: $('status'), depot: $('depot'), clear: $('clear'), banner: $('banner'), app: $('app'), panel: $('panel'), toast: $('toast') };
+
+  $('today').textContent = TODAY.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  DEPOTS.forEach(d => els.depot.insertAdjacentHTML('beforeend', `<option value="${esc(d)}">${esc(d)}</option>`));
+
+  /* ---------- Derived ---------- */
+  function matches(v) {
+    if (state.depot !== 'all' && v.depot !== state.depot) return false;
+    const due = dueInfo(v).key;
+    if (state.status === 'in-service' && v.shop) return false;
+    if (state.status === 'in-shop' && !v.shop) return false;
+    if (state.status === 'overdue' && due !== 'overdue') return false;
+    if (state.status === 'due-soon' && due !== 'soon') return false;
+    const q = state.q.trim().toLowerCase();
+    if (q) {
+      const hay = `${v.id} ${TYPE[v.type].label} ${v.model} ${v.depot}`.toLowerCase();
+      if (!q.split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  }
+  const sorters = {
+    id: v => v.id, type: v => TYPE[v.type].label + v.id, depot: v => v.depot + v.id, odo: v => v.odometer,
+    due: v => v.nextDue.getTime(), status: v => (v.shop ? 0 : 1) * 1e13 + v.nextDue.getTime(),
+  };
+  function visible() {
+    const f = sorters[state.sort.key], dir = state.sort.dir;
+    return state.vehicles.filter(matches).sort((a, b) => { const x = f(a), y = f(b); return (x < y ? -1 : x > y ? 1 : 0) * dir; });
+  }
+  const filtersActive = () => state.q.trim() !== '' || state.status !== 'all' || state.depot !== 'all';
+
+  /* ---------- Render ---------- */
+  function renderKpis() {
+    if (state.loading) {
+      els.kpis.innerHTML = ['In service', 'Overdue for service', 'In shop'].map(l =>
+        `<button class="kpi" disabled><span class="kpi-label">${l}</span><span class="sk sk-value"></span></button>`).join('');
+      return;
+    }
+    const total = state.vehicles.length;
+    const shop = state.vehicles.filter(v => v.shop).length;
+    const overdue = state.vehicles.filter(v => dueInfo(v).key === 'overdue').length;
+    const tile = (key, label, value, extra, cls = '') =>
+      `<button class="kpi ${cls}" type="button" data-status="${key}" aria-pressed="${state.status === key}">
+        <span class="kpi-label">${label}</span><span class="kpi-value num">${value}${extra}</span></button>`;
+    els.kpis.innerHTML =
+      tile('in-service', 'In service', total - shop, `<small>of ${total}</small>`) +
+      tile('overdue', 'Overdue for service', overdue, '', 'is-overdue' + (overdue ? '' : ' is-zero')) +
+      tile('in-shop', 'In shop', shop, '');
+  }
+
+  function rowHtml(v) {
+    const t = TYPE[v.type], due = dueInfo(v);
+    const sel = state.selected.has(v.id), saving = state.saving.has(v.id), failed = state.failed.has(v.id);
+    const cls = ['row', sel && 'is-selected', state.openId === v.id && 'is-open', saving && 'is-saving', failed && 'is-failed'].filter(Boolean).join(' ');
+    let status;
+    if (saving) status = `<span class="pill pill-saving"><span class="spinner"></span>Saving</span>`;
+    else if (failed) status = `<span class="pill pill-failed">Not saved</span>`;
+    else if (v.shop) status = `<span class="pill pill-shop">In shop</span>`;
+    else status = `<span class="pill pill-service">In service</span>`;
+    return `<tr class="${cls}" data-id="${v.id}" tabindex="0" aria-selected="${sel}">
+      <td class="c-check"><label class="check"><input type="checkbox" ${sel ? 'checked' : ''} ${saving ? 'disabled' : ''} aria-label="Select ${v.id}"></label></td>
+      <td class="c-id"><span class="vid">${v.id}</span><span class="sub type-inline">${t.label}</span></td>
+      <td class="c-type">${t.label}<span class="sub">${esc(v.model)}</span></td>
+      <td class="c-depot">${esc(v.depot)}</td>
+      <td class="c-odo num">${fmtMi(v.odometer)}</td>
+      <td class="c-due due-${due.key}"><span class="due-date">${fmtShort(v.nextDue)}</span><span class="sub">${due.rel}</span></td>
+      <td class="c-status">${status}</td>
+    </tr>`;
+  }
+
+  function renderTable() {
+    document.querySelectorAll('th[data-sort]').forEach(th => {
+      const on = th.dataset.sort === state.sort.key;
+      if (on) th.setAttribute('aria-sort', state.sort.dir === 1 ? 'ascending' : 'descending'); else th.removeAttribute('aria-sort');
+      th.querySelector('.arrow').textContent = on ? (state.sort.dir === 1 ? '▲' : '▼') : '';
+    });
+
+    [els.q, els.status, els.depot].forEach(e => { e.disabled = state.loading; });
+    els.status.classList.toggle('is-active', state.status !== 'all');
+    els.depot.classList.toggle('is-active', state.depot !== 'all');
+    els.clear.hidden = !filtersActive();
+
+    if (state.loading) {
+      els.count.innerHTML = 'Loading vehicles…';
+      els.all.disabled = true;
+      els.bulk.hidden = true;
+      const w = [[60, 40], [70, 50], [55], [50], [45, 55], [60]];
+      els.rows.innerHTML = Array.from({ length: 9 }, (_, i) => `<tr aria-hidden="true">
+        <td class="c-check"></td>
+        <td class="c-id"><span class="sk" style="width:${w[0][0] + (i % 3) * 6}%"></span><span class="sk type-inline" style="width:50%"></span></td>
+        <td class="c-type"><span class="sk" style="width:${w[1][0]}%"></span><span class="sk" style="width:${w[1][1] + (i % 2) * 15}%"></span></td>
+        <td class="c-depot"><span class="sk" style="width:${w[2][0] + (i % 4) * 8}%"></span></td>
+        <td class="c-odo"><span class="sk" style="width:70%;margin-left:auto"></span></td>
+        <td class="c-due"><span class="sk" style="width:45%"></span><span class="sk" style="width:60%"></span></td>
+        <td class="c-status"><span class="sk" style="width:70%;height:22px;border-radius:11px"></span></td></tr>`).join('');
+      return;
+    }
+
+    const list = visible();
+    const sel = state.selected.size;
+    els.bulk.hidden = sel === 0;
+    const savingCount = state.saving.size;
+    els.mark.disabled = savingCount > 0;
+    els.mark.innerHTML = savingCount ? `<span class="spinner"></span>Saving ${savingCount}…` : `Mark ${sel > 1 ? sel + ' ' : ''}serviced`;
+    els.count.innerHTML = sel
+      ? `<strong>${sel} selected</strong>`
+      : (filtersActive() ? `<strong>${list.length}</strong> of ${state.vehicles.length} vehicles` : `<strong>${list.length}</strong> vehicles`);
+
+    const selectable = list.filter(v => !state.saving.has(v.id));
+    const selVisible = selectable.filter(v => state.selected.has(v.id)).length;
+    els.all.disabled = selectable.length === 0;
+    els.all.checked = selectable.length > 0 && selVisible === selectable.length;
+    els.all.indeterminate = selVisible > 0 && selVisible < selectable.length;
+
+    if (!list.length) {
+      const parts = [];
+      if (state.q.trim()) parts.push(`“${esc(state.q.trim())}”`);
+      const statusText = els.status.options[els.status.selectedIndex].text.toLowerCase();
+      const desc = [state.status !== 'all' && statusText, state.depot !== 'all' && `at ${esc(state.depot)}`].filter(Boolean).join(' ');
+      els.rows.innerHTML = `<tr class="empty-row"><td colspan="7"><div class="empty">
+        <h3>No vehicles match</h3>
+        <p>${['Nothing', parts.length && 'matching ' + parts[0], desc && 'is ' + desc].filter(Boolean).join(' ')}.</p>
+        <button class="btn" type="button" data-action="clear">Clear filters</button></div></td></tr>`;
+      return;
+    }
+    els.rows.innerHTML = list.map(rowHtml).join('');
+  }
+
+  function renderBanner() {
+    if (!state.error) { els.banner.innerHTML = ''; return; }
+    const { failed, savedCount } = state.error;
+    const names = failed.length <= 3 ? failed.join(', ') : `${failed.slice(0, 3).join(', ')} and ${failed.length - 3} more`;
+    els.banner.innerHTML = `<div class="banner" role="alert">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 4.5v4.2M8 11.2v.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <div class="banner-text"><strong>Couldn’t save ${names}</strong>
+        The connection timed out, so ${failed.length === 1 ? 'it is' : 'they are'} still marked as before.${savedCount ? ` ${plural(savedCount, 'other vehicle')} saved.` : ''}</div>
+      <button class="btn" type="button" data-action="retry" ${state.saving.size ? 'disabled' : ''}>Try again</button>
+      <button class="icon-btn" type="button" data-action="dismiss" aria-label="Dismiss"><svg width="12" height="12" viewBox="0 0 12 12"><path d="m2 2 8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+    </div>`;
+  }
+
+  function renderPanel() {
+    const v = state.vehicles.find(x => x.id === state.openId);
+    els.app.classList.toggle('has-panel', !!v);
+    if (!v) { els.panel.innerHTML = ''; return; }
+    const t = TYPE[v.type], due = dueInfo(v);
+    const saving = state.saving.has(v.id);
+    const hist = state.history[v.id];
+    let histHtml;
+    if (state.historyError[v.id]) histHtml = `<div class="panel-error">Couldn’t load service history. <button class="link-btn" data-action="reload-history">Try again</button></div>`;
+    else if (!hist) histHtml = `<ol class="history" aria-busy="true">${Array.from({ length: 4 }, () => `<li><span class="sk" style="width:70px"></span><div><span class="sk" style="width:60%"></span><span class="sk" style="width:40%"></span></div></li>`).join('')}</ol>`;
+    else if (!hist.length) histHtml = `<p class="meta">No service recorded.</p>`;
+    else histHtml = `<ol class="history">${hist.map(h => `<li class="${daysFrom(h.date) === 0 ? 'is-new' : ''}">
+        <time datetime="${h.date.toISOString().slice(0, 10)}">${fmtLong(h.date)}</time>
+        <div><div class="work">${esc(h.work)}</div><div class="meta">${fmtMi(h.miles)} · ${esc(h.tech)}</div>${h.note ? `<div class="note">${esc(h.note)}</div>` : ''}</div></li>`).join('')}</ol>`;
+
+    els.panel.innerHTML = `
+      <div class="panel-head">
+        <div><h2 id="panel-title" tabindex="-1">${v.id}</h2><p>${t.label} · ${esc(v.model)}</p></div>
+        <button class="icon-btn" type="button" data-action="close" aria-label="Close details"><svg width="14" height="14" viewBox="0 0 12 12"><path d="m2 2 8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="panel-body">
+        ${v.shop ? `<div class="shop-note"><span class="pill pill-shop">In shop</span><span><strong>${esc(v.shop.reason)}</strong> · since ${fmtShort(v.shop.since)}</span></div>` : ''}
+        <dl class="facts">
+          <div><dt>Depot</dt><dd>${esc(v.depot)}</dd></div>
+          <div><dt>Odometer</dt><dd>${fmtMi(v.odometer)}</dd></div>
+          <div class="due-${due.key}"><dt>Next service</dt><dd>${fmtLong(v.nextDue)}<span class="sub">${due.rel}</span></dd></div>
+          <div><dt>Service interval</dt><dd>Every ${v.interval} days</dd></div>
+        </dl>
+        <button class="btn btn-primary" type="button" data-action="mark-one" ${saving ? 'disabled' : ''}>
+          ${saving ? '<span class="spinner"></span>Saving…' : (v.shop ? 'Mark serviced and return to service' : 'Mark serviced')}</button>
+        <h3>Service history</h3>
+        ${histHtml}
+      </div>`;
+  }
+
+  function render() { renderKpis(); renderBanner(); renderTable(); renderPanel(); }
+
+  let toastTimer;
+  function toast(msg) {
+    els.toast.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="m3 8.5 3 3 7-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>${esc(msg)}`;
+    els.toast.classList.add('is-on');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => els.toast.classList.remove('is-on'), 3200);
+  }
+
+  /* ---------- Actions ---------- */
+  function pruneSelection() {
+    const shown = new Set(visible().map(v => v.id));
+    state.selected.forEach(id => { if (!shown.has(id)) state.selected.delete(id); });
+  }
+  function setFilter(patch) {
+    Object.assign(state, patch);
+    els.q.value = state.q; els.status.value = state.status; els.depot.value = state.depot;
+    pruneSelection();
+    render();
+  }
+
+  let lastRowFocus = null;
+  async function openPanel(id) {
+    lastRowFocus = id;
+    state.openId = id;
+    render();
+    $('panel-title')?.focus({ preventScroll: true });
+    loadHistory(id);
+  }
+  async function loadHistory(id) {
+    delete state.historyError[id];
+    try {
+      const h = await api.history(id);
+      state.history[id] = h;
+    } catch {
+      state.historyError[id] = true;
+    }
+    if (state.openId === id) renderPanel();
+  }
+  function closePanel() {
+    state.openId = null;
+    render();
+    if (lastRowFocus) els.rows.querySelector(`tr[data-id="${lastRowFocus}"]`)?.focus({ preventScroll: true });
+  }
+
+  async function save(ids) {
+    ids = ids.filter(id => !state.saving.has(id));
+    if (!ids.length) return;
+    ids.forEach(id => { state.saving.add(id); state.failed.delete(id); });
+    state.error = null;
+    render();
+    let result;
+    try {
+      result = await api.markServiced(ids);
+    } catch {
+      result = { saved: [], failed: ids };
+    }
+    ids.forEach(id => state.saving.delete(id));
+    result.saved.forEach(nv => {
+      const i = state.vehicles.findIndex(v => v.id === nv.id);
+      state.vehicles[i] = nv;
+      state.selected.delete(nv.id);
+      delete state.history[nv.id];
+    });
+    result.failed.forEach(id => { state.failed.add(id); state.selected.add(id); });
+    state.error = result.failed.length ? { failed: result.failed, savedCount: result.saved.length } : null;
+    pruneSelection();
+    render();
+    if (state.openId && result.saved.some(v => v.id === state.openId)) loadHistory(state.openId);
+    result.saved.forEach(v => {
+      const tr = els.rows.querySelector(`tr[data-id="${v.id}"]`);
+      if (tr) tr.classList.add('is-flash');
+    });
+    if (result.saved.length) toast(result.saved.length === 1 ? `${result.saved[0].id} marked serviced` : `${result.saved.length} vehicles marked serviced`);
+  }
+
+  /* ---------- Events ---------- */
+  let qTimer;
+  els.q.addEventListener('input', () => { clearTimeout(qTimer); qTimer = setTimeout(() => setFilter({ q: els.q.value }), 120); });
+  els.status.addEventListener('change', () => setFilter({ status: els.status.value }));
+  els.depot.addEventListener('change', () => setFilter({ depot: els.depot.value }));
+  els.clear.addEventListener('click', () => setFilter({ q: '', status: 'all', depot: 'all' }));
+  els.kpis.addEventListener('click', e => {
+    const b = e.target.closest('.kpi[data-status]');
+    if (b) setFilter({ status: state.status === b.dataset.status ? 'all' : b.dataset.status });
+  });
+
+  document.querySelector('thead').addEventListener('click', e => {
+    const th = e.target.closest('th[data-sort]');
+    if (!th || state.loading) return;
+    const key = th.dataset.sort;
+    state.sort = state.sort.key === key ? { key, dir: -state.sort.dir } : { key, dir: 1 };
+    renderTable();
+  });
+
+  els.all.addEventListener('change', () => {
+    const ids = visible().filter(v => !state.saving.has(v.id)).map(v => v.id);
+    if (els.all.checked) ids.forEach(id => state.selected.add(id)); else ids.forEach(id => state.selected.delete(id));
+    renderTable();
+  });
+
+  function toggleSelect(id) {
+    if (state.saving.has(id)) return;
+    state.selected.has(id) ? state.selected.delete(id) : state.selected.add(id);
+    renderTable();
+    els.rows.querySelector(`tr[data-id="${id}"]`)?.focus({ preventScroll: true });
+  }
+
+  els.rows.addEventListener('click', e => {
+    if (e.target.closest('[data-action="clear"]')) { setFilter({ q: '', status: 'all', depot: 'all' }); return; }
+    const tr = e.target.closest('tr[data-id]');
+    if (!tr) return;
+    if (e.target.closest('.check')) {
+      if (e.target.matches('input')) { e.preventDefault(); toggleSelect(tr.dataset.id); }
+      return;
+    }
+    openPanel(tr.dataset.id);
+  });
+  els.rows.addEventListener('keydown', e => {
+    const tr = e.target.closest('tr[data-id]');
+    if (!tr || e.target !== tr) return;
+    if (e.key === 'Enter') { e.preventDefault(); openPanel(tr.dataset.id); }
+    else if (e.key === ' ') { e.preventDefault(); toggleSelect(tr.dataset.id); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      (e.key === 'ArrowDown' ? tr.nextElementSibling : tr.previousElementSibling)?.focus();
+    }
+  });
+
+  els.mark.addEventListener('click', () => save([...state.selected]));
+  $('deselect').addEventListener('click', () => { state.selected.clear(); renderTable(); });
+  els.banner.addEventListener('click', e => {
+    const a = e.target.closest('[data-action]');
+    if (!a) return;
+    if (a.dataset.action === 'retry') save([...state.error.failed]);
+    if (a.dataset.action === 'dismiss') { state.error = null; state.failed.clear(); render(); }
+  });
+  els.panel.addEventListener('click', e => {
+    const a = e.target.closest('[data-action]');
+    if (!a) return;
+    if (a.dataset.action === 'close') closePanel();
+    if (a.dataset.action === 'mark-one') save([state.openId]);
+    if (a.dataset.action === 'reload-history') { renderPanel(); loadHistory(state.openId); }
+  });
+  $('backdrop').addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && state.openId) closePanel();
+    if (e.key === '/' && document.activeElement !== els.q && !e.metaKey && !e.ctrlKey && !els.q.disabled) { e.preventDefault(); els.q.focus(); }
+  });
+
+  /* ---------- Boot ---------- */
+  render();
+  api.listVehicles().then(list => {
+    state.vehicles = list;
+    state.loading = false;
+    render();
+  });
+})();
+</script>
+</body>
+</html>
