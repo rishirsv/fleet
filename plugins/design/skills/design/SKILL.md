@@ -18,6 +18,29 @@ load `$design-review`.
 Read the [context contract](../../references/context-contract.md) and relevant
 product sources before choosing a direction. Saved context is optional.
 
+## Order of work
+
+For anything bigger than a one-line fix:
+
+1. **Before building:** [recreate a reference](references/recreate.md) if
+   references matter; offer [ideation](references/ideation.md) when the
+   direction is open.
+2. **While building:** the [craft floor](../../references/craft-floor.md) and
+   [craft references](#choose-the-craft), `$prototype` for faux UI and
+   marketing visuals, and [Motion](references/motion.md) for new motion.
+3. **Before saying done:** [prove the result](#prove-the-result) in the running
+   app, including its layout checks for layout changes, `$design-review`'s
+   [component stress](../design-review/references/component-stress.md) for
+   data-heavy screens, and [finish review](../../references/finish-review.md)
+   on the changed UI. Offer `$design-review`'s accessibility or
+   [motion review](../design-review/references/motion-review.md) when the
+   change touches keyboard access, focus or heavy motion.
+4. **After:** offer to save a correction with `$design-context` if it came up
+   twice.
+
+Keep it proportional. A copy tweak needs the
+[UX-copy guide](../../references/ux-copy.md), not the whole pipeline.
+
 ## Ground the design
 
 Identify the subject, audience, and primary job before choosing a style. When

@@ -12,3 +12,9 @@ material differences; do not imply publication or production readiness from a
 local preview. Use the user's format; otherwise use the selected workflow's Output
 structure when applicable, marking unsupported fields unknown. Omit routine
 process narration. Do not add sharing prompts or approval gates to completed work.
+
+## Report the route
+
+In one short line, say which skills and references you used, for example:
+"Used prototype for the hero mock, checked with visual proof and finish review."
+When rules conflict, say which one you followed.
