@@ -74,3 +74,6 @@ the rest alone:
 
 Analyze composite icons part by part; a badge or slash overlay may keep its
 position when the base glyph flips. Give icon-only buttons accessible names.
+
+Adapted from Jakub Krehel's public [better-ui](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/better-ui).
+See [license](../../../references/jakub-krehel-LICENSE.txt).

@@ -68,3 +68,6 @@ Use tabular numerals for aligned columns and changing values. Tune underlines
 so they stay recognizable without cutting through letterforms. Preserve text
 selection except where it interferes with a gesture. Check the rendered effect
 before imposing font smoothing.
+
+Adapted from Jakub Krehel's public [better-typography](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/better-typography).
+See [license](../../../references/jakub-krehel-LICENSE.txt).

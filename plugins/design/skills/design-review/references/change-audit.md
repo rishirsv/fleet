@@ -87,3 +87,6 @@ where the component or task requires them.
 
 Return the resolved scope, affected surfaces, classified findings, and
 uninspected coverage.
+
+Adapted from Jakub Krehel's public [interface-review](https://github.com/jakubkrehel/skills/tree/60bf140e43c98b248e6594487384ec967e89d98a/skills/interface-review).
+See [license](../../../references/jakub-krehel-LICENSE.txt).
