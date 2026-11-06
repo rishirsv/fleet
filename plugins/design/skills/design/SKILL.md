@@ -22,7 +22,8 @@ product sources before choosing a direction. Saved context is optional.
 
 For anything bigger than a one-line fix:
 
-1. **Before building:** [recreate a reference](references/recreate.md) if
+1. **Before building:** [direction](references/direction.md) when visual
+   choices are open, [recreate a reference](references/recreate.md) if
    references matter; offer [ideation](references/ideation.md) when the
    direction is open.
 2. **While building:** the [craft floor](../../references/craft-floor.md) and
@@ -41,57 +42,11 @@ For anything bigger than a one-line fix:
 Keep it proportional. A copy tweak needs the
 [UX-copy guide](../../references/ux-copy.md), not the whole pipeline.
 
-## Ground the design
-
-Identify the subject, audience, and primary job before choosing a style. When
-the brief leaves them open, propose a concrete interpretation and continue; ask
-only when different answers would materially change the design. Draw
-distinctive choices from the subject's materials, vocabulary, imagery, and
-activities instead of demographic clichés: a children's toy and an analyst's
-dashboard need different density, hierarchy, and expression. When a page opens
-with a hero, lead with the most characteristic thing in the subject's world,
-such as a headline, an image, a live demo, or an interaction. Build with real
-content, or plausible content for the actual task; generic copy makes a design
-read as a template as surely as generic styling does.
-
-## Avoid generic defaults
-
-Generated interfaces converge on a few looks whatever the subject:
-
-- A warm cream background, high-contrast serif display, and terracotta accent.
-- A near-black background with one acid-green or vermilion accent.
-- A broadsheet of hairline rules, square corners, and dense columns.
-- The SaaS card kit: identical rounded cards with one radius and one soft gray
-  shadow, decorative gradient washes, and a hero of one big number, a small
-  label, and supporting stats.
-- Template chrome: a tracked uppercase eyebrow over each heading, one accented
-  word per headline, `01 / 02 / 03` markers on content that is not a sequence,
-  metadata joined with middle dots, arrows appended to link text, a fade-up
-  entrance on every section, and a hover lift on every card.
-
-Any of these can suit a brief, but none is a choice when it would appear for
-any subject. Where the brief specifies a look, follow it exactly, even when it
-asks for one of these. Where the brief leaves a choice open, spend that freedom
-on something drawn from the subject. Use borders, numbering, labels, and
-dividers only when they encode something about the content. Start a section
-with its heading, put category or context in the body or footer, and keep
-functional navigation such as breadcrumbs separate from the heading.
-
 Before editing UI, read the [craft floor](../../references/craft-floor.md).
-Its aesthetic bans are required checks, not optional suggestions; this list of
-generic defaults does not waive them. Apply them to the requested change,
-preserving explicit user choices and unrelated existing UI.
-
-## Hierarchy and restraint
-
-Spend boldness in one place: let one element carry the memorable idea, keep the
-rest quiet, and cut decoration that does not serve the brief. Establish
-hierarchy before decoration, and reduce competing elements before enlarging the
-main one. Use a small, consistent set of type, color, spacing, radius, and depth
-values, with exceptions only for a distinct role or a visible problem. Preserve
-the meaning and behavior of conventional controls. Meet a baseline of
-responsive layout, visible keyboard focus, reduced motion, and readable
-contrast without presenting it as a feature.
+Its aesthetic bans are required checks, not optional suggestions; the generic
+defaults in [direction](references/direction.md) do not waive them. Apply them
+to the requested change, preserving explicit user choices and unrelated
+existing UI.
 
 ## Choose the workflow
 
@@ -99,13 +54,13 @@ Read only the references the current decision needs.
 
 | Outcome | Read |
 |---|---|
-| Build a new interface or substantially redesign one | [Plan and build](references/build.md) |
+| Build a new interface or substantially redesign one | [Direction](references/direction.md), then [Plan and build](references/build.md) |
 | Challenge an open product idea before building | [Test an open product idea](references/build.md#test-an-open-product-idea) |
 | Build or refine a conversion-focused landing page | `$landing-page-design` for offer, audience, structure, and copy; retain this skill's shared craft guidance |
 | Create a scripted product walkthrough or staged UI illustration | `$prototype` for the scene; retain this skill’s product and craft guidance |
 | Animate an accepted static design or product visual, or export a showcase | `$design-to-motion` for fidelity, choreography, and capture |
 | Refine a settled interface | [Build or refine](references/build.md#build-or-refine); reuse established context |
-| Explore directions or compare variants | [Ideation](references/ideation.md) |
+| Explore directions or compare variants | [Direction](references/direction.md) and [Ideation](references/ideation.md) |
 | Name a motion effect or explain a motion term | [Animation vocabulary](references/animation-vocabulary.md) |
 | Recreate an accepted image, mockup, or live page | [Recreate a reference](references/recreate.md) |
 | Check or correct a build against an accepted design | [Design QA](references/design-qa.md) |
