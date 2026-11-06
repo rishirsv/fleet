@@ -9,7 +9,8 @@ brief.
 Identify the primary action, reading order, and information needed together.
 Group related content through proximity, alignment, and type before adding
 containers. Use cards for independently meaningful objects; group other
-sections with space and alignment. Match density to use: repeated expert work
+sections with space and alignment. A card never sits inside another card: put
+the heading outside and let one surface hold the content. Match density to use: repeated expert work
 may need more simultaneous information than onboarding or a focused decision.
 
 Choose a grid that serves the content. Give repeated rows consistent columns for
@@ -52,6 +53,22 @@ Dense tables and canvases may need intentional scrolling or alternate views.
 Keep essential context and controls available, and distinguish that behavior
 from accidental page overflow.
 
+## Surfaces and scroll edges
+
+Use the project's tokens wherever one exists for a value below.
+
+- **Scroll edges fade.** A scrolling region fades at its ends rather than cutting content at the edge.
+- **Shadows are never cut off.** Give a scrolling region enough padding that its children's shadows fit inside it.
+- **Code and tables scroll, never wrap.** Code blocks and data tables scroll sideways.
+- **Overlays keep their scroll.** Scrolling past the end of a dialog, sheet, menu or side panel never scrolls the content behind it.
+- **Sticky chrome keeps its edge.** A sticky header or footer takes a 1pt separator, or a fade, against the content scrolling under it, and anchored targets land below it rather than under it.
+- **Content clears the system chrome.** Fixed headers, tab bars, toasts and sheets stay inside the safe areas, above the home indicator and clear of browser toolbars.
+- **Floating surfaces take a ring, not a border.** A popover, menu or floating card pairs its shadow with a translucent 1pt ring rather than an opaque border.
+- **Shadows are layered and fall one way.** Use the project's elevation token. Without one, layer three shadows with blur growing and opacity falling, all offset downward, rather than one heavy shadow. To raise a surface on hover, fade in the raised shadow rather than animating the shadow itself.
+- **Content images take a faint outline.** Photos and screenshots take a 1pt outline inset by 1pt, black at 10% in light mode and white at 10% in dark, so a light image doesn't melt into its card. Skip logos and transparent artwork.
+
+On the web: fade scroll edges with a `mask-image` gradient; contain overlays with `overscroll-behavior: contain`; offset anchors with `scroll-padding-block-start` set to the sticky header's height; use `viewport-fit=cover` with `env(safe-area-inset-*)`, and `100dvh` for app shells (`min-height: 100svh` for a first screen); draw rings inside the `box-shadow` stack over `border: 1px solid transparent`; and draw the image outline with `outline` and `outline-offset: -1px`.
+
 ## Irregular collections
 
 When items have different proportions, choose deliberately between cropping,
@@ -59,3 +76,5 @@ regular tracks, and a masonry-style layout. Preserve meaningful source order and
 check that keyboard traversal agrees with visual grouping. Treat new layout
 features as progressive enhancements and inspect the fallback on the supported
 browsers or OS versions.
+
+Surface, form, loading, navigation and sound defaults adapted from Raphael Salaja's public defaults (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

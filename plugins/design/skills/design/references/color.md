@@ -62,7 +62,9 @@ The space is a look, not a correctness setting. Where the platform lets you choo
 
 Check text, controls, focus, selection, and status contrast in their actual
 contexts and themes. Paint the window or document background from the same
-theme state as the content so overscroll and short screens match. When a theme switch animates the whole
+theme state as the content so overscroll and short screens match, and let
+scrollbars and native controls follow the theme (on the web, `color-scheme` on
+the root and one `theme-color` per scheme). When a theme switch animates the whole
 page, suppress transitions for the swap.
 
 ## Web patterns

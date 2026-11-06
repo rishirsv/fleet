@@ -149,6 +149,8 @@ essential gesture-only actions.
 2. **Harmony** — the visual, the sound and the haptic fire on the **same frame**. Latency between them destroys the illusion.
 3. **Utility** — add feedback only where it earns its place. Reserve haptics and sound for meaningful moments (success, error, commit, snap). Over-feedback trains users to ignore all of it.
 
+Sound fits confirmations such as payment, upload or submit, and errors that must not be missed. Every cue has a visible twin, such as a status change. Typing, hover, scroll and keyboard navigation make no sound. The user can turn sound off, and volume starts at `0.3`.
+
 Respect the separate sound and haptics settings. For the SwiftUI implementation of haptics and springs, use the Build iOS Apps plugin.
 
 ## Respect motion preferences
@@ -186,4 +188,4 @@ When the result depends on feel that code can't settle (a cross-fade, a spring's
 - Gate hover motion with `@media (hover: hover) and (pointer: fine)`, reduced motion with `@media (prefers-reduced-motion: reduce)`, and skip state animation on mount with `initial={false}` on `AnimatePresence`.
 - Add `will-change` only after you see first-frame stutter, naming the animated property, never `all`.
 
-Adapted from Emil Kowalski's public animate and apple-design skills (emilkowalski/skills, commit c8a7962) and Jakub Krehel's public better-ui (jakubkrehel/skills, commit 60bf140). See the [Kowalski](../../../references/emil-kowalski-LICENSE.txt) and [Krehel](../../../references/jakub-krehel-LICENSE.txt) licenses.
+Adapted from Emil Kowalski's public animate and apple-design skills (emilkowalski/skills, commit c8a7962) Jakub Krehel's public better-ui (jakubkrehel/skills, commit 60bf140), and sound defaults from Raphael Salaja's public defaults (raphaelsalaja/skills, commit 31031e9). See the [Kowalski](../../../references/emil-kowalski-LICENSE.txt), [Krehel](../../../references/jakub-krehel-LICENSE.txt) and [Salaja](../../../references/raphael-salaja-LICENSE.txt) licenses.

@@ -42,6 +42,13 @@ scanning path; use multiple columns only for short, strongly related values when
 the reading order remains unmistakable. Let field width suggest the expected
 amount of input without constraining valid values.
 
+- **Fields ask for the right keyboard.** Every field declares its content type, keyboard and autofill hint, so an email field brings up the email keyboard and offers saved addresses.
+- **Fields accept what people paste.** Take input the way people type or paste it, such as spaces in a card number or brackets in a phone number; strip the formatting in code and show the value cleanly. Never block paste, and trim the trailing space some keyboards add.
+- **Enter submits.** Enter submits a form with one field, or from the form's last field. In a multi-line field, Enter adds a line and ⌘ or Ctrl with Enter submits.
+- **Forms validate on submit.** Submit stays enabled until the request starts. On submit, show each error beside its field and move to the first one.
+- **Busy buttons keep their label.** While its request runs, a button keeps its label, shows an indicator and disables itself.
+- **Hotkeys stay out of inputs.** Shortcuts don't fire while a text field or editable element has focus.
+
 Match confirmation or undo to the consequence of an action; routine changes
 need neither. Explain the consequences before the user performs the action.
 
@@ -54,6 +61,11 @@ is pending. Preserve useful content during refresh where possible. When web
 feedback changes without navigation, decide whether focus, a field description,
 or a live region should communicate it.
 
+An action responds within 400ms or shows feedback straight away, as an
+optimistic value, a skeleton or a progress bar. Hold a spinner or skeleton back
+150–300ms, then keep it up at least 300–500ms once shown, so it never flashes
+for one frame. A skeleton matches the layout it stands in for.
+
 Distinguish first use, no results, and unavailable data: each needs a different
 next action. Explain disabled actions when their cause is not apparent. For
 optimistic updates, define what happens if the operation fails and how the user
@@ -63,6 +75,13 @@ Show warnings where the relevant condition occurs. State the consequence and a
 useful next step; present non-blocking context as quieter supporting detail.
 Let the current controls communicate routine workflow state; add narration only
 when it changes what the user can do or explains how to recover.
+
+## Navigation and overlays
+
+- **Navigation uses the platform's links.** Moving to another place uses a real link or navigation element, so opening in a new tab or window, Back, and sharing a link all work.
+- **State survives a reload.** Filters, tabs, pagination and open panels persist, so refresh, sharing and Back keep them: the URL on the web, state restoration and deep links natively.
+- **One dialog at a time.** Never open a dialog on top of a dialog. Use a menu, a popover or a new screen.
+- **Taps feel native.** Every tappable element has its own pressed state, and a tap fires without waiting to rule out a double tap. On the web, set `-webkit-tap-highlight-color: transparent` once on the root and `touch-action: manipulation` on buttons and links.
 
 ## Exercise the experience
 
@@ -96,3 +115,5 @@ suggestions. Offer relevant, visible filters; tokens may supplement them. When
 there are no results, show the query and a way to change or clear it. Exercise
 entry, clearing, cancellation, scope changes, suggestions, filters, results,
 and no results.
+
+Surface, form, loading, navigation and sound defaults adapted from Raphael Salaja's public defaults (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

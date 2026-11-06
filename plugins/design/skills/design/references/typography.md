@@ -25,7 +25,7 @@ make values easy to compare. Tune these uses separately.
 
 Rarely use more than three fonts; marketing pages can carry more than apps. Weight and size carry hierarchy, so each extra one dilutes it. Pair for contrast. A serif headline over a sans body reads as deliberate, two near-identical sans-serifs read as a mistake.
 
-Below `18pt`, use weight `400` (regular) or heavier. Weights `100`–`300` belong at `28pt` and up, checked against the background even there. Categories, `Display` and `Text` cuts and fallbacks are in [choosing-fonts.md](typography/choosing-fonts.md).
+Below `18pt`, use weight `400` (regular) or heavier. Weights `100`–`300` belong at `28pt` and up, checked against the background even there. Categories, `Display` and `Text` cuts and fallbacks are in [choosing-fonts.md](typography/choosing-fonts.md). Monospace inside running text drops to `0.9×` the surrounding size, so inline code doesn't tower over its sentence.
 
 ## Ship the faces the design uses
 
