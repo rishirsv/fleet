@@ -9,7 +9,6 @@ separately loaded skills and do not install connector configurations.
 | Critique | [design-critique](critique.md) | design-review |
 | System audit/document/extend | [design-system](design-system.md) | design-context |
 | UX copy | [ux-copy](ux-copy.md) | design for writing; design-review for critique |
-| Accessibility | [accessibility-review](accessibility.md) | design-review |
 | Study planning | [user-research](research-planning.md) | design-research |
 | Synthesis | [research-synthesis](research-synthesis.md) | design-research |
 | Developer specification | [design-handoff](handoff.md) | design |
@@ -26,12 +25,10 @@ Apply the maintained skill's scope and evidence contract when a workflow
 requires facts or capabilities. Never fill a template with invented measurements,
 quotes, scores, prevalence or unavailable states. Omit unsupported fields or
 mark unknown. Numerical scores use the [design scores](scores.md) rubric; research sample sizes
-are planning examples, not universal rules. WCAG criteria require checking the
-applicable standard and actual behavior; a screenshot does not certify compliance.
+are planning examples, not universal rules.
 Use the user's output format when specified. Otherwise preserve the selected
 workflow's Output structure (Deliverables for research planning) and substantive fields: critique strengths,
-copy alternatives/localization notes, and accessibility contrast, keyboard and
-screen-reader coverage. Mark unsupported fields unknown instead of inventing
+and copy alternatives/localization notes. Mark unsupported fields unknown instead of inventing
 values or silently dropping the dimension. No extra approval is needed for already-authorized local work.
 
 ## Design-system artifact runtime
@@ -42,14 +39,6 @@ local editor. For local file preparation, follow [Local setup](../design-system/
 format and its compatible tools are actually available. Otherwise deliver the
 system's tokens, component/state documentation and previews in the project's
 existing format. Do not claim to publish or emulate the proprietary runtime.
-
-## Accessibility interpretation
-
-WCAG 2.1 target size 2.5.5 is an advisory when auditing AA. W3C defines 2.5.5 as Level AAA.
-Report its 44-by-44 CSS-pixel recommendation as AAA/advisory when auditing AA,
-including its exceptions. Check the requested standard/version before assigning
-conformance failures. Report the actual automated tool's scope and gaps rather than assuming a fixed
-percentage of coverage.
 
 Hosted saving, collaboration and migration require compatible host capabilities;
 do not claim those capabilities are supplied by local file preparation.

@@ -36,7 +36,6 @@ interaction, motion, icons), load `$design` and read the matching reference.
 For critique, read the full [critique guide](../../references/critique.md).
 For implemented UI's visual craft, also read the [craft floor](../../references/craft-floor.md)
 and distinguish scoped violations from unrelated incumbent patterns.
-For accessibility, read the full [accessibility guide](../../references/accessibility.md).
 For copy review, read the full [UX-copy guide](../../references/ux-copy.md).
 Apply the [workflow guidance](../../references/workflows-guide.md) to these workflows.
 Assess only what the available evidence supports; do not claim WCAG conformance

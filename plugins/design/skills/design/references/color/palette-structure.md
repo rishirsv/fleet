@@ -1,6 +1,6 @@
 # Palette structure
 
-What a color system is made of, before any values exist. For computing the values see [palette-generation.md](palette-generation.md); for what to call them see [token-naming.md](token-naming.md).
+What a color system is made of, before any values exist. For computing the values see [palette-generation.md](palette-generation.md).
 
 ## What a system needs
 

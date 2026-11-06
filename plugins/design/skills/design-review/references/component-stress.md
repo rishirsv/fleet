@@ -55,63 +55,19 @@ A single worst-case dataset should hit every row of the catalog that applies to 
 
 ## Scenario axes
 
-**Content length**, when the component renders variable text such as user
-input, CMS content, API data, or translations:
-
-| Scenario | What it catches |
-| --- | --- |
-| Empty string | Collapsed boxes, floating labels with nothing to float over, placeholder-only inputs |
-| One word | Buttons and badges sized to their longest expected content |
-| Typical content | The baseline the others are judged against |
-| Several sentences | Wrapping, multiline line height, containers that assumed one line |
-| One unbreakable string | A long URL or `Donaudampfschiffahrtsgesellschaft`: overflow with no wrap opportunity |
-
-**Content shape**, when text can come from users or locales the team does not
-write in:
-
-| Scenario | What it catches |
-| --- | --- |
-| Emoji, alone and mixed into text | Line-height jumps, broken vertical centering, truncation splitting a character |
-| RTL text | Direction handling, punctuation on the wrong side |
-| Mixed-direction text | An LTR product name inside an RTL sentence, and the reverse |
-| Diacritics and tall scripts | Clipped ascenders and descenders in tight line boxes |
-| Numbers where columns align | Changing digit widths moving values in tables and timers |
-
-**Quantity**, when the component repeats over items such as lists, tables,
-grids, tag rows, or avatar stacks:
-
-| Scenario | What it catches |
-| --- | --- |
-| Zero items | Blank regions, missing empty states |
-| One item | Layouts designed around plural content |
-| The realistic count | The baseline |
-| Ten times the realistic count | Missing scroll or pagination, performance collapse, sticky elements unsticking |
-
-**Container**, when the component's available space varies. Use its smallest and
-largest supported containers, and test viewport changes too when viewport rules
-govern its layout:
-
-| Scenario | What it catches |
-| --- | --- |
-| Smallest supported container (for example, 320px) | Clipping, horizontal scroll, controls escaping the box |
-| Squeezed by a sibling in a row or grid | Overflow from min-content sizing, a component refusing to shrink |
-| A very wide container | Unbounded measure, stretched controls, content pinned to opposite edges |
-
-**State**, only for states the component can reach through props, interactions,
-or supported test adapters:
-
-| Scenario | What it catches |
-| --- | --- |
-| Loading | Layout shift when content arrives, spinners with no accessible name |
-| Error | Messages that overflow, color as the only signal |
-| Disabled | State recognition, explanation, and focus behavior; apply the relevant contrast exceptions |
+Choose only the axes the component can reach, and take their values from the
+matching catalog sections: content length and shape from
+[labels and copy](stress-catalog.md#labels-titles-and-copy-from-data) and
+[people and names](stress-catalog.md#people-and-names), quantity from
+[collections](stress-catalog.md#collections), states from
+[states](stress-catalog.md#states), and container and mode from
+[environment](stress-catalog.md#environment). Test the smallest and largest
+supported containers, and viewport changes when viewport rules govern the layout.
 
 Exercise real focus and hover, state transitions, cancellation, and repeated
 input where supported; static state fixtures cannot prove transition behavior.
-
-**Environment**, only for modes the project supports. Use the app's real theme
-controls and browser or platform settings for dark mode, zoom, text scaling,
-reduced motion, and forced colors. Redeclaring tokens around a fixture tests a
+Use the app's real theme controls and platform settings for dark mode, zoom,
+text scaling, and reduced motion. Redeclaring tokens around a fixture tests a
 different theme. Record which modes you exercised and which were unavailable.
 
 ## Render the real component

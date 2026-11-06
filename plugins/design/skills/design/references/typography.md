@@ -137,13 +137,13 @@ Disable selection only on a draggable or gesture-driven surface where accidental
 - Use CSS properties over raw tags: `font-weight: 650`, not `font-variation-settings: "wght" 650`; `font-variant-numeric: tabular-nums`, not `font-feature-settings: "tnum" 1`. Leave `font-optical-sizing: auto`. [variable-fonts-and-opentype.md](typography/variable-fonts-and-opentype.md#disable-synthesis-narrowly) shows narrow synthesis control.
 - Wrapping: `text-wrap: balance` (Chromium ignores it past six lines), `text-wrap: pretty`, `overflow-wrap: break-word` (`anywhere` inside a flex or grid row, the only value that also lets the box shrink), `white-space: nowrap`, `text-align: start`.
 - Truncation: `overflow: hidden`, `text-overflow: ellipsis` and `white-space: nowrap` for one line; `display: -webkit-box`, `-webkit-box-orient: vertical`, `-webkit-line-clamp` and `overflow: hidden` for several.
-- Case with `text-transform`; underlines with `text-underline-position: from-font` and `text-decoration-thickness: from-font` ([recipes](typography/details-and-accessibility.md#underlines)).
+- Case with `text-transform`; underlines with `text-underline-position: from-font` and `text-decoration-thickness: from-font`.
 - Language and direction with `lang`, `dir` and `<bdi>`.
-- iOS Safari zooms the whole page when an input's text is smaller than `16px`. Either size the input up on mobile, which changes how it looks on small screens, or keep `font-size: 16px` and scale it to the intended size, which is identical at every viewport but more code. Choose the one the design needs and name the other ([recipes](typography/details-and-accessibility.md#forms-and-editable-text)).
+- iOS Safari zooms the whole page when an input's text is smaller than `16px`. Either size the input up on mobile, which changes how it looks on small screens, or keep `font-size: 16px` and scale it to the intended size, which is identical at every viewport but more code. Choose the one the design needs and name the other.
 - Apply `-webkit-font-smoothing: antialiased` and `-moz-osx-font-smoothing: grayscale` once on the root, never per component.
 - `text-box: trim-both cap alphabetic` trims text boxes as a progressive enhancement ([support](typography/spacing-and-sizing.md#text-trimming-with-text-box)).
-- `::selection` for selection styling ([other ranges](typography/details-and-accessibility.md#selection)).
-- The [cheat sheet](typography/css-cheat-sheet.md) maps each declaration to its Tailwind utility. The files in [typography/](typography/) are web recipes.
+- `::selection` for selection styling.
+- The files in [typography/](typography/) are web recipes.
 
 | Web pattern | Fix |
 | --- | --- |

@@ -11,7 +11,7 @@ Never estimate a color you could compute. Notation, a tinted neutral and a gradi
 
 Reuse the project's tokens and notation, whether CSS variables, an asset catalog or design-tool variables. One notation throughout beats a second one scattered through it.
 
-For a new system, work in OKLCH, because its numbers behave the way the ramp rules below describe, then output in the platform's format: CSS `oklch()` or hex on the web, sRGB or Display P3 values in an asset catalog. A color library produces the same ramp in any notation ([color-formats.md](color/color-formats.md)).
+For a new system, work in OKLCH, because its numbers behave the way the ramp rules below describe, then output in the platform's format: CSS `oklch()` or hex on the web, sRGB or Display P3 values in an asset catalog. A color library produces the same ramp in any notation.
 
 ## A system is ramps, not colors
 
@@ -23,7 +23,7 @@ A ramp is not a gradient to pick from by eye. Each step exists because a role ne
 
 ## Name primitives by hue, semantics by role
 
-Primitives name a value (`blue-600`) and are never applied in a component. Semantic tokens name a job (`text-secondary`), point at a primitive and are the only tier components reference. That seam is what lets a theme repoint colors without touching components ([token-naming.md](color/token-naming.md)).
+Primitives name a value (`blue-600`) and are never applied in a component. Semantic tokens name a job (`text-secondary`), point at a primitive and are the only tier components reference. That seam is what lets a theme repoint colors without touching components.
 
 ## Use a token only in its role
 
@@ -88,6 +88,6 @@ The files in [color/](color/) are web recipes.
 | `oklch()` chroma beyond sRGB with no sRGB value declared before it | Declare the sRGB value first, then the vivid one inside `@media (color-gamut: p3)` |
 
 Adapted from Jakub Krehel's public better-colors (jakubkrehel/skills, commit 60bf140);
-the files in [color/](color/) are copied unchanged, except two links to his
-contrast reference, which this plugin does not include.
+the files in [color/](color/) are copied unchanged, except links to his
+contrast, color-format and token-naming references, which this plugin does not include.
 See [license](../../../references/jakub-krehel-LICENSE.txt).

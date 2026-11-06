@@ -1,6 +1,6 @@
 # Color usage
 
-Deploying color once the system exists: meaning, emphasis, gradients and appearance variants. For picking values see [palette-generation.md](palette-generation.md), for naming them [token-naming.md](token-naming.md).
+Deploying color once the system exists: meaning, emphasis, gradients and appearance variants. For picking values see [palette-generation.md](palette-generation.md).
 
 ## One color, one meaning
 
@@ -30,7 +30,7 @@ A value that happens to work in two roles stops working in both at the next them
 .tag { background: var(--color-text-secondary); }
 ```
 
-The role inventory in [token-naming.md](token-naming.md) is the list of roles a system needs.
+The roles in [palette-structure.md](palette-structure.md#every-step-has-a-job) are the list a system needs.
 
 ## One colored action per view
 
