@@ -9,9 +9,9 @@ Never estimate a color you could compute. Notation, a tinted neutral and a gradi
 
 ## Match the project's color system
 
-Reuse the project's tokens and notation. A consistent hex system beats hex with `oklch()` scattered through it.
+Reuse the project's tokens and notation, whether CSS variables, an asset catalog or design-tool variables. One notation throughout beats a second one scattered through it.
 
-For a new system, `oklch()` is the best default, because its numbers behave the way the ramp rules below describe. Everywhere else, a color library produces the same ramp in the project's own notation ([color-formats.md](color/color-formats.md)).
+For a new system, work in OKLCH, because its numbers behave the way the ramp rules below describe, then output in the platform's format: CSS `oklch()` or hex on the web, sRGB or Display P3 values in an asset catalog. A color library produces the same ramp in any notation ([color-formats.md](color/color-formats.md)).
 
 ## A system is ramps, not colors
 
@@ -19,11 +19,11 @@ One neutral ramp, one accent ramp and only the status ramps the product actually
 
 ## Every step has a job
 
-A ramp is not a gradient to pick from by eye. Each step exists because a role needs it: page background, component hover, border, solid fill, body text. Do not generate a step no role consumes. Both the Tailwind `50`–`950` and Radix `1`–`12` conventions map to those roles ([palette-structure.md](color/palette-structure.md)).
+A ramp is not a gradient to pick from by eye. Each step exists because a role needs it: window background, hovered or pressed component, border, solid fill, body text. Do not generate a step no role consumes. Both the Tailwind `50`–`950` and Radix `1`–`12` conventions map to those roles ([palette-structure.md](color/palette-structure.md)).
 
 ## Name primitives by hue, semantics by role
 
-Primitives name a value (`--blue-600`) and are never applied in a component. Semantic tokens name a job (`--color-text-secondary`), point at a primitive and are the only tier components reference. That seam is what lets a theme repoint colors without touching components ([token-naming.md](color/token-naming.md)).
+Primitives name a value (`blue-600`) and are never applied in a component. Semantic tokens name a job (`text-secondary`), point at a primitive and are the only tier components reference. That seam is what lets a theme repoint colors without touching components ([token-naming.md](color/token-naming.md)).
 
 ## Use a token only in its role
 
@@ -56,16 +56,18 @@ local background with a scrim, gradient, or image treatment.
 
 ## Pick a gradient's interpolation space
 
-The space is a look, not a correctness setting. Default to `in oklab`, and reach for `in oklch` when a two-hue gradient goes gray in the middle ([color-usage.md](color/color-usage.md)).
+The space is a look, not a correctness setting. Where the platform lets you choose, default to a perceptual space (OKLab), and reach for OKLCH when a two-hue gradient goes gray in the middle; on the web, `in oklab` and `in oklch` ([color-usage.md](color/color-usage.md)).
 
 ## Themes
 
 Check text, controls, focus, selection, and status contrast in their actual
-contexts and themes. Paint the document canvas from the same theme state as the
-app so overscroll and short pages match. When a theme switch animates the whole
+contexts and themes. Paint the window or document background from the same
+theme state as the content so overscroll and short screens match. When a theme switch animates the whole
 page, suppress transitions for the swap.
 
-## Before you finish
+## Web patterns
+
+The files in [color/](color/) are web recipes.
 
 | Pattern | Fix |
 | --- | --- |

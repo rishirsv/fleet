@@ -37,6 +37,10 @@ A removed line identifies something to investigate. Inspect both sides of every
 relevant hunk, and report a regression only after confirming the change did not
 replace the removed behavior.
 
+The markers below are web examples. In native code, read the removed lines for
+the same behaviors: accessibility labels, focus handling, reduced-motion checks,
+text direction, text styles and string-catalog entries.
+
 | Removed from the `-` side | What to check |
 | --- | --- |
 | `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-live`, `role=` | The control or region lost its accessible name, description, or announcement |

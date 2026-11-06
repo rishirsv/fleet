@@ -30,7 +30,7 @@ Correct supported material defects, inspect their effects and stop on the
 acceptance criteria, a user limit or a concrete blocker. No new full audit is
 needed after a local repair unless the affected scope warrants it.
 
-## Preview access
+## Web preview access
 
 Reuse an existing HTTP preview. If none exists and the browser can reach this
 machine, serve only the artifact directory on loopback. For a remote browser,
@@ -40,27 +40,31 @@ rendering defects. Do not broaden server exposure to work around access.
 
 ## Viewport sweep
 
-Render one page at a fixed set of widths and heights. Measure each render for sideways scroll, clipped text and controls that only hover reveals.
+Render one screen at a fixed set of sizes. Measure each render for sideways scroll, clipped text and controls that only hover reveals.
 
-The widths are exact: 320, 375, 768, 1024 and 1440, plus 1px either side of each project breakpoint. A width reasoned from the media queries is a finding. Run it after any layout change and whenever the user names a phone or a width. An untested width remains a coverage gap rather than an implied pass.
+The sizes are exact: the smallest and largest supported, a common middle size, and 1pt either side of every point where the layout changes (a breakpoint or a size-class change). A size reasoned from the layout code is a finding. Run it after any layout change and whenever the user names a device or a size. An untested size remains a coverage gap rather than an implied pass.
 
-1. **Read the breakpoints** from the CSS, the Tailwind config or the tokens. Add 1px below and 1px above each one to the fixed widths.
-2. **Render each width** through device emulation. Use 320×568, 375×812, 768×1024, 1024×768 and 1440×900. Breakpoint edges render 800px tall. Emulate touch at every width under 1024. Take a full-page screenshot of each. A layout judged from the code is a finding.
-3. **Measure each render.** On the web, run [overflow.js](viewports/overflow.js) through the browser's evaluate call at each width. Treat each result as a candidate until a crop of that width shows it. The page never scrolls sideways, though a box may scroll inside itself. Text is never cut by its box without an ellipsis or a clamp.
-4. **Tap at touch widths.** Row actions, copy buttons and menus that appear on hover need another way to appear.
-5. **Shorten the height.** Render 812×375, a phone held sideways. Open each dialog, sheet and menu at that size. Content scrolls inside the overlay and its actions stay reachable.
+1. **Read the layout edges** from the breakpoints, size classes or tokens. Add 1pt below and 1pt above each one to the fixed sizes.
+2. **Render each size** in a simulator, preview or device emulation, with touch at phone and tablet sizes. Capture the whole screen at each. A layout judged from the code is a finding.
+3. **Measure each render.** Treat each automated result as a candidate until a capture at that size shows it. The screen never scrolls sideways unless it is designed to, though a region may scroll inside itself. Text is never cut by its box without an ellipsis or a clamp.
+4. **Tap at touch sizes.** Row actions, copy buttons and menus that appear on hover need another way to appear.
+5. **Shorten the height.** Render a phone held sideways. Open each dialog, sheet and menu at that size. Content scrolls inside the overlay and its actions stay reachable.
 
-Name the width in every finding.
+Name the size in every finding.
 
 | Broken | Replacement |
 | --- | --- |
-| Checked at 375 and 1440 only | Also at 767 and 768, 1023 and 1024 |
-| "The grid collapses at `md`, so mobile is fine" | Screenshots at 320, 375 and 768 |
-| A `width: 400px` card at 320 | `max-width: 100%` on the card |
-| `overflow: hidden` cutting a label at 375 | The label wraps, or truncates with a way back |
-| Row actions behind `:hover` alone | Shown at all times under `(hover: none)` |
-| A dialog's `Save` below a 375px screen | `max-height: 100dvh` with the body scrolling |
+| Checked at one phone and one desktop size only | Also 1pt either side of each layout edge |
+| "The grid collapses at the compact size, so phones are fine" | Captures at the smallest phone, a common phone and a tablet |
+| A fixed-width card at the smallest size | The card's width follows its container |
+| A label cut by its box | The label wraps, or truncates with a way back |
+| Row actions behind hover alone | Shown at all times on touch |
+| A dialog's `Save` below a landscape phone screen | The dialog body scrolls and its actions stay visible |
 | "The header overlaps" | "At 768, the header overlaps the search field" |
+
+**On Apple platforms**, the sizes are the smallest and largest supported iPhone, each in landscape, and on iPad the narrowest multitasking widths the app supports. The layout edges are the compact and regular size-class changes.
+
+**On the web**, the widths are 320, 375, 768, 1024 and 1440 at 320×568, 375×812, 768×1024, 1024×768 and 1440×900, with breakpoint edges 800px tall, touch emulated under 1024, and 812×375 for the short height. Read breakpoints from the CSS, the Tailwind config or the tokens, and run [overflow.js](viewports/overflow.js) through the browser's evaluate call at each width. Fixes are usually `max-width: 100%`, visibility under `(hover: none)`, and `max-height: 100dvh` with the body scrolling.
 
 Adapted from Raphael Salaja's public viewports (raphaelsalaja/skills, commit 31031e9);
 [overflow.js](viewports/overflow.js) is copied unchanged. See

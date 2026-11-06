@@ -1,9 +1,9 @@
 # Recreate a reference
 
 Recreate a selected image, screenshot, mockup, or live URL as a faithful,
-responsive, interactive interface. Default to browser-openable local HTML with
-CSS and JavaScript. Use an existing app's stack when the task is to integrate
-there.
+responsive, interactive interface. Build in the target project's stack, web or
+native, when the task is to integrate there; otherwise default to
+browser-openable local HTML with CSS and JavaScript.
 
 ## Contents
 
@@ -161,8 +161,8 @@ asset subtask.
 
 ## Build the local interface
 
-Use one HTML file with embedded CSS and JavaScript when practical, with local
-asset files as needed. Add a framework or build tooling only when the existing
+Outside an existing project, use one HTML file with embedded CSS and JavaScript
+when practical, with local asset files as needed. Add a framework or build tooling only when the existing
 project or requested behavior needs it. Reuse shared styles and components so
 each correction applies to all equivalent elements.
 

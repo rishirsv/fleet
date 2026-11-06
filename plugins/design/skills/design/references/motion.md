@@ -108,7 +108,7 @@ Finish or cancel cleanup correctly even if motion is interrupted or disabled.
 
 Provide a reduced-motion treatment that preserves the state change: often an
 immediate update or brief fade in place of translation, zoom, parallax, or
-repeated oscillation. Apply it to both CSS and scripted animation. Respond to
+repeated oscillation. Apply it to declarative and scripted animation alike. Respond to
 preference changes while the interface is open where supported.
 
 Keep progress and completion understandable without spatial motion. Avoid
@@ -118,8 +118,9 @@ settings.
 
 ## Implement
 
-Use the simplest mechanism that supports the behavior: CSS for local state
-transitions, a scripted timeline for sequencing, or the project's animation
-system for gestures and springs.
+Use the simplest mechanism that supports the behavior: declarative,
+state-driven transitions for local state (CSS on the web, the UI framework's
+built-in animation natively), a scripted timeline for sequencing, or the
+project's animation system for gestures and springs.
 
 The decision sequence draws on Emil Kowalski's public animate skill (emilkowalski/skills, commit 2d22863), adapted for multiple platforms. See [license](../../../references/emil-kowalski-LICENSE.txt).

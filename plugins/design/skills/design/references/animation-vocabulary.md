@@ -24,7 +24,7 @@ See [license](../../../references/emil-kowalski-LICENSE.txt).
 - **Enter / Exit** — The animation an element plays when it's added to or removed from the screen.
 
 ### Sequencing & Timing — coordinating multiple elements or moments
-- **Keyframes** — Defined points in an animation (0%, 50%, 100%) that the browser fills the gaps between.
+- **Keyframes** — Defined points in an animation (0%, 50%, 100%) that the renderer fills the gaps between.
 - **Interpolation / Tween** — Generating all the in-between frames between a start and end value, so motion is continuous.
 - **Stagger** — Animate several items one after another with a small delay between each, creating a cascade.
 - **Orchestration** — Deliberately timing multiple animations so they feel like one coordinated motion.
@@ -53,11 +53,11 @@ See [license](../../../references/emil-kowalski-LICENSE.txt).
 - **Direction-aware transition** — Content slides one way going forward and the opposite way going back, so navigation has a sense of direction.
 
 ### Scroll — motion tied to scrolling or navigating between views
-- **Scroll reveal** — Elements fade or slide into place as they enter the viewport.
+- **Scroll reveal** — Elements fade or slide into place as they scroll into view.
 - **Scroll-driven animation** — An animation whose progress is tied directly to scroll position.
 - **Parallax** — Background and foreground move at different speeds while scrolling, creating depth.
 - **Page transition** — An animation that plays when navigating from one page or route to another.
-- **View transition** — The browser morphs between two states or pages, connecting shared elements.
+- **View transition** — The system morphs between two states or screens, connecting shared elements.
 
 ### Feedback & Interaction — responding to the user's actions
 - **Hover effect** — Visual change when the cursor moves over an element.
@@ -104,7 +104,7 @@ See [license](../../../references/emil-kowalski-LICENSE.txt).
 - **Clip-path** — Clipping an element to a shape, used for reveals, masks, and before/after sliders.
 - **Mask** — Hiding or revealing parts of an element using a shape or gradient — like clip-path, but with soft, fadeable edges.
 - **Before / after slider** — A draggable divider that wipes between two overlaid images to compare them.
-- **Line drawing** — An SVG path that draws itself in, like an invisible pen tracing it.
+- **Line drawing** — A vector path that draws itself in, like an invisible pen tracing it.
 - **Text morph** — Text that animates character by character when it changes, drawing attention to the new value.
 - **Skeleton / Shimmer** — A placeholder with a moving sheen shown while content loads.
 - **Number ticker** — Digits rolling or counting up to a value.
@@ -113,11 +113,11 @@ See [license](../../../references/emil-kowalski-LICENSE.txt).
 
 ### Performance — what keeps motion smooth instead of stuttering
 - **Frame rate (FPS)** — Frames drawn per second. 60fps is the baseline for smooth motion; 120fps on newer displays.
-- **Jank** — Visible stutter when the browser drops frames because it can't keep up with the animation.
-- **Dropped frame** — A frame the browser missed its deadline to draw, causing a tiny hitch in motion.
+- **Jank** — Visible stutter when the renderer drops frames because it can't keep up with the animation.
+- **Dropped frame** — A frame the renderer missed its deadline to draw, causing a tiny hitch in motion.
 - **Compositing** — Letting the GPU move or fade an element on its own layer without redoing layout or paint.
-- **will-change** — A CSS hint that an element is about to animate, so the browser can promote it to its own layer ahead of time.
-- **Layout thrashing** — Animating properties like width, height, top, or left that force the browser to recalculate layout every frame, causing jank.
+- **will-change** — A web (CSS) hint that an element is about to animate, so the browser can promote it to its own layer ahead of time.
+- **Layout thrashing** — Animating properties like width, height, top, or left that force layout to be recalculated every frame, causing jank.
 
 ### Principles to Know — concepts that guide when and how to animate
 - **Purposeful animation** — Motion should serve a function — orient, give feedback, show relationships — not just decorate.

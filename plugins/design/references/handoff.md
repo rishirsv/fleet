@@ -87,11 +87,11 @@ If a Figma URL is provided, pull the design from Figma. Otherwise, work from the
 | [Form] | Error | [Red border, error message below] |
 
 ### Responsive Behavior
-| Breakpoint | Changes |
+| Breakpoint or size class | Changes |
 |------------|---------|
-| Desktop (>1024px) | [Default layout] |
-| Tablet (768-1024px) | [What changes] |
-| Mobile (<768px) | [What changes] |
+| Wide (desktop, >1024; regular width) | [Default layout] |
+| Medium (tablet, 768–1024) | [What changes] |
+| Compact (phone, <768; compact width) | [What changes] |
 
 ### Edge Cases
 - **Empty state**: [What to show when no data]

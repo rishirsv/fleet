@@ -29,9 +29,9 @@ remain native; the display-type rule below concerns expressive visual identity.
   to force a fit.
 - No emoji or Unicode symbols substituted for a coherent icon family. Use a
   consistent library or deliberately drawn icons.
-- No handmade SVG illustrations, fake grain, CSS bevels, or gradients standing
+- No handmade vector illustrations, fake grain, faux bevels, or gradients standing
   in for promised photographic, painted, or dimensional assets. Produce the
-  actual material. SVG geometry, diagrams, icons, and genuine shader effects
+  actual material. Vector geometry, diagrams, icons, and genuine shader effects
   are valid media; pretending they reproduce a picture is the failure.
 - No geometric approximation of a subject's organic silhouette. Use a real
   cutout or mask derived from the image. Do not hide required imagery under

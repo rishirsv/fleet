@@ -38,7 +38,7 @@ Read the component and list every value it renders, with its source:
 
 Include the values people forget: counts in headers, relative timestamps, badge and status text, button labels that come from data, tooltips, avatar images, the list itself (its length is a value too).
 
-Look up limits in the validation schema (Zod, Yup, Valibot), database migrations, API types, and form `maxLength` attributes. Note where the frontend and backend disagree; a 50-character input that saves to a 255-character column means something longer will turn up eventually, through an import or the API.
+Look up limits in the validation schema or model, database migrations, API types, and input length limits. Note where the frontend and backend disagree; a 50-character input that saves to a 255-character column means something longer will turn up eventually, through an import or the API.
 
 **Completion criterion:** every rendered value is in the table, with a source and either a limit or "unbounded".
 
@@ -94,7 +94,7 @@ govern its layout:
 | Scenario | What it catches |
 | --- | --- |
 | Smallest supported container (for example, 320px) | Clipping, horizontal scroll, controls escaping the box |
-| Squeezed by a flex or grid sibling | Overflow from min-content sizing, a component refusing to shrink |
+| Squeezed by a sibling in a row or grid | Overflow from min-content sizing, a component refusing to shrink |
 | A very wide container | Unbounded measure, stretched controls, content pinned to opposite edges |
 
 **State**, only for states the component can reach through props, interactions,
@@ -116,19 +116,19 @@ different theme. Record which modes you exercised and which were unavailable.
 
 ## Render the real component
 
-For web components, import the real component into one temporary page. Render
-one instance per scenario in a single column with a short text label above each.
-For native components, use named native preview fixtures with the same plan.
+Render the real component once per scenario, each with a short text label: on
+the web, one temporary page in a single column; on Apple platforms, one named
+preview per scenario.
 
 Use the app's fonts, tokens, providers, and supported theme controls. Keep
 fixtures local and deterministic, out of production imports, and away from live
-data. Preserve the project's server and client separation, using its existing
-preview, story, or test adapter where available instead of making the whole
-test page client code. Check that each instance received its intended fixture
+data. Use the project's existing preview, story, or test adapter where
+available; on the web, preserve its server and client separation instead of
+making the whole test page client code. Check that each instance received its intended fixture
 before calling its output a failure.
 
-Use bounded containers for component-width cases. Resize the viewport separately
-when media queries, page chrome, or viewport units affect the result. Drive
+Use bounded containers for component-width cases. Resize the screen separately
+when screen-level layout rules or surrounding chrome affect the result. Drive
 internal states through their real interactions or supported test adapters.
 
 ## Inspect and report
@@ -141,25 +141,25 @@ Each of these signatures appears in the screenshot. The cause in the middle
 column is almost always it. Truncation and tabular numerals are in
 [Typography](../../design/references/typography.md).
 
-| What you see | Cause | Fix |
-| --- | --- | --- |
-| Avatar or icon squished into an oval or pill | Flex child shrinking | `flex-shrink: 0` on the avatar, icon, and any fixed-size box |
-| Text overflows its box instead of wrapping or truncating | Flex/grid child has `min-width: auto` | `min-width: 0` on the text column (`minmax(0, 1fr)` in grid) |
-| Email or URL runs past the edge | No break opportunities in the string | `overflow-wrap: anywhere` on that element |
-| Trailing action (••• menu, button) pushed off-screen or clipped | Middle content took all the space | `min-width: 0` on the middle, `flex-shrink: 0` on the action |
-| Badge wraps onto two lines | Badge allowed to shrink | `white-space: nowrap; flex-shrink: 0` on the badge, and decide what yields instead |
-| Avatar centered against a three-line name looks adrift | `align-items: center` on rows of varying height | Top-align (`align-items: flex-start`) once text can wrap, |
-| Last row cut off at a hard edge mid-glyph | Fixed-height container with no fade or scroll affordance | Visible scrollbar or a fade mask, and ensure `overflow` is intended |
-| Long word breaks mid-word in a heading | `word-break: break-all` | `overflow-wrap: anywhere` breaks only when it has to |
-| Wrong initials (`"J"` for "Jo", `"CI"` for "… Montgomery III", `"�"` for an emoji-first name) | `.split(' ')[0][0]` style code | Initials from grapheme clusters (`Intl.Segmenter`), first + last word, fallback icon |
-| Orphaned `—` or empty line where the role was | Placeholder rendered for a missing optional field | Omit the line, or reserve its height intentionally |
-| "1 members", "0 member" | Hardcoded plural | `Intl.PluralRules`, or separate strings per count |
-| `1284`, `1,284.000000001`, `NaN`, `undefined` | Raw number rendered | `Intl.NumberFormat` with the user's locale; guard null |
-| Long translated button label overflows | Fixed-width button | Width from content with `min-width`, never a fixed `width` |
-| Diacritics or tall scripts (Vietnamese, Thai) clipped top or bottom | Tight `line-height` with `overflow: hidden` | Looser `line-height` or no clipping on text boxes |
-| Broken-image icon in the avatar | No `onError` fallback | Fall back to initials; `object-fit: cover` for any aspect ratio |
-| Scrolling 1,000 rows stutters | Every row rendered | Virtualize, or paginate, and say which |
-| Content renders raw `<b>`, `&amp;`, or `**text**` | Wrong escaping layer | Escape once, at render; never `dangerouslySetInnerHTML` user data |
+| What you see | Cause | Fix | On the web |
+| --- | --- | --- | --- |
+| Avatar or icon squished into an oval or pill | A fixed-size element allowed to shrink | Fix the size of avatars, icons and other fixed boxes | `flex-shrink: 0` |
+| Text overflows its box instead of wrapping or truncating | The text column cannot shrink below its content | Let the text column shrink, then wrap or truncate | `min-width: 0`; `minmax(0, 1fr)` in grid |
+| Email or URL runs past the edge | No break opportunities in the string | Allow that value to break anywhere | `overflow-wrap: anywhere` |
+| Trailing action (••• menu, button) pushed off-screen or clipped | Middle content took all the space | The middle yields; the action keeps its size | `min-width: 0` on the middle, `flex-shrink: 0` on the action |
+| Badge wraps onto two lines | Badge allowed to shrink | Keep the badge on one line at full size, and decide what yields instead | `white-space: nowrap; flex-shrink: 0` |
+| Avatar centered against a three-line name looks adrift | Center alignment on rows of varying height | Top-align once text can wrap | `align-items: flex-start` |
+| Last row cut off at a hard edge mid-glyph | Fixed-height container with no fade or scroll affordance | A visible scroll indicator or a fade, and clipping only where intended | `overflow` |
+| Long word breaks mid-word in a heading | Breaking at any character everywhere | Break only when a word cannot fit | `overflow-wrap: anywhere`, not `word-break: break-all` |
+| Wrong initials (`"J"` for "Jo", `"CI"` for "… Montgomery III", `"�"` for an emoji-first name) | First character of the first word | Initials from grapheme clusters, first + last word, fallback icon | `Intl.Segmenter` |
+| Orphaned `—` or empty line where the role was | Placeholder rendered for a missing optional field | Omit the line, or reserve its height intentionally | |
+| "1 members", "0 member" | Hardcoded plural | The locale's plural rules, through the string catalog | `Intl.PluralRules` |
+| `1284`, `1,284.000000001`, `NaN`, `undefined` | Raw number rendered | Locale-aware number formatting; guard missing values | `Intl.NumberFormat` |
+| Long translated button label overflows | Fixed-width button | Width from content, with a minimum | `min-width`, never a fixed `width` |
+| Diacritics or tall scripts (Vietnamese, Thai) clipped top or bottom | Tight line height with clipping | Looser line height, or no clipping on text | `line-height`, `overflow: hidden` |
+| Broken-image icon in the avatar | No fallback when the image fails to load | Fall back to initials; fill any aspect ratio | `onError`, `object-fit: cover` |
+| Scrolling 1,000 rows stutters | Every row rendered | A lazy list, or pagination, and say which | Virtualize |
+| Content renders raw `<b>`, `&amp;`, or `**text**` | Wrong escaping layer | Escape or parse once, at render; never render user data as markup | Never `dangerouslySetInnerHTML` user data |
 
 Report one row per break, worst first. Severity: **Broken** (content unreadable, action unreachable, wrong data shown), **Ugly** (readable but visibly wrong: squished avatar, wrapped badge), **Fragile** (fine now, one realistic step from breaking: no limit, no fallback). Then list the breaks with more than one right answer (truncate vs wrap for a field, what an empty role should show, whether a 1,000-row list paginates or virtualizes), one line each with a recommendation, and the worst cases the component already handles.
 

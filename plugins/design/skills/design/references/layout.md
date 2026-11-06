@@ -39,7 +39,7 @@ hidden content is useful in that view.
 
 Decide what reflows, stacks, condenses, moves into disclosure, or remains
 scrollable as space changes. Preserve task priority and logical reading order
-as the structure changes. Keep controls reachable when browser chrome, a
+as the structure changes. Keep controls reachable when browser or system chrome, a
 virtual keyboard, safe areas, or sticky regions reduce the available space.
 
 Scale properties at different rates. Large display type, media, and generous
@@ -57,5 +57,5 @@ from accidental page overflow.
 When items have different proportions, choose deliberately between cropping,
 regular tracks, and a masonry-style layout. Preserve meaningful source order and
 check that keyboard traversal agrees with visual grouping. Treat new layout
-features as progressive enhancements and inspect the fallback in the supported
-browsers.
+features as progressive enhancements and inspect the fallback on the supported
+browsers or OS versions.

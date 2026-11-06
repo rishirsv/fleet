@@ -70,31 +70,31 @@ Sweep for these — each is a known class of motion that rarely survives the gat
 - Hover transforms on rows and list items users sweep the cursor across
 
 **Decoration**
-- Fade-in-on-scroll on every section (`whileInView`, IntersectionObserver reveal classes, AOS, `animate-fade-in` utilities)
+- Fade-in-on-scroll on every section or row (on the web: `whileInView`, IntersectionObserver reveal classes, AOS, `animate-fade-in` utilities)
 - Hover `scale` or lift on cards that aren't the primary action
 - Infinite loops: pulsing badges, gradient orbs, glowing borders, spinning icons that aren't loading indicators
 - Staggered entrances on lists the user loads many times a day
 
 **Functional data**
-- Charts that redraw from zero on every mount or refresh
-- Numbers that count up on page load rather than on a change
+- Charts that redraw from zero every time they appear or refresh
+- Numbers that count up when the screen opens rather than on a change
 - Table rows that animate in when data loads
 
 **Over-engineering**
 - Spinners on operations that resolve in under 300ms — the flash reads as a glitch
 - Skeleton shimmer on content that loads in under 300ms
-- `transition: all` — delete it and list only the properties that actually need to transition, or none
+- Transitions on every property (`transition: all` on the web) — delete it and list only the properties that actually need to transition, or none
 
-Useful sweeps: grep for `transition`, `animation`, `@keyframes`, `motion.`, `animate={`, `whileInView`, `whileHover`, `AnimatePresence`, `layout`, `stagger`, `infinite`, `animate-`, `IntersectionObserver`, `transition: all`.
+Search for the animation, transition, repeat and stagger calls the project uses. On the web, grep for `transition`, `animation`, `@keyframes`, `motion.`, `animate={`, `whileInView`, `whileHover`, `AnimatePresence`, `layout`, `stagger`, `infinite`, `animate-`, `IntersectionObserver`, `transition: all`.
 
 ## Removal Hazards
 
 Check each of these before deleting. They are why removal is not a find-and-replace:
 
-- **Hidden start states.** Keyframes with `animation-fill-mode: forwards` from `opacity: 0`, Motion's `initial={{ opacity: 0 }}`, or a reveal class that starts at `opacity: 0` until an observer fires. Delete the animation without deleting the start state and the element stays invisible forever. Always remove the start state with the animation.
-- **Code that waits for the animation.** `onAnimationEnd`, `transitionend` listeners, `onExitComplete`, and `setTimeout` calls sized to a duration. Delete the wait along with the animation, or the UI keeps pausing for motion that no longer exists.
-- **Exit animations that delay unmount.** `AnimatePresence` holds a component in the DOM until its exit finishes, and `onExitComplete` fires after. Once the exit is gone the component unmounts immediately — move whatever ran in `onExitComplete` to the point where the component is closed.
-- **Layout animations hiding a jump.** Motion's `layout` prop or a FLIP animation can be masking a layout shift. Remove it and the jump appears. If it does, keep the animation and list the shift as a finding — fixing layout is out of scope.
+- **Hidden start states.** An element that rests invisible, offset or scaled down until its animation runs. Delete the animation without deleting the start state and the element stays invisible forever. Always remove the start state with the animation. On the web: keyframes with `animation-fill-mode: forwards` from `opacity: 0`, Motion's `initial={{ opacity: 0 }}`, or a reveal class that starts at `opacity: 0` until an observer fires.
+- **Code that waits for the animation.** Completion callbacks and delays sized to a duration. Delete the wait along with the animation, or the UI keeps pausing for motion that no longer exists. On the web: `onAnimationEnd`, `transitionend` listeners, `onExitComplete`, and `setTimeout` calls.
+- **Exit animations that delay removal.** A view stays on screen until its exit finishes, and work runs after it. Once the exit is gone the view leaves immediately — move whatever ran after the exit to the point where the view is closed. On the web: `AnimatePresence` and `onExitComplete`.
+- **Layout animations hiding a jump.** An animated layout change can be masking a layout shift (on the web, Motion's `layout` prop or a FLIP animation). Remove it and the jump appears. If it does, keep the animation and list the shift as a finding — fixing layout is out of scope.
 - **Focus timed after motion.** Focus moved in an animation callback must move immediately once the animation is gone.
 - **Tests and selectors.** Tests that wait for animation classes or durations need the same removal.
 
@@ -102,22 +102,23 @@ Check each of these before deleting. They are why removal is not a find-and-repl
 
 After the removals, delete what they orphaned:
 
-- `@keyframes` and animation utilities no longer referenced anywhere
-- `motion.div` → `div` (and the other `motion.*` elements) where no motion props remain
-- Empty `AnimatePresence` wrappers and unused variants objects
-- Motion imports in files that no longer animate
-- Animation entries in the Tailwind config or token files with zero references
+- Animation definitions and utilities no longer referenced anywhere
+- Animation wrappers and modifiers where no motion remains
+- Motion library imports in files that no longer animate
+- Animation entries in configuration or token files with zero references
+
+On the web that means `@keyframes`, `motion.div` → `div` where no motion props remain, empty `AnimatePresence` wrappers, unused variants objects and Tailwind config entries.
 
 If the motion library is no longer imported anywhere, say so and propose removing the dependency (Hard Rule 3).
 
 ## Workflow
 
-1. **Recon.** Identify the stack, motion libraries, where motion lives (global CSS, tokens, Tailwind config, component props), and the product's personality — a crisp dashboard keeps less than a playful consumer app. Build a frequency map of the animated surfaces.
+1. **Recon.** Identify the stack, motion libraries, where motion lives (styles, tokens, configuration, component code), and the product's personality — a crisp dashboard keeps less than a playful consumer app. Build a frequency map of the animated surfaces.
 2. **Sweep** the hunt list. Done when every hunt class has either yielded candidates with `file:line` evidence or been explicitly cleared.
 3. **Gate** every candidate through the tree. Record the deciding branch.
 4. **Check hazards** for each Delete and Reduce.
 5. **Edit.** Apply the deletions and reductions, then the cleanup.
-6. **Verify.** Grep for every removed keyframe, class, and variant name to confirm nothing still references it.
+6. **Verify.** Search for every removed animation, class, and variant name to confirm nothing still references it.
 7. **Report** in the format below.
 
 ## Required Output Format
