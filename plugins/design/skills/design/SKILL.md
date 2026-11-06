@@ -1,6 +1,6 @@
 ---
 name: design
-description: "Design, build, refine, or recreate web and native product UI. Use for new screens, redesigns, visual directions, product ideas, UX copy, motion terms, or handoff specs."
+description: "Design, build, refine, or recreate web and native product UI. Use for new screens, redesigns, homepages, visual directions, UX copy, motion terms, or handoff specs."
 ---
 
 # Design
@@ -134,7 +134,7 @@ Open one of these only when a specific question comes up while building. Do not 
 
 ## Prove and explain
 
-If you can render the result, look at it at the sizes that matter before saying it's done, and follow [visual proof](../../references/evidence.md) for any claim about how it renders or behaves. If you can also start a fresh reviewer, run [finish review](../../references/finish-review.md) on implemented UI. If you can do neither, say what you couldn't see.
+[Visual proof](../../references/evidence.md) sets what counts as evidence for a claim about how the result renders or behaves. When you can start a fresh reviewer, run [finish review](../../references/finish-review.md) on implemented UI.
 
 Write design explanations with [Writing style](../../references/reporting.md): lead with the visible result, decision, or blocker; name elements and quote copy.
 

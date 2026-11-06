@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: "Critique or audit interfaces, UI diffs, mockups, or screenshots. Use for design, accessibility, copy, or motion reviews, and for stress-testing components."
+description: "Critique or audit interfaces, UI diffs, mockups, or screenshots. Use for design, copy, or motion reviews, and for stress-testing components."
 ---
 
 # Design review
@@ -20,7 +20,7 @@ sources. Do not edit in a review-only request.
 
 | Request | Read |
 |---|---|
-| Judge visual quality, UX, accessibility, or readiness | [Design audit](references/design-audit.md) |
+| Judge visual quality, UX, or readiness | [Design audit](references/design-audit.md) |
 | Find UI regressions in a diff, branch, commit, or pull request | [Change audit](references/change-audit.md), with the design audit's criteria and result |
 | Stress test or harden a component | [Component stress](references/component-stress.md) |
 | Review existing motion, audit motion across a product, find motion opportunities, or remove motion that feels slow | [Motion review](references/motion-review.md) |
@@ -38,9 +38,6 @@ For implemented UI's visual craft, also read the [craft floor](../../references/
 and distinguish scoped violations from unrelated incumbent patterns.
 For copy review, read the full [UX-copy guide](../../references/ux-copy.md).
 Apply the [workflow guidance](../../references/workflows-guide.md) to these workflows.
-Assess only what the available evidence supports; do not claim WCAG conformance
-from visual inspection alone. A flow audit records numbered steps with evidence,
-friction and impact, not just a gallery of screenshots.
 
 ## Gather evidence
 
@@ -50,23 +47,15 @@ interface; claims about behavior need the exercised interaction. An implementati
 polish claim needs rendered evidence from the affected workflow at a
 representative viewport, including the changed interaction or state.
 
-Record which routes, states, themes, and devices you inspected and which you
-could not. Report a coverage gap instead of generalizing from a sample, and keep
+Report a coverage gap instead of generalizing from a sample, and keep
 independently useful findings when some evidence is missing.
 
 ## Report
 
-Write findings with [Writing style](../../references/reporting.md).
-
-For a selected workflow, use its Output structure by default,
-marking unsupported fields unknown. Design and change audits open with the
-[design scores](../../references/scores.md). Otherwise lead with the overall assessment
-and highest-impact changes. Each finding
-gives its location or journey step, evidence, user impact, proposed correction,
-and the verification it needs. Rate each finding and end with a verdict using
-[severity](../../references/severity.md); structural and behavioral problems
-often matter more than cosmetic ones. Quote copy and name
-elements: "Four equally prominent actions obscure where to start" gives a
-correction a target, where "improve hierarchy" does not. Distinguish observed
-effects from hypotheses about users, and name strengths a correction could
-damage. Include relevant captures and summarize uncovered scope.
+Write findings with [Writing style](../../references/reporting.md). Design and
+change audits open with the [design scores](../../references/scores.md); others
+lead with the overall assessment and highest-impact changes. End with a verdict
+using [severity](../../references/severity.md). Name the target of each
+correction: "Four equally prominent actions obscure where to start" gives a fix
+a target, where "improve hierarchy" does not. Name strengths a correction could
+damage, and include the relevant captures.

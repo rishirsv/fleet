@@ -21,15 +21,10 @@ needed; a listed connector is not proof of an active connection. Existing user
 authorization controls external writes, publishing and messages. A reference's
 suggestion to publish a wiki or create tickets does not authorize those actions.
 
-Apply the maintained skill's scope and evidence contract when a workflow
-requires facts or capabilities. Never fill a template with invented measurements,
-quotes, scores, prevalence or unavailable states. Omit unsupported fields or
-mark unknown. Numerical scores use the [design scores](scores.md) rubric; research sample sizes
-are planning examples, not universal rules.
-Use the user's output format when specified. Otherwise preserve the selected
-workflow's Output structure (Deliverables for research planning) and substantive fields: critique strengths,
-and copy alternatives/localization notes. Mark unsupported fields unknown instead of inventing
-values or silently dropping the dimension. No extra approval is needed for already-authorized local work.
+Research sample sizes in these references are planning examples, not universal
+rules. Output follows [reporting](reporting.md); keep each workflow's substantive
+fields, such as critique strengths and copy alternatives. No extra approval is
+needed for already-authorized local work.
 
 ## Design-system artifact runtime
 

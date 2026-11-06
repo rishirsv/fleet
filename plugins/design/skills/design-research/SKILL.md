@@ -49,7 +49,6 @@ documentation and feature requests. Report access gaps and uncertainty.
 ## Deliver
 
 Return the decision-relevant findings, evidence ledger/source map, limitations
-and next action. Use the requested format; otherwise preserve the selected workflow's
-Output structure (Deliverables for research planning) in chat, with unsupported fields marked unknown. Save reusable
+and next action. Save reusable
 findings only when requested, through `$design-context`, with sources and scope.
 Follow [reporting guidance](../../references/reporting.md).
