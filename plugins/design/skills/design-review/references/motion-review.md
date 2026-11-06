@@ -9,9 +9,10 @@ behavior. Choose the mode before inspecting:
 | Review a transition or change | Inspect the scoped motion and its states | Findings and verdict |
 | Improve motion across a product | Inventory and sample relevant motion, then prioritize | Audit and actionable plans |
 | Find opportunities | Look for candidate changes and test each against the gate | Opportunities and rejected candidates |
+| Remove motion that feels slow or excessive | Put every animation through the [removal gate](remove-motion.md), then subtract | Removals, kept motion and cleanup |
 
 A review or opportunity search is read-only unless the user also requests
-changes. Do not claim product-wide coverage from a sampled route.
+changes; removal edits code, but only to subtract. Do not claim product-wide coverage from a sampled route.
 
 ## Gate and inspect
 
