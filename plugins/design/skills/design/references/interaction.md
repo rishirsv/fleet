@@ -13,7 +13,6 @@ behavior and state those transitions communicate.
 - [Exercise the experience](#exercise-the-experience)
 - [Agency and permission timing](#agency-and-permission-timing)
 - [Search](#search)
-- [Labels and messages](#labels-and-messages)
 
 ## Map the task
 
@@ -97,20 +96,3 @@ suggestions. Offer relevant, visible filters; tokens may supplement them. When
 there are no results, show the query and a way to change or clear it. Exercise
 entry, clearing, cancellation, scope changes, suggestions, filters, results,
 and no results.
-
-## Labels and messages
-
-Read the copy nearby first and follow the product's voice, terminology, and
-localization conventions. Keep one term per concept: if the menu says
-"Archive", the toast says "Archive" too. Name things by what the user manages,
-not by how the system is built: "Notifications", not "Webhook config". A
-deliberate brand voice is a choice; flag a departure from plain language only
-when it creates inconsistency, ambiguity, translation risk, or a tone the
-stakes don't support. Check every label against the action it invokes and
-every error for a stated recovery. Keep persistent information outside empty
-states.
-
-For a feature or destination name, start from the audience and the benefit they
-seek, try candidates in real navigation and spoken sentences, and prefer a
-familiar neutral term when ambiguity would undermine trust. An invented name
-works only when its meaning is discoverable in context.

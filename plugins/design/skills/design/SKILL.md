@@ -109,5 +109,5 @@ requests do not trigger this handoff.
 
 Write design explanations with [Writing style](../../references/reporting.md).
 Lead with the visible result, design decision, or blocker; name elements and
-quote copy. Interface copy follows
-[Interaction](references/interaction.md#labels-and-messages).
+quote copy. Interface copy follows the
+[UX-copy guide](../../references/ux-copy.md).
