@@ -1,6 +1,6 @@
 ---
 name: landing-page-design
-description: "Build or refine conversion-focused landing pages and marketing campaigns: offer, audience, page structure, conversion copy, proof, and SEO. Use for landing-page work, not general app UI, dashboards, components, or interface reviews."
+description: "Plan, write, and build conversion landing pages and campaigns. Use for offer, audience, page structure, conversion copy, proof, or SEO, not app UI."
 ---
 
 # Landing Page Design

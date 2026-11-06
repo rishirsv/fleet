@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: Create scripted product UI illustrations and animated walkthroughs with StageShow's React kit. Use for a staged action and outcome in a mock interface, not for a freely interactive prototype, production UI, or faithful animation of an accepted design.
+description: "Build scripted UI walkthroughs and staged product illustrations with StageShow. Use when a mock interface should act out an action, not for working prototypes."
 ---
 
 # Prototype

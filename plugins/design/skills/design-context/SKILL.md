@@ -1,6 +1,6 @@
 ---
 name: design-context
-description: "Save, recall, update, or forget product design context; audit, document, extend, build or sync a design system from a repository or design file. Use for tokens, components, brand guidance and product design preferences."
+description: "Save, recall, or forget product design context, and audit, document, or sync a design system. Use for tokens, components, brand rules, or saved preferences."
 ---
 
 # Design context

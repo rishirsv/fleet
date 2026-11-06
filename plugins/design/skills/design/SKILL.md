@@ -1,6 +1,6 @@
 ---
 name: design
-description: "Designs, builds, refines, and recreates web or native product interfaces. Use for UI design, product idea evaluation, visual exploration, UX copy or microcopy, button and error-message wording, motion terminology, and developer handoff specifications from a design."
+description: "Design, build, refine, or recreate web and native product UI. Use for new screens, redesigns, visual directions, product ideas, UX copy, motion terms, or handoff specs."
 ---
 
 # Design

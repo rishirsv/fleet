@@ -1,6 +1,6 @@
 ---
 name: design-review
-description: "Reviews interfaces, flows, mockups, Figma frames, screenshots, or design descriptions for usability, visual quality, accessibility and copy. Use for design critique, UI change review, UX-copy review, component stress testing, motion reviews or motion opportunities."
+description: "Critique or audit interfaces, UI diffs, mockups, or screenshots. Use for design, accessibility, copy, or motion reviews, and for stress-testing components."
 ---
 
 # Design review

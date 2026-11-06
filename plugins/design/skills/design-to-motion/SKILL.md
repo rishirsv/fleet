@@ -1,6 +1,6 @@
 ---
 name: design-to-motion
-description: "Animate a static design, Figma frame, screenshot, or product visual as a faithful showcase or website animation; export video or GIFs when requested. Use for design animation and showcase requests, not routine landing-page builds or product interaction motion."
+description: "Animate an accepted static design, Figma frame, or screenshot as a faithful showcase or site section, with video or GIF export. Not for product interaction motion."
 ---
 
 # Design to Motion
