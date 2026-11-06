@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay · Fleet</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --surface: #ffffff;
+    --line: #e3e6eb;
+    --line-strong: #cfd4dc;
+    --text: #17202b;
+    --muted: #5d6877;
+    --faint: #8a94a3;
+    --accent: #1f5fd1;
+    --accent-weak: #e8f0fd;
+    --row-hover: #f8f9fb;
+    --row-selected: #eef4fe;
+
+    --ok: #1d7a46;     --ok-bg: #e6f4ec;
+    --due: #946200;    --due-bg: #fdf3dc;
+    --over: #b42318;   --over-bg: #fdebe9;
+    --shop: #5a3fb8;   --shop-bg: #efebfb;
+
+    --radius: 10px;
+    --shadow: 0 1px 2px rgba(16, 24, 40, .05);
+    --panel-w: 420px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; min-height: 100vh; }
+  button, input, select { font: inherit; color: inherit; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* Shell */
+  .shell { display: grid; grid-template-columns: 1fr; min-height: 100vh; }
+  main { padding: 20px 28px 40px; min-width: 0; }
+  .topbar { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .brand { font-weight: 700; font-size: 18px; letter-spacing: -.01em; }
+  .org { color: var(--muted); }
+
+  /* KPIs */
+  .kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 18px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; box-shadow: var(--shadow); }
+  .kpi-label { color: var(--muted); font-size: 13px; display: flex; align-items: center; gap: 8px; }
+  .kpi-value { font-size: 30px; font-weight: 650; letter-spacing: -.02em; margin-top: 4px; line-height: 1.1; }
+  .kpi-value small { font-size: 14px; font-weight: 500; color: var(--faint); margin-left: 4px; letter-spacing: 0; }
+  .kpi.over .kpi-value { color: var(--over); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+
+  /* Toolbar */
+  .toolbar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-bottom: 12px; }
+  .search { position: relative; flex: 1 1 260px; max-width: 380px; }
+  .search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--faint); pointer-events: none; }
+  .search input { width: 100%; padding-left: 34px; }
+  input[type="search"], select {
+    height: 38px; border: 1px solid var(--line-strong); border-radius: 8px; background: var(--surface);
+    padding: 0 12px; outline: none;
+  }
+  select { padding-right: 30px; appearance: none; cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%235d6877' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 11px center; }
+  input:focus-visible, select:focus-visible, button:focus-visible, tr:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 1px;
+  }
+  select.active { border-color: var(--accent); background-color: var(--accent-weak); }
+  input:disabled, select:disabled { opacity: .55; cursor: default; }
+
+  .btn { height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line-strong); background: var(--surface); cursor: pointer; font-weight: 550; white-space: nowrap; display: inline-flex; align-items: center; gap: 8px; }
+  .btn:hover { background: var(--row-hover); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .btn.primary:hover { background: #1a52b6; }
+  .btn.ghost { border-color: transparent; background: transparent; color: var(--accent); }
+  .btn.ghost:hover { background: var(--accent-weak); }
+  .btn:disabled { opacity: .6; cursor: default; }
+  .spinner { width: 14px; height: 14px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: spin .7s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Table card */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  .card-head { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 8px 16px; border-bottom: 1px solid var(--line); }
+  .card-head .count { color: var(--muted); }
+  .card-head.selecting { background: var(--row-selected); }
+  .card-head .grow { flex: 1; }
+  .sel-count { font-weight: 600; }
+
+  .alert { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--over-bg); color: #7a1a12; border-bottom: 1px solid #f5c9c4; }
+  .alert svg { flex: none; margin-top: 2px; }
+  .alert .msg { flex: 1; line-height: 1.45; }
+  .alert strong { display: block; color: var(--over); }
+  .alert .btn { height: 32px; }
+
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; min-width: 700px; }
+  th, td { text-align: left; padding: 0 12px; height: 54px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { height: 40px; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; background: #fafbfc; }
+  th.r, td.r { text-align: right; }
+  tbody tr { cursor: pointer; }
+  tbody tr:hover { background: var(--row-hover); }
+  tbody tr.selected { background: var(--row-selected); }
+  tbody tr.open { box-shadow: inset 3px 0 0 var(--accent); background: var(--row-selected); }
+  tbody tr:last-child td { border-bottom: 0; }
+  tr.flash { animation: flash 1.6s ease-out; }
+  @keyframes flash { from { background: #dff3e7; } to { background: transparent; } }
+
+  td.sel, th.sel { width: 48px; padding: 0; }
+  .sel label { display: flex; align-items: center; justify-content: center; width: 48px; height: 54px; cursor: pointer; }
+  th.sel label { height: 40px; }
+  input[type="checkbox"] { width: 18px; height: 18px; margin: 0; accent-color: var(--accent); cursor: pointer; }
+
+  .vid { font-weight: 650; }
+  .sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+  .due-rel { font-size: 12.5px; margin-top: 2px; color: var(--muted); }
+  .due-rel.over { color: var(--over); font-weight: 550; }
+  .due-rel.due { color: var(--due); }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; }
+  .pill.ok { color: var(--ok); background: var(--ok-bg); }
+  .pill.due { color: var(--due); background: var(--due-bg); }
+  .pill.over { color: var(--over); background: var(--over-bg); }
+  .pill.shop { color: var(--shop); background: var(--shop-bg); }
+  .pill .dot { background: currentColor; width: 6px; height: 6px; }
+
+  /* Skeleton */
+  .sk { display: block; height: 12px; border-radius: 6px; background: linear-gradient(90deg, #eceef2 0%, #f6f7f9 40%, #eceef2 80%); background-size: 300% 100%; animation: shimmer 1.4s ease-in-out infinite; }
+  .kpi .sk { height: 30px; width: 64px; margin-top: 6px; }
+  @keyframes shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+  tr.sk-row { cursor: default; }
+  tr.sk-row:hover { background: none; }
+
+  /* Empty */
+  .empty { padding: 56px 24px; text-align: center; }
+  .empty h3 { margin: 12px 0 6px; font-size: 16px; }
+  .empty p { margin: 0 0 16px; color: var(--muted); }
+  .empty svg { color: var(--faint); }
+
+  /* Side panel */
+  .panel { background: var(--surface); border-left: 1px solid var(--line); display: flex; flex-direction: column; min-height: 0; }
+  .panel[hidden] { display: none; }
+  .panel-head { padding: 18px 20px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 12px; align-items: flex-start; }
+  .panel-head h2 { margin: 0; font-size: 20px; letter-spacing: -.01em; }
+  .panel-head .sub { font-size: 13px; margin-top: 3px; }
+  .panel-head .grow { flex: 1; min-width: 0; }
+  .icon-btn { width: 36px; height: 36px; border-radius: 8px; border: 0; background: transparent; cursor: pointer; display: grid; place-items: center; color: var(--muted); flex: none; }
+  .icon-btn:hover { background: var(--row-hover); color: var(--text); }
+  .panel-body { overflow-y: auto; padding: 16px 20px 28px; flex: 1; }
+  .facts { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin: 4px 0 18px; }
+  .facts dt { color: var(--muted); font-size: 12.5px; }
+  .facts dd { margin: 2px 0 0; font-weight: 550; }
+  .callout { border-radius: 8px; padding: 10px 12px; background: var(--shop-bg); color: #3e2a85; margin-bottom: 16px; line-height: 1.45; }
+  .callout strong { display: block; }
+  .panel-actions { display: flex; gap: 8px; margin-bottom: 8px; }
+  .panel .alert { border-radius: 8px; border: 1px solid #f5c9c4; margin: 10px 0 4px; }
+  .section-title { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; margin: 22px 0 8px; }
+  .history { list-style: none; margin: 0; padding: 0; }
+  .history li { display: grid; grid-template-columns: 14px 1fr; gap: 12px; position: relative; padding-bottom: 16px; }
+  .history li::before { content: ""; position: absolute; left: 6px; top: 16px; bottom: 0; width: 2px; background: var(--line); }
+  .history li:last-child::before { display: none; }
+  .history .node { width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--line-strong); background: var(--surface); margin-top: 2px; }
+  .history li.new .node { border-color: var(--ok); }
+  .h-top { display: flex; justify-content: space-between; gap: 12px; }
+  .h-work { font-weight: 600; }
+  .h-date { color: var(--muted); white-space: nowrap; }
+  .h-meta { color: var(--muted); font-size: 12.5px; margin-top: 3px; }
+  .h-note { margin-top: 4px; line-height: 1.4; }
+
+  .backdrop { display: none; }
+
+  /* Toast */
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 20px); background: #17202b; color: #fff; padding: 11px 16px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; display: flex; align-items: center; gap: 8px; z-index: 50; box-shadow: 0 8px 24px rgba(0,0,0,.18); }
+  .toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+  /* Wide: panel docks beside the table */
+  @media (min-width: 1200px) {
+    .shell.panel-open { grid-template-columns: minmax(0, 1fr) var(--panel-w); }
+    .panel { position: sticky; top: 0; height: 100vh; }
+  }
+  /* Narrower: panel slides over the content */
+  @media (max-width: 1199px) {
+    .panel { position: fixed; top: 0; right: 0; bottom: 0; width: min(var(--panel-w), 100vw); z-index: 30; box-shadow: -12px 0 32px rgba(16,24,40,.14); }
+    .backdrop { position: fixed; inset: 0; background: rgba(16,24,40,.25); z-index: 20; }
+    .shell.panel-open .backdrop { display: block; }
+  }
+  @media (max-width: 900px) {
+    main { padding: 16px 16px 32px; }
+    .kpi { padding: 12px 14px; }
+    .kpi-value { font-size: 26px; }
+    .search { max-width: none; flex-basis: 100%; }
+    .toolbar select { flex: 1 1 160px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<div class="shell" id="shell">
+  <main>
+    <header class="topbar">
+      <div class="brand">Relay</div>
+      <div class="org">Westbrook Public Works · Fleet Maintenance</div>
+    </header>
+
+    <section class="kpis" aria-label="Fleet summary">
+      <div class="kpi">
+        <div class="kpi-label"><span class="dot" style="background:var(--ok)"></span>In service</div>
+        <div class="kpi-value num" id="kpi-service"><span class="sk"></span></div>
+      </div>
+      <div class="kpi over">
+        <div class="kpi-label"><span class="dot" style="background:var(--over)"></span>Overdue for maintenance</div>
+        <div class="kpi-value num" id="kpi-overdue"><span class="sk"></span></div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label"><span class="dot" style="background:var(--shop)"></span>In the shop</div>
+        <div class="kpi-value num" id="kpi-shop"><span class="sk"></span></div>
+      </div>
+    </section>
+
+    <div class="toolbar">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="search" id="q" placeholder="Search ID, make or model" aria-label="Search vehicles" disabled autocomplete="off">
+      </label>
+      <select id="f-status" aria-label="Filter by status" disabled>
+        <option value="">All statuses</option>
+        <option value="ok">Up to date</option>
+        <option value="due">Due soon</option>
+        <option value="over">Overdue</option>
+        <option value="shop">In shop</option>
+      </select>
+      <select id="f-depot" aria-label="Filter by depot" disabled>
+        <option value="">All depots</option>
+      </select>
+      <button class="btn ghost" id="clear-filters" hidden>Clear filters</button>
+    </div>
+
+    <section class="card" aria-label="Vehicles">
+      <div class="card-head" id="card-head"></div>
+      <div id="bulk-error"></div>
+      <div class="table-wrap">
+        <table id="table" aria-busy="true">
+          <thead>
+            <tr>
+              <th class="sel"><label><input type="checkbox" id="select-all" aria-label="Select all shown vehicles" disabled></label></th>
+              <th>Vehicle</th>
+              <th>Type</th>
+              <th>Depot</th>
+              <th class="r">Odometer</th>
+              <th>Next service</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <div id="empty" hidden></div>
+    </section>
+  </main>
+
+  <div class="backdrop" id="backdrop"></div>
+  <aside class="panel" id="panel" hidden aria-labelledby="panel-title" role="dialog"></aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  // ---------- Fixed "today" so data stays coherent ----------
+  const TODAY = new Date(2026, 10, 6);
+  const DAY = 86400000;
+  const addDays = (d, n) => new Date(d.getTime() + n * DAY);
+  const daysBetween = (a, b) => Math.round((b - a) / DAY);
+
+  const params = new URLSearchParams(location.search);
+  const SAVE_MODE = params.get('save');   // "fail" = always fail, "ok" = never fail; default: first save fails
+  const LOAD_MODE = params.get('load');   // "hold" = stay in loading state
+
+  // ---------- Seeded data ----------
+  function rng(seed) {
+    return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  }
+  const rand = rng(4127);
+  const pick = arr => arr[Math.floor(rand() * arr.length)];
+  const between = (a, b) => a + Math.floor(rand() * (b - a + 1));
+
+  const DEPOTS = ['North Yard', 'Central Garage', 'Eastside Depot', 'Riverside Yard'];
+  const TECHS = ['M. Alvarez', 'J. Chen', 'R. Okafor', 'T. Lindqvist', 'S. Patel', 'K. Brennan'];
+
+  const TYPES = {
+    garbage: {
+      label: 'Garbage truck', prefix: 'GT', count: 12, start: 101, interval: 90, daily: [38, 55],
+      models: ['Mack LR Electric', 'Mack LR', 'Peterbilt 520', 'Autocar ACX'],
+      work: ['Preventive maintenance (PM-B)', 'Hydraulic packer service', 'Brake inspection and adjustment', 'Oil, filter and grease', 'Arm actuator inspection', 'DOT annual inspection'],
+      shop: ['Hydraulic packer leak, awaiting seal kit', 'Side-arm actuator replacement', 'Air brake chamber replacement'],
+    },
+    bus: {
+      label: 'Bus', prefix: 'B', count: 10, start: 201, interval: 60, daily: [90, 125],
+      models: ['Gillig Low Floor 40′', 'New Flyer Xcelsior XE40', 'Gillig Low Floor 35′'],
+      work: ['Preventive maintenance (PM-A)', 'Wheelchair lift inspection', 'HVAC service', 'Brake relining', 'Transmission fluid service', 'State safety inspection'],
+      shop: ['Wheelchair ramp fault, ADA hold', 'A/C compressor failure', 'Battery pack diagnostic'],
+    },
+    plow: {
+      label: 'Snow plow', prefix: 'SP', count: 8, start: 301, interval: 120, daily: [12, 26],
+      models: ['International HV507', 'Freightliner 108SD', 'Western Star 47X'],
+      work: ['Pre-season plow and spreader setup', 'Hydraulic system service', 'Cutting edge replacement', 'Spreader auger inspection', 'Oil, filter and grease', 'DOT annual inspection'],
+      shop: ['Pre-season setup: spreader controller install', 'Hydraulic pump replacement', 'Plow frame weld repair'],
+    },
+    van: {
+      label: 'Utility van', prefix: 'UV', count: 10, start: 401, interval: 120, daily: [25, 48],
+      models: ['Ford Transit 250', 'Ram ProMaster 2500', 'Ford E-Transit'],
+      work: ['Oil and filter change', 'Tire rotation', 'Preventive maintenance (PM-A)', 'Brake pad replacement', 'Ladder rack inspection', 'State safety inspection'],
+      shop: ['Transmission slipping, diagnosing', 'Recall: fuel line inspection', 'Rear door latch replacement'],
+    },
+  };
+
+  // Control the mix so the fleet looks realistic: 5 in shop, 6 overdue, 7 due soon.
+  const mix = [].concat(Array(5).fill('shop'), Array(6).fill('over'), Array(7).fill('due'), Array(22).fill('ok'));
+  for (let i = mix.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [mix[i], mix[j]] = [mix[j], mix[i]]; }
+
+  let woCounter = 24310;
+  const vehicles = [];
+  let k = 0;
+  for (const [type, t] of Object.entries(TYPES)) {
+    for (let n = 0; n < t.count; n++, k++) {
+      const cat = mix[k];
+      const offset = cat === 'over' ? -between(2, 26) : cat === 'due' ? between(0, 14) : cat === 'ok' ? between(18, t.interval - 5) : between(-12, 30);
+      const nextDue = addDays(TODAY, offset);
+      const lastService = addDays(nextDue, -t.interval);
+      const daily = between(t.daily[0], t.daily[1]);
+      const modelName = pick(t.models);
+      // Newer platforms only exist from 2022 on
+      const year = /Electric|E-Transit|47X/.test(modelName) ? between(2022, 2025) : between(2015, 2025);
+      const ageDays = daysBetween(new Date(year, 5, 1), TODAY);
+      const odometer = Math.round(ageDays * daily * (0.85 + rand() * 0.3));
+
+      const history = [];
+      let date = lastService, odo = odometer - daysBetween(lastService, TODAY) * daily;
+      const entries = between(4, 6);
+      for (let h = 0; h < entries; h++) {
+        const repair = rand() < 0.25;
+        history.push({
+          date,
+          work: repair ? pick(t.shop).replace(/, .*$/, '') + ' (repair)' : t.work[h % t.work.length],
+          odo: Math.max(0, Math.round(odo)),
+          tech: pick(TECHS),
+          wo: 'WO-' + (woCounter -= between(40, 160)),
+          cost: repair ? between(900, 6400) : between(180, 1250),
+        });
+        const gap = t.interval + between(-12, 10);
+        date = addDays(date, -gap);
+        odo -= gap * daily;
+      }
+
+      vehicles.push({
+        id: `${t.prefix}-${t.start + n}`,
+        type, typeLabel: t.label,
+        model: `${year} ${modelName}`,
+        depot: pick(DEPOTS),
+        odometer: Math.max(odometer, history[0].odo + 200),
+        interval: t.interval,
+        lastService, nextDue,
+        shop: cat === 'shop' ? { since: addDays(TODAY, -between(1, 9)), reason: pick(t.shop) } : null,
+        history,
+      });
+    }
+  }
+
+  // ---------- Helpers ----------
+  const STATUS = {
+    ok:   { label: 'Up to date' },
+    due:  { label: 'Due soon' },
+    over: { label: 'Overdue' },
+    shop: { label: 'In shop' },
+  };
+  function statusOf(v) {
+    if (v.shop) return 'shop';
+    const d = daysBetween(TODAY, v.nextDue);
+    if (d < 0) return 'over';
+    if (d <= 14) return 'due';
+    return 'ok';
+  }
+  const fmtDate = (d, withYear) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', ...(withYear || d.getFullYear() !== TODAY.getFullYear() ? { year: 'numeric' } : {}) });
+  const fmtMi = n => n.toLocaleString('en-US') + ' mi';
+  const fmtUSD = n => '$' + n.toLocaleString('en-US');
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+  function relDue(v) {
+    const d = daysBetween(TODAY, v.nextDue);
+    if (d < 0) return { text: `${plural(-d, 'day')} overdue`, cls: 'over' };
+    if (d === 0) return { text: 'Due today', cls: 'due' };
+    return { text: `in ${plural(d, 'day')}`, cls: d <= 14 ? 'due' : '' };
+  }
+
+  // ---------- State ----------
+  const state = {
+    loading: true,
+    q: '', status: '', depot: '',
+    selected: new Set(),
+    openId: null,
+    saving: null,          // 'bulk' | 'panel' | null
+    error: null,           // { origin, ids }
+    flash: new Set(),
+  };
+  let saveAttempts = 0;
+
+  // ---------- Elements ----------
+  const $ = id => document.getElementById(id);
+  const els = {
+    shell: $('shell'), q: $('q'), status: $('f-status'), depot: $('f-depot'), clear: $('clear-filters'),
+    head: $('card-head'), bulkError: $('bulk-error'), table: $('table'), tbody: $('tbody'), empty: $('empty'),
+    selectAll: $('select-all'), panel: $('panel'), backdrop: $('backdrop'), toast: $('toast'),
+    kService: $('kpi-service'), kOver: $('kpi-overdue'), kShop: $('kpi-shop'),
+  };
+  DEPOTS.forEach(d => els.depot.add(new Option(d, d)));
+
+  const ICON_ALERT = '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="1.6"/><path d="M10 5.5v5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="10" cy="14" r="1.1" fill="currentColor"/></svg>';
+  const ICON_CHECK = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // ---------- Derived ----------
+  function filtered() {
+    const q = state.q.trim().toLowerCase();
+    return vehicles
+      .filter(v => !state.status || statusOf(v) === state.status)
+      .filter(v => !state.depot || v.depot === state.depot)
+      .filter(v => !q || [v.id, v.model, v.typeLabel, v.depot].some(s => s.toLowerCase().includes(q)))
+      .sort((a, b) => {
+        // Most urgent first: in shop, then by due date
+        const rank = s => ({ shop: 0, over: 1, due: 2, ok: 3 })[s];
+        return rank(statusOf(a)) - rank(statusOf(b)) || a.nextDue - b.nextDue || a.id.localeCompare(b.id);
+      });
+  }
+  const filtersActive = () => !!(state.q.trim() || state.status || state.depot);
+
+  // ---------- Render ----------
+  function renderKpis() {
+    if (state.loading) return;
+    const counts = { ok: 0, due: 0, over: 0, shop: 0 };
+    vehicles.forEach(v => counts[statusOf(v)]++);
+    els.kService.innerHTML = `${vehicles.length - counts.shop}<small>of ${vehicles.length}</small>`;
+    els.kOver.textContent = counts.over;
+    els.kShop.textContent = counts.shop;
+  }
+
+  function renderHead(rows) {
+    const n = state.selected.size;
+    els.head.classList.toggle('selecting', n > 0 && !state.loading);
+    if (state.loading) {
+      els.head.innerHTML = `<span class="count">Loading vehicles…</span>`;
+      return;
+    }
+    if (n > 0) {
+      const saving = state.saving === 'bulk';
+      els.head.innerHTML = `
+        <span class="sel-count">${n} selected</span>
+        <span class="grow"></span>
+        <button class="btn ghost" data-act="clear-sel" ${saving ? 'disabled' : ''}>Clear selection</button>
+        <button class="btn primary" data-act="bulk-save" ${saving ? 'disabled' : ''}>
+          ${saving ? '<span class="spinner" aria-hidden="true"></span>Saving…' : `${ICON_CHECK}Mark ${n === 1 ? '' : n + ' '}serviced`}
+        </button>`;
+    } else {
+      els.head.innerHTML = `<span class="count">${rows.length === vehicles.length ? `${vehicles.length} vehicles` : `Showing ${rows.length} of ${vehicles.length} vehicles`}</span>`;
+    }
+  }
+
+  function errorHtml(ids) {
+    const what = ids.length === 1 ? `${ids[0]} wasn’t marked serviced.` : `${ids.length} vehicles weren’t marked serviced.`;
+    return `<div class="alert" role="alert">${ICON_ALERT}
+      <div class="msg"><strong>Couldn’t save</strong>${what} The server didn’t respond. Your selection is kept, so you can try again.</div>
+      <button class="btn" data-act="retry">Try again</button></div>`;
+  }
+
+  function renderBulkError() {
+    els.bulkError.innerHTML = state.error && state.error.origin === 'bulk' ? errorHtml(state.error.ids) : '';
+  }
+
+  function renderRows(rows) {
+    if (state.loading) {
+      els.tbody.innerHTML = Array.from({ length: 9 }, (_, i) => `
+        <tr class="sk-row" aria-hidden="true">
+          <td class="sel"><label><span class="sk" style="width:18px;height:18px;border-radius:4px"></span></label></td>
+          <td><span class="sk" style="width:${60 + (i % 3) * 10}px"></span><span class="sk" style="width:130px;height:9px;margin-top:7px"></span></td>
+          <td><span class="sk" style="width:90px"></span></td>
+          <td><span class="sk" style="width:${80 + (i % 2) * 20}px"></span></td>
+          <td class="r"><span class="sk" style="width:70px;margin-left:auto"></span></td>
+          <td><span class="sk" style="width:60px"></span><span class="sk" style="width:80px;height:9px;margin-top:7px"></span></td>
+          <td><span class="sk" style="width:78px;height:22px;border-radius:11px"></span></td>
+        </tr>`).join('');
+      return;
+    }
+    els.tbody.innerHTML = rows.map(v => {
+      const s = statusOf(v), rel = relDue(v), sel = state.selected.has(v.id);
+      const cls = [sel && 'selected', state.openId === v.id && 'open', state.flash.has(v.id) && 'flash'].filter(Boolean).join(' ');
+      return `<tr data-id="${v.id}" class="${cls}" tabindex="0" aria-selected="${sel}">
+        <td class="sel"><label><input type="checkbox" data-id="${v.id}" ${sel ? 'checked' : ''} aria-label="Select ${v.id}"></label></td>
+        <td><div class="vid">${v.id}</div><div class="sub">${esc(v.model)}</div></td>
+        <td>${v.typeLabel}</td>
+        <td>${v.depot}</td>
+        <td class="r num">${fmtMi(v.odometer)}</td>
+        <td><div class="num">${fmtDate(v.nextDue)}</div><div class="due-rel ${rel.cls}">${rel.text}</div></td>
+        <td><span class="pill ${s}"><span class="dot"></span>${STATUS[s].label}</span></td>
+      </tr>`;
+    }).join('');
+  }
+
+  function renderEmpty(rows) {
+    const show = !state.loading && rows.length === 0;
+    els.empty.hidden = !show;
+    els.table.parentElement.hidden = show;
+    if (!show) return;
+    const bits = [];
+    if (state.q.trim()) bits.push(`“${esc(state.q.trim())}”`);
+    if (state.status) bits.push(STATUS[state.status].label.toLowerCase());
+    if (state.depot) bits.push(`at ${esc(state.depot)}`);
+    els.empty.innerHTML = `<div class="empty">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="18" cy="18" r="11" stroke="currentColor" stroke-width="2"/><path d="M26.5 26.5L34 34" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M14 18h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <h3>No vehicles match</h3>
+      <p>Nothing matches ${bits.join(', ')}.</p>
+      <button class="btn" data-act="clear-filters">Clear filters</button></div>`;
+  }
+
+  function renderSelectAll(rows) {
+    const ids = rows.map(v => v.id);
+    const n = ids.filter(id => state.selected.has(id)).length;
+    els.selectAll.disabled = state.loading || rows.length === 0;
+    els.selectAll.checked = n > 0 && n === ids.length;
+    els.selectAll.indeterminate = n > 0 && n < ids.length;
+  }
+
+  function renderPanel() {
+    const v = vehicles.find(x => x.id === state.openId);
+    els.shell.classList.toggle('panel-open', !!v);
+    els.panel.hidden = !v;
+    if (!v) return;
+    const s = statusOf(v), rel = relDue(v), saving = state.saving === 'panel';
+    const err = state.error && state.error.origin === 'panel' && state.error.ids[0] === v.id;
+    els.panel.innerHTML = `
+      <div class="panel-head">
+        <div class="grow">
+          <h2 id="panel-title">${v.id}</h2>
+          <div class="sub">${esc(v.model)} · ${v.typeLabel}</div>
+        </div>
+        <span class="pill ${s}" style="margin-top:4px"><span class="dot"></span>${STATUS[s].label}</span>
+        <button class="icon-btn" data-act="close" aria-label="Close panel">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 3.5l9 9M12.5 3.5l-9 9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="panel-body">
+        ${v.shop ? `<div class="callout"><strong>In the shop since ${fmtDate(v.shop.since)}</strong>${esc(v.shop.reason)}</div>` : ''}
+        <dl class="facts">
+          <div><dt>Next service</dt><dd class="num">${fmtDate(v.nextDue, true)}</dd><div class="due-rel ${rel.cls}">${rel.text}</div></div>
+          <div><dt>Last service</dt><dd class="num">${fmtDate(v.lastService, true)}</dd></div>
+          <div><dt>Odometer</dt><dd class="num">${fmtMi(v.odometer)}</dd></div>
+          <div><dt>Service interval</dt><dd>Every ${v.interval} days</dd></div>
+          <div><dt>Depot</dt><dd>${v.depot}</dd></div>
+        </dl>
+        <div class="panel-actions">
+          <button class="btn primary" data-act="panel-save" ${saving ? 'disabled' : ''}>
+            ${saving ? '<span class="spinner" aria-hidden="true"></span>Saving…' : `${ICON_CHECK}Mark serviced`}
+          </button>
+        </div>
+        ${err ? errorHtml([v.id]) : ''}
+        <div class="section-title">Service history</div>
+        <ol class="history">
+          ${v.history.map(h => `<li class="${h.new ? 'new' : ''}">
+            <span class="node" aria-hidden="true"></span>
+            <div>
+              <div class="h-top"><span class="h-work">${esc(h.work)}</span><span class="h-date num">${fmtDate(h.date, true)}</span></div>
+              <div class="h-meta num">${fmtMi(h.odo)} · ${h.tech} · ${h.wo}${h.cost ? ' · ' + fmtUSD(h.cost) : ''}</div>
+            </div></li>`).join('')}
+        </ol>
+      </div>`;
+  }
+
+  function render() {
+    const rows = state.loading ? [] : filtered();
+    els.table.setAttribute('aria-busy', state.loading);
+    [els.q, els.status, els.depot].forEach(e => e.disabled = state.loading);
+    els.status.classList.toggle('active', !!state.status);
+    els.depot.classList.toggle('active', !!state.depot);
+    els.clear.hidden = !filtersActive() || state.loading;
+    // Keep keyboard focus on the same row or checkbox across re-renders
+    const a = document.activeElement;
+    const keep = a && els.tbody.contains(a) ? { id: a.closest('tr')?.dataset.id, box: a.tagName === 'INPUT' } : null;
+    renderKpis(); renderHead(rows); renderBulkError(); renderRows(rows);
+    if (keep?.id) {
+      const tr = els.tbody.querySelector(`tr[data-id="${keep.id}"]`);
+      (keep.box ? tr?.querySelector('input') : tr)?.focus({ preventScroll: true });
+    }
+    renderEmpty(rows); renderSelectAll(rows); renderPanel();
+  }
+
+  // ---------- Actions ----------
+  function pruneSelection() {
+    const visible = new Set(filtered().map(v => v.id));
+    for (const id of state.selected) if (!visible.has(id)) state.selected.delete(id);
+    if (state.error && state.error.origin === 'bulk') state.error = null;
+  }
+
+  function fakeSave(ids) {
+    saveAttempts++;
+    const fail = SAVE_MODE === 'fail' || (SAVE_MODE !== 'ok' && saveAttempts === 1);
+    return new Promise((resolve, reject) => setTimeout(() => fail ? reject(new Error('timeout')) : resolve(ids), 1000));
+  }
+
+  async function markServiced(ids, origin) {
+    if (state.saving || !ids.length) return;
+    state.saving = origin; state.error = null; render();
+    try {
+      await fakeSave(ids);
+      ids.forEach(id => {
+        const v = vehicles.find(x => x.id === id);
+        const wasShop = v.shop;
+        v.history.unshift({ date: TODAY, work: wasShop ? 'Repair completed, returned to service' : `Scheduled service (${v.interval}-day)`, odo: v.odometer, tech: 'Fleet desk', wo: 'WO-' + (24311 + saveAttempts * 10 + v.history.length), cost: 0, new: true });
+        v.lastService = TODAY; v.nextDue = addDays(TODAY, v.interval); v.shop = null;
+        state.flash.add(id);
+      });
+      if (origin === 'bulk') state.selected.clear(); else state.selected.delete(ids[0]);
+      state.saving = null; render();
+      toast(ids.length === 1 ? `${ids[0]} marked serviced` : `${ids.length} vehicles marked serviced`);
+      setTimeout(() => { ids.forEach(id => state.flash.delete(id)); }, 1700);
+    } catch {
+      state.saving = null; state.error = { origin, ids }; render();
+      const btn = (origin === 'bulk' ? els.bulkError : els.panel).querySelector('[data-act="retry"]');
+      if (btn) btn.focus();
+    }
+  }
+
+  let toastTimer;
+  function toast(msg) {
+    els.toast.innerHTML = ICON_CHECK + esc(msg);
+    els.toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => els.toast.classList.remove('show'), 2800);
+  }
+
+  let lastRowFocus = null;
+  function openPanel(id, fromEl) {
+    lastRowFocus = fromEl || null;
+    if (state.error && state.error.origin === 'panel') state.error = null;
+    state.openId = id; render();
+    els.panel.querySelector('[data-act="close"]').focus({ preventScroll: true });
+  }
+  function closePanel() {
+    if (!state.openId) return;
+    const id = state.openId;
+    state.openId = null;
+    if (state.error && state.error.origin === 'panel') state.error = null;
+    render();
+    const row = els.tbody.querySelector(`tr[data-id="${id}"]`);
+    (row || lastRowFocus)?.focus({ preventScroll: true });
+  }
+
+  function clearFilters() {
+    state.q = ''; state.status = ''; state.depot = '';
+    els.q.value = ''; els.status.value = ''; els.depot.value = '';
+    render(); els.q.focus();
+  }
+
+  // ---------- Events ----------
+  let qTimer;
+  els.q.addEventListener('input', () => {
+    clearTimeout(qTimer);
+    qTimer = setTimeout(() => { state.q = els.q.value; pruneSelection(); render(); }, 120);
+  });
+  els.status.addEventListener('change', () => { state.status = els.status.value; pruneSelection(); render(); });
+  els.depot.addEventListener('change', () => { state.depot = els.depot.value; pruneSelection(); render(); });
+  els.clear.addEventListener('click', clearFilters);
+
+  els.selectAll.addEventListener('change', () => {
+    const ids = filtered().map(v => v.id);
+    const all = ids.every(id => state.selected.has(id));
+    ids.forEach(id => all ? state.selected.delete(id) : state.selected.add(id));
+    render();
+  });
+
+  els.tbody.addEventListener('change', e => {
+    const id = e.target.dataset.id;
+    if (!id) return;
+    e.target.checked ? state.selected.add(id) : state.selected.delete(id);
+    render();
+  });
+  els.tbody.addEventListener('click', e => {
+    if (e.target.closest('.sel')) return;
+    const tr = e.target.closest('tr[data-id]');
+    if (tr) openPanel(tr.dataset.id, tr);
+  });
+  els.tbody.addEventListener('keydown', e => {
+    const tr = e.target.closest('tr[data-id]');
+    if (!tr || e.target !== tr) return;
+    if (e.key === 'Enter') { e.preventDefault(); openPanel(tr.dataset.id, tr); }
+    else if (e.key === ' ') { e.preventDefault(); tr.querySelector('input').click(); }
+    else if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const next = e.key === 'ArrowDown' ? tr.nextElementSibling : tr.previousElementSibling;
+      if (next) next.focus();
+    }
+  });
+
+  document.addEventListener('click', e => {
+    const act = e.target.closest('[data-act]')?.dataset.act;
+    if (!act) return;
+    if (act === 'clear-sel') { state.selected.clear(); state.error = null; render(); }
+    else if (act === 'bulk-save') markServiced([...state.selected], 'bulk');
+    else if (act === 'panel-save') markServiced([state.openId], 'panel');
+    else if (act === 'retry') markServiced(state.error.ids, state.error.origin);
+    else if (act === 'close') closePanel();
+    else if (act === 'clear-filters') clearFilters();
+  });
+  els.backdrop.addEventListener('click', closePanel);
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && state.openId) closePanel();
+    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && !state.loading) { e.preventDefault(); els.q.focus(); }
+  });
+
+  // ---------- Boot: simulate the network load ----------
+  render();
+  if (LOAD_MODE !== 'hold') setTimeout(() => { state.loading = false; render(); }, 1200);
+})();
+</script>
+</body>
+</html>

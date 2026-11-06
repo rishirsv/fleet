@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fernhill Seed Library: free heirloom seeds for Portland gardeners</title>
+<meta name="description" content="Borrow heirloom vegetable and flower seeds each spring from Fernhill Seed Library in Portland, Oregon. Grow them, save seeds from your harvest, and bring some back in fall. Membership is free.">
+<style>
+  :root {
+    --moss: #1F3A2B;
+    --fern: #3F6B47;
+    --lichen: #EEF1E6;
+    --manila: #E6CF97;
+    --stamp: #5A2E8A;
+    --paper: #FBFCF7;
+    --rule: rgba(31, 58, 43, .22);
+
+    --display: Rockwell, "Rockwell Nova", "Roboto Slab", "Zilla Slab", "Clarendon", Georgia, serif;
+    --body: "Avenir Next", Avenir, "Segoe UI", "Helvetica Neue", system-ui, sans-serif;
+    --typed: "American Typewriter", "Courier Prime", "Courier New", Courier, monospace;
+
+    /* Type scale, ratio ~1.25 */
+    --t-sm: .875rem;
+    --t-base: 1.0625rem;
+    --t-md: 1.3125rem;
+    --t-lg: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+    --t-xl: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+    --t-hero: clamp(2.6rem, 1.6rem + 4.6vw, 5.25rem);
+
+    --gutter: clamp(1.25rem, 4vw, 3rem);
+    --wrap: 72rem;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--lichen);
+    color: var(--moss);
+    font: 400 var(--t-base)/1.6 var(--body);
+  }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; }
+  p { margin: 0 0 1em; }
+  a { color: inherit; text-underline-offset: .18em; }
+
+  :focus-visible { outline: 3px solid var(--stamp); outline-offset: 3px; border-radius: 2px; }
+  .on-dark :focus-visible { outline-color: var(--manila); }
+
+  .skip {
+    position: absolute; left: 1rem; top: -4rem; z-index: 10;
+    background: var(--manila); color: var(--moss); padding: .75rem 1rem; font-weight: 600;
+  }
+  .skip:focus { top: 1rem; }
+
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+  .visually-hidden {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); white-space: nowrap;
+  }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: .7rem 1.4rem;
+    font: 600 var(--t-base)/1.2 var(--body);
+    border: 2px solid transparent; border-radius: 999px;
+    text-decoration: none; cursor: pointer;
+  }
+  .btn-manila { background: var(--manila); color: var(--moss); }
+  .btn-manila:hover { background: #F0DDAE; }
+  .btn-moss { background: var(--moss); color: var(--lichen); }
+  .btn-moss:hover { background: var(--fern); }
+
+  /* Header */
+  .site-header { background: var(--moss); color: var(--lichen); }
+  .site-header .wrap {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    min-height: 4.5rem;
+  }
+  .wordmark {
+    font: 700 1.25rem/1 var(--display); text-decoration: none;
+    display: inline-flex; align-items: center; gap: .6rem;
+  }
+  .wordmark svg { flex: none; }
+  .nav { display: flex; align-items: center; gap: 1.75rem; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { text-decoration: none; padding: .5rem 0; }
+  .nav-links a:hover { text-decoration: underline; }
+  .nav .btn { min-height: 44px; padding: .5rem 1.1rem; }
+  @media (max-width: 52rem) { .nav-links { display: none; } }
+
+  /* Hero */
+  .hero { background: var(--moss); color: var(--lichen); padding: clamp(2.5rem, 6vw, 5.5rem) 0 clamp(3.5rem, 8vw, 7rem); overflow: hidden; }
+  .hero .wrap {
+    display: grid; gap: clamp(2.5rem, 5vw, 4.5rem);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); align-items: center;
+  }
+  @media (max-width: 56rem) { .hero .wrap { grid-template-columns: 1fr; } }
+  .hero h1 { font-size: var(--t-hero); letter-spacing: -.015em; max-width: 11ch; }
+  .hero-lede { font-size: var(--t-md); line-height: 1.5; max-width: 34ch; margin: 1.5rem 0 2rem; color: #D7DFD2; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 1rem 1.5rem; align-items: center; }
+  .hero-actions a:not(.btn) { padding: .6rem 0; }
+  .hero-note { margin: 2.25rem 0 0; padding-top: 1.25rem; border-top: 1px solid rgba(238,241,230,.25); max-width: 40ch; font-size: var(--t-sm); color: #C9D3C4; }
+  .hero-note strong { color: var(--lichen); }
+
+  /* Circulation card: the one memorable object */
+  .card-stage { position: relative; justify-self: center; width: min(100%, 30rem); padding-top: 2.25rem; }
+  .pocket {
+    position: absolute; left: 6%; right: 6%; bottom: -1.5rem; height: 46%;
+    background: #CDB57A; border-radius: 3px 3px 6px 6px;
+    box-shadow: 0 18px 40px rgba(0,0,0,.35);
+  }
+  .pocket::before {
+    content: ""; position: absolute; left: 50%; top: -1px; transform: translateX(-50%);
+    width: 34%; height: 1.4rem; background: var(--moss); border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  }
+  .circ-card {
+    position: relative; margin: 0; background: var(--manila); color: var(--moss);
+    border-radius: 3px; padding: 1.25rem 1.25rem 1.5rem;
+    transform: rotate(-2.2deg);
+    box-shadow: 0 2px 0 rgba(0,0,0,.08), 0 24px 50px rgba(0,0,0,.3);
+  }
+  .circ-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; border-bottom: 2px solid var(--moss); padding-bottom: .5rem; }
+  .circ-head span { font: 700 1rem/1.2 var(--display); }
+  .circ-head small { font: .8rem/1.2 var(--typed); }
+  .circ-item { font: 1rem/1.5 var(--typed); margin: .75rem 0 .9rem; }
+  .circ-item b { font-weight: 700; }
+  .circ-table { width: 100%; border-collapse: collapse; font: .95rem/1.2 var(--typed); }
+  .circ-table th { font: 600 .78rem/1.2 var(--body); text-align: left; padding: .35rem .4rem; border-bottom: 1px solid var(--moss); }
+  .circ-table td { padding: .55rem .4rem; border-bottom: 1px solid var(--rule); height: 2.4rem; }
+  .circ-table th + th, .circ-table td + td { border-left: 1px solid var(--rule); }
+  .circ-table tr.next td { position: relative; }
+  .stamp {
+    display: inline-block; color: var(--stamp); font: 700 .95rem/1 var(--typed);
+    letter-spacing: .04em; padding: .2rem .35rem; border: 2px solid var(--stamp); border-radius: 3px;
+    transform: rotate(-4deg); opacity: .9;
+  }
+  .you { color: var(--stamp); font-style: italic; }
+  .circ-foot { font: .78rem/1.4 var(--body); margin: .9rem 0 0; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .stamp.lands { animation: stamp .45s cubic-bezier(.2,.9,.3,1.3) 1.1s both; }
+    .you { animation: appear .5s ease-out 1.7s both; }
+    @keyframes stamp {
+      0% { opacity: 0; transform: rotate(-12deg) scale(2.4); }
+      70% { opacity: .95; transform: rotate(-4deg) scale(.94); }
+      100% { opacity: .9; transform: rotate(-4deg) scale(1); }
+    }
+    @keyframes appear { from { opacity: 0; } to { opacity: 1; } }
+  }
+
+  /* Section rhythm */
+  .section { padding: clamp(3.5rem, 8vw, 6.5rem) 0; }
+  .section-head { max-width: 40rem; margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .section-head h2 { font-size: var(--t-xl); }
+  .section-head p { margin: 1rem 0 0; font-size: var(--t-md); line-height: 1.5; }
+
+  /* How it works: a real yearly sequence */
+  .year { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; counter-reset: step; }
+  .year li { position: relative; padding: 0 1.5rem 0 0; counter-increment: step; }
+  .year li::before {
+    content: counter(step); display: grid; place-items: center;
+    width: 2.75rem; height: 2.75rem; border-radius: 50%;
+    background: var(--moss); color: var(--lichen); font: 700 1.15rem/1 var(--display);
+    position: relative; z-index: 1;
+  }
+  .year li::after {
+    content: ""; position: absolute; top: 1.375rem; left: 2.75rem; right: 0; height: 2px;
+    background: repeating-linear-gradient(90deg, var(--fern) 0 6px, transparent 6px 12px);
+  }
+  .year li:last-child::after { display: none; }
+  .when { display: block; margin: 1.1rem 0 .25rem; font-weight: 600; color: var(--fern); font-size: var(--t-sm); }
+  .year h3 { font-size: var(--t-md); margin-bottom: .5rem; }
+  .year p { max-width: 30ch; }
+  @media (max-width: 52rem) {
+    .year { grid-template-columns: 1fr; gap: 2rem; }
+    .year li { padding: 0 0 0 4rem; }
+    .year li::before { position: absolute; left: 0; top: 0; }
+    .year li::after { top: 2.75rem; bottom: -2rem; left: 1.3rem; right: auto; width: 2px; height: auto;
+      background: repeating-linear-gradient(180deg, var(--fern) 0 6px, transparent 6px 12px); }
+    .when { margin-top: .5rem; }
+  }
+
+  /* Seeds */
+  .seeds { background: var(--paper); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+  .seeds-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem; margin-bottom: 2rem; }
+  .seeds-top .section-head { margin-bottom: 0; }
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .filter {
+    min-height: 44px; padding: .5rem 1rem; border-radius: 999px;
+    border: 2px solid var(--moss); background: transparent; color: var(--moss);
+    font: 600 var(--t-sm)/1 var(--body); cursor: pointer;
+  }
+  .filter[aria-pressed="true"] { background: var(--moss); color: var(--lichen); }
+  .packets { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.25rem 1.5rem; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); }
+  .packet {
+    position: relative; background: var(--manila); padding: 2.6rem 1.25rem 1.25rem;
+    clip-path: polygon(0 1.6rem, 50% 0, 100% 1.6rem, 100% 100%, 0 100%);
+    display: flex; flex-direction: column; min-height: 100%;
+  }
+  .packet::before { /* flap seam */
+    content: ""; position: absolute; left: 0; right: 0; top: 1.6rem; height: 1px; background: rgba(31,58,43,.25);
+  }
+  .swatch { display: flex; gap: 4px; margin-bottom: .9rem; }
+  .swatch i { width: 1.1rem; height: 1.1rem; border-radius: 50%; background: var(--c); box-shadow: inset 0 0 0 1px rgba(31,58,43,.25); }
+  .packet h3 { font-size: 1.3rem; }
+  .variety { font-size: var(--t-sm); margin: .2rem 0 .8rem; }
+  .packet p.note { font-size: var(--t-sm); line-height: 1.5; flex: 1; }
+  .facts { display: grid; grid-template-columns: auto 1fr; gap: .2rem .9rem; margin: 0; padding-top: .75rem; border-top: 1px dashed rgba(31,58,43,.45); font-size: var(--t-sm); }
+  .facts dt { font-weight: 600; }
+  .facts dd { margin: 0; }
+  .ease-advanced { color: var(--stamp); font-weight: 600; }
+  .packets-empty { padding: 2rem 0; }
+  .seeds-foot { margin: 2.5rem 0 0; max-width: 60ch; }
+
+  /* Join */
+  .join .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  @media (max-width: 52rem) { .join .wrap { grid-template-columns: 1fr; } }
+  .join .section-head { margin-bottom: 0; }
+  .join-points { list-style: none; padding: 0; margin: 1.5rem 0 0; }
+  .join-points li { padding: .7rem 0 .7rem 2rem; border-top: 1px solid var(--rule); position: relative; max-width: 36ch; }
+  .join-points li::before { content: ""; position: absolute; left: .2rem; top: 1.15rem; width: .7rem; height: .7rem; border-radius: 50% 0; background: var(--fern); transform: rotate(-45deg); }
+  .form-card { background: var(--moss); color: var(--lichen); padding: clamp(1.5rem, 4vw, 2.5rem); border-radius: 6px; }
+  .form-card h3 { font-size: var(--t-lg); margin-bottom: 1.5rem; }
+  .field { margin-bottom: 1.25rem; }
+  .field label, .field legend { display: block; font-weight: 600; margin-bottom: .4rem; }
+  .field input[type="text"], .field input[type="email"] {
+    width: 100%; min-height: 48px; padding: .6rem .8rem; font: inherit;
+    border: 2px solid transparent; border-radius: 4px; background: var(--paper); color: var(--moss);
+  }
+  .field input:focus-visible { outline: 3px solid var(--manila); outline-offset: 2px; }
+  .field [aria-invalid="true"] { border-color: #F2A9A0; }
+  .error { display: block; color: #F7C4BD; font-size: var(--t-sm); margin-top: .35rem; }
+  .error:empty { display: none; }
+  fieldset.field { border: 0; padding: 0; margin: 0 0 1.5rem; }
+  .branches-pick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+  @media (max-width: 30rem) { .branches-pick { grid-template-columns: 1fr; } }
+  .branches-pick label { position: relative; display: block; margin: 0; cursor: pointer; }
+  .branches-pick input { position: absolute; opacity: 0; inset: 0; }
+  .branches-pick span {
+    display: flex; align-items: center; justify-content: center; text-align: center; min-height: 48px;
+    padding: .5rem; border: 2px solid rgba(238,241,230,.45); border-radius: 4px; font-weight: 600;
+  }
+  .branches-pick input:checked + span { background: var(--manila); color: var(--moss); border-color: var(--manila); }
+  .branches-pick input:focus-visible + span { outline: 3px solid var(--manila); outline-offset: 2px; }
+  .form-card .btn { width: 100%; }
+  .fine { font-size: var(--t-sm); color: #C9D3C4; margin: 1rem 0 0; }
+  .done h3 { margin-bottom: .75rem; }
+  .done p { max-width: 40ch; }
+
+  /* FAQ */
+  .faq { background: var(--paper); border-top: 1px solid var(--rule); }
+  .faq .wrap { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(2rem, 6vw, 5rem); }
+  @media (max-width: 52rem) { .faq .wrap { grid-template-columns: 1fr; } }
+  .faq details { border-top: 1px solid var(--rule); }
+  .faq details:last-child { border-bottom: 1px solid var(--rule); }
+  .faq summary {
+    list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    padding: 1.1rem 0; min-height: 44px; font: 700 var(--t-md)/1.3 var(--display);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after {
+    content: ""; flex: none; width: .7rem; height: .7rem; margin-right: .3rem;
+    border-right: 2px solid var(--moss); border-bottom: 2px solid var(--moss); transform: rotate(45deg) translateY(-25%);
+    transition: transform .2s ease;
+  }
+  .faq details[open] summary::after { transform: rotate(-135deg) translateY(-25%); }
+  .faq details p { max-width: 60ch; padding-bottom: .5rem; }
+  @media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
+
+  /* Branches */
+  .branch-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 2.5rem); }
+  @media (max-width: 56rem) { .branch-list { grid-template-columns: 1fr; } }
+  .branch { border-top: 4px solid var(--moss); padding-top: 1.25rem; }
+  .branch h3 { font-size: var(--t-lg); }
+  .host { margin: .35rem 0 .9rem; }
+  address { font-style: normal; margin-bottom: 1.25rem; }
+  .hours { width: 100%; border-collapse: collapse; font-size: var(--t-base); }
+  .hours caption { text-align: left; font-weight: 600; padding-bottom: .4rem; }
+  .hours th, .hours td { text-align: left; padding: .45rem 0; border-bottom: 1px solid var(--rule); font-weight: 400; }
+  .hours td { text-align: right; font-variant-numeric: tabular-nums; }
+  .branches-foot { margin: 2.5rem 0 0; max-width: 60ch; }
+
+  /* Footer */
+  .site-footer { background: var(--moss); color: #D7DFD2; padding: 3rem 0; font-size: var(--t-sm); }
+  .site-footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.5rem 3rem; }
+  .site-footer p { margin: 0 0 .4rem; max-width: 46ch; }
+  .site-footer strong { color: var(--lichen); font: 700 1.1rem/1.3 var(--display); display: block; margin-bottom: .5rem; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header on-dark">
+  <div class="wrap">
+    <a class="wordmark" href="#top" aria-label="Fernhill Seed Library, home">
+      <svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <path d="M15 28V9" stroke="#E6CF97" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M15 11c-1-4-4-7-9-7 0 5 3 8 9 9M15 17c1-4 4-7 9-7 0 5-3 8-9 9M15 23c-1-3-3-5-7-5 0 4 2 6 7 6" fill="#E6CF97"/>
+      </svg>
+      Fernhill Seed Library
+    </a>
+    <nav class="nav" aria-label="Main">
+      <ul class="nav-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#seeds">Seeds</a></li>
+        <li><a href="#faq">Questions</a></li>
+        <li><a href="#branches">Branches</a></li>
+      </ul>
+      <a class="btn btn-manila" href="#join">Join free</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero on-dark" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <h1 id="hero-title">Borrow seeds in spring. Bring some back in fall.</h1>
+        <p class="hero-lede">Fernhill lends heirloom vegetable and flower seeds to Portland gardeners for free. Grow them, let a few plants go to seed, and return what you save so next year's neighbors can grow them too.</p>
+        <div class="hero-actions">
+          <a class="btn btn-manila" href="#join">Get a free library card</a>
+          <a href="#how">See how borrowing works</a>
+        </div>
+        <p class="hero-note"><strong>Fall returns are open until November 30.</strong> Drop saved seeds at any branch. Spring 2027 borrowing opens March 1.</p>
+      </div>
+
+      <div class="card-stage">
+        <div class="pocket" aria-hidden="true"></div>
+        <figure class="circ-card" aria-labelledby="card-cap">
+          <div class="circ-head"><span>Fernhill Seed Library</span><small>Lot 1187</small></div>
+          <p class="circ-item"><b>Cherokee Purple tomato</b><br>First packet donated in 2019 by a gardener in Montavilla.</p>
+          <table class="circ-table">
+            <caption class="visually-hidden">Borrowing history for this seed lot</caption>
+            <thead><tr><th scope="col">Borrowed</th><th scope="col">Returned</th><th scope="col">Grown by</th></tr></thead>
+            <tbody>
+              <tr><td>Apr 2024</td><td>Oct 2024</td><td>M. Okafor</td></tr>
+              <tr><td>Mar 2025</td><td>Sep 2025</td><td>A. Reyes</td></tr>
+              <tr><td>Apr 2026</td><td>Oct 2026</td><td>D. Lindqvist</td></tr>
+              <tr class="next"><td><span class="stamp lands">MAR 2027</span></td><td></td><td><span class="you">You?</span></td></tr>
+            </tbody>
+          </table>
+          <figcaption id="card-cap" class="circ-foot">Every lot keeps a card like this, so you can see whose garden your seeds grew in.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="how-title">How borrowing works</h2>
+        <p>One loan follows one growing season. You don't need experience, a big yard or any money.</p>
+      </div>
+      <ol class="year">
+        <li>
+          <span class="when">Any time</span>
+          <h3>Get your card</h3>
+          <p>Sign up online or at a branch. Membership is free for anyone in the Portland area.</p>
+        </li>
+        <li>
+          <span class="when">March to May</span>
+          <h3>Pick your seeds</h3>
+          <p>Take up to 10 packets each spring. Volunteers at the branch can help you choose what suits your space.</p>
+        </li>
+        <li>
+          <span class="when">June to September</span>
+          <h3>Grow and save</h3>
+          <p>Eat most of your harvest. Leave a few of the healthiest plants to flower and set seed, then dry it indoors.</p>
+        </li>
+        <li>
+          <span class="when">September to November</span>
+          <h3>Bring some back</h3>
+          <p>Return a packet of saved seed for each one you borrowed. If a crop failed, tell us what happened. That helps too.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section seeds" id="seeds" aria-labelledby="seeds-title">
+    <div class="wrap">
+      <div class="seeds-top">
+        <div class="section-head">
+          <h2 id="seeds-title">This season's seeds</h2>
+          <p>A few of the 140 varieties in the spring 2027 collection, all saved by members here in Portland.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filter seeds">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter" type="button" data-filter="vegetable" aria-pressed="false">Vegetables</button>
+          <button class="filter" type="button" data-filter="flower" aria-pressed="false">Flowers</button>
+          <button class="filter" type="button" data-filter="easy" aria-pressed="false">Easy to save</button>
+        </div>
+      </div>
+
+      <ul class="packets" id="packets">
+        <li class="packet" data-kind="vegetable" data-ease="easy">
+          <div class="swatch" aria-hidden="true"><i style="--c:#6E2F3A"></i><i style="--c:#3F6B47"></i></div>
+          <h3>Cherokee Purple</h3>
+          <p class="variety">Tomato</p>
+          <p class="note">Dusky, sweet slicer that ripens reliably in our cool Junes.</p>
+          <dl class="facts"><dt>Harvest</dt><dd>80 days</dd><dt>Saving</dt><dd>Easy</dd></dl>
+        </li>
+        <li class="packet" data-kind="vegetable" data-ease="easy">
+          <div class="swatch" aria-hidden="true"><i style="--c:#C9B76A"></i><i style="--c:#7A2E5C"></i></div>
+          <h3>Dragon's Tongue</h3>
+          <p class="variety">Bush bean</p>
+          <p class="note">Butter-yellow pods with purple streaks. No trellis needed.</p>
+          <dl class="facts"><dt>Harvest</dt><dd>60 days</dd><dt>Saving</dt><dd>Easy</dd></dl>
+        </li>
+        <li class="packet" data-kind="vegetable" data-ease="easy">
+          <div class="swatch" aria-hidden="true"><i style="--c:#7FA35B"></i><i style="--c:#8E3B3B"></i></div>
+          <h3>Forellenschluss</h3>
+          <p class="variety">Romaine lettuce</p>
+          <p class="note">Green leaves splashed with maroon. Sow in March for May salads.</p>
+          <dl class="facts"><dt>Harvest</dt><dd>55 days</dd><dt>Saving</dt><dd>Easy</dd></dl>
+        </li>
+        <li class="packet" data-kind="vegetable" data-ease="easy">
+          <div class="swatch" aria-hidden="true"><i style="--c:#5E8C47"></i><i style="--c:#E6E2C8"></i></div>
+          <h3>Amish Snap</h3>
+          <p class="variety">Snap pea</p>
+          <p class="note">Tall, sweet and early. Plant on Presidents Day, pick by June.</p>
+          <dl class="facts"><dt>Harvest</dt><dd>60 days</dd><dt>Saving</dt><dd>Easy</dd></dl>
+        </li>
+        <li class="packet" data-kind="vegetable" data-ease="advanced">
+          <div class="swatch" aria-hidden="true"><i style="--c:#E7D7A6"></i><i style="--c:#3F6B47"></i></div>
+          <h3>Delicata</h3>
+          <p class="variety">Winter squash</p>
+          <p class="note">Keeps until February. Squash cross easily, so saving takes hand-pollinating.</p>
+          <dl class="facts"><dt>Harvest</dt><dd>100 days</dd><dt>Saving</dt><dd class="ease-advanced">Advanced</dd></dl>
+        </li>
+        <li class="packet" data-kind="flower" data-ease="easy">
+          <div class="swatch" aria-hidden="true"><i style="--c:#6B3F7A"></i><i style="--c:#9AA88E"></i></div>
+          <h3>Lauren's Grape</h3>
+          <p class="variety">Poppy</p>
+          <p class="note">Plum-purple petals. Scatter in fall or early spring and it reseeds itself.</p>
+          <dl class="facts"><dt>Bloom</dt><dd>75 days</dd><dt>Saving</dt><dd>Easy</dd></dl>
+        </li>
+        <li class="packet" data-kind="flower" data-ease="moderate">
+          <div class="swatch" aria-hidden="true"><i style="--c:#8E2B3C"></i><i style="--c:#5E2A2A"></i></div>
+          <h3>Hopi Red Dye</h3>
+          <p class="variety">Amaranth</p>
+          <p class="note">Six-foot burgundy plumes. The leaves are edible and the flowers make a dye.</p>
+          <dl class="facts"><dt>Bloom</dt><dd>90 days</dd><dt>Saving</dt><dd>Moderate</dd></dl>
+        </li>
+        <li class="packet" data-kind="flower" data-ease="easy">
+          <div class="swatch" aria-hidden="true"><i style="--c:#E07A2E"></i><i style="--c:#E2B23A"></i></div>
+          <h3>Torch</h3>
+          <p class="variety">Mexican sunflower</p>
+          <p class="note">Orange blooms that keep coming until frost. Pollinators crowd it all August.</p>
+          <dl class="facts"><dt>Bloom</dt><dd>80 days</dd><dt>Saving</dt><dd>Easy</dd></dl>
+        </li>
+      </ul>
+      <p class="packets-empty" id="packets-empty" hidden>No seeds match this filter. Choose All to see the full list.</p>
+      <p class="seeds-foot">Browse the full collection at any branch from March 1. Packets go fast in the first two weeks, so members can reserve up to 3 by email in February.</p>
+    </div>
+  </section>
+
+  <section class="section join" id="join" aria-labelledby="join-title">
+    <div class="wrap">
+      <div>
+        <div class="section-head">
+          <h2 id="join-title">Get a free library card</h2>
+          <p>Your card works at all three branches and stays active as long as you keep borrowing.</p>
+        </div>
+        <ul class="join-points">
+          <li>Borrow up to 10 packets each spring</li>
+          <li>Reserve 3 packets before borrowing opens</li>
+          <li>Join free seed-saving workshops in July and August</li>
+        </ul>
+      </div>
+
+      <div class="form-card on-dark">
+        <form id="join-form" novalidate>
+          <h3>Sign up</h3>
+          <div class="field">
+            <label for="name">Your name</label>
+            <input id="name" name="name" type="text" autocomplete="name" aria-describedby="name-error" required>
+            <span class="error" id="name-error" aria-live="polite"></span>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-error" required>
+            <span class="error" id="email-error" aria-live="polite"></span>
+          </div>
+          <fieldset class="field" aria-describedby="branch-error">
+            <legend>Where will you pick up your card?</legend>
+            <div class="branches-pick">
+              <label><input type="radio" name="branch" value="St. Johns"><span>St. Johns</span></label>
+              <label><input type="radio" name="branch" value="Sellwood"><span>Sellwood</span></label>
+              <label><input type="radio" name="branch" value="Montavilla"><span>Montavilla</span></label>
+            </div>
+            <span class="error" id="branch-error" aria-live="polite"></span>
+          </fieldset>
+          <button class="btn btn-manila" type="submit">Get my library card</button>
+          <p class="fine">We only email about borrowing dates and workshops. Unsubscribe any time.</p>
+        </form>
+        <div class="done" id="join-done" hidden tabindex="-1">
+          <h3>Your card is ready</h3>
+          <p id="done-msg"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="faq-title">Questions</h2>
+        <p>Still unsure? Ask a volunteer at any branch, or email <a href="mailto:hello@fernhillseeds.org">hello@fernhillseeds.org</a>.</p>
+      </div>
+      <div>
+        <details>
+          <summary>Does it cost anything?</summary>
+          <p>No. Membership and seeds are free. Packets, envelopes and workshops are paid for by donations and a few small grants.</p>
+        </details>
+        <details>
+          <summary>What if my plants don't make seed?</summary>
+          <p>Bring back what you can, or nothing at all. There are no fines. Let us know what went wrong when you visit, because knowing what struggles here helps us choose next year's seeds.</p>
+        </details>
+        <details>
+          <summary>I've never saved seeds. Where do I start?</summary>
+          <p>Choose packets marked Easy to save, like beans, peas, lettuce and tomatoes. They pollinate themselves, so the seeds grow true to type. Every packet includes a short saving guide, and our summer workshops walk you through it.</p>
+        </details>
+        <details>
+          <summary>Do I need a garden?</summary>
+          <p>No. Bush beans, lettuce, poppies and many tomatoes grow well in containers on a balcony or porch. Volunteers can point you to varieties that suit small spaces.</p>
+        </details>
+        <details>
+          <summary>How should I return seeds?</summary>
+          <p>Dry the seeds completely, put them in a paper envelope and write the variety and the year you grew it. Drop it in the return box at any branch between September 1 and November 30.</p>
+        </details>
+        <details>
+          <summary>Can I donate seeds I already have?</summary>
+          <p>Yes, if they're open-pollinated and you know the variety. Bring them to any branch with a note about where they came from, and we'll start a new card for them.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="branches" aria-labelledby="branches-title">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 id="branches-title">Branches and hours</h2>
+        <p>Borrow and return at whichever branch is closest. Your card works at all three.</p>
+      </div>
+      <ul class="branch-list">
+        <li class="branch">
+          <h3>St. Johns</h3>
+          <p class="host">Inside the Cathedral Park Tool Library</p>
+          <address>8615 N Lombard St<br>Portland, OR 97203</address>
+          <table class="hours">
+            <caption>Hours</caption>
+            <tbody>
+              <tr><th scope="row">Tuesday</th><td>3 to 7 pm</td></tr>
+              <tr><th scope="row">Thursday</th><td>3 to 7 pm</td></tr>
+              <tr><th scope="row">Saturday</th><td>10 am to 2 pm</td></tr>
+            </tbody>
+          </table>
+        </li>
+        <li class="branch">
+          <h3>Sellwood</h3>
+          <p class="host">Garden shed behind Sellwood Community House</p>
+          <address>1436 SE Spokane St<br>Portland, OR 97202</address>
+          <table class="hours">
+            <caption>Hours</caption>
+            <tbody>
+              <tr><th scope="row">Wednesday</th><td>4 to 7 pm</td></tr>
+              <tr><th scope="row">Saturday</th><td>9 am to 1 pm</td></tr>
+              <tr><th scope="row">Sunday</th><td>9 am to 1 pm</td></tr>
+            </tbody>
+          </table>
+        </li>
+        <li class="branch">
+          <h3>Montavilla</h3>
+          <p class="host">Front room of Stark Street Grange Hall</p>
+          <address>7900 SE Stark St<br>Portland, OR 97215</address>
+          <table class="hours">
+            <caption>Hours</caption>
+            <tbody>
+              <tr><th scope="row">Monday</th><td>3 to 6 pm</td></tr>
+              <tr><th scope="row">Friday</th><td>3 to 6 pm</td></tr>
+              <tr><th scope="row">Sunday</th><td>11 am to 3 pm</td></tr>
+            </tbody>
+          </table>
+        </li>
+      </ul>
+      <p class="branches-foot">All branches close on public holidays and from December 15 to January 5.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer on-dark">
+  <div class="wrap">
+    <div>
+      <strong>Fernhill Seed Library</strong>
+      <p>A volunteer-run nonprofit keeping heirloom seeds growing in Portland gardens since 2019.</p>
+      <p>Registered 501(c)(3). Donations are tax-deductible.</p>
+    </div>
+    <div>
+      <p><a href="mailto:hello@fernhillseeds.org">hello@fernhillseeds.org</a></p>
+      <p><a href="#join">Get a free library card</a></p>
+      <p><a href="#branches">Branches and hours</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Seed filter
+  var buttons = document.querySelectorAll('.filter');
+  var packets = document.querySelectorAll('#packets .packet');
+  var empty = document.getElementById('packets-empty');
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var f = btn.dataset.filter, shown = 0;
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', String(b === btn)); });
+      packets.forEach(function (p) {
+        var match = f === 'all' || p.dataset.kind === f || p.dataset.ease === f;
+        p.hidden = !match;
+        if (match) shown++;
+      });
+      empty.hidden = shown > 0;
+    });
+  });
+
+  // Sign-up form
+  var form = document.getElementById('join-form');
+  var done = document.getElementById('join-done');
+  var msg = document.getElementById('done-msg');
+  var hours = {
+    'St. Johns': 'Tuesday or Thursday 3 to 7 pm, or Saturday 10 am to 2 pm',
+    'Sellwood': 'Wednesday 4 to 7 pm, or weekends 9 am to 1 pm',
+    'Montavilla': 'Monday or Friday 3 to 6 pm, or Sunday 11 am to 3 pm'
+  };
+
+  function setError(input, id, text) {
+    document.getElementById(id).textContent = text;
+    if (input) input.setAttribute('aria-invalid', text ? 'true' : 'false');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = form.elements.name, email = form.elements.email;
+    var branch = form.querySelector('input[name="branch"]:checked');
+    var firstBad = null;
+
+    if (!name.value.trim()) { setError(name, 'name-error', 'Enter your name so we can print it on your card.'); firstBad = firstBad || name; }
+    else setError(name, 'name-error', '');
+
+    if (!email.value.trim()) { setError(email, 'email-error', 'Enter your email so we can send your card number.'); firstBad = firstBad || email; }
+    else if (!email.validity.valid) { setError(email, 'email-error', 'This email is missing something. Check it looks like name@example.com.'); firstBad = firstBad || email; }
+    else setError(email, 'email-error', '');
+
+    if (!branch) { setError(null, 'branch-error', 'Choose the branch where you’ll pick up your card.'); firstBad = firstBad || form.querySelector('input[name="branch"]'); }
+    else setError(null, 'branch-error', '');
+
+    if (firstBad) { firstBad.focus(); return; }
+
+    msg.textContent = 'Thanks, ' + name.value.trim().split(/\s+/)[0] + '. We emailed your card number to ' + email.value.trim() +
+      '. Pick up your card at ' + branch.value + ' (' + hours[branch.value] + '). Spring borrowing opens March 1.';
+    form.hidden = true;
+    done.hidden = false;
+    done.focus();
+  });
+})();
+</script>
+</body>
+</html>

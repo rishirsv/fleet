@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fernhill Seed Library | Free heirloom seeds for Portland gardeners</title>
+<meta name="description" content="Fernhill Seed Library lends heirloom vegetable and flower seeds to Portland home gardeners each spring. Grow them, save seeds in the fall, and bring some back. Membership is free.">
+<style>
+  :root {
+    --paper: #f6f1e7;
+    --paper-2: #ede5d4;
+    --ink: #22301f;
+    --ink-soft: #4b5a45;
+    --moss: #3f6b3a;
+    --moss-deep: #2c4d29;
+    --clay: #b9552f;
+    --clay-soft: #f0d6c6;
+    --sun: #e3b23c;
+    --line: #d6ccb6;
+    --white: #fffdf8;
+    --radius: 14px;
+    --max: 1180px;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 17px/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: var(--moss-deep); }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 600; line-height: 1.15; margin: 0; letter-spacing: -0.01em; }
+  h2 { font-size: clamp(1.9rem, 1.3rem + 2.2vw, 2.9rem); }
+  h3 { font-size: 1.3rem; }
+  p { margin: 0; }
+  .wrap { width: min(100% - 2.5rem, var(--max)); margin-inline: auto; }
+  section { padding-block: clamp(4rem, 3rem + 4vw, 7rem); }
+  .section-head { max-width: 40rem; margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.25rem); }
+  .section-head p { color: var(--ink-soft); margin-top: 0.9rem; font-size: 1.08rem; }
+  .eyebrow {
+    font: 600 0.78rem/1 var(--sans);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--clay);
+    margin-bottom: 0.9rem;
+  }
+  .skip { position: absolute; left: -999px; top: 0; background: var(--ink); color: var(--white); padding: 0.6rem 1rem; z-index: 100; }
+  .skip:focus { left: 1rem; top: 1rem; }
+  :focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; border-radius: 4px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 48px; padding: 0.75rem 1.4rem;
+    border-radius: 999px; border: 2px solid transparent;
+    font: 600 1rem/1 var(--sans); text-decoration: none; cursor: pointer;
+    transition: background-color .2s, color .2s, border-color .2s, transform .2s;
+  }
+  .btn-primary { background: var(--clay); color: var(--white); }
+  .btn-primary:hover { background: #9e4523; }
+  .btn-ghost { border-color: var(--ink); color: var(--ink); background: transparent; }
+  .btn-ghost:hover { background: var(--ink); color: var(--paper); }
+
+  /* Header */
+  .site-header {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(246, 241, 231, 0.92);
+    backdrop-filter: saturate(1.4) blur(10px);
+    -webkit-backdrop-filter: saturate(1.4) blur(10px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .2s;
+  }
+  .site-header.scrolled { border-bottom-color: var(--line); }
+  .nav { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 1rem; }
+  .brand { display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--ink); font: 600 1.2rem/1 var(--serif); }
+  .brand svg { width: 34px; height: 34px; flex: none; }
+  .nav-links { display: flex; align-items: center; gap: 1.75rem; list-style: none; margin: 0; padding: 0; }
+  .nav-links a:not(.btn) { color: var(--ink); text-decoration: none; font-weight: 500; font-size: 0.97rem; }
+  .nav-links a:not(.btn):hover { color: var(--clay); }
+  .nav-links .btn { min-height: 42px; padding: 0.6rem 1.15rem; font-size: 0.95rem; }
+  .menu-toggle { display: none; background: none; border: 0; width: 48px; height: 48px; margin-right: -10px; cursor: pointer; color: var(--ink); }
+  .menu-toggle svg { width: 26px; height: 26px; margin: auto; }
+  @media (max-width: 860px) {
+    .menu-toggle { display: block; }
+    .nav-links {
+      position: absolute; top: 68px; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: var(--paper); border-bottom: 1px solid var(--line);
+      padding: 0.5rem 1.25rem 1.25rem;
+      display: none;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li a:not(.btn) { display: block; padding: 0.9rem 0; border-bottom: 1px solid var(--line); }
+    .nav-links .btn { margin-top: 1rem; width: 100%; min-height: 48px; }
+  }
+
+  /* Hero */
+  .hero { padding-block: clamp(2.5rem, 1.5rem + 4vw, 5.5rem) clamp(3.5rem, 2rem + 5vw, 6.5rem); overflow: hidden; }
+  .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2rem, 1rem + 4vw, 5rem); align-items: center; }
+  .hero h1 { font-size: clamp(2.6rem, 1.6rem + 4.4vw, 4.9rem); line-height: 1.02; }
+  .hero h1 em { font-style: italic; color: var(--moss); }
+  .hero .lede { font-size: clamp(1.08rem, 1rem + 0.4vw, 1.25rem); color: var(--ink-soft); margin-top: 1.4rem; max-width: 34rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2rem; }
+  .season-note {
+    display: inline-flex; align-items: center; gap: 0.6rem;
+    margin-top: 2rem; padding: 0.55rem 1rem 0.55rem 0.7rem;
+    background: var(--white); border: 1px solid var(--line); border-radius: 999px;
+    font-size: 0.93rem; color: var(--ink-soft);
+  }
+  .season-note .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 4px rgba(63,107,58,.18); flex: none; }
+  .season-note strong { color: var(--ink); font-weight: 600; }
+  .hero-art { position: relative; aspect-ratio: 1 / 1.02; max-width: 560px; justify-self: end; width: 100%; }
+  .hero-art svg { width: 100%; height: 100%; }
+  @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-art { justify-self: center; max-width: 420px; order: -1; margin-bottom: -0.5rem; }
+  }
+
+  /* Stats */
+  .stats { border-block: 1px solid var(--line); background: var(--paper-2); padding-block: 2.25rem; }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .stat b { display: block; font: 600 clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem)/1 var(--serif); color: var(--moss-deep); }
+  .stat span { display: block; margin-top: 0.45rem; color: var(--ink-soft); font-size: 0.95rem; }
+  @media (max-width: 700px) { .stats-grid { grid-template-columns: repeat(2, 1fr); row-gap: 1.75rem; } }
+
+  /* How it works */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; counter-reset: step; list-style: none; padding: 0; margin: 0; }
+  .step {
+    position: relative; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 1.6rem 1.5rem 1.75rem;
+  }
+  .step-icon { width: 54px; height: 54px; border-radius: 50%; background: var(--clay-soft); display: grid; place-items: center; margin-bottom: 1.25rem; }
+  .step-icon svg { width: 28px; height: 28px; }
+  .step-num { position: absolute; top: 1.5rem; right: 1.5rem; font: 600 0.85rem/1 var(--sans); color: var(--ink-soft); letter-spacing: 0.08em; }
+  .step h3 { margin-bottom: 0.55rem; }
+  .step p { color: var(--ink-soft); font-size: 0.98rem; }
+  .step .when { display: inline-block; margin-top: 1rem; font-size: 0.82rem; font-weight: 600; color: var(--moss); background: #e3ecd9; padding: 0.3rem 0.65rem; border-radius: 999px; }
+  @media (max-width: 1000px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
+
+  /* Seeds */
+  .seeds { background: var(--moss-deep); color: var(--paper); }
+  .seeds .eyebrow { color: var(--sun); }
+  .seeds .section-head p { color: #c9d4c1; }
+  .seeds-top { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1.5rem; margin-bottom: 2rem; }
+  .seeds-top .section-head { margin-bottom: 0; }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .filter {
+    min-height: 44px; padding: 0.55rem 1.1rem; border-radius: 999px;
+    border: 1.5px solid rgba(246,241,231,.35); background: transparent; color: var(--paper);
+    font: 500 0.95rem/1 var(--sans); cursor: pointer; transition: background-color .2s, color .2s, border-color .2s;
+  }
+  .filter:hover { border-color: var(--paper); }
+  .filter[aria-pressed="true"] { background: var(--paper); color: var(--moss-deep); border-color: var(--paper); }
+  .seed-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.25rem; list-style: none; padding: 0; margin: 0; }
+  .packet {
+    background: var(--paper); color: var(--ink); border-radius: var(--radius); overflow: hidden;
+    display: flex; flex-direction: column; height: 100%;
+  }
+  .packet[hidden] { display: none; }
+  .packet-art { aspect-ratio: 16 / 10; display: grid; place-items: center; position: relative; }
+  .packet-art svg { width: 46%; height: auto; }
+  .packet-body { padding: 1.15rem 1.3rem 1.35rem; display: flex; flex-direction: column; gap: 0.35rem; flex: 1; }
+  .packet-type { font: 600 0.74rem/1 var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--clay); }
+  .packet h3 { font-size: 1.25rem; }
+  .packet p { color: var(--ink-soft); font-size: 0.94rem; }
+  .packet-meta { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: auto; padding-top: 0.9rem; }
+  .tag { font-size: 0.8rem; font-weight: 500; padding: 0.25rem 0.6rem; border-radius: 6px; background: var(--paper-2); color: var(--ink-soft); }
+  .tag.easy { background: #e3ecd9; color: var(--moss-deep); }
+  .seeds-foot { margin-top: 2.25rem; color: #c9d4c1; font-size: 0.98rem; }
+  .seeds-foot a { color: var(--paper); }
+
+  /* Join */
+  .join-grid { display: grid; grid-template-columns: 1fr 1.05fr; gap: clamp(2rem, 1rem + 4vw, 5rem); align-items: start; }
+  .perks { list-style: none; padding: 0; margin: 2rem 0 0; display: grid; gap: 1.1rem; }
+  .perks li { display: grid; grid-template-columns: 28px 1fr; gap: 0.85rem; align-items: start; }
+  .perks svg { width: 28px; height: 28px; color: var(--moss); }
+  .perks strong { display: block; font-weight: 600; }
+  .perks span { color: var(--ink-soft); font-size: 0.97rem; }
+  .form-card { background: var(--white); border: 1px solid var(--line); border-radius: 20px; padding: clamp(1.5rem, 1rem + 2vw, 2.5rem); box-shadow: 0 20px 50px -30px rgba(34,48,31,.35); }
+  .form-card h3 { font-size: 1.6rem; margin-bottom: 1.5rem; }
+  .field { display: grid; gap: 0.4rem; margin-bottom: 1.1rem; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  label, legend { font-weight: 600; font-size: 0.95rem; }
+  .optional { font-weight: 400; color: var(--ink-soft); }
+  input[type="text"], input[type="email"], select {
+    width: 100%; min-height: 50px; padding: 0.7rem 0.9rem;
+    font: 1rem/1.3 var(--sans); color: var(--ink);
+    background: var(--paper); border: 1.5px solid var(--line); border-radius: 10px;
+    transition: border-color .2s, background-color .2s;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--moss); background: var(--white); box-shadow: 0 0 0 3px rgba(63,107,58,.18); }
+  .field.invalid input, .field.invalid select { border-color: var(--clay); }
+  .error { color: var(--clay); font-size: 0.87rem; min-height: 0; display: none; }
+  .field.invalid .error { display: block; }
+  fieldset { border: 0; padding: 0; margin: 0 0 1.4rem; }
+  legend { margin-bottom: 0.6rem; padding: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .chip input { position: absolute; opacity: 0; pointer-events: none; }
+  .chip span {
+    display: inline-flex; align-items: center; min-height: 42px; padding: 0.5rem 0.95rem;
+    border: 1.5px solid var(--line); border-radius: 999px; background: var(--paper);
+    font-size: 0.93rem; cursor: pointer; user-select: none; transition: background-color .2s, border-color .2s, color .2s;
+  }
+  .chip input:checked + span { background: var(--moss); border-color: var(--moss); color: var(--white); }
+  .chip input:focus-visible + span { outline: 3px solid var(--sun); outline-offset: 2px; }
+  .form-card .btn { width: 100%; min-height: 54px; font-size: 1.05rem; }
+  .fine { margin-top: 0.9rem; font-size: 0.85rem; color: var(--ink-soft); text-align: center; }
+  .success { text-align: center; padding: 1.5rem 0.5rem; }
+  .success svg { width: 64px; height: 64px; margin: 0 auto 1.25rem; }
+  .success h3 { margin-bottom: 0.75rem; }
+  .success p { color: var(--ink-soft); }
+  @media (max-width: 900px) { .join-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 480px) { .field-row { grid-template-columns: 1fr; gap: 0; } }
+
+  /* FAQ */
+  .faq { background: var(--paper-2); border-block: 1px solid var(--line); }
+  .faq-grid { display: grid; grid-template-columns: 0.8fr 1.4fr; gap: clamp(2rem, 1rem + 4vw, 5rem); }
+  .faq-list { border-top: 1px solid var(--line); }
+  details { border-bottom: 1px solid var(--line); }
+  summary {
+    list-style: none; cursor: pointer; padding: 1.3rem 2.5rem 1.3rem 0; position: relative;
+    font: 600 1.12rem/1.35 var(--serif);
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: ""; position: absolute; right: 0.4rem; top: 50%; width: 12px; height: 12px;
+    border-right: 2px solid var(--ink); border-bottom: 2px solid var(--ink);
+    transform: translateY(-70%) rotate(45deg); transition: transform .2s;
+  }
+  details[open] summary::after { transform: translateY(-30%) rotate(-135deg); }
+  summary:hover { color: var(--moss); }
+  details .answer { padding: 0 2.5rem 1.4rem 0; color: var(--ink-soft); }
+  details .answer p + p { margin-top: 0.7rem; }
+  @media (max-width: 860px) { .faq-grid { grid-template-columns: 1fr; } }
+
+  /* Locations */
+  .branches { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+  .branch { background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; }
+  .branch-map { height: 132px; position: relative; background: #dfe6d2; }
+  .branch-map svg { width: 100%; height: 100%; }
+  .branch-body { padding: 1.4rem 1.5rem 1.6rem; display: flex; flex-direction: column; flex: 1; }
+  .branch-head { display: flex; justify-content: space-between; align-items: start; gap: 0.75rem; }
+  .status { flex: none; font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.65rem; border-radius: 999px; background: var(--paper-2); color: var(--ink-soft); white-space: nowrap; }
+  .status.open { background: #e3ecd9; color: var(--moss-deep); }
+  address { font-style: normal; color: var(--ink-soft); margin-top: 0.4rem; font-size: 0.97rem; }
+  .hours { width: 100%; border-collapse: collapse; margin-top: 1.25rem; font-size: 0.95rem; }
+  .hours th { text-align: left; font-weight: 500; padding: 0.42rem 0; color: var(--ink-soft); }
+  .hours td { text-align: right; padding: 0.42rem 0; font-variant-numeric: tabular-nums; }
+  .hours tr { border-top: 1px solid var(--paper-2); }
+  .hours tr.today th, .hours tr.today td { color: var(--ink); font-weight: 700; }
+  .hours .closed { color: #9a9282; }
+  .branch-note { margin-top: 1.1rem; font-size: 0.9rem; color: var(--ink-soft); }
+  .branch-link { margin-top: auto; padding-top: 1.1rem; font-weight: 600; font-size: 0.95rem; }
+  @media (max-width: 960px) { .branches { grid-template-columns: 1fr 1fr; } .branch:last-child { grid-column: 1 / -1; } }
+  @media (max-width: 620px) { .branches { grid-template-columns: 1fr; } .branch:last-child { grid-column: auto; } }
+
+  /* CTA band + footer */
+  .cta-band { background: var(--clay); color: var(--white); padding-block: clamp(3rem, 2rem + 3vw, 4.5rem); }
+  .cta-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; }
+  .cta-inner h2 { font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.5rem); max-width: 28ch; }
+  .cta-band .btn { background: var(--white); color: var(--clay); }
+  .cta-band .btn:hover { background: var(--paper); }
+  footer { background: var(--ink); color: #c9cfc2; padding-block: 3.5rem 2.5rem; font-size: 0.95rem; }
+  .foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 2rem; }
+  footer .brand { color: var(--paper); margin-bottom: 1rem; }
+  footer h4 { margin: 0 0 0.8rem; color: var(--paper); font: 600 0.8rem/1 var(--sans); letter-spacing: 0.12em; text-transform: uppercase; }
+  footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+  footer a { color: #e6eadf; text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+  .foot-base { margin-top: 2.75rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,.12); font-size: 0.85rem; color: #9da694; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.75rem; }
+  @media (max-width: 760px) { .foot-grid { grid-template-columns: 1fr 1fr; } .foot-grid > :first-child { grid-column: 1 / -1; } }
+
+  .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- Icon sprite -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="currentColor" opacity=".14"/><path d="M7 12.5l3.2 3.2L17 9" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="seed-tomato" viewBox="0 0 100 100"><circle cx="50" cy="56" r="34" fill="#c8442b"/><path d="M30 46c6-8 14-11 20-11s14 3 20 11" fill="none" stroke="#e46a4c" stroke-width="4" stroke-linecap="round" opacity=".6"/><path d="M50 24l5 9 10-3-6 8 9 6-11 1-7 8-2-10-10-1 8-7-5-9z" fill="#3f6b3a"/><path d="M50 26V14" stroke="#3f6b3a" stroke-width="4" stroke-linecap="round"/></symbol>
+    <symbol id="seed-bean" viewBox="0 0 100 100"><path d="M28 82c-8-22 4-40 22-50 16-9 26-14 28-26 8 22-2 42-20 54-12 8-22 12-30 22z" fill="#3f6b3a"/><circle cx="44" cy="62" r="7" fill="#8bb06d"/><circle cx="56" cy="50" r="7" fill="#8bb06d"/><circle cx="66" cy="37" r="6" fill="#8bb06d"/></symbol>
+    <symbol id="seed-squash" viewBox="0 0 100 100"><ellipse cx="50" cy="60" rx="38" ry="28" fill="#d9822b"/><path d="M50 32v56M30 38c-6 14-6 30 0 44M70 38c6 14 6 30 0 44" stroke="#b9661c" stroke-width="3" fill="none"/><path d="M50 33c0-10 4-16 12-20" stroke="#5b4a2a" stroke-width="5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="seed-flower" viewBox="0 0 100 100"><g fill="#e3b23c"><ellipse cx="50" cy="22" rx="11" ry="18"/><ellipse cx="50" cy="78" rx="11" ry="18"/><ellipse cx="22" cy="50" rx="18" ry="11"/><ellipse cx="78" cy="50" rx="18" ry="11"/><ellipse cx="30" cy="30" rx="11" ry="17" transform="rotate(-45 30 30)"/><ellipse cx="70" cy="70" rx="11" ry="17" transform="rotate(-45 70 70)"/><ellipse cx="70" cy="30" rx="11" ry="17" transform="rotate(45 70 30)"/><ellipse cx="30" cy="70" rx="11" ry="17" transform="rotate(45 30 70)"/></g><circle cx="50" cy="50" r="15" fill="#6a3d1f"/></symbol>
+    <symbol id="seed-cosmos" viewBox="0 0 100 100"><g fill="#d86a8c"><path d="M50 50L38 10h24z"/><path d="M50 50l40-12v24z"/><path d="M50 50l12 40H38z"/><path d="M50 50L10 62V38z"/></g><g fill="#e98fa9"><path d="M50 50L22 18l24 4z" /><path d="M50 50l32-28-4 24z"/><path d="M50 50l28 32-24-4z"/><path d="M50 50L18 78l4-24z"/></g><circle cx="50" cy="50" r="10" fill="#e3b23c"/></symbol>
+    <symbol id="seed-greens" viewBox="0 0 100 100"><path d="M50 90C30 70 18 50 24 22c14 6 24 22 26 40" fill="#6f9a4f"/><path d="M50 90c20-20 32-40 26-68-14 6-24 22-26 40" fill="#4f7d3b"/><path d="M50 90V40" stroke="#2c4d29" stroke-width="3"/><path d="M50 90c-4-30 0-52 0-74 8 16 8 46 0 74z" fill="#8bb06d"/></symbol>
+    <symbol id="seed-pepper" viewBox="0 0 100 100"><path d="M42 30c-10 0-16 10-14 26 2 18 12 34 22 34s20-16 22-34c2-16-4-26-14-26-4 0-6 2-8 2s-4-2-8-2z" fill="#e2a224"/><path d="M50 32c0-8 2-14 8-18" stroke="#3f6b3a" stroke-width="5" stroke-linecap="round" fill="none"/><path d="M40 30c4 4 16 4 20 0" stroke="#3f6b3a" stroke-width="5" stroke-linecap="round" fill="none"/></symbol>
+    <symbol id="seed-pea" viewBox="0 0 100 100"><path d="M14 64c20-30 52-40 74-34-6 26-38 44-74 34z" fill="#5f8f45"/><circle cx="36" cy="56" r="8" fill="#a9cd84"/><circle cx="52" cy="49" r="8" fill="#a9cd84"/><circle cx="68" cy="42" r="7" fill="#a9cd84"/><path d="M84 30c6-6 6-14 2-18" stroke="#5f8f45" stroke-width="3" fill="none" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="site-header" id="top">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="brand" href="#top" aria-label="Fernhill Seed Library home">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#3f6b3a"/><path d="M20 31V15" stroke="#f6f1e7" stroke-width="2.4" stroke-linecap="round"/><path d="M20 20c-6 0-9-4-9-9 6 0 9 4 9 9zM20 17c5 0 8-3 8-8-5 0-8 3-8 8z" fill="#f6f1e7"/><ellipse cx="20" cy="32" rx="6" ry="2" fill="#e3b23c"/></svg>
+      Fernhill Seed Library
+    </a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Open menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#seeds">Seeds</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="#locations">Locations</a></li>
+      <li><a class="btn btn-primary" href="#join">Join free</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Portland's community seed library</p>
+        <h1>Borrow seeds in spring. <em>Bring some back</em> in fall.</h1>
+        <p class="lede">Fernhill lends heirloom vegetable and flower seeds to home gardeners for free. You grow them, let a few plants go to seed, and return part of the harvest so next year's neighbors can grow them too.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#join">Get a free membership</a>
+          <a class="btn btn-ghost" href="#seeds">Browse this season's seeds</a>
+        </div>
+        <p class="season-note" id="season-note"><span class="dot" aria-hidden="true"></span><span><strong>Fall returns are open</strong> at all three branches through November 30.</span></p>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <svg viewBox="0 0 500 510">
+          <circle cx="250" cy="255" r="235" fill="#ede5d4"/>
+          <circle cx="250" cy="255" r="235" fill="none" stroke="#d6ccb6" stroke-width="2" stroke-dasharray="3 9"/>
+          <!-- soil -->
+          <path d="M40 360c60-20 140-26 210-26s150 6 210 26v20c0 70-95 112-210 112S40 450 40 380z" fill="#6b4a2f"/>
+          <path d="M40 360c60-20 140-26 210-26s150 6 210 26c-60 18-140 24-210 24s-150-6-210-24z" fill="#8a6342"/>
+          <g fill="#e3c08a"><ellipse cx="120" cy="420" rx="7" ry="4" transform="rotate(-20 120 420)"/><ellipse cx="210" cy="440" rx="7" ry="4" transform="rotate(15 210 440)"/><ellipse cx="300" cy="425" rx="7" ry="4" transform="rotate(-35 300 425)"/><ellipse cx="380" cy="410" rx="7" ry="4" transform="rotate(25 380 410)"/><ellipse cx="260" cy="465" rx="7" ry="4" transform="rotate(-10 260 465)"/></g>
+          <!-- tomato plant -->
+          <path d="M140 360c0-70 6-140 20-200" stroke="#3f6b3a" stroke-width="7" fill="none" stroke-linecap="round"/>
+          <path d="M146 270c-30-6-50-24-56-50 28 0 50 16 56 50zM152 210c26-10 50-6 66 12-22 14-48 10-66-12z" fill="#4f7d3b"/>
+          <circle cx="182" cy="260" r="22" fill="#c8442b"/><circle cx="118" cy="300" r="18" fill="#d65a3e"/><circle cx="168" cy="172" r="14" fill="#e07a4f"/>
+          <!-- sunflower -->
+          <path d="M318 360c4-90 2-170-8-240" stroke="#3f6b3a" stroke-width="8" fill="none" stroke-linecap="round"/>
+          <path d="M316 270c30-4 54 6 66 30-30 6-52-6-66-30zM314 220c-28 2-50-10-58-34 28-2 48 10 58 34z" fill="#4f7d3b"/>
+          <g transform="translate(310 112)">
+            <g fill="#e3b23c">
+              <ellipse cx="0" cy="-46" rx="14" ry="26"/><ellipse cx="0" cy="46" rx="14" ry="26"/><ellipse cx="-46" cy="0" rx="26" ry="14"/><ellipse cx="46" cy="0" rx="26" ry="14"/>
+              <ellipse cx="-33" cy="-33" rx="13" ry="25" transform="rotate(-45 -33 -33)"/><ellipse cx="33" cy="33" rx="13" ry="25" transform="rotate(-45 33 33)"/>
+              <ellipse cx="33" cy="-33" rx="13" ry="25" transform="rotate(45 33 -33)"/><ellipse cx="-33" cy="33" rx="13" ry="25" transform="rotate(45 -33 33)"/>
+            </g>
+            <circle r="26" fill="#6a3d1f"/>
+            <g fill="#8a5a33"><circle cx="-8" cy="-8" r="3"/><circle cx="8" cy="-6" r="3"/><circle cx="0" cy="8" r="3"/><circle cx="10" cy="10" r="2.5"/><circle cx="-10" cy="8" r="2.5"/></g>
+          </g>
+          <!-- seedling -->
+          <path d="M240 360v-48" stroke="#3f6b3a" stroke-width="5" stroke-linecap="round"/>
+          <path d="M240 322c-18 0-30-10-32-26 18 0 30 10 32 26zM240 316c16-2 28-12 30-28-16 2-28 12-30 28z" fill="#8bb06d"/>
+          <!-- bean vine -->
+          <path d="M400 360c-10-40 20-60 4-100s16-60 6-96" stroke="#5f8f45" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <path d="M404 262c18-4 32 4 36 18-18 4-30-4-36-18zM408 200c-18-2-28-12-30-26 18 0 28 10 30 26z" fill="#6f9a4f"/>
+          <path d="M392 300c-6 20-4 36 4 48" stroke="#3f6b3a" stroke-width="6" stroke-linecap="round" fill="none"/>
+          <!-- seed packet -->
+          <g transform="translate(58 214) rotate(-9)">
+            <rect width="78" height="104" rx="6" fill="#fffdf8" stroke="#d6ccb6" stroke-width="2"/>
+            <path d="M0 18h78" stroke="#b9552f" stroke-width="6"/>
+            <circle cx="39" cy="56" r="18" fill="#c8442b"/>
+            <path d="M18 86h42M24 94h30" stroke="#d6ccb6" stroke-width="4" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="wrap stats-grid">
+      <div class="stat"><b>412</b><span>varieties in the collection</span></div>
+      <div class="stat"><b>2,900+</b><span>member gardeners</span></div>
+      <div class="stat"><b>61%</b><span>of packets came back last fall</span></div>
+      <div class="stat"><b>$0</b><span>to join, borrow or return</span></div>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">How borrowing works</p>
+        <h2>Four steps, one growing season</h2>
+        <p>Borrowing seeds works like borrowing a book, except you return more than you took and nobody minds if you're late.</p>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step-num">01</span>
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#b9552f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 7h16M9 13l2 2 4-4"/></svg></div>
+          <h3>Borrow</h3>
+          <p>Pick up to 10 packets per season at any branch. Each packet holds enough seed for a typical backyard bed.</p>
+          <span class="when">March to May</span>
+        </li>
+        <li class="step">
+          <span class="step-num">02</span>
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#b9552f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V11"/><path d="M12 13c-4 0-7-3-7-7 4 0 7 3 7 7zM12 11c3 0 6-2.5 6-6-3 0-6 2.5-6 6z"/><path d="M6 21h12"/></svg></div>
+          <h3>Grow</h3>
+          <p>Plant them like any other seed. Every packet comes with a growing card written by a Portland gardener who has grown it here.</p>
+          <span class="when">Spring and summer</span>
+        </li>
+        <li class="step">
+          <span class="step-num">03</span>
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#b9552f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/></svg></div>
+          <h3>Save</h3>
+          <p>Leave your healthiest plants to ripen fully, then dry and collect their seeds. We teach free seed-saving classes every August.</p>
+          <span class="when">Late summer</span>
+        </li>
+        <li class="step">
+          <span class="step-num">04</span>
+          <div class="step-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#b9552f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3L20 9"/><path d="M20 4v5h-5"/><path d="M20 12a8 8 0 0 1-14 5.3L4 15"/><path d="M4 20v-5h5"/></svg></div>
+          <h3>Return</h3>
+          <p>Drop off labeled envelopes of saved seed at any branch. Returning is encouraged, never required, and failed crops are fine.</p>
+          <span class="when">September to November</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- Seeds -->
+  <section class="seeds" id="seeds">
+    <div class="wrap">
+      <div class="seeds-top">
+        <div class="section-head">
+          <p class="eyebrow">Spring 2027 collection</p>
+          <h2>A few of this season's seeds</h2>
+          <p>All open-pollinated, so the seeds you save will grow true next year. Most were saved by members right here in the Willamette Valley.</p>
+        </div>
+        <div class="filters" role="group" aria-label="Filter seeds">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+          <button class="filter" type="button" data-filter="vegetable" aria-pressed="false">Vegetables</button>
+          <button class="filter" type="button" data-filter="flower" aria-pressed="false">Flowers</button>
+          <button class="filter" type="button" data-filter="easy" aria-pressed="false">Easy to save</button>
+        </div>
+      </div>
+      <ul class="seed-grid" id="seed-grid" aria-live="polite"></ul>
+      <p class="seeds-foot">The full catalog of 412 varieties is available at every branch and updates as fall returns are sorted. Questions about a variety? <a href="mailto:seeds@fernhillseeds.org">seeds@fernhillseeds.org</a></p>
+    </div>
+  </section>
+
+  <!-- Join -->
+  <section id="join">
+    <div class="wrap join-grid">
+      <div>
+        <p class="eyebrow">Membership</p>
+        <h2>Join free and borrow your first seeds this spring</h2>
+        <p style="margin-top:1rem;color:var(--ink-soft);font-size:1.08rem">Anyone who gardens in the Portland area can join. Sign up now and your card will be waiting at your home branch when lending opens.</p>
+        <ul class="perks">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><div><strong>10 packets every spring</strong><span>Choose from hundreds of heirloom vegetables, herbs and flowers.</span></div></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><div><strong>Free seed-saving classes</strong><span>Hands-on workshops at each branch from July through September.</span></div></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><div><strong>Early pick on rare varieties</strong><span>Members who returned seed last fall get first choice of small-batch packets.</span></div></li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg><div><strong>No fees, no fines</strong><span>We are funded by donations and grants. Membership will always be free.</span></div></li>
+        </ul>
+      </div>
+
+      <div class="form-card" id="form-card">
+        <form id="join-form" novalidate>
+          <h3>Create your free membership</h3>
+          <div class="field-row">
+            <div class="field">
+              <label for="fname">First name</label>
+              <input id="fname" name="fname" type="text" autocomplete="given-name" required>
+              <span class="error" id="fname-err">Please enter your first name.</span>
+            </div>
+            <div class="field">
+              <label for="lname">Last name</label>
+              <input id="lname" name="lname" type="text" autocomplete="family-name" required>
+              <span class="error" id="lname-err">Please enter your last name.</span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required>
+            <span class="error" id="email-err">Please enter a valid email address.</span>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="zip">ZIP code</label>
+              <input id="zip" name="zip" type="text" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="\d{5}" required>
+              <span class="error" id="zip-err">Please enter a 5-digit ZIP code.</span>
+            </div>
+            <div class="field">
+              <label for="branch">Home branch</label>
+              <select id="branch" name="branch" required>
+                <option value="">Choose one</option>
+                <option>Sellwood</option>
+                <option>Alberta</option>
+                <option>St. Johns</option>
+              </select>
+              <span class="error" id="branch-err">Please choose a branch.</span>
+            </div>
+          </div>
+          <fieldset>
+            <legend>What do you like to grow? <span class="optional">(optional)</span></legend>
+            <div class="chips">
+              <label class="chip"><input type="checkbox" name="grow" value="vegetables"><span>Vegetables</span></label>
+              <label class="chip"><input type="checkbox" name="grow" value="flowers"><span>Flowers</span></label>
+              <label class="chip"><input type="checkbox" name="grow" value="herbs"><span>Herbs</span></label>
+              <label class="chip"><input type="checkbox" name="grow" value="natives"><span>Pollinator plants</span></label>
+            </div>
+          </fieldset>
+          <button class="btn btn-primary" type="submit">Join the library</button>
+          <p class="fine">We only email about lending dates and classes. Unsubscribe anytime.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq">
+    <div class="wrap faq-grid">
+      <div class="section-head">
+        <p class="eyebrow">Questions</p>
+        <h2>Things people ask at the front desk</h2>
+        <p>Still curious? Stop by any branch or email <a href="mailto:hello@fernhillseeds.org">hello@fernhillseeds.org</a>.</p>
+      </div>
+      <div class="faq-list">
+        <details>
+          <summary>What happens if I don't return any seeds?</summary>
+          <div class="answer"><p>Nothing at all. Crops fail, squirrels happen, and some plants are tricky to save from. You can still borrow next spring. Returns keep the collection growing, so we hope you'll try, but there are no fines or penalties.</p></div>
+        </details>
+        <details>
+          <summary>I've never saved seeds. Is this for me?</summary>
+          <div class="answer"><p>Yes. Each packet is labeled with a saving difficulty, and beginners usually start with beans, peas, lettuce and tomatoes, which are forgiving. Our August classes walk you through drying, cleaning and labeling.</p></div>
+        </details>
+        <details>
+          <summary>How much seed should I bring back?</summary>
+          <div class="answer"><p>Aim for at least as much as you borrowed. A single tomato or bean plant usually gives far more than a packet's worth. Bring seeds in a paper envelope labeled with the variety name, the year and your branch.</p></div>
+        </details>
+        <details>
+          <summary>Why heirloom and open-pollinated seeds?</summary>
+          <div class="answer"><p>Seeds from hybrid plants don't reliably grow into plants like their parent, so saving them doesn't work well. Open-pollinated varieties grow true from saved seed, and over a few seasons they adapt to Portland's wet springs and dry summers.</p></div>
+        </details>
+        <details>
+          <summary>Do I have to live in Portland?</summary>
+          <div class="answer"><p>Anyone who gardens in the Portland metro area can join, including Beaverton, Gresham, Milwaukie and Vancouver, WA. Bring a photo ID or a piece of mail when you pick up your card.</p></div>
+        </details>
+        <details>
+          <summary>Can I donate seeds I bought or saved from another source?</summary>
+          <div class="answer"><p>We gladly accept unopened, open-pollinated seed packets from the last two years, plus well-labeled home-saved seed. We can't accept hybrid (F1), treated or genetically modified seed.</p></div>
+        </details>
+        <details>
+          <summary>How can I help?</summary>
+          <div class="answer"><p>Volunteers sort and package seeds on Saturday mornings from October to February, and we always need growers for our isolation gardens. Donations go directly to envelopes, classes and the branch seed cabinets.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Locations -->
+  <section id="locations">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Locations</p>
+        <h2>Three branches, one shared collection</h2>
+        <p>Borrow at one branch and return at another. Hours below are Pacific time.</p>
+      </div>
+      <div class="branches" id="branches"></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-band">
+    <div class="wrap cta-inner">
+      <h2>Spring lending opens March 1. Your packet is waiting.</h2>
+      <a class="btn" href="#join">Get a free membership</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <a class="brand" href="#top">
+          <svg viewBox="0 0 40 40" aria-hidden="true" style="width:34px;height:34px"><circle cx="20" cy="20" r="19" fill="#f6f1e7"/><path d="M20 31V15" stroke="#3f6b3a" stroke-width="2.4" stroke-linecap="round"/><path d="M20 20c-6 0-9-4-9-9 6 0 9 4 9 9zM20 17c5 0 8-3 8-8-5 0-8 3-8 8z" fill="#3f6b3a"/><ellipse cx="20" cy="32" rx="6" ry="2" fill="#e3b23c"/></svg>
+          Fernhill Seed Library
+        </a>
+        <p style="max-width:32ch">A volunteer-run 501(c)(3) non-profit keeping heirloom seeds growing in Portland gardens since 2012.</p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <ul>
+          <li><a href="#locations">Sellwood</a></li>
+          <li><a href="#locations">Alberta</a></li>
+          <li><a href="#locations">St. Johns</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@fernhillseeds.org">hello@fernhillseeds.org</a></li>
+          <li><a href="tel:+15035550142">(503) 555-0142</a></li>
+          <li><a href="#faq">Volunteer</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-base">
+      <span>&copy; <span id="year">2026</span> Fernhill Seed Library</span>
+      <span>EIN 00-0000000</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ---------- Data ---------- */
+  var SEEDS = [
+    { name: "Willamette Tomato", type: "vegetable", icon: "tomato", bg: "#f3d9cf", note: "Early, crack-resistant red tomato bred in Oregon for short, cool summers.", days: "65 days", easy: true },
+    { name: "Mammoth Grey Sunflower", type: "flower", icon: "flower", bg: "#f6e7bf", note: "Towers past 10 feet with dinner-plate heads that feed people and birds alike.", days: "80 days", easy: true },
+    { name: "Hidatsa Shield Bean", type: "vegetable", icon: "bean", bg: "#dfe8d3", note: "A pole drying bean grown on the Missouri River for centuries. Creamy in soups.", days: "90 days", easy: true },
+    { name: "Sensation Cosmos", type: "flower", icon: "cosmos", bg: "#f5dbe3", note: "Airy pink and white blooms from July to frost. Pollinators can't stay away.", days: "75 days", easy: true },
+    { name: "Waltham Butternut", type: "vegetable", icon: "squash", bg: "#f5e0c8", note: "Reliable winter squash that stores on the kitchen counter until March.", days: "100 days", easy: false },
+    { name: "Forellenschluss Lettuce", type: "vegetable", icon: "greens", bg: "#e3ecd9", note: "Austrian romaine splashed with maroon. Slow to bolt in a warm June.", days: "55 days", easy: true },
+    { name: "Jimmy Nardello Pepper", type: "vegetable", icon: "pepper", bg: "#f6e6c4", note: "Sweet, thin-walled frying pepper brought from Basilicata in 1887.", days: "80 days", easy: false },
+    { name: "Oregon Sugar Pod II Pea", type: "vegetable", icon: "pea", bg: "#e1ead5", note: "Flat, tender snow peas on short vines. Sow in March for May harvests.", days: "68 days", easy: true }
+  ];
+
+  var BRANCHES = [
+    {
+      name: "Sellwood", addr: ["8130 SE 13th Ave", "Portland, OR 97202"],
+      note: "Inside the Sellwood Community House, lower level.",
+      hours: { 0: null, 1: null, 2: [15, 19], 3: [15, 19], 4: [15, 19], 5: null, 6: [10, 14] }
+    },
+    {
+      name: "Alberta", addr: ["2715 NE Alberta St", "Portland, OR 97211"],
+      note: "Next to the tool library. Street parking and bike racks.",
+      hours: { 0: [11, 15], 1: null, 2: null, 3: [12, 18], 4: [12, 18], 5: [12, 18], 6: [9, 15] }
+    },
+    {
+      name: "St. Johns", addr: ["7510 N Charleston Ave", "Portland, OR 97203"],
+      note: "At the St. Johns Community Garden shed by the north gate.",
+      hours: { 0: [10, 13], 1: [16, 19], 2: null, 3: [16, 19], 4: null, 5: null, 6: [10, 14] }
+    }
+  ];
+  var DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  /* ---------- Helpers ---------- */
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function fmt(h) { var ap = h >= 12 ? "pm" : "am"; var hr = h % 12 || 12; return hr + ap; }
+
+  // Current day and decimal hour in Portland, regardless of visitor's timezone.
+  function portlandNow() {
+    try {
+      var parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", weekday: "short", hour: "numeric", minute: "numeric", hourCycle: "h23", month: "numeric", day: "numeric" }).formatToParts(new Date());
+      var o = {}; parts.forEach(function (p) { o[p.type] = p.value; });
+      var day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(o.weekday);
+      return { day: day, hour: (+o.hour) + (+o.minute) / 60, month: +o.month, date: +o.day };
+    } catch (e) {
+      var d = new Date(); return { day: d.getDay(), hour: d.getHours() + d.getMinutes() / 60, month: d.getMonth() + 1, date: d.getDate() };
+    }
+  }
+
+  /* ---------- Seeds ---------- */
+  var grid = document.getElementById("seed-grid");
+  grid.innerHTML = SEEDS.map(function (s) {
+    return '<li class="packet" data-type="' + s.type + '" data-easy="' + s.easy + '">' +
+      '<div class="packet-art" style="background:' + s.bg + '"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#seed-' + s.icon + '"/></svg></div>' +
+      '<div class="packet-body"><span class="packet-type">' + (s.type === "flower" ? "Flower" : "Vegetable") + '</span>' +
+      '<h3>' + esc(s.name) + '</h3><p>' + esc(s.note) + '</p>' +
+      '<div class="packet-meta"><span class="tag">' + s.days + '</span>' +
+      '<span class="tag' + (s.easy ? ' easy' : '') + '">' + (s.easy ? 'Easy to save' : 'Intermediate saving') + '</span></div></div></li>';
+  }).join("");
+
+  var filterBtns = document.querySelectorAll(".filter");
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var f = btn.dataset.filter;
+      filterBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
+      grid.querySelectorAll(".packet").forEach(function (el) {
+        var show = f === "all" || (f === "easy" ? el.dataset.easy === "true" : el.dataset.type === f);
+        el.hidden = !show;
+      });
+    });
+  });
+
+  /* ---------- Branches ---------- */
+  var now = portlandNow();
+  var order = [1, 2, 3, 4, 5, 6, 0];
+  document.getElementById("branches").innerHTML = BRANCHES.map(function (b, i) {
+    var t = b.hours[now.day];
+    var open = t && now.hour >= t[0] && now.hour < t[1];
+    var status;
+    if (open) status = '<span class="status open">Open until ' + fmt(t[1]) + '</span>';
+    else {
+      // find next opening
+      var label = "Closed";
+      for (var k = 0; k < 7; k++) {
+        var d = (now.day + k) % 7, h = b.hours[d];
+        if (h && (k > 0 || now.hour < h[0])) {
+          label = "Opens " + (k === 0 ? "today" : k === 1 ? "tomorrow" : DAYS[d].slice(0, 3)) + " " + fmt(h[0]);
+          break;
+        }
+      }
+      status = '<span class="status">' + label + '</span>';
+    }
+    var rows = order.map(function (d) {
+      var h = b.hours[d];
+      return '<tr' + (d === now.day ? ' class="today"' : '') + '><th scope="row">' + DAYS[d] + (d === now.day ? '<span class="visually-hidden"> (today)</span>' : '') + '</th>' +
+        '<td' + (h ? '' : ' class="closed"') + '>' + (h ? fmt(h[0]) + " to " + fmt(h[1]) : "Closed") + '</td></tr>';
+    }).join("");
+    var mapQ = encodeURIComponent(b.addr.join(", "));
+    return '<article class="branch">' + mapArt(i) +
+      '<div class="branch-body"><div class="branch-head"><h3>' + b.name + '</h3>' + status + '</div>' +
+      '<address>' + b.addr.join("<br>") + '</address>' +
+      '<table class="hours"><caption class="visually-hidden">' + b.name + ' hours</caption><tbody>' + rows + '</tbody></table>' +
+      '<p class="branch-note">' + b.note + '</p>' +
+      '<a class="branch-link" href="https://www.openstreetmap.org/search?query=' + mapQ + '" target="_blank" rel="noopener">Get directions</a></div></article>';
+  }).join("");
+
+  function mapArt(i) {
+    var paths = [
+      "M-10 90 C80 70 140 110 220 80 S360 40 420 60",
+      "M-10 40 C60 60 120 30 200 50 S340 100 420 80",
+      "M-10 110 C90 100 150 50 230 60 S350 20 420 30"
+    ];
+    var pins = [[210, 70], [190, 52], [240, 58]];
+    var p = pins[i];
+    return '<div class="branch-map" aria-hidden="true"><svg viewBox="0 0 400 132" preserveAspectRatio="xMidYMid slice">' +
+      '<rect width="400" height="132" fill="#dfe6d2"/>' +
+      '<g stroke="#f6f1e7" stroke-width="6" fill="none"><path d="M0 30h400M0 100h400M70 0v132M150 0v132M290 0v132M350 0v132"/></g>' +
+      '<g stroke="#f6f1e7" stroke-width="2.5" fill="none" opacity=".8"><path d="M0 65h400M110 0v132M220 0v132"/></g>' +
+      '<rect x="80" y="40" width="60" height="50" rx="6" fill="#c9d8b6"/>' +
+      '<path d="' + paths[i] + '" stroke="#a9c4d6" stroke-width="16" fill="none" opacity=".75"/>' +
+      '<g transform="translate(' + p[0] + ' ' + p[1] + ')"><path d="M0 0c-10-12-14-18-14-26a14 14 0 0 1 28 0c0 8-4 14-14 26z" fill="#b9552f"/><circle cy="-26" r="5" fill="#fffdf8"/></g>' +
+      '</svg></div>';
+  }
+
+  /* ---------- Seasonal note ---------- */
+  var note = document.getElementById("season-note").lastElementChild;
+  var m = now.month;
+  if (m >= 3 && m <= 5) note.innerHTML = "<strong>Spring lending is open</strong> at all three branches through May 31.";
+  else if (m >= 6 && m <= 8) note.innerHTML = "<strong>Seed-saving classes</strong> run at every branch through August.";
+  else if (m >= 9 && m <= 11) note.innerHTML = "<strong>Fall returns are open</strong> at all three branches through November 30.";
+  else note.innerHTML = "<strong>Spring lending opens March 1.</strong> Join now to have your card ready.";
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  /* ---------- Nav ---------- */
+  var header = document.querySelector(".site-header");
+  var toggle = document.querySelector(".menu-toggle");
+  var links = document.getElementById("nav-links");
+  function setMenu(open) {
+    links.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", String(open));
+    toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+  }
+  toggle.addEventListener("click", function () { setMenu(!links.classList.contains("open")); });
+  links.addEventListener("click", function (e) { if (e.target.closest("a")) setMenu(false); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") setMenu(false); });
+  function onScroll() { header.classList.toggle("scrolled", window.scrollY > 8); }
+  window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  /* ---------- Join form ---------- */
+  var form = document.getElementById("join-form");
+  var checks = {
+    fname: function (v) { return v.trim().length > 0; },
+    lname: function (v) { return v.trim().length > 0; },
+    email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); },
+    zip: function (v) { return /^\d{5}$/.test(v.trim()); },
+    branch: function (v) { return v !== ""; }
+  };
+  function validate(id) {
+    var input = document.getElementById(id);
+    var ok = checks[id](input.value);
+    var field = input.closest(".field");
+    field.classList.toggle("invalid", !ok);
+    input.setAttribute("aria-invalid", String(!ok));
+    if (!ok) input.setAttribute("aria-describedby", id + "-err"); else input.removeAttribute("aria-describedby");
+    return ok;
+  }
+  Object.keys(checks).forEach(function (id) {
+    var input = document.getElementById(id);
+    input.addEventListener("blur", function () { if (input.value) validate(id); });
+    input.addEventListener("input", function () { if (input.closest(".field").classList.contains("invalid")) validate(id); });
+    input.addEventListener("change", function () { if (input.closest(".field").classList.contains("invalid")) validate(id); });
+  });
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var firstBad = null;
+    Object.keys(checks).forEach(function (id) { if (!validate(id) && !firstBad) firstBad = id; });
+    if (firstBad) { document.getElementById(firstBad).focus(); return; }
+    var name = esc(form.fname.value.trim());
+    var branch = esc(form.branch.value);
+    var card = document.getElementById("form-card");
+    card.innerHTML =
+      '<div class="success" role="status" tabindex="-1">' +
+      '<svg viewBox="0 0 24 24" style="color:var(--moss)" aria-hidden="true"><use href="#i-check"/></svg>' +
+      '<h3>Welcome to the library, ' + name + '.</h3>' +
+      '<p>Your membership card will be ready at the <strong>' + branch + '</strong> branch. We\'ll email you a week before spring lending opens on March 1.</p></div>';
+    card.querySelector(".success").focus();
+  });
+})();
+</script>
+</body>
+</html>
