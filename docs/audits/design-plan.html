@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design plugin: fork implementation plan</title>
+<style>
+:root{--bg:#f6f6f4;--panel:#fff;--ink:#17181a;--ink-2:#4a4d52;--ink-3:#6b6f76;--line:#e3e3df;--soft:#efefec;--new:#1f6f5c;--new-bg:#e6f2ee;--warn:#9a5b00;--warn-bg:#fbf1dc;--code:#f1f1ee;
+  --agn:#4b5563;--web:#2b59c3;--swift:#c2410c;color-scheme:light dark}
+@media (prefers-color-scheme:dark){:root{--bg:#141517;--panel:#1c1d20;--ink:#ececea;--ink-2:#b9bbbf;--ink-3:#8e9197;--line:#2e3034;--soft:#24262a;--new:#6cc9ad;--new-bg:#16302a;--warn:#e7b25c;--warn-bg:#3a2b12;--code:#25272b;--agn:#a1a7b0;--web:#8fb0ff;--swift:#ff9d6b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:0 24px}
+code,.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.86em}
+code{background:var(--code);padding:1px 5px;border-radius:5px}
+a{color:var(--new)}
+:focus-visible{outline:2px solid var(--new);outline-offset:2px}
+header{padding:40px 0 8px}
+h1{font-size:30px;line-height:1.15;letter-spacing:-.02em;margin:0 0 10px}
+h2{font-size:20px;letter-spacing:-.01em;margin:0;display:flex;gap:8px;align-items:baseline}
+.cnt{font-size:13px;color:var(--ink-3);font-weight:500;font-variant-numeric:tabular-nums}
+.lede{color:var(--ink-2);max-width:74ch;margin:4px 0 0;text-wrap:pretty}
+section{margin-top:34px}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;margin-top:14px}
+@media (max-width:760px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+.card h3{font-size:14px;margin:0 0 8px}
+.card ol,.card ul{margin:0;padding-left:20px;color:var(--ink-2);font-size:13.8px}
+.card li+li{margin-top:4px}
+.done{list-style:none;padding:0!important}
+.done li{display:flex;gap:8px;align-items:baseline}
+.fid{font-weight:700;font-size:12px;color:var(--new);min-width:30px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-top:8px}
+.step summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:28px 40px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px 14px}
+.step summary::-webkit-details-marker{display:none}
+.step[open] summary{border-bottom:1px solid var(--line)}
+.no{font-variant-numeric:tabular-nums;color:var(--ink-3);font-size:13px;text-align:right}
+.tt{font-weight:600}
+.meta{display:flex;gap:5px;align-items:center}
+.pri,.sz,.pf{font-size:11px;font-weight:600;border-radius:999px;padding:1px 7px;white-space:nowrap}
+.pri{background:var(--soft);color:var(--ink-2)}.pri.p1{background:var(--ink);color:var(--panel)}
+.sz{border:1px solid var(--line);color:var(--ink-3)}
+.pf{border:1px solid currentColor}.pf-agn{color:var(--agn)}.pf-web{color:var(--web)}.pf-swift{color:var(--swift)}
+.ok{font-size:12px;font-weight:600;color:var(--new);background:var(--new-bg);border-radius:999px;padding:2px 9px}
+.blks{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.blk{font-size:12px;font-weight:600;color:var(--warn);background:var(--warn-bg);border-radius:999px;padding:2px 9px;text-decoration:none;white-space:nowrap}
+@media (max-width:760px){.step summary{grid-template-columns:24px 36px minmax(0,1fr)}.meta,.ok,.blks{grid-column:3}}
+.body{padding:12px 16px 14px 92px;font-size:13.8px}
+@media (max-width:760px){.body{padding-left:16px}}
+.why{margin:0 0 10px;color:var(--ink-2)}
+dl{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;margin:0 0 10px}
+dt{color:var(--ink-3)}dd{margin:0}
+h4{font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3);margin:10px 0 4px}
+.body ul{margin:0;padding-left:18px;color:var(--ink-2)}
+.commit{margin-top:10px;display:flex;gap:8px;align-items:baseline;font-size:12.5px;color:var(--ink-3)}
+.decs{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;margin-top:14px}
+.dec{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;scroll-margin-top:16px}
+.dec:target{outline:2px solid var(--warn)}
+.dec h3{font-size:15px;margin:0 0 8px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12.8px;color:var(--ink-2)}
+.vs small{display:block;color:var(--ink-3);font-size:11px}
+.dec ol{margin:10px 0 0;padding-left:18px;font-size:13px;color:var(--ink-2)}
+.dec li.rec{color:var(--ink)}
+.dec li b{font-size:11px;color:var(--new);margin-left:4px}
+.blocks{margin:8px 0 0;font-size:12.5px;color:var(--ink-3)}
+.step{scroll-margin-top:16px}
+footer{margin:44px 0 60px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink-3);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Fork implementation plan</h1>
+  <p class="lede">34 forks left, in order, on branch <code>docs/design-router-audit</code>. Each one lands as its own commit so you can review it alone. Eight can start now; nine wait on a decision; two wait on a Swift conflict check against Build iOS Apps.</p>
+</header>
+
+<div class="grid2">
+  <div class="card"><h3>Every fork, every time</h3><ol>
+    <li>Copy the upstream section verbatim from a pinned commit; edit only the seams listed.</li>
+    <li>Check for conflicts against the plugin's own text first, then against Build iOS Apps for anything native.</li>
+    <li>Agnostic rule in the main text; code in a labelled Web or Swift block.</li>
+    <li>Validate with the skill validator and <code>verify.py --plugins</code>.</li>
+    <li>Commit with <code>FLEET_SYNC_ACTIVE=1</code>, push the branch, nothing installed.</li>
+  </ol></div>
+  <div class="card"><h3>Already on the branch</h3><ul class="done"><li><code>0f4be1be</code><span class="fid">F1</span>Order of work and route report</li><li><code>b1a097be</code><span class="fid">F26</span>Shorter skill descriptions</li><li><code>fae8f9c2</code><span class="fid">F26</span>design root becomes a router; direction.md</li><li><code>7cbe2149</code><span class="fid">F26</span>design-to-motion split; review stops removed</li><li><code>051a3029</code><span class="fid">F26</span>landing-page-design split</li><li><code>322dbeef</code><span class="fid">F26</span>Skill frontmatter removed from workflow references</li></ul></div>
+</div>
+
+<section class="wave"><h2>Ready now <span class="cnt">8</span></h2><p class="lede">No open decision. Agnostic text, or web and Swift blocks that need no Swift code.</p><details class="step ready" id="s-F34">
+<summary><span class="no">1</span><span class="fid">F34</span><span class="tt">Credit Jakub Krehel</span><span class="meta"><span class="pri p1">P1</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">typography.md, icons.md and change-audit.md derive from his MIT skills with no notice.</p>
+<dl><dt>Fork</dt><dd>jakubkrehel/skills LICENSE (MIT) at the commit you fork from</dd><dt>Into</dt><dd class="mono">references/jakub-krehel-LICENSE.txt, NOTICE</dd><dt>Seams</dt><dd>Add the licence and a NOTICE line naming the files that derive from his text. Do this before or with any Jakub fork.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>typography.md, icons.md and change-audit.md derive from his text: name all three in the NOTICE.</li><li>Emil&#x27;s licence file is the pattern to copy.</li></ul>
+<div class="commit"><span>Commit</span><code>chore(design): credit Jakub Krehel&#x27;s MIT skills</code></div>
+</div></details><details class="step ready" id="s-F29">
+<summary><span class="no">2</span><span class="fid">F29</span><span class="tt">Typography numbers</span><span class="meta"><span class="pri p1">P1</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Restores the floors and ratios that typography.md paraphrased away.</p>
+<dl><dt>Fork</dt><dd>better-typography: Measured, not preferred and every numeric section; css-cheat-sheet.md</dd><dt>Into</dt><dd class="mono">design/references/typography.md</dd><dt>Seams</dt><dd>Replace the paraphrased paragraphs with the source text. CSS in a Web block, Dynamic Type sizes in a Swift block.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Replace typography.md&#x27;s paraphrased paragraphs with better-typography&#x27;s text; don&#x27;t keep both.</li><li>Seam: better-typography asks which 16px input fix the design wants. Default to sizing up on mobile and name the alternative.</li><li>Swift block: Dynamic Type sizes. Check against Build iOS Apps&#x27; swiftui-ui-patterns/references/theming.md, which already covers Dynamic Type scaling; point to it rather than repeat it.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): restore typography values from better-typography</code></div>
+</div></details><details class="step ready" id="s-F31">
+<summary><span class="no">3</span><span class="fid">F31</span><span class="tt">WCAG 2.2 accessibility</span><span class="meta"><span class="pri p1">P1</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Moves the audit from WCAG 2.1 to 2.2, with the two walks and detection patterns.</p>
+<dl><dt>Fork</dt><dd>better-accessibility: Criteria, not conventions; every principle; forms.md, focus-and-keyboard.md, hit-areas.md</dd><dt>Into</dt><dd class="mono">references/accessibility.md, workflows-guide.md</dd><dt>Seams</dt><dd>Replace the 2.5.5 AAA note with 2.5.8 AA. Web detection table in a Web block; VoiceOver and Dynamic Type in a Swift block.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>workflows-guide.md calls target size 2.5.5 an AAA advisory; replace it with 2.5.8 AA at 24×24.</li><li>accessibility.md is a WCAG 2.1 audit template; keep its output structure and update the criteria.</li><li>Keep design-review&#x27;s rule against claiming conformance from visual inspection.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): move accessibility guidance to WCAG 2.2</code></div>
+</div></details><details class="step ready" id="s-F3">
+<summary><span class="no">4</span><span class="fid">F3</span><span class="tt">Color measured on screen</span><span class="meta"><span class="pri p1">P1</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Contrast read from what&#x27;s drawn, alpha neutrals, dark mode as its own palette, accent reserved for actions.</p>
+<dl><dt>Fork</dt><dd>color: Measure the colour on screen; Field edges and icons clear 3:1; Neutrals are translucent; Dark mode is its own palette; The accent marks action</dd><dt>Into</dt><dd class="mono">design/references/color.md; contrast.js as a web tool</dd><dt>Seams</dt><dd>Swift block: sample simulator screenshot pixels or use Accessibility Inspector, never the Color asset value. Copy Salaja&#x27;s MIT licence.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>color.md says adjust &quot;by eye as well as by measurement&quot;; color says to measure the composited pair. Keep the eye for taste, measurement for pass/fail.</li><li>Thresholds must match F31&#x27;s table exactly.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): measure contrast on the rendered pair</code></div>
+</div></details><details class="step ready" id="s-F30">
+<summary><span class="no">5</span><span class="fid">F30</span><span class="tt">Color system structure</span><span class="meta"><span class="pri p2">P2</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Ramps, token tiers, hue separation and the measured-pair rule.</p>
+<dl><dt>Fork</dt><dd>better-colors: all principles; palette-structure.md, token-naming.md, contrast.md</dd><dt>Into</dt><dd class="mono">design/references/color.md (+ new color-system.md)</dd><dt>Seams</dt><dd>Merge with F3 so contrast thresholds appear once.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>better-colors says to leave failing colors alone unless asked. That fits reviews; in a build, the fix is in scope. Add that seam.</li><li>Merge with F3 so thresholds appear once.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add color ramps and token tiers</code></div>
+</div></details><details class="step ready" id="s-F5">
+<summary><span class="no">6</span><span class="fid">F5</span><span class="tt">Viewport and Dynamic Type sweep</span><span class="meta"><span class="pri p1">P1</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Replaces &quot;check affected breakpoints&quot; with a defined sweep, so a skipped size shows up as a finding.</p>
+<dl><dt>Fork</dt><dd>viewports steps 1–7; verify &quot;See the problem first&quot; and &quot;Report what you saw&quot;</dd><dt>Into</dt><dd class="mono">references/evidence.md</dd><dt>Seams</dt><dd>Web widths block plus overflow.js. Swift block: smallest and largest iPhone, iPad Split View and Slide Over, landscape, Dynamic Type xS–AX5, macOS minimum window.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>evidence.md says &quot;320px when supported&quot;; replace with the exact width list and 1px either side of each breakpoint.</li><li>Swift block: Dynamic Type sizes and iPhone SE to Pro Max, which ios-debugger-agent can drive.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add viewport and text-size sweep</code></div>
+</div></details><details class="step ready" id="s-F4">
+<summary><span class="no">7</span><span class="fid">F4</span><span class="tt">Worst-case catalog for stress tests</span><span class="meta"><span class="pri p1">P1</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Real values that break UI, each with what it breaks. It&#x27;s plain data and works on any platform.</p>
+<dl><dt>Fork</dt><dd>break-ui CATALOG.md verbatim; Phase 1 Map the surface; Hard Rules 1–2; Truncate, wrap, or clamp</dd><dt>Into</dt><dd class="mono">design-review/references/stress-catalog.md (new), component-stress.md, typography.md</dd><dt>Seams</dt><dd>Add a Swift column to the failure-signature table: .lineLimit, .truncationMode(.middle), .layoutPriority, PersonNameComponents. Drop the Initial Response and the persona.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>component-stress.md already has scenarios; the catalog adds values and break&#x27;s axis inference, so don&#x27;t duplicate the scenario list.</li><li>break&#x27;s &quot;look once&quot; budget versus evidence.md&#x27;s coverage rules: keep evidence.md as the owner.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design-review): add worst-case catalog to stress tests</code></div>
+</div></details><details class="step ready" id="s-F9">
+<summary><span class="no">8</span><span class="fid">F9</span><span class="tt">Remove-motion review mode</span><span class="meta"><span class="pri p1">P1</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">A subtraction mode with its own risks: hidden start states, waiting code, delayed unmount, layout shifts that motion was hiding.</p>
+<dl><dt>Fork</dt><dd>remove-animations: The Gate, Reducing, Removal Hazards, Cleanup</dd><dt>Into</dt><dd class="mono">design-review/references/motion-review.md (fourth mode)</dd><dt>Seams</dt><dd>Recast AnimatePresence and onExitComplete as &quot;an exit that keeps the element mounted&quot;. Add SwiftUI .transition and withAnimation completion.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Adds a fourth mode to motion-review.md; check the mode table and the gate questions stay consistent.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design-review): add remove-motion review mode</code></div>
+</div></details></section><section class="wave"><h2>Needs one decision first <span class="cnt">9</span></h2><p class="lede">Each of these is blocked by a conflict between your text and an upstream skill. The recommended option is shown first.</p><details class="step blocked" id="s-F27">
+<summary><span class="no">9</span><span class="fid">F27</span><span class="tt">Review severity and fix order</span><span class="meta"><span class="pri p1">P1</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span></span><span class="blks"><a class="blk" href="#d-sev">Severity scale</a></span></summary>
+<div class="body">
+<p class="why">Blockers can&#x27;t be averaged down, fixes start with deletion, and every review ends Block or Approve.</p>
+<dl><dt>Fork</dt><dd>better-interface: Escalation triggers, Prefer the cheaper fix, Consolidate systemic findings, Before you finish</dd><dt>Into</dt><dd class="mono">design-review/references/design-audit.md, change-audit.md</dd><dt>Seams</dt><dd>Map the six better-* owners to your references. Keep your P0–P3 or adopt HIGH/MEDIUM/LOW (see decision on rule IDs).</dd></dl>
+<h4>Conflicts to check</h4><ul><li>design-audit.md uses D1–U7 criteria and P0–P3; the trigger list needs one severity scale.</li><li>The escalation trigger &quot;destructive action with no confirmation or undo&quot; agrees with F33&#x27;s undo rule.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design-review): add escalation triggers and fix order</code></div>
+</div></details><details class="step blocked" id="s-F28">
+<summary><span class="no">10</span><span class="fid">F28</span><span class="tt">UI polish values</span><span class="meta"><span class="pri p1">P1</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-web">Web</span></span><span class="blks"><a class="blk" href="#d-vals">Conflicting motion values</a><a class="blk" href="#d-bounce">Spring bounce</a></span></summary>
+<div class="body">
+<p class="why">Press, stagger, exit, icon swap, radius and outline values your motion and icon references dropped.</p>
+<dl><dt>Fork</dt><dd>better-ui: every principle verbatim; animations.md, enter-exit.md, icon-transitions.md, surfaces.md</dd><dt>Into</dt><dd class="mono">design/references/motion.md, icons.md, layout.md (+ Web block)</dd><dt>Seams</dt><dd>Values stay agnostic; CSS, Tailwind and Motion recipes go in a Web block. Settle the press-scale conflict first.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Press 0.96 / 0.97 / 0.98 and stagger 100ms vs 30–80ms.</li><li>better-ui&#x27;s &quot;bounce is always 0&quot; conflicts with motion.md.</li><li>design-to-motion&#x27;s showcase values stay separate; they are scoped to showcases.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add UI polish values from better-ui</code></div>
+</div></details><details class="step blocked" id="s-F8">
+<summary><span class="no">11</span><span class="fid">F8</span><span class="tt">Motion values, physics and haptics</span><span class="meta"><span class="pri p1">P1</span><span class="sz">L</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="blks"><a class="blk" href="#d-vals">Conflicting motion values</a><a class="blk" href="#d-bounce">Spring bounce</a></span></summary>
+<div class="body">
+<p class="why">Restores the numbers motion.md dropped when it paraphrased the source, and adds gesture formulas that map onto SwiftUI springs.</p>
+<dl><dt>Fork</dt><dd>animate §5 + Never Ship; motion: closes faster, chrome fades, no replay, size from second element, icon cross-fade; apple-design §3/5/6/9/13; animate-expo spring table, bounce rule, haptics</dd><dt>Into</dt><dd class="mono">design/references/motion.md</dd><dt>Seams</dt><dd>Label values as starting points. One value per conflict (see Decisions). Swift block: .spring(duration:bounce:), .sensoryFeedback, UIImpactFeedbackGenerator. Web block: AnimatePresence and similar names.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Same value conflicts as F28; land after F28 so motion.md changes once per source.</li><li>Haptics: Build iOS Apps has haptics.md (a HapticManager). Keep haptic rules design-level and check them against it.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add motion values, physics and haptics</code></div>
+</div></details><details class="step blocked" id="s-F33">
+<summary><span class="no">12</span><span class="fid">F33</span><span class="tt">Interface writing rules</span><span class="meta"><span class="pri p2">P2</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span></span><span class="blks"><a class="blk" href="#d-cancel">Dismiss button wording</a></span></summary>
+<div class="body">
+<p class="why">String inventory, undo before confirmation, whole strings with plurals, ON-state toggles.</p>
+<dl><dt>Fork</dt><dd>better-writing: Inventory the existing strings first, Undo beats confirmation, Build strings whole, Settings describe the ON state</dd><dt>Into</dt><dd class="mono">references/ux-copy.md</dd><dt>Seams</dt><dd>Keep ux-copy&#x27;s structure; add these as sections. Casing follows the label-casing decision.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>ux-copy.md: &quot;Keep files&quot; vs better-writing&#x27;s &quot;Cancel&quot;.</li><li>interaction.md&#x27;s &quot;match confirmation or undo&quot; becomes the undo-first rule; edit it there, not twice.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add interface writing rules</code></div>
+</div></details><details class="step blocked" id="s-F24">
+<summary><span class="no">13</span><span class="fid">F24</span><span class="tt">Copy rules</span><span class="meta"><span class="pri p2">P2</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span></span><span class="blks"><a class="blk" href="#d-case">Label casing</a></span></summary>
+<div class="body">
+<p class="why">Display names over ids, tense that matches the state, the number instead of the noun.</p>
+<dl><dt>Fork</dt><dd>copy: display names, state tense, one-line description, number not noun</dd><dt>Into</dt><dd class="mono">design/references/interaction.md#labels-and-messages</dd><dt>Seams</dt><dd>Casing follows the platform and product (see Decisions).</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Router copy uses Title Case; your plugin and better-writing use sentence case.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add copy rules</code></div>
+</div></details><details class="step blocked" id="s-F2">
+<summary><span class="no">14</span><span class="fid">F2</span><span class="tt">Interface defaults with numbers</span><span class="meta"><span class="pri p1">P1</span><span class="sz">L</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="blks"><a class="blk" href="#d-pill">Pill buttons</a></span></summary>
+<div class="body">
+<p class="why">The biggest concrete gap: targets, wait timings, forms, dialogs, hotkeys, sound, live updates.</p>
+<dl><dt>Fork</dt><dd>defaults: 15 agnostic sections verbatim; 16 web sections + recipes.md</dd><dt>Into</dt><dd class="mono">design/references/defaults.md (new), platforms.md Web block</dd><dt>Seams</dt><dd>Swift block: 44pt + .contentShape, .monospacedDigit(), FormatStyle, AccessibilityNotification.Announcement, SceneStorage, .sensoryFeedback. Reconcile the pill rule with craft-floor.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>defaults says never pill; your craft floor reserves pills for compact controls.</li><li>Hit targets must match F31 (24 / 40 / 44).</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add interface defaults with numbers</code></div>
+</div></details><details class="step blocked" id="s-F36">
+<summary><span class="no">15</span><span class="fid">F36</span><span class="tt">Variant axis and floor</span><span class="meta"><span class="pri p2">P2</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span></span><span class="blks"><a class="blk" href="#d-pick">Pre-picking a favorite variant</a></span></summary>
+<div class="body">
+<p class="why">Variants that differ on one axis and all clear the same accessibility floor.</p>
+<dl><dt>Fork</dt><dd>variant: Different answers, not different tints; The floor every variant clears; Name the axis before writing code</dd><dt>Into</dt><dd class="mono">design/references/ideation.md</dd><dt>Seams</dt><dd>Settle the favourite decision first.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>ideation.md recommends a direction; Krehel and Kowalski never mark a favourite.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add variant axis and shared floor</code></div>
+</div></details><details class="step blocked" id="s-F15">
+<summary><span class="no">16</span><span class="fid">F15</span><span class="tt">Variants in the running app</span><span class="meta"><span class="pri p2">P2</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-web">Web</span></span><span class="blks"><a class="blk" href="#d-pick">Pre-picking a favorite variant</a></span></summary>
+<div class="body">
+<p class="why">Real variants on one route in your own app, labelled by axis, with the losers deleted after a pick.</p>
+<dl><dt>Fork</dt><dd>Emil prototype phases 3–6 + invocation variants; Raphael prototype prune step + switcher.js</dd><dt>Into</dt><dd class="mono">design/references/ideation.md (new section)</dd><dt>Seams</dt><dd>Pick one picker. Settle whether the skill recommends a favorite. Resolve the name clash (see Decisions).</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Same ideation.md section as F36; land them together in order.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add in-app variant picker</code></div>
+</div></details><details class="step blocked" id="s-F21">
+<summary><span class="no">17</span><span class="fid">F21</span><span class="tt">Restore the StageShow workflow</span><span class="meta"><span class="pri p2">P2</span><span class="sz">M</span><span class="pf pf-web">Web</span></span><span class="blks"><a class="blk" href="#d-name">The prototype name clash</a></span></summary>
+<div class="body">
+<p class="why">Your 26-line wrapper dropped the procedure that makes scenes pass rehearsal.</p>
+<dl><dt>Fork</dt><dd>stageshow SKILL.md Workflow 1–7, Common failures, gold/specimen tables</dd><dt>Into</dt><dd class="mono">prototype/SKILL.md (or a references file), vendor/examples</dd><dt>Seams</dt><dd>Re-vendor the 8 brand-free examples (backgrounds, chrome, controls, looks, hero-grid, ruled-bento, staggered-bento, glass), or remove their citations.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Renaming prototype touches design/SKILL.md, design-to-motion and the descriptions commit.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(prototype): restore the StageShow workflow</code></div>
+</div></details></section><section class="wave"><h2>Swift, after a Build iOS Apps check <span class="cnt">2</span></h2><p class="lede">Before writing any Swift text, compare it with these Build iOS Apps skills: swiftui-ui-patterns (state, navigation, scroll-reveal), swiftui-liquid-glass (materials), haptics.md, and swiftui-performance-audit (frame budgets).</p><details class="step blocked" id="s-F14">
+<summary><span class="no">18</span><span class="fid">F14</span><span class="tt">Swift half of the platform split</span><span class="meta"><span class="pri p1">P1</span><span class="sz">L</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span></span><span class="blks"><span class="blk">Build iOS Apps check</span></span></summary>
+<div class="body">
+<p class="why">You work in Swift. The plugin has no concurrency, @Observable or SwiftUI isolation guidance.</p>
+<dl><dt>Fork</dt><dd>write-swift §6 verbatim, defaults hierarchy, §15 @Observable; §1–5 and §7–16 as a separate file</dd><dt>Into</dt><dd class="mono">design/references/platforms.md; design/references/swift.md (new)</dd><dt>Seams</dt><dd>Add a craft-table row &quot;Swift or SwiftUI code&quot;. Add a platform switch to build.md that sends native work to platforms.md and swift.md instead of HTML.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>write-swift&#x27;s concurrency and @Observable rules against swiftui-ui-patterns and swiftui-view-refactor.</li><li>apple-design&#x27;s springs and materials against swiftui-liquid-glass.</li><li>Decide which plugin owns each rule; point to Build iOS Apps instead of copying it.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design): add the Swift half of the platform split</code></div>
+</div></details><details class="step blocked" id="s-F11">
+<summary><span class="no">19</span><span class="fid">F11</span><span class="tt">Frame budgets and traces</span><span class="meta"><span class="pri p2">P2</span><span class="sz">M</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="blks"><span class="blk">Build iOS Apps check</span></span></summary>
+<div class="body">
+<p class="why">Replaces &quot;profile in a platform-appropriate way&quot; with budgets and a second trace that proves the fix.</p>
+<dl><dt>Fork</dt><dd>frames: A trace, never a feeling + steps 1–5; animation-performance Frame Budget + Diagnose</dd><dt>Into</dt><dd class="mono">design-review/references/motion-review.md (Performance)</dd><dt>Seams</dt><dd>Web: observe.js (Chromium only). Swift: Instruments Animation Hitches, measured on a release build and the slowest supported device.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Frame budgets overlap swiftui-performance-audit and ios-ettrace-performance; point there for native traces.</li></ul>
+<div class="commit"><span>Commit</span><code>feat(design-review): add frame budgets and traces</code></div>
+</div></details></section><section class="wave"><h2>Later <span class="cnt">15</span></h2><p class="lede">Priority 2 and 3. None is blocked; they wait only on the work above.</p><details class="step ready" id="s-F6">
+<summary><span class="no">20</span><span class="fid">F6</span><span class="tt">Keyboard walk</span><span class="meta"><span class="pri p2">P2</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">A procedure for checking focus order, plus the warning that synthetic key events don&#x27;t move focus.</p>
+<dl><dt>Fork</dt><dd>keyboard steps 2–7</dd><dt>Into</dt><dd class="mono">references/accessibility.md (new section)</dd><dt>Seams</dt><dd>Web block: tabindex, inert, skip link, tabstops.js. Swift block: Full Keyboard Access, @FocusState, .focusSection(), .keyboardShortcut(.cancelAction), XCUITest typeKey.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F7">
+<summary><span class="no">21</span><span class="fid">F7</span><span class="tt">Alignment thresholds</span><span class="meta"><span class="pri p2">P2</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">The 1–4px rule, cap-height centering, concentric radii and the 10% optical rule.</p>
+<dl><dt>Fork</dt><dd>alignment steps 3–5 (rules); full procedure</dd><dt>Into</dt><dd class="mono">design/references/layout.md; design-review/references/alignment.md (new)</dd><dt>Seams</dt><dd>Web: measure.js. Swift: crop @2x/@3x screenshots and use Xcode&#x27;s view debugger. Drop the remote font from report.html if you keep it.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F10">
+<summary><span class="no">22</span><span class="fid">F10</span><span class="tt">Stricter motion review and audit</span><span class="meta"><span class="pri p2">P2</span><span class="sz">L</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">A fix order, explicit Block/Approve, a hunt list capped at 5–7, eight audit categories and a plan template.</p>
+<dl><dt>Fork</dt><dd>review-animations fix order + ten standards + Block/Approve; find-animation-opportunities Where to Hunt + cap; improve-animations AUDIT.md + PLAN-TEMPLATE; motion Reporting</dd><dt>Into</dt><dd class="mono">motion-review.md; design-review/references/motion-audit.md (new)</dd><dt>Seams</dt><dd>Make the CSS values in the standards generic. Drop the executor that writes plans/ files (it conflicts with read-only review).</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F13">
+<summary><span class="no">23</span><span class="fid">F13</span><span class="tt">Mobile web baseline and library picks</span><span class="meta"><span class="pri p2">P2</span><span class="sz">M</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Most &quot;janky on mobile&quot; reports come from tap delay, tap flash or viewport units, not animation.</p>
+<dl><dt>Fork</dt><dd>mobile-native Symptom Table, Baseline, Never Ship; pick-ui-library The list, Common mismatches</dd><dt>Into</dt><dd class="mono">design/references/mobile-web.md (new), build.md Web block</dd><dt>Seams</dt><dd>Mark the Next.js and Tailwind notes. Native libraries need their own list; leave that open.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F16">
+<summary><span class="no">24</span><span class="fid">F16</span><span class="tt">Reference gathering</span><span class="meta"><span class="pri p2">P2</span><span class="sz">L</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">The plugin has no step that gathers references before designing.</p>
+<dl><dt>Fork</dt><dd>gather: whole skill + sources.md, collect.mjs, board.html</dd><dt>Into</dt><dd class="mono">design-research/references/gather.md (new) + tools</dd><dt>Seams</dt><dd>Replace the connector list with tools.md connector discovery. Keep Mobbin&#x27;s stop rule for usage limits. Needs Node.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F17">
+<summary><span class="no">25</span><span class="fid">F17</span><span class="tt">Recreate rules</span><span class="meta"><span class="pri p3">P3</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Copy only the named part, carry the concept not the brand, and recreate on the same platform as the source.</p>
+<dl><dt>Fork</dt><dd>match: One to one means exact values, steps 4–5; compare.html</dd><dt>Into</dt><dd class="mono">design/references/recreate.md, design-qa.md</dd><dt>Seams</dt><dd>Nothing to change; it&#x27;s agnostic.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F20">
+<summary><span class="no">26</span><span class="fid">F20</span><span class="tt">Numbered, pickable findings</span><span class="meta"><span class="pri p2">P2</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Lets you reply &quot;fix 1, 2 and 5&quot;, with a coverage line for each check.</p>
+<dl><dt>Fork</dt><dd>audit &quot;Number the fixes&quot;; report.md coverage table</dd><dt>Into</dt><dd class="mono">references/reporting.md</dd><dt>Seams</dt><dd>Don&#x27;t copy the per-skill table, since it names Raphael&#x27;s skills.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F25">
+<summary><span class="no">27</span><span class="fid">F25</span><span class="tt">Restraint and reuse rules</span><span class="meta"><span class="pri p2">P2</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">No redundant feedback, delete everything a removal leaves behind, fix inside the primitive and sweep its siblings.</p>
+<dl><dt>Fork</dt><dd>restraint: No feedback the screen already gives, Remove means delete (UI half); reuse: Fix it once, Shipped components stay, One style per kind; scope: feature inventory</dd><dt>Into</dt><dd class="mono">interaction.md, build.md</dd><dt>Seams</dt><dd>&quot;Native element&quot; becomes &quot;system control&quot;, with &lt;video controls&gt; and AVKit as the examples.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F32">
+<summary><span class="no">28</span><span class="fid">F32</span><span class="tt">Layout numbers and RTL</span><span class="meta"><span class="pri p2">P2</span><span class="sz">S</span><span class="pf pf-agn">Agnostic</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">The 2× grouping rule, clearance, peeks and logical properties.</p>
+<dl><dt>Fork</dt><dd>better-layout: every principle; detection table</dd><dt>Into</dt><dd class="mono">design/references/layout.md</dd><dt>Seams</dt><dd>CSS detection table in a Web block; SwiftUI leading and trailing edges in a Swift block.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F35">
+<summary><span class="no">29</span><span class="fid">F35</span><span class="tt">State workbench</span><span class="meta"><span class="pri p3">P3</span><span class="sz">M</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Renders each real state of a component behind a switcher while you work on it.</p>
+<dl><dt>Fork</dt><dd>state-machine: steps 2–6 and switcher.md</dd><dt>Into</dt><dd class="mono">design-review/references/state-workbench.md (new)</dd><dt>Seams</dt><dd>Web route rules in a Web block; SwiftUI previews per state in a Swift block.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F12">
+<summary><span class="no">30</span><span class="fid">F12</span><span class="tt">Web motion techniques</span><span class="meta"><span class="pri p3">P3</span><span class="sz">L</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Keeps CSS, WAAPI and Motion know-how available without putting web-only material in the agnostic files.</p>
+<dl><dt>Fork</dt><dd>emil-design-eng clip-path, transform, debugging; animate tool ladder + RECIPES.md; animation-performance pipeline and traps</dd><dt>Into</dt><dd class="mono">design/references/motion-techniques-web.md (new)</dd><dt>Seams</dt><dd>Remove the pointers to skills that don&#x27;t exist in your plugin. Keep React and Framer names as labelled examples.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F18">
+<summary><span class="no">31</span><span class="fid">F18</span><span class="tt">Icon drawing</span><span class="meta"><span class="pri p3">P3</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">Draw missing glyphs that match the existing set by measuring its spec first.</p>
+<dl><dt>Fork</dt><dd>icons steps 1–9 + sheet.html</dd><dt>Into</dt><dd class="mono">design/references/icon-drawing.md (new)</dd><dt>Seams</dt><dd>Note that the grid and stroke rules also apply to custom SF Symbols.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F19">
+<summary><span class="no">32</span><span class="fid">F19</span><span class="tt">State lab</span><span class="meta"><span class="pri p3">P3</span><span class="sz">M</span><span class="pf pf-swift">Swift</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">See every state of the real components on one page.</p>
+<dl><dt>Fork</dt><dd>lab steps 1–6 + lab.js</dd><dt>Into</dt><dd class="mono">design-review/references/component-stress.md (State lab mode)</dd><dt>Seams</dt><dd>Swift block: #Preview variants with forced states.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F22">
+<summary><span class="no">33</span><span class="fid">F22</span><span class="tt">Motion breakdown timeline</span><span class="meta"><span class="pri p3">P3</span><span class="sz">M</span><span class="pf pf-agn">Agnostic</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">A format for picking apart a reference animation before rebuilding it.</p>
+<dl><dt>Fork</dt><dd>deconstruct steps 1–4 + pair table; viewer.html</dd><dt>Into</dt><dd class="mono">design/references/motion-breakdown.md (new)</dd><dt>Seams</dt><dd>The data model is agnostic, so record SwiftUI timings the same way. viewer.html is web-only.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details><details class="step ready" id="s-F23">
+<summary><span class="no">34</span><span class="fid">F23</span><span class="tt">Pinned web guidelines</span><span class="meta"><span class="pri p3">P3</span><span class="sz">S</span><span class="pf pf-web">Web</span></span><span class="ok">Ready</span></summary>
+<div class="body">
+<p class="why">104 web lint rules, without fetching instructions live from an unpinned branch.</p>
+<dl><dt>Fork</dt><dd>vercel-labs/web-interface-guidelines command.md (pinned commit)</dd><dt>Into</dt><dd class="mono">design-review/references/web-guidelines.md (new)</dd><dt>Seams</dt><dd>Pin the commit and keep NOTICE. Web only.</dd></dl>
+<h4>Conflicts to check</h4><ul><li>Run the standard conflict check below.</li></ul>
+
+</div></details></section>
+
+<section id="decisions">
+  <h2>Decisions</h2>
+  <p class="lede">Settle these to unblock the second group. Three are new since the audit: severity scale, spring bounce, and dismiss wording.</p>
+  <div class="decs"><article class="dec" id="d-sev"><h3>Severity scale</h3>
+<div class="vs"><div><small>Your reviews</small>P0–P3 priority, criteria D1–D5 and U1–U7</div><div><small>better-interface (Krehel)</small>HIGH / MEDIUM / LOW, triggers HIGH on sight, Block or Approve</div></div>
+<ol><li class="rec">Adopt HIGH/MEDIUM/LOW with the trigger list; keep D/U criteria as finding labels <b>Recommended</b></li><li class="">Keep P0–P3 and map triggers to P0</li></ol><p class="blocks">Blocks: <a href="#s-F27">F27</a></p></article><article class="dec" id="d-vals"><h3>Conflicting motion values</h3>
+<div class="vs"><div><small>motion (Salaja) · better-ui (Krehel)</small>Press 0.98 · stagger &lt;50ms (Salaja); press 0.96 over 150ms · stagger 100ms (Krehel)</div><div><small>Emil skills</small>Press 0.97 · stagger 30–80ms · hover with ease, ≤150ms</div></div>
+<ol><li class="rec">Use Emil&#x27;s values, labelled as starting points <b>Recommended</b></li><li class="">Use Krehel&#x27;s values, stated as exact</li><li class="">Use Salaja&#x27;s values</li><li class="">Keep all three as a range</li></ol><p class="blocks">Blocks: <a href="#s-F28">F28</a>, <a href="#s-F8">F8</a></p></article><article class="dec" id="d-bounce"><h3>Spring bounce</h3>
+<div class="vs"><div><small>motion.md (yours)</small>Bounce can express character</div><div><small>better-ui (Krehel)</small>Bounce is always 0</div></div>
+<ol><li class="rec">Bounce 0 for UI state; bounce allowed for gestures and showcase <b>Recommended</b></li><li class="">Always 0</li><li class="">Leave to taste</li></ol><p class="blocks">Blocks: <a href="#s-F28">F28</a>, <a href="#s-F8">F8</a></p></article><article class="dec" id="d-cancel"><h3>Dismiss button wording</h3>
+<div class="vs"><div><small>ux-copy.md (yours)</small>&quot;Delete files&quot; / &quot;Keep files&quot;, not OK / Cancel</div><div><small>better-writing (Krehel)</small>&quot;Delete project&quot; and &quot;Cancel&quot;</div></div>
+<ol><li class="rec">Keep your &quot;Keep files&quot; pattern; take the rest of better-writing <b>Recommended</b></li><li class="">Use Cancel</li></ol><p class="blocks">Blocks: <a href="#s-F33">F33</a></p></article><article class="dec" id="d-case"><h3>Label casing</h3>
+<div class="vs"><div><small>Router (copy)</small>Title Case for labels</div><div><small>Your plugin</small>Sentence case (&quot;Start free trial&quot;)</div></div>
+<ol><li class="rec">Follow the platform: Title Case for macOS menus and buttons, sentence case on the web <b>Recommended</b></li><li class="">Sentence case everywhere</li><li class="">Title Case everywhere</li></ol><p class="blocks">Blocks: <a href="#s-F24">F24</a></p></article><article class="dec" id="d-pill"><h3>Pill buttons</h3>
+<div class="vs"><div><small>Router (defaults)</small>Rounded, never pill</div><div><small>Your craft floor</small>Pills reserved for compact controls</div></div>
+<ol><li class="rec">Keep your craft-floor rule <b>Recommended</b></li><li class="">Adopt never-pill</li></ol><p class="blocks">Blocks: <a href="#s-F2">F2</a></p></article><article class="dec" id="d-pick"><h3>Pre-picking a favorite variant</h3>
+<div class="vs"><div><small>Emil prototype · Krehel variant</small>Never pre-pick; state each variant&#x27;s cost and let the user choose</div><div><small>Your ideation.md</small>Recommend a direction with its trade-off</div></div>
+<ol><li class="rec">Recommend, but show each variant&#x27;s case first <b>Recommended</b></li><li class="">Never pre-pick</li></ol><p class="blocks">Blocks: <a href="#s-F36">F36</a>, <a href="#s-F15">F15</a></p></article><article class="dec" id="d-name"><h3>The prototype name clash</h3>
+<div class="vs"><div><small>Router</small>prototype = variant picker</div><div><small>Your plugin</small>prototype = StageShow scripted scenes</div></div>
+<ol><li class="rec">Rename yours to stageshow; variants live in ideation.md <b>Recommended</b></li><li class="">Keep the names; variants live in ideation.md only</li><li class="">Rename yours to walkthrough</li></ol><p class="blocks">Blocks: <a href="#s-F21">F21</a></p></article></div>
+</section>
+
+<footer>
+  <p>Sources: <code>playful-design/router</code>, <code>emilkowalski/skills</code>, <code>jakubkrehel/skills</code> at <code>60bf140</code>. Fork details come from the audit page; the order, blockers and conflict notes are new here. The plugin version bump comes last, once the content is final.</p>
+  <p><a href="design-router-audit.html">Audit</a> · <a href="design-examples.html">Examples</a></p>
+</footer>
+</div>
+</body>
+</html>

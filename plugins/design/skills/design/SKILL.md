@@ -1,135 +1,138 @@
 ---
 name: design
-description: "Designs, builds, refines, and recreates web or native product interfaces. Use for UI design, product idea evaluation, visual exploration, UX copy or microcopy, button and error-message wording, motion terminology, and developer handoff specifications from a design."
+description: "Design, build, refine, or recreate web and native product UI. Use for new screens, redesigns, homepages, visual directions, UX copy, or handoff specs."
 ---
 
 # Design
 
-Design with a point of view. Make deliberate choices about palette, typography,
-composition, and interaction that belong to this brief and would not carry over
-unchanged to a similar one. Take aesthetic risks when they express the subject
-or improve the experience. When refining an established product, work within
-its identity. When creating or redesigning one, commit to a single visual
-direction and carry it through every screen and state.
+Approach this as the design lead at a design studio known for giving every client a distinct visual identity that is not mistaken for anyone else's. This client has already rejected proposals that felt cliché or templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take aesthetic risk if justified.
 
-To audit an existing interface, review a UI change, or stress test a component,
-load `$design-review`.
+When refining an established product, work within its identity. Current user instructions come first, then the product's own design docs, tokens, components and representative screens, then context saved with `$design-context`, then this skill. Missing saved context never blocks a sufficient brief.
 
-Read the [context contract](../../references/context-contract.md) and relevant
-product sources before choosing a direction. Saved context is optional.
+## Ground your designs in the subject matter
 
-## Ground the design
+If the brief does not identify what the product or subject matter is, identify it yourself before designing: propose one concrete subject, the design's audience, and the design's primary job in a line, and continue. Ask only when different answers would change the design materially. If there's any information in your memory about the client's preferences or context about what they're building, use that as a hint. The subject's industry, subject matter, materials, and vernacular are where distinctive visual choices come from — a design for a toy for girls aged 8–11 will be very aesthetically different from a dashboard for financial analysts. Build with the brief's real content and subject matter throughout.
 
-Identify the subject, audience, and primary job before choosing a style. When
-the brief leaves them open, propose a concrete interpretation and continue; ask
-only when different answers would materially change the design. Draw
-distinctive choices from the subject's materials, vocabulary, imagery, and
-activities instead of demographic clichés: a children's toy and an analyst's
-dashboard need different density, hierarchy, and expression. When a page opens
-with a hero, lead with the most characteristic thing in the subject's world,
-such as a headline, an image, a live demo, or an interaction. Build with real
-content, or plausible content for the actual task; generic copy makes a design
-read as a template as surely as generic styling does.
+## Push past the first idea
 
-## Avoid generic defaults
+The first idea that comes to mind is the one any designer would have for any similar brief. Before planning, recover the intended effect, not just the artifact requested: who uses this, what they should do or remember, and what should change for them.
 
-Generated interfaces converge on a few looks whatever the subject:
+Then borrow a form from the subject's world: an object, document, or tool its people already know, such as a ledger, a library checkout card, a depot dispatch board, or a seed packet. Make that form the first screen or the primary view, not a later section. A strong idea placed second reads as no idea.
 
-- A warm cream background, high-contrast serif display, and terracotta accent.
-- A near-black background with one acid-green or vermilion accent.
-- A broadsheet of hairline rules, square corners, and dense columns.
-- The SaaS card kit: identical rounded cards with one radius and one soft gray
-  shadow, decorative gradient washes, and a hero of one big number, a small
-  label, and supporting stats.
-- Template chrome: a tracked uppercase eyebrow over each heading, one accented
-  word per headline, `01 / 02 / 03` markers on content that is not a sequence,
-  metadata joined with middle dots, arrows appended to link text, a fade-up
-  entrance on every section, and a hover lift on every card.
+Ambition serves the brief. Its requirements and any look it names always win; spend boldness only on the choices it leaves open, and never trade a working requirement for a flourish. Bold for its own sake is just another default.
 
-Any of these can suit a brief, but none is a choice when it would appear for
-any subject. Where the brief specifies a look, follow it exactly, even when it
-asks for one of these. Where the brief leaves a choice open, spend that freedom
-on something drawn from the subject. Use borders, numbering, labels, and
-dividers only when they encode something about the content. Start a section
-with its heading, put category or context in the body or footer, and keep
-functional navigation such as breadcrumbs separate from the heading.
+## Design principles
 
-Before editing UI, read the [craft floor](../../references/craft-floor.md).
-Its aesthetic bans are required checks, not optional suggestions; this list of
-generic defaults does not waive them. Apply them to the requested change,
-preserving explicit user choices and unrelated existing UI.
+The first screen is the first thing people will see: a web page's hero, an app's opening view. Open with the most characteristic thing in the subject's world, in the form that is most appropriate: a headline, an image, an animation, a live demo, an interactive moment, or other treatments. Be deliberate with your choice: a big number with a small label, supporting stats, and a gradient accent is the default treatment, so only use it if that's truly the best option.
 
-## Hierarchy and restraint
+Typography carries the personality of the page. You don't need a different typeface for display or headline text and body content: use one family or two, and if two, make them clearly distinct.
 
-Spend boldness in one place: let one element carry the memorable idea, keep the
-rest quiet, and cut decoration that does not serve the brief. Establish
-hierarchy before decoration, and reduce competing elements before enlarging the
-main one. Use a small, consistent set of type, color, spacing, radius, and depth
-values, with exceptions only for a distinct role or a visible problem. Preserve
-the meaning and behavior of conventional controls. Meet a baseline of
-responsive layout, visible keyboard focus, reduced motion, and readable
-contrast without presenting it as a feature.
+Choose your typefaces deliberately, not the default families you would reach for on any other project, and set a clear type scale following the default guidance of The Elements of Typographic Style with intentional weights, widths, and spacing. When type is used as a headline or visual element, use the type treatment itself as an active part of the design, not a neutral delivery vehicle for the content.
 
-## Choose the workflow
+Default to line lengths of less than 80 characters. Serif typefaces can have slightly longer line lengths; give serif body text slightly more line-height than a sans-serif.
 
-Read only the references the current decision needs.
+Avoid these default typographic treatments; they are the commonest tells of a generated page:
+- Accenting just a single word or phrase in a headline, like putting one word in italic/bold or a different color.
+- Using all caps for labels.
+- Adding unnecessary typographic labels above content.
 
-| Outcome | Read |
+Visual structure is information. Structural devices like outlines, borders, numbering, eyebrows, dividers, labels, etc., encode useful information about the content rather than decorate it. Many generic designs use numbered markers (01 / 02 / 03), but that's only appropriate if the content actually is a sequence — like a stepped process or a timeline. Before adding numbered markers, check the content really is a sequence.
+
+Use non-user-triggered motion sparingly and deliberately, only to draw attention. A single orchestrated moment — one page-load sequence or one reveal — lands better than scattered effects; fade-and-slide-up entrances on each section and hover transitions on every card are the generic default and read as AI-generated. Motion that answers a person's action (opening, expanding, confirming) is welcome when it shows what changed.
+
+Consider written content carefully. Often a design brief may not contain real content, and it's up to you to come up with copy and placeholder content. Copy can make a design feel as templated as the design itself. See the below section on writing for more guidance.
+
+## Product screens
+
+When the design is a working app or tool rather than a page to read:
+
+- Show one primary screen, not a feature inventory: the main task, one clear primary action, and one or two supporting areas. Let the rest of the product exist off-screen. If it feels crammed, remove UI.
+- Separate groups with spacing, alignment, and type first, then a divider, then a surface tint, then a border. Use elevation last and rarely. Cards are for independently meaningful objects; never nest them.
+- Make the core path work with realistic data: navigation, the main inputs and filters, the primary action and its result. Design the loading, empty, and error states that path can reach, each with a next action. Controls outside the core path can be visual only.
+- Show status by shape or label as well as color, and set numbers in fixed-width digits so columns align.
+- Anchor dates in mock data to today: real weekdays, plausible recent activity, the current season.
+- Keep demo switches and prototype controls out of the product's own chrome, visibly outside the design.
+- When the design has light and dark themes, check both against the generic defaults below. Dark themes drift toward near-black with one bright accent.
+- Use real or generated images where the design needs pictures, sized to their slot, and one consistent icon family. Never stand in for a picture with hand-drawn vector shapes, emoji, or CSS art.
+
+## Process: plan, review against the brief, build, critique
+
+### Generic defaults
+
+For calibration, AI-generated design right now clusters around some traits:
+1. a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta or warm-clay accent (often near #D97757 — Anthropic's own Claude-interaction accent, so on a user's brief it reads as a tell);
+2. a near-black background with a single bright acid-green or vermilion accent;
+3. a broadsheet-style layout with hairline rules, zero border-radius, and dense newspaper-like columns;
+4. the SaaS-card kit: content chopped into identical rounded cards, one border-radius on everything regardless of hierarchy, the same soft grey shadow (rgba(0,0,0,.1)) under each, and gradient washes as decoration;
+5. template chrome that appears whatever the subject: a tracked-out ALL-CAPS eyebrow label above every heading; meta strings joined with middle dots ('A · B · C'); labels built as 'WORD — fragment' with a spaced em dash; tinted near-black (#0B0B0B, #111) standing in for black; a monospace face for small data labels; a '→' appended to link and button text.
+
+Also treat these as defaults: gradient-filled text, decorative glass or blur, colored glow halos, colored side borders thicker than 1px on cards, rows, and alerts; a container with both a border and a broad shadow; pill shapes on anything but compact controls; a purple-to-blue gradient palette; pure black or neutral gray surfaces instead of surfaces tinted from the subject's hues; neutral gray secondary text on a colored surface; decorative grids, stripes, or textures unrelated to the subject; and a modal for work that needs neither interruption nor protected focus.
+
+All traits are legitimate for some briefs, but they are defaults rather than choices, and they appear regardless of subject. Where the brief pins down a visual direction, follow it exactly — the brief's own words always win, including when it asks for one of these looks. Where it leaves an axis free, don't spend that freedom on one of these defaults. As with a hired human designer, there's often a careful balance between doing what you're good at and taking each project as a chance to experiment and learn.
+
+### Plan, review, build
+
+Work in two passes. First, brainstorm a short design plan based on the client's design brief: create a compact token system with color, type, layout, and principles.
+- Color: describe the core base palette as 4–6 named hex values.
+- Type: the typefaces and their roles.
+- Layout: a layout concept, using one-sentence prose descriptions and ASCII wireframes to ideate and compare. Include alignment guidance; should the content be left aligned, center aligned, justified?
+- Principles: the high-level guidance for what makes this page unique.
+
+Then review that plan against the brief before building: if any part of it reads like the generic default you would produce for any similar page (work through a similar prompt to see if you arrive somewhere similar) rather than a choice made for this specific brief — revise that part, say what you changed and why. Only after you've confirmed the relative uniqueness of your design plan should you start to write the code, following the revised plan.
+
+In that review, name the weakest part of the plan: the choice most likely to appear in any similar product. Revise it. Then write one sentence describing what someone remembers after five seconds with the design; if that sentence would also describe a competitor, the plan isn't done. Share the revised plan in a short note and build without waiting for approval. A bold plan is not a bold build: carry the idea into the first screen and every state.
+
+On the web, be careful of structuring your CSS selector specificities. It's easy to generate CSS classes that cancel each other out (especially with a type-based selector like .section and an element-based selector like .cta). This can happen often with padding/margin between sections.
+
+## Restraint and self-critique
+
+Spend your boldness in one place. Let one element be the memorable thing, keep everything around it quiet and disciplined, and cut any decoration that does not serve the brief. Restraint applies to everything around that element, never to the element itself. Build to a quality floor without announcing it: responsive down to mobile, reduced motion respected, harmonious color palettes. Critique your own work as you build, taking screenshots to review if your environment supports it — a picture is worth 1000 tokens. Consider Chanel's advice: before leaving the house, take a look in the mirror and remove one accessory. Human creatives have memory and always try to do something new, so if you have a space to quickly jot down notes about what you've tried, it can help you in future passes.
+
+## More on writing in design
+
+Words appear in a design for one reason: to make it easier to understand and use. They are design content, not decoration. Bring the same intentionality and minimalism to copywriting that you would bring to spacing and color. Before writing anything, ask what the design needs to say, and how it can best be said to help the person navigate the experience.
+
+Write from the end user's perspective. Name things by what users will understand in simple language, not by how the system is built. A user manages notifications, not webhook config. Describe what something is or does in plain terms rather than selling it. Being specific and legible to new users is always better than being clever.
+
+Use active voice as default. A CTA says exactly what happens when it is used: "Save changes," not "Submit." An action keeps the same name through the whole flow, so the button that says "Publish" produces a toast that says "Published." The vocabulary of an interface is the signposting for someone navigating the product. Cohesion and consistency are how people learn their way around.
+
+Treat failure and emptiness as moments for direction, not mood. Explain what went wrong and how to fix it, in the interface's voice rather than a person's. Errors don't apologize, and they are never vague about what happened. An empty screen is an invitation to act.
+
+Keep the tone conversational: plain verbs, sentence case, no filler, with tone matched to the brand and the audience. Let each written element do exactly one job.
+
+## Other workflows
+
+| Outcome | Use |
 |---|---|
-| Build a new interface or substantially redesign one | [Plan and build](references/build.md) |
+| Change an existing product: reuse its components and tokens, refine, or remove | [Build with what exists](references/build.md) |
 | Challenge an open product idea before building | [Test an open product idea](references/build.md#test-an-open-product-idea) |
-| Build or refine a conversion-focused landing page | `$landing-page-design` for offer, audience, structure, and copy; retain this skill's shared craft guidance |
-| Create a scripted product walkthrough or staged UI illustration | `$prototype` for the scene; retain this skill’s product and craft guidance |
-| Animate an accepted static design or product visual, or export a showcase | `$design-to-motion` for fidelity, choreography, and capture |
-| Refine a settled interface | [Build or refine](references/build.md#build-or-refine); reuse established context |
-| Explore directions or compare variants | [Ideation](references/ideation.md) |
-| Name a motion effect or explain a motion term | [Animation vocabulary](references/animation-vocabulary.md) |
+| Explore or compare several directions | [Ideation](references/ideation.md) |
 | Recreate an accepted image, mockup, or live page | [Recreate a reference](references/recreate.md) |
-| Check or correct a build against an accepted design | [Design QA](references/design-qa.md) |
+| Check a build against an accepted design | [Design QA](references/design-qa.md) |
+| Conversion or campaign landing page | `$landing-page-design` |
+| UX copy as the task itself | [UX-copy guide](../../references/ux-copy.md) |
+| Engineering handoff specification | [Handoff guide](../../references/handoff.md); creating one does not authorize publishing it |
+| Audit, review a UI change, or stress test a component | `$design-review` |
+| Save a correction that came up twice | `$design-context` |
 
-For UX copy, read the full [UX-copy guide](../../references/ux-copy.md)
-and [workflow guidance](../../references/workflows-guide.md). For an engineering
-handoff specification, read the full [handoff guide](../../references/handoff.md).
-Measure from available sources, specify relevant states and accessible behavior,
-and label inferred values. Creating a handoff does not authorize publishing it.
+## Look things up
 
-## Choose the craft
+Open one of these only when a specific question comes up while building. Do not read them before starting.
 
-| Decision | Guidance |
+| Question | Reference |
 |---|---|
-| Hierarchy, density, repeated rows, responsive layout | [Layout](references/layout.md) |
+| Hierarchy, density, alignment, repeated rows, responsive layout | [Layout](references/layout.md) |
 | Fonts, text roles, wrapping, truncation | [Typography](references/typography.md) |
-| Palette, contrast, themes, gradients | [Color](references/color.md) |
-| Controls, forms, feedback, search, labels | [Interaction](references/interaction.md) |
-| Timing, choreography, gesture motion | [Motion](references/motion.md) |
+| Palette, ramps, themes, gradients | [Color](references/color.md) |
+| Controls, forms, feedback, search | [Interaction](references/interaction.md) |
+| Timing, easing, choreography, gestures | [Motion](references/motion.md) |
 | Icon weight, states, size, direction | [Icons](references/icons.md) |
 | Native Apple controls, app icons, lazy SwiftUI lists | [Platforms](references/platforms.md) |
 
-## Prove the result
+## Prove and explain
 
-Follow [visual proof](../../references/evidence.md) for any claim about how
-the interface renders or behaves. Inspect the states the change affects:
+[Visual proof](../../references/evidence.md) sets what counts as evidence for a claim about how the result renders or behaves. When you can start a fresh reviewer, run [finish review](../../references/finish-review.md) on implemented UI.
 
-- Layout: narrow and wide containers, widths just above and below each
-  breakpoint, real and extreme content, text scaling, and sticky regions over
-  focused content. Check that the hierarchy survives as well as the fit.
-- Typography: long strings, localized expansion, fallback fonts, supported
-  text sizes, and reflow when fonts load.
-- Interaction: the main path, errors, retries, cancellation, dismissal, and
-  back navigation.
-- Motion: entry, exit, rapid repetition, reversal, interruption, and reduced
-  motion. A static capture proves the endpoint only; use a recording or
-  intermediate frames when continuity is in question.
+Write design explanations with [Writing style](../../references/reporting.md): lead with the visible result, decision, or blocker; name elements and quote copy.
 
-Before delivering implemented UI, run [finish review](../../references/finish-review.md):
-a fresh reviewer judges the changed scope and verifies material corrections.
-Use it as the final comparison in design QA, not an additional audit cycle.
-Planning, unselected concept variants, prose-only deliverables, and review-only
-requests do not trigger this handoff.
-
-## Explain the result
-
-Write design explanations with [Writing style](../../references/reporting.md).
-Lead with the visible result, design decision, or blocker; name elements and
-quote copy. Interface copy follows
-[Interaction](references/interaction.md#labels-and-messages).
+Forked from Anthropic's frontend-design skill (anthropics/claude-plugins-official, commit 1aa4a4b), changed only where it meets this plugin. See [license](../../references/anthropic-frontend-design-LICENSE.txt).

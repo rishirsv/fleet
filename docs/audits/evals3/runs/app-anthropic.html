@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Relay fleet</title>
+<style>
+:root {
+  --concrete: #E9EDF0;
+  --paper: #FFFFFF;
+  --ink: #1B2A35;
+  --ink-2: #4A5B67;
+  --rule: #CBD3D9;
+  --rule-soft: #E2E7EB;
+  --works: #1F5C8C;
+  --works-wash: #E3EDF5;
+  --go: #2E7A4C;
+  --late: #B3261E;
+  --late-wash: #FBEAE8;
+  --shop: #E3A428;
+  --shop-ink: #7A5200;
+  --tile-idle: #D3DAE0;
+
+  --sign: "DIN Alternate", "Bahnschrift", "D-DIN", "Arial Narrow", sans-serif;
+  --text: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+  --panel-w: 420px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--concrete);
+  color: var(--ink);
+  font: 15px/1.45 var(--text);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+button, input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--works); outline-offset: 2px; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Shell ---------- */
+.app { display: grid; grid-template-columns: minmax(0, 1fr) 0; min-height: 100vh; transition: grid-template-columns .22s ease; }
+.app.panel-open { grid-template-columns: minmax(0, 1fr) var(--panel-w); }
+main { padding: var(--s5) var(--s6) var(--s7); min-width: 0; }
+
+.top { display: flex; align-items: baseline; gap: var(--s4); margin-bottom: var(--s5); }
+.mark { font: 700 26px/1 var(--sign); letter-spacing: .01em; margin: 0; color: var(--works); }
+.org { color: var(--ink-2); }
+.sync { margin-left: auto; color: var(--ink-2); font-size: 13px; }
+
+/* ---------- Fleet board ---------- */
+.board { display: flex; gap: var(--s3); margin-bottom: var(--s6); }
+.seg {
+  flex: var(--n) 1 0; min-width: 0;
+  display: flex; flex-direction: column; gap: var(--s2);
+  padding: 0; border: 0; background: none; text-align: left; cursor: pointer;
+  border-radius: 6px;
+}
+.seg:disabled { cursor: default; }
+.tiles { display: flex; gap: 3px; height: 40px; padding: 4px; border-radius: 6px; background: var(--paper); border: 1px solid var(--rule); transition: border-color .15s; }
+.tile { flex: 1 1 0; min-width: 4px; border-radius: 2px; background: var(--c); transition: background-color .4s ease, flex-grow .4s ease; }
+.seg[data-s="service"] { --c: var(--go); }
+.seg[data-s="overdue"] { --c: var(--late); }
+.seg[data-s="shop"] { --c: var(--shop); }
+.seg .count { font: 700 34px/1 var(--sign); }
+.seg[data-s="overdue"] .count { color: var(--late); }
+.seg .what { color: var(--ink-2); font-size: 14px; margin-left: var(--s1); }
+.seg:hover:not(:disabled) .tiles { border-color: var(--ink-2); }
+.seg[aria-pressed="true"] .tiles { border: 2px solid var(--ink); padding: 3px; }
+.board.filtered .seg[aria-pressed="false"] .tile { background: var(--tile-idle); }
+.board.loading .tile { background: var(--tile-idle); }
+.board.loading .count { color: var(--tile-idle); }
+
+/* ---------- Toolbar ---------- */
+.tools { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3); margin-bottom: var(--s3); }
+.field { display: flex; align-items: center; gap: var(--s2); }
+.field label { color: var(--ink-2); font-size: 14px; }
+.search { position: relative; flex: 1 1 260px; max-width: 360px; }
+.search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-2); pointer-events: none; }
+input[type="search"], select {
+  height: 40px; border: 1px solid var(--rule); border-radius: 6px; background: var(--paper);
+  padding: 0 var(--s3);
+}
+input[type="search"] { width: 100%; padding-left: 36px; }
+select { padding-right: var(--s5); }
+input[type="search"]:hover, select:hover { border-color: var(--ink-2); }
+.result-count { margin-left: auto; color: var(--ink-2); font-size: 14px; }
+
+/* ---------- Buttons ---------- */
+.btn { height: 40px; padding: 0 var(--s4); border-radius: 6px; border: 1px solid var(--rule); background: var(--paper); cursor: pointer; font-weight: 600; white-space: nowrap; }
+.btn:hover { border-color: var(--ink-2); }
+.btn.primary { background: var(--works); border-color: var(--works); color: #fff; }
+.btn.primary:hover { background: #184B73; }
+.btn[aria-busy="true"] { opacity: .75; cursor: progress; }
+.btn.quiet { border-color: transparent; background: transparent; color: var(--works); }
+.btn.quiet:hover { background: var(--works-wash); }
+
+/* ---------- Selection bar ---------- */
+.selbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+  min-height: 56px; padding: var(--s2) var(--s2) var(--s2) var(--s4);
+  border-radius: 6px 6px 0 0; background: var(--ink); color: #fff;
+}
+.selbar[hidden] { display: none; }
+.selbar .btn.quiet { color: #fff; }
+.selbar .btn.quiet:hover { background: rgba(255,255,255,.12); }
+.selbar strong { font-weight: 600; }
+.selbar .spacer { flex: 1; }
+
+.error {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s3);
+  padding: var(--s3) var(--s3) var(--s3) var(--s4);
+  background: var(--late-wash); border: 1px solid var(--late); border-left-width: 4px; border-radius: 6px;
+  color: var(--ink); margin-bottom: var(--s3);
+}
+.error p { margin: 0; flex: 1 1 280px; max-width: 72ch; }
+.error strong { color: var(--late); }
+
+.toast {
+  position: fixed; left: 50%; bottom: var(--s5); transform: translate(-50%, 16px); opacity: 0;
+  background: var(--ink); color: #fff; padding: var(--s3) var(--s4); border-radius: 6px;
+  transition: opacity .2s, transform .2s; pointer-events: none; max-width: calc(100vw - 32px);
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ---------- Table ---------- */
+.table-wrap { background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; overflow-x: auto; }
+.selbar:not([hidden]) + .table-wrap { border-top-left-radius: 0; border-top-right-radius: 0; border-top: 0; }
+table { width: 100%; border-collapse: collapse; min-width: 720px; }
+th, td { padding: 0 var(--s3); height: 48px; text-align: left; border-bottom: 1px solid var(--rule-soft); white-space: nowrap; }
+th { font-weight: 600; font-size: 13px; color: var(--ink-2); height: 40px; border-bottom-color: var(--rule); background: #F6F8F9; position: sticky; top: 0; }
+td.num, th.num { text-align: right; }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: #F3F6F8; }
+tbody tr.selected { background: var(--works-wash); }
+tbody tr.open { box-shadow: inset 4px 0 0 var(--works); }
+tbody tr.just-saved { animation: saved 1.6s ease-out; }
+@keyframes saved { from { background: #DCEFE3; } to { background: transparent; } }
+tbody tr:last-child td { border-bottom: 0; }
+.cb { width: 48px; padding-right: 0; }
+.cb label { display: grid; place-items: center; width: 40px; height: 40px; margin-left: -8px; cursor: pointer; }
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--works); cursor: pointer; margin: 0; }
+.vid { font: 700 17px/1 var(--sign); letter-spacing: .02em; background: none; border: 0; padding: var(--s2) 0; cursor: pointer; color: var(--ink); }
+.vid:hover { color: var(--works); text-decoration: underline; text-underline-offset: 3px; }
+.sub { color: var(--ink-2); }
+.due-late { color: var(--late); font-weight: 600; }
+.due-soon { color: var(--shop-ink); font-weight: 600; }
+
+.status { display: inline-flex; align-items: center; gap: var(--s2); }
+.status::before { content: ""; width: 10px; height: 10px; border-radius: 2px; background: var(--c); }
+.status.service { --c: var(--go); }
+.status.overdue { --c: var(--late); color: var(--late); font-weight: 600; }
+.status.shop { --c: var(--shop); color: var(--shop-ink); font-weight: 600; }
+
+.skel { display: block; height: 12px; border-radius: 3px; background: var(--rule-soft); }
+.loading-rows td { cursor: default; }
+@media (prefers-reduced-motion: no-preference) {
+  .skel { background: linear-gradient(90deg, var(--rule-soft) 0%, #F3F5F7 50%, var(--rule-soft) 100%); background-size: 200% 100%; animation: shimmer 1.3s linear infinite; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+}
+
+.empty { padding: var(--s7) var(--s5); max-width: 60ch; }
+.empty h2 { font: 700 22px/1.2 var(--sign); margin: 0 0 var(--s2); }
+.empty p { margin: 0 0 var(--s4); color: var(--ink-2); }
+
+/* ---------- Side panel ---------- */
+aside {
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+  background: var(--paper); border-left: 1px solid var(--rule);
+}
+.panel { width: var(--panel-w); height: 100%; overflow-y: auto; padding: var(--s5); }
+.panel-head { display: flex; align-items: flex-start; gap: var(--s3); margin-bottom: var(--s4); }
+.panel-head h2 { font: 700 40px/1 var(--sign); margin: 0; letter-spacing: .01em; }
+.panel-head h2:focus { outline: none; }
+.panel-head .close { margin-left: auto; width: 40px; height: 40px; padding: 0; display: grid; place-items: center; }
+.vline { margin: var(--s1) 0 0; color: var(--ink-2); }
+.facts { display: grid; grid-template-columns: auto 1fr; gap: var(--s2) var(--s4); margin: 0 0 var(--s4); padding: var(--s4) 0; border-top: 1px solid var(--rule-soft); border-bottom: 1px solid var(--rule-soft); }
+.facts dt { color: var(--ink-2); }
+.facts dd { margin: 0; }
+.panel .btn.primary { width: 100%; margin-bottom: var(--s5); }
+.panel h3 { font: 700 18px/1.2 var(--sign); margin: 0 0 var(--s3); }
+.history { list-style: none; margin: 0; padding: 0; }
+.history li { position: relative; padding: 0 0 var(--s4) var(--s5); }
+.history li::before { content: ""; position: absolute; left: 4px; top: 7px; width: 9px; height: 9px; border-radius: 2px; background: var(--works); }
+.history li::after { content: ""; position: absolute; left: 8px; top: 20px; bottom: 2px; width: 1px; background: var(--rule); }
+.history li:last-child::after { display: none; }
+.history li.repair::before { background: var(--shop); }
+.history li.new::before { background: var(--go); }
+.h-top { display: flex; gap: var(--s3); align-items: baseline; }
+.h-title { font-weight: 600; }
+.h-date { margin-left: auto; color: var(--ink-2); font-size: 14px; }
+.h-meta { color: var(--ink-2); font-size: 14px; }
+.h-note { margin: var(--s1) 0 0; font-size: 14px; max-width: 60ch; }
+.scrim { display: none; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1180px) {
+  .app, .app.panel-open { grid-template-columns: minmax(0, 1fr); }
+  aside {
+    position: fixed; top: 0; right: 0; z-index: 20; width: min(var(--panel-w), 92vw);
+    transform: translateX(100%); transition: transform .22s ease; box-shadow: -8px 0 24px rgba(27,42,53,.18);
+  }
+  .panel { width: 100%; }
+  .app.panel-open aside { transform: none; }
+  .app.panel-open .scrim { display: block; position: fixed; inset: 0; z-index: 10; background: rgba(27,42,53,.35); }
+}
+@media (max-width: 900px) {
+  main { padding: var(--s4) var(--s4) var(--s7); }
+  .org { display: none; }
+  .seg .count { font-size: 28px; }
+  .seg .what { display: block; margin: 2px 0 0; }
+  th, td { height: 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <main>
+    <header class="top">
+      <h1 class="mark">Relay</h1>
+      <span class="org">City of Marlow Fleet Services</span>
+      <span class="sync" id="sync" aria-live="polite">Loading fleet…</span>
+    </header>
+
+    <section aria-label="Fleet status" class="board loading" id="board"></section>
+
+    <div class="tools" role="search">
+      <div class="search">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <label for="q" class="sr">Search vehicles</label>
+        <input id="q" type="search" placeholder="Search ID, type or model" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="fStatus">Status</label>
+        <select id="fStatus">
+          <option value="all">All</option>
+          <option value="service">In service</option>
+          <option value="overdue">Overdue</option>
+          <option value="shop">In shop</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="fDepot">Depot</label>
+        <select id="fDepot"><option value="all">All</option></select>
+      </div>
+      <span class="result-count" id="resultCount" aria-live="polite"></span>
+    </div>
+
+    <div id="errorSlot"></div>
+
+    <div class="selbar" id="selbar" hidden>
+      <strong id="selCount"></strong>
+      <button class="btn quiet" id="selClear" type="button">Clear selection</button>
+      <span class="spacer"></span>
+      <button class="btn primary" id="selSave" type="button">Mark as serviced</button>
+    </div>
+
+    <div class="table-wrap">
+      <table aria-describedby="resultCount">
+        <thead>
+          <tr>
+            <th class="cb" scope="col"><label><span class="sr">Select all shown vehicles</span><input type="checkbox" id="selAll" disabled></label></th>
+            <th scope="col">Vehicle</th>
+            <th scope="col">Type</th>
+            <th scope="col">Depot</th>
+            <th scope="col" class="num">Odometer (mi)</th>
+            <th scope="col">Next service</th>
+            <th scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+      <div id="emptySlot"></div>
+    </div>
+  </main>
+
+  <div class="scrim" id="scrim"></div>
+  <aside id="aside" aria-label="Vehicle details" aria-hidden="true">
+    <div class="panel" id="panel"></div>
+  </aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  /* ---------- Demo controls via URL: ?save=fail | ?save=ok, ?slow=1 ---------- */
+  const params = new URLSearchParams(location.search);
+  const SAVE_MODE = params.get("save") || "first-fails";
+  const LOAD_MS = params.get("slow") ? 6000 : 1400;
+
+  /* ---------- Data ---------- */
+  const DAY = 864e5;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const addDays = (d, n) => new Date(d.getTime() + n * DAY);
+  const daysBetween = (a, b) => Math.round((b - a) / DAY);
+  const fmtShort = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" });
+  const fmtLong = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const fmtNum = new Intl.NumberFormat("en-US");
+
+  let seed = 20261106;
+  const rnd = () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+  const pick = a => a[Math.floor(rnd() * a.length)];
+  const between = (a, b) => Math.floor(a + rnd() * (b - a + 1));
+
+  const DEPOTS = ["Northside Yard", "Harbor Street", "Eastgate"];
+  const TECHS = ["D. Okafor", "M. Ruiz", "J. Lindqvist", "T. Brennan", "S. Patel", "A. Kowalski"];
+  const TYPES = {
+    garbage: { label: "Garbage truck", prefix: "GT", n: 12, every: 60, odo: [38000, 142000], models: ["Mack LR 64", "Peterbilt 520", "Autocar ACX"],
+      pm: "PM-A service, hydraulics and packer", repairs: [["Packer blade cylinder resealed", "Slow cycle on packer reported by driver."], ["Hydraulic hose replaced", "Hose at arm pivot chafed through."], ["Brake chambers replaced", "Rear axle, both sides."], ["Arm camera rewired", ""]] },
+    bus: { label: "Bus", prefix: "BUS", n: 10, every: 45, odo: [84000, 318000], models: ["Gillig Low Floor 35'", "New Flyer Xcelsior", "Gillig BRT Plus"],
+      pm: "PM inspection, brakes and wheelchair ramp", repairs: [["Wheelchair ramp motor replaced", "Ramp stalled half-deployed on Route 4."], ["HVAC compressor serviced", ""], ["Rear door sensor adjusted", "Door reopening on its own."], ["Front brake pads replaced", ""]] },
+    plow: { label: "Snow plow", prefix: "PLW", n: 8, every: 90, odo: [21000, 88000], models: ["International HV 507", "Freightliner 108SD", "Western Star 47X"],
+      pm: "Pre-season service, plow and spreader", repairs: [["Plow cutting edge replaced", "Edge worn past wear line."], ["Spreader auger chain replaced", ""], ["Plow lift cylinder resealed", ""], ["Wing plow light bar replaced", ""]] },
+    van: { label: "Utility van", prefix: "VAN", n: 10, every: 120, odo: [14000, 109000], models: ["Ford Transit 250", "Ram ProMaster 2500", "Chevrolet Express 2500"],
+      pm: "Oil change and multipoint inspection", repairs: [["Ladder rack remounted", "Rack loose at rear bracket."], ["Battery replaced", "Failed load test."], ["Rear tires replaced", ""], ["Inverter fuse replaced", ""]] },
+  };
+  const SHOP_REASONS = ["Hydraulic leak at packer, bay 2", "Transmission slipping, waiting on parts", "Plow frame weld, bay 4", "Ramp motor on order, bay 1"];
+
+  function buildFleet() {
+    const out = [];
+    const ids = new Set();
+    Object.entries(TYPES).forEach(([key, t]) => {
+      for (let i = 0; i < t.n; i++) {
+        let num;
+        do { num = key === "bus" ? between(401, 448) : key === "plow" ? between(1, 30) : between(102, 260); } while (ids.has(t.prefix + num));
+        ids.add(t.prefix + num);
+        out.push({
+          id: `${t.prefix}-${String(num).padStart(key === "plow" ? 2 : 3, "0")}`,
+          type: key, depot: pick(DEPOTS), model: pick(t.models), year: between(2014, 2024),
+          odometer: between(t.odo[0], t.odo[1]), inShop: null, due: null, history: null,
+        });
+      }
+    });
+    out.sort((a, b) => a.id.localeCompare(b.id, "en", { numeric: true }));
+    // Assign states deterministically: 4 in shop, 6 overdue, the rest in service.
+    const order = out.map((_, i) => i).sort(() => rnd() - .5);
+    order.forEach((idx, k) => {
+      const v = out[idx], t = TYPES[v.type];
+      if (k < 4) { v.inShop = { since: addDays(today, -between(1, 6)), reason: SHOP_REASONS[k] }; v.due = addDays(today, -between(0, 10)); }
+      else if (k < 10) v.due = addDays(today, -between(2, 26));
+      else v.due = addDays(today, between(1, t.every));
+    });
+    return out;
+  }
+
+  function buildHistory(v) {
+    const t = TYPES[v.type];
+    const items = [];
+    let date = addDays(v.due, -t.every);
+    let odo = v.odometer - between(400, 3200);
+    const n = between(4, 7);
+    for (let i = 0; i < n; i++) {
+      if (rnd() < .4) {
+        const [title, note] = pick(t.repairs);
+        const rd = addDays(date, between(8, Math.max(10, t.every - 8)));
+        if (rd < today) items.push({ date: rd, kind: "repair", title, note, odo: odo + between(200, 900), tech: pick(TECHS) });
+      }
+      items.push({ date, kind: "pm", title: t.pm, note: "", odo, tech: pick(TECHS) });
+      date = addDays(date, -t.every - between(-6, 6));
+      odo -= between(1800, 6200);
+    }
+    if (v.inShop) items.push({ date: v.inShop.since, kind: "repair", title: "Checked into shop", note: v.inShop.reason + ".", odo: v.odometer, tech: pick(TECHS) });
+    return items.sort((a, b) => b.date - a.date);
+  }
+
+  const statusOf = v => v.inShop ? "shop" : v.due < today ? "overdue" : "service";
+  const STATUS_LABEL = { service: "In service", overdue: "Overdue", shop: "In shop" };
+  const STATUS_WHAT = { service: "in service", overdue: "overdue for maintenance", shop: "in the shop" };
+
+  /* ---------- State ---------- */
+  const state = { loading: true, fleet: [], q: "", status: "all", depot: "all", selected: new Set(), openId: null, saving: false, error: null, saveAttempts: 0, justSaved: new Set() };
+
+  /* ---------- Elements ---------- */
+  const $ = id => document.getElementById(id);
+  const el = { app: $("app"), board: $("board"), q: $("q"), fStatus: $("fStatus"), fDepot: $("fDepot"), resultCount: $("resultCount"),
+    rows: $("rows"), emptySlot: $("emptySlot"), selAll: $("selAll"), selbar: $("selbar"), selCount: $("selCount"),
+    selSave: $("selSave"), selClear: $("selClear"), errorSlot: $("errorSlot"), aside: $("aside"), panel: $("panel"),
+    scrim: $("scrim"), sync: $("sync"), toast: $("toast") };
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  DEPOTS.forEach(d => el.fDepot.insertAdjacentHTML("beforeend", `<option value="${esc(d)}">${esc(d)}</option>`));
+
+  /* ---------- Derived ---------- */
+  function visible() {
+    const q = state.q.trim().toLowerCase();
+    return state.fleet.filter(v => {
+      if (state.status !== "all" && statusOf(v) !== state.status) return false;
+      if (state.depot !== "all" && v.depot !== state.depot) return false;
+      if (!q) return true;
+      return [v.id, v.id.replace("-", ""), TYPES[v.type].label, v.depot, v.model].some(f => f.toLowerCase().includes(q));
+    }).sort((a, b) => {
+      const rank = { overdue: 0, shop: 1, service: 2 };
+      return rank[statusOf(a)] - rank[statusOf(b)] || a.due - b.due;
+    });
+  }
+
+  function dueText(v) {
+    const d = daysBetween(today, v.due);
+    const date = fmtShort.format(v.due);
+    if (d < 0) return { date, rel: `${-d} day${d === -1 ? "" : "s"} overdue`, cls: "due-late" };
+    if (d === 0) return { date, rel: "due today", cls: "due-late" };
+    if (d <= 7) return { date, rel: `in ${d} day${d === 1 ? "" : "s"}`, cls: "due-soon" };
+    return { date, rel: `in ${d} days`, cls: "" };
+  }
+
+  /* ---------- Render: board ---------- */
+  function renderBoard() {
+    const groups = { service: [], overdue: [], shop: [] };
+    if (state.loading) { groups.service = Array(30).fill(null); groups.overdue = Array(6).fill(null); groups.shop = Array(4).fill(null); }
+    else state.fleet.forEach(v => groups[statusOf(v)].push(v));
+    el.board.classList.toggle("loading", state.loading);
+    el.board.classList.toggle("filtered", state.status !== "all");
+    el.board.innerHTML = Object.entries(groups).map(([s, list]) => `
+      <button type="button" class="seg" data-s="${s}" style="--n:${Math.max(list.length, 1)}"
+        aria-pressed="${state.status === s}" ${state.loading ? "disabled" : ""}
+        aria-label="${state.loading ? "Loading" : `${list.length} ${STATUS_WHAT[s]}. ${state.status === s ? "Showing only these; select to show all" : "Show only these"}`}">
+        <span class="tiles" aria-hidden="true">${list.map(v => `<span class="tile" ${v ? `title="${v.id}"` : ""}></span>`).join("") || `<span class="tile" style="background:var(--tile-idle)"></span>`}</span>
+        <span aria-hidden="true"><span class="count">${state.loading ? "–" : list.length}</span><span class="what">${STATUS_WHAT[s]}</span></span>
+      </button>`).join("");
+  }
+
+  /* ---------- Render: table ---------- */
+  function renderTable() {
+    if (state.loading) {
+      el.rows.innerHTML = Array.from({ length: 9 }, (_, i) => `<tr class="loading-rows" aria-hidden="true">
+        <td class="cb"></td>${[52, 90, 96, 60, 110, 70].map((w, j) => `<td class="${j === 3 ? "num" : ""}"><span class="skel" style="width:${w + (i * 7 % 20)}px;${j === 3 ? "margin-left:auto" : ""}"></span></td>`).join("")}</tr>`).join("");
+      el.emptySlot.innerHTML = "";
+      el.resultCount.textContent = "";
+      el.selAll.disabled = true;
+      return;
+    }
+    const list = visible();
+    el.resultCount.textContent = list.length === state.fleet.length ? `${list.length} vehicles` : `${list.length} of ${state.fleet.length} vehicles`;
+    el.rows.innerHTML = list.map(v => {
+      const s = statusOf(v), d = dueText(v), sel = state.selected.has(v.id);
+      const cls = [sel && "selected", state.openId === v.id && "open", state.justSaved.has(v.id) && "just-saved"].filter(Boolean).join(" ");
+      return `<tr data-id="${v.id}" class="${cls}">
+        <td class="cb"><label><span class="sr">Select ${v.id}</span><input type="checkbox" data-sel="${v.id}" ${sel ? "checked" : ""}></label></td>
+        <td><button type="button" class="vid" data-open="${v.id}" aria-label="${v.id}, open service history">${v.id}</button></td>
+        <td>${TYPES[v.type].label}</td>
+        <td>${esc(v.depot)}</td>
+        <td class="num">${fmtNum.format(v.odometer)}</td>
+        <td>${d.date} <span class="sub ${d.cls}">${d.rel}</span></td>
+        <td><span class="status ${s}">${STATUS_LABEL[s]}</span></td>
+      </tr>`;
+    }).join("");
+    state.justSaved.clear();
+
+    if (!list.length) {
+      const parts = [];
+      if (state.q.trim()) parts.push(`match “${esc(state.q.trim())}”`);
+      if (state.status !== "all") parts.push(`are ${STATUS_WHAT[state.status]}`);
+      if (state.depot !== "all") parts.push(`are at ${esc(state.depot)}`);
+      el.emptySlot.innerHTML = `<div class="empty">
+        <h2>No vehicles match these filters</h2>
+        <p>None of the ${state.fleet.length} vehicles ${parts.join(" and ")}. Check the spelling of the unit ID, or widen the filters.</p>
+        <button type="button" class="btn" id="clearFilters">Clear filters</button>
+      </div>`;
+    } else el.emptySlot.innerHTML = "";
+
+    const shownSel = list.filter(v => state.selected.has(v.id)).length;
+    el.selAll.disabled = !list.length;
+    el.selAll.checked = list.length > 0 && shownSel === list.length;
+    el.selAll.indeterminate = shownSel > 0 && shownSel < list.length;
+  }
+
+  /* ---------- Render: selection + error ---------- */
+  function renderSelection() {
+    const n = state.selected.size;
+    el.selbar.hidden = n === 0;
+    el.selCount.textContent = `${n} vehicle${n === 1 ? "" : "s"} selected`;
+    const busy = state.saving && state.saving.source === "bulk";
+    el.selSave.textContent = busy ? "Saving…" : n === 1 ? "Mark as serviced" : `Mark ${n} as serviced`;
+    el.selSave.setAttribute("aria-busy", busy);
+    el.selSave.disabled = !!state.saving;
+
+    const e = state.error && state.error.source === "bulk" ? state.error : null;
+    el.errorSlot.innerHTML = e ? errorHTML(e, "retryBulk") : "";
+  }
+  function errorHTML(e, retryId) {
+    const n = e.ids.length;
+    return `<div class="error" role="alert">
+      <p><strong>Couldn’t mark ${n === 1 ? e.ids[0] : `${n} vehicles`} as serviced.</strong> The maintenance server didn’t respond, so nothing was saved. Check your connection and try again.</p>
+      <button type="button" class="btn" id="${retryId}">Try again</button>
+    </div>`;
+  }
+
+  /* ---------- Render: panel ---------- */
+  function renderPanel(focus) {
+    const v = state.fleet.find(x => x.id === state.openId);
+    el.app.classList.toggle("panel-open", !!v);
+    el.aside.setAttribute("aria-hidden", !v);
+    el.aside.inert = !v;
+    if (!v) { el.panel.innerHTML = ""; return; }
+    const s = statusOf(v), d = dueText(v), t = TYPES[v.type];
+    const busy = state.saving && state.saving.source === "panel";
+    const e = state.error && state.error.source === "panel" ? state.error : null;
+    el.panel.innerHTML = `
+      <div class="panel-head">
+        <div>
+          <h2 id="panelTitle" tabindex="-1">${v.id}</h2>
+          <p class="vline">${v.year} ${esc(v.model)}</p>
+        </div>
+        <button type="button" class="btn close" id="closePanel" aria-label="Close service history">
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <dl class="facts">
+        <dt>Status</dt><dd><span class="status ${s}">${STATUS_LABEL[s]}</span>${v.inShop ? `<div class="sub">${esc(v.inShop.reason)}, since ${fmtShort.format(v.inShop.since)}</div>` : ""}</dd>
+        <dt>Next service</dt><dd>${d.date} <span class="sub ${d.cls}">${d.rel}</span></dd>
+        <dt>Interval</dt><dd>Every ${t.every} days</dd>
+        <dt>Type</dt><dd>${t.label}</dd>
+        <dt>Depot</dt><dd>${esc(v.depot)}</dd>
+        <dt>Odometer</dt><dd>${fmtNum.format(v.odometer)} mi</dd>
+      </dl>
+      ${e ? errorHTML(e, "retryPanel") : ""}
+      <button type="button" class="btn primary" id="panelSave" ${state.saving ? "disabled" : ""} aria-busy="${busy}">${busy ? "Saving…" : "Mark as serviced"}</button>
+      <h3>Service history</h3>
+      <div id="historySlot" aria-live="polite">${historyHTML(v)}</div>`;
+    if (focus) $("panelTitle").focus();
+  }
+  function historyHTML(v) {
+    if (!v.history) return `<ul class="history" aria-label="Loading service history">${[0, 1, 2, 3].map(() => `<li><span class="skel" style="width:70%;margin-bottom:8px"></span><span class="skel" style="width:40%"></span></li>`).join("")}</ul>`;
+    return `<ul class="history">${v.history.map(h => `
+      <li class="${h.kind}${h.fresh ? " new" : ""}">
+        <div class="h-top"><span class="h-title">${esc(h.title)}</span><span class="h-date">${fmtLong.format(h.date)}</span></div>
+        <div class="h-meta">${fmtNum.format(h.odo)} mi, ${esc(h.tech)}</div>
+        ${h.note ? `<p class="h-note">${esc(h.note)}</p>` : ""}
+      </li>`).join("")}</ul>`;
+  }
+
+  function renderAll() { renderBoard(); renderTable(); renderSelection(); }
+
+  /* ---------- Actions ---------- */
+  let lastOpener = null;
+  function openPanel(id, opener) {
+    lastOpener = opener || null;
+    state.openId = id;
+    if (state.error && state.error.source === "panel") state.error = null;
+    const v = state.fleet.find(x => x.id === id);
+    renderTable(); renderPanel(true);
+    if (!v.history) setTimeout(() => {
+      v.history = buildHistory(v);
+      if (state.openId === id) $("historySlot").innerHTML = historyHTML(v);
+    }, 550);
+  }
+  function closePanel() {
+    state.openId = null;
+    if (state.error && state.error.source === "panel") state.error = null;
+    renderTable(); renderPanel();
+    const target = lastOpener && document.querySelector(`[data-open="${lastOpener}"]`);
+    if (target) target.focus();
+  }
+
+  function pruneSelection() {
+    const ids = new Set(visible().map(v => v.id));
+    state.selected.forEach(id => { if (!ids.has(id)) state.selected.delete(id); });
+  }
+  function setFilter(key, value) {
+    state[key] = value;
+    if (key === "status") el.fStatus.value = value;
+    pruneSelection();
+    if (state.error && state.error.source === "bulk") state.error = null;
+    renderAll();
+  }
+
+  function fakeSave() {
+    state.saveAttempts++;
+    const fail = SAVE_MODE === "fail" || (SAVE_MODE === "first-fails" && state.saveAttempts === 1);
+    return new Promise((res, rej) => setTimeout(() => fail ? rej(new Error("timeout")) : res(), 900));
+  }
+
+  async function markServiced(ids, source) {
+    if (state.saving || !ids.length) return;
+    state.saving = { ids, source };
+    state.error = null;
+    renderSelection(); if (state.openId) renderPanel();
+    try {
+      await fakeSave();
+      ids.forEach(id => {
+        const v = state.fleet.find(x => x.id === id);
+        v.inShop = null;
+        v.due = addDays(today, TYPES[v.type].every);
+        if (!v.history) v.history = buildHistory(v);
+        v.history.forEach(h => delete h.fresh);
+        v.history.unshift({ date: today, kind: "pm", fresh: true, title: TYPES[v.type].pm, note: "", odo: v.odometer, tech: "Logged in Relay" });
+        state.justSaved.add(id);
+        if (source === "bulk") state.selected.delete(id);
+      });
+      state.saving = false;
+      pruneSelection();
+      renderAll(); if (state.openId) renderPanel();
+      const label = ids.length === 1 ? ids[0] : `${ids.length} vehicles`;
+      showToast(`Marked ${label} as serviced. Next service set by each vehicle’s interval.`);
+      el.sync.textContent = `Saved at ${new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+    } catch {
+      state.saving = false;
+      state.error = { ids, source };
+      renderSelection(); if (state.openId) renderPanel();
+      const retry = $(source === "bulk" ? "retryBulk" : "retryPanel");
+      if (retry) retry.focus();
+    }
+  }
+
+  let toastTimer;
+  function showToast(msg) {
+    el.toast.textContent = msg;
+    el.toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.toast.classList.remove("show"), 4500);
+  }
+
+  /* ---------- Events ---------- */
+  el.q.addEventListener("input", () => setFilter("q", el.q.value));
+  el.fStatus.addEventListener("change", () => setFilter("status", el.fStatus.value));
+  el.fDepot.addEventListener("change", () => setFilter("depot", el.fDepot.value));
+  el.board.addEventListener("click", e => {
+    const seg = e.target.closest(".seg"); if (!seg) return;
+    setFilter("status", state.status === seg.dataset.s ? "all" : seg.dataset.s);
+  });
+
+  el.rows.addEventListener("change", e => {
+    const id = e.target.dataset.sel; if (!id) return;
+    e.target.checked ? state.selected.add(id) : state.selected.delete(id);
+    if (state.error && state.error.source === "bulk") state.error = null;
+    renderTable(); renderSelection();
+    const cb = el.rows.querySelector(`[data-sel="${id}"]`); if (cb) cb.focus();
+  });
+  el.rows.addEventListener("click", e => {
+    if (e.target.closest(".cb")) return;
+    const tr = e.target.closest("tr[data-id]"); if (!tr) return;
+    openPanel(tr.dataset.id, tr.dataset.id);
+  });
+  el.selAll.addEventListener("change", () => {
+    const list = visible();
+    if (el.selAll.checked) list.forEach(v => state.selected.add(v.id)); else list.forEach(v => state.selected.delete(v.id));
+    renderTable(); renderSelection();
+  });
+  el.selClear.addEventListener("click", () => { state.selected.clear(); state.error = null; renderTable(); renderSelection(); el.q.focus(); });
+  el.selSave.addEventListener("click", () => markServiced([...state.selected], "bulk"));
+
+  document.addEventListener("click", e => {
+    const id = e.target.id;
+    if (id === "clearFilters") { state.q = ""; el.q.value = ""; el.fDepot.value = "all"; state.depot = "all"; setFilter("status", "all"); el.q.focus(); }
+    if (id === "retryBulk") markServiced(state.error.ids, "bulk");
+    if (e.target.closest("#closePanel")) closePanel();
+    if (id === "panelSave") markServiced([state.openId], "panel");
+    if (id === "retryPanel") markServiced(state.error.ids, "panel");
+  });
+  el.scrim.addEventListener("click", closePanel);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && state.openId) closePanel(); });
+
+  /* ---------- Load ---------- */
+  renderAll(); renderPanel();
+  setTimeout(() => {
+    state.fleet = buildFleet();
+    state.loading = false;
+    el.sync.textContent = `Updated ${new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+    renderAll();
+  }, LOAD_MS);
+})();
+</script>
+</body>
+</html>

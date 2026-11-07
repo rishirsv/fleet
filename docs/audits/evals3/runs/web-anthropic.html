@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fernhill Seed Library: free heirloom seeds for Portland gardeners</title>
+<meta name="description" content="Borrow heirloom vegetable and flower seeds in spring, return seeds you saved in fall. Free membership at three Portland branches.">
+<style>
+  :root {
+    --rain: #E7ECE6;      /* page: wet-sidewalk grey-green */
+    --card: #FBFCF8;      /* library card stock */
+    --moss: #1F3A2C;      /* ink */
+    --fern: #3F6B3A;      /* secondary ink, rules */
+    --stamp: #5B3F99;     /* date-stamp violet: the one accent */
+    --line: #B9CBB8;      /* ruled card lines */
+
+    --display: Rockwell, "Rockwell Nova", "Roboto Slab", "Zilla Slab", "DejaVu Serif", Georgia, serif;
+    --text: Seravek, "Gill Sans Nova", "Gill Sans", Ubuntu, Calibri, "DejaVu Sans", sans-serif;
+
+    /* scale: 1.25 major third from 1.0625rem body */
+    --s-1: .85rem;
+    --s0: 1.0625rem;
+    --s1: 1.33rem;
+    --s2: 1.66rem;
+    --s3: clamp(1.9rem, 1.4rem + 2vw, 2.6rem);
+    --s4: clamp(2.5rem, 1.6rem + 4.2vw, 4.6rem);
+
+    --gutter: clamp(1.25rem, 4vw, 3rem);
+    --measure: 36rem;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--rain);
+    color: var(--moss);
+    font: 400 var(--s0)/1.55 var(--text);
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; }
+  a { color: var(--stamp); text-underline-offset: .18em; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 3px solid var(--stamp); outline-offset: 3px; border-radius: 2px; }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 700; line-height: 1.1; margin: 0; letter-spacing: -.01em; }
+  h2 { font-size: var(--s3); }
+  h3 { font-size: var(--s1); line-height: 1.2; }
+  p { margin: 0; }
+  p + p { margin-top: .9em; }
+
+  .wrap { width: min(100% - 2 * var(--gutter), 74rem); margin-inline: auto; }
+  .skip { position: absolute; left: -999px; }
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .skip:focus { left: 1rem; top: 1rem; background: var(--card); padding: .6rem 1rem; z-index: 10; }
+
+  /* buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 48px; padding: 0 1.4rem;
+    font: 600 var(--s0)/1 var(--text);
+    color: var(--card); background: var(--stamp);
+    border: 2px solid var(--stamp); border-radius: 6px;
+    text-decoration: none; cursor: pointer;
+  }
+  .btn:hover { background: #4A3280; border-color: #4A3280; }
+
+  /* ---------- header ---------- */
+  .top { padding-block: 1.1rem; }
+  .top .wrap { display: flex; align-items: center; gap: 2rem; }
+  .brand { display: flex; align-items: center; gap: .6rem; color: var(--moss); text-decoration: none; font: 700 1.2rem/1 var(--display); }
+  .brand svg { width: 30px; height: 30px; }
+  .top nav { margin-left: auto; display: flex; gap: 1.6rem; }
+  .top nav a { color: var(--moss); text-decoration: none; font-weight: 500; padding-block: .6rem; }
+  .top nav a:hover { color: var(--stamp); }
+  @media (max-width: 760px) { .top nav { display: none; } .top .btn { margin-left: auto; } }
+
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(2rem, 6vw, 5rem) clamp(3.5rem, 8vw, 7rem); }
+  .hero .wrap { display: grid; grid-template-columns: 1fr; gap: clamp(2.5rem, 5vw, 4.5rem); align-items: center; }
+  @media (min-width: 960px) { .hero .wrap { grid-template-columns: 1.05fr 1fr; } }
+  .hero h1 { font-size: var(--s4); max-width: 11ch; }
+  .hero .lede { font-size: var(--s1); line-height: 1.5; max-width: 30rem; margin-top: 1.5rem; }
+  .hero .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.6rem; margin-top: 2rem; }
+  .hero .actions a:not(.btn) { color: var(--moss); font-weight: 500; }
+  .season { margin-top: 2.25rem; padding-left: 1rem; border-left: 3px solid var(--fern); color: var(--fern); max-width: 28rem; }
+
+  /* the loan card: the page's one loud thing */
+  .loan {
+    position: relative;
+    background: var(--card);
+    border-radius: 3px 3px 10px 10px;
+    padding: 1.6rem clamp(1rem, 3vw, 2rem) 1.4rem;
+    box-shadow: 0 1px 0 var(--line), 0 18px 40px -22px rgba(31,58,44,.45);
+    transform: rotate(1.2deg);
+    max-width: 34rem;
+    justify-self: center;
+    width: 100%;
+  }
+  .loan::before { /* the punched hole of a pocket card */
+    content: ""; position: absolute; top: .7rem; left: 50%; width: 14px; height: 14px; margin-left: -7px;
+    border-radius: 50%; background: var(--rain); box-shadow: inset 0 1px 2px rgba(31,58,44,.35);
+  }
+  .loan-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-bottom: .7rem; border-bottom: 2px solid var(--fern); }
+  .loan-head strong { font: 700 var(--s1)/1.15 var(--display); }
+  .loan-head span { color: var(--fern); font-size: var(--s-1); white-space: nowrap; }
+  .loan table { width: 100%; border-collapse: collapse; margin-top: .2rem; }
+  .loan th { text-align: left; font-weight: 500; font-size: var(--s-1); color: var(--fern); padding: .55rem .4rem .45rem 0; border-bottom: 1px solid var(--line); }
+  .loan td { height: 3.6rem; padding: 0 .4rem 0 0; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .loan td:first-child { width: 34%; }
+  .loan td:last-child { width: 32%; }
+  .loan .who { font-size: 1.05rem; }
+  .loan .you a { font-weight: 600; }
+
+  .stamp {
+    display: inline-block;
+    font: 700 .82rem/1 var(--display);
+    letter-spacing: .06em;
+    color: var(--stamp);
+    border: 2px solid currentColor;
+    border-radius: 4px;
+    padding: .32rem .45rem .28rem;
+    transform: rotate(-4deg);
+    opacity: .82;
+    white-space: nowrap;
+  }
+  .stamp.returned { color: var(--fern); transform: rotate(3deg); }
+  .stamp.new { opacity: 1; font-size: .95rem; }
+  @media (prefers-reduced-motion: no-preference) {
+    .stamp.new { animation: thump .5s cubic-bezier(.2,.9,.3,1.3) .7s both; }
+    @keyframes thump {
+      0%   { opacity: 0; transform: rotate(-9deg) scale(1.9); }
+      70%  { opacity: 1; transform: rotate(-5deg) scale(.96); }
+      100% { opacity: 1; transform: rotate(-5deg) scale(1); }
+    }
+  }
+  .loan-foot { margin-top: 1rem; font-size: var(--s-1); color: var(--fern); }
+
+  /* ---------- sections ---------- */
+  main > section { padding-block: clamp(3.5rem, 8vw, 6.5rem); }
+  .intro { max-width: var(--measure); }
+  .intro p { margin-top: 1rem; }
+
+  /* how it works: a season timeline */
+  #how { background: var(--fern); color: var(--card); }
+  #how a { color: var(--card); }
+  .year { list-style: none; margin: 3rem 0 0; padding: 0; display: grid; gap: 0; }
+  .year li { position: relative; padding: 0 0 2.25rem 2.25rem; border-left: 2px solid rgba(251,252,248,.4); }
+  .year li:last-child { padding-bottom: 0; border-left-color: transparent; }
+  .year li::before { content: ""; position: absolute; left: -9px; top: .2rem; width: 16px; height: 16px; border-radius: 50%; background: var(--card); }
+  .year .when { display: block; font-weight: 600; color: #D9E6D3; margin-bottom: .4rem; }
+  .year h3 { margin-bottom: .5rem; }
+  .year p { max-width: 26rem; color: #EEF3EA; }
+  @media (min-width: 860px) {
+    .year { grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+    .year li { padding: 2.25rem 0 0; border-left: 0; border-top: 2px solid rgba(251,252,248,.4); }
+    .year li:last-child { border-top-color: rgba(251,252,248,.4); }
+    .year li::before { left: 0; top: -9px; }
+  }
+
+  /* seeds */
+  .seed-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 1.5rem 2rem; }
+  .drawers { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .drawers button {
+    min-height: 44px; padding: 0 1.1rem;
+    font: 500 var(--s0)/1 var(--text); color: var(--moss);
+    background: transparent; border: 2px solid var(--moss); border-radius: 999px; cursor: pointer;
+  }
+  .drawers button[aria-pressed="true"] { background: var(--moss); color: var(--card); }
+  .packets { list-style: none; margin: 2.5rem 0 0; padding: 0; display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr)); }
+  .packet {
+    background: var(--card);
+    border-radius: 2px;
+    display: flex; flex-direction: column;
+  }
+  .packet .swatch { height: 5.5rem; background: var(--c); position: relative; overflow: hidden; }
+  .packet .swatch::after { /* glued flap edge */
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 10px;
+    background: linear-gradient(135deg, var(--card) 5px, transparent 0) 0 0 / 10px 10px repeat-x,
+                linear-gradient(225deg, var(--card) 5px, transparent 0) 0 0 / 10px 10px repeat-x;
+  }
+  .packet .body { padding: 1.1rem 1.2rem 1.25rem; display: flex; flex-direction: column; gap: .55rem; flex: 1; }
+  .packet .kind { color: var(--fern); font-size: var(--s-1); }
+  .packet p { font-size: .98rem; line-height: 1.5; }
+  .packet dl { margin: auto 0 0; padding-top: .8rem; border-top: 1px solid var(--line); display: grid; grid-template-columns: auto 1fr; gap: .25rem 1rem; font-size: var(--s-1); }
+  .packet dt { color: var(--fern); }
+  .packet dd { margin: 0; text-align: right; font-weight: 500; }
+  .packet .low { color: var(--stamp); }
+  .packet[hidden] { display: none; }
+
+  /* join */
+  #join { background: var(--card); }
+  #join .wrap { display: grid; gap: 3rem; }
+  @media (min-width: 900px) { #join .wrap { grid-template-columns: 1fr 1fr; align-items: start; } }
+  .perks { margin: 1.5rem 0 0; padding-left: 1.2rem; }
+  .perks li + li { margin-top: .45rem; }
+  form { display: grid; gap: 1.25rem; background: var(--rain); padding: clamp(1.25rem, 4vw, 2.25rem); border-radius: 10px; }
+  label { display: block; font-weight: 600; margin-bottom: .4rem; }
+  .hint { font-weight: 400; color: var(--fern); }
+  input, select {
+    width: 100%; min-height: 48px; padding: .6rem .8rem;
+    font: 400 var(--s0)/1.3 var(--text); color: var(--moss);
+    background: var(--card); border: 2px solid #7E977C; border-radius: 6px;
+  }
+  input:focus-visible, select:focus-visible { outline-offset: 0; border-color: var(--stamp); }
+  [aria-invalid="true"] { border-color: #A3243B; }
+  .err { color: #A3243B; font-size: var(--s-1); margin-top: .35rem; }
+  .err:empty { display: none; }
+  .done { padding: 1.5rem; border: 2px solid var(--fern); border-radius: 10px; }
+  .done h3 { margin-bottom: .6rem; }
+
+  /* faq */
+  .faq { margin-top: 2.5rem; max-width: 46rem; border-top: 2px solid var(--moss); }
+  .faq details { border-bottom: 1px solid var(--line); }
+  .faq summary {
+    list-style: none; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 1rem;
+    min-height: 56px; padding: .9rem 0;
+    font: 700 var(--s1)/1.25 var(--display);
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: "+"; font: 400 1.8rem/1 var(--text); color: var(--stamp); transition: transform .2s; }
+  .faq details[open] summary::after { transform: rotate(45deg); }
+  .faq details p { padding: 0 0 1.4rem; max-width: 38rem; }
+  @media (prefers-reduced-motion: reduce) { .faq summary::after { transition: none; } }
+
+  /* branches */
+  #branches { background: var(--moss); color: var(--card); }
+  #branches .intro p { color: #D9E6D3; }
+  .branches { display: grid; gap: 2.5rem; margin-top: 3rem; }
+  @media (min-width: 900px) { .branches { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
+  .branch h3 { font-size: var(--s2); }
+  .branch address { font-style: normal; margin-top: .6rem; color: #D9E6D3; }
+  .branch address a { color: var(--card); }
+  .status { display: inline-block; margin-top: 1rem; font-size: var(--s-1); font-weight: 600; padding: .25rem .6rem; border-radius: 4px; background: rgba(251,252,248,.12); color: #D9E6D3; }
+  .status.open { background: #D9E6D3; color: var(--moss); }
+  .hours { width: 100%; border-collapse: collapse; margin-top: 1.2rem; font-size: .98rem; }
+  .hours th, .hours td { padding: .5rem 0; border-top: 1px solid rgba(251,252,248,.2); text-align: left; font-weight: 400; }
+  .hours td { text-align: right; }
+  .hours tr.today th, .hours tr.today td { font-weight: 700; color: var(--card); }
+  .hours .closed { color: #A9BCA6; }
+
+  footer { background: var(--moss); color: #A9BCA6; padding-block: 0 2.5rem; font-size: var(--s-1); }
+  footer .wrap { border-top: 1px solid rgba(251,252,248,.2); padding-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  footer a { color: var(--card); }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Fernhill Seed Library home">
+      <svg viewBox="0 0 32 32" aria-hidden="true" fill="none" stroke="#3F6B3A" stroke-width="2" stroke-linecap="round">
+        <path d="M16 30V4"/>
+        <path d="M16 8c-3-1-5-1-7 0M16 8c3-1 5-1 7 0M16 13c-4-1-7-1-10 1M16 13c4-1 7-1 10 1M16 18c-4-1-8 0-11 2M16 18c4-1 8 0 11 2M16 23c-3-.5-6 0-8 2M16 23c3-.5 6 0 8 2"/>
+      </svg>
+      Fernhill Seed Library
+    </a>
+    <nav aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#seeds">Seeds</a>
+      <a href="#faq">Questions</a>
+      <a href="#branches">Branches</a>
+    </nav>
+    <a class="btn" href="#join">Join free</a>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="wrap">
+      <div>
+        <h1 id="hero-title">Borrow seeds in spring. Bring seeds back in fall.</h1>
+        <p class="lede">We lend heirloom vegetable and flower seeds to Portland home gardeners for free. Grow them, save seeds from your best plants, and return some so the next gardener can grow them too.</p>
+        <div class="actions">
+          <a class="btn" href="#join">Get a free library card</a>
+          <a href="#seeds">See this season's seeds</a>
+        </div>
+        <p class="season">Fall returns are open at all three branches through November 30. Spring borrowing starts March 6.</p>
+      </div>
+
+      <figure class="loan" aria-label="Borrowing history for one packet of Cherokee Purple tomato seeds">
+        <div class="loan-head">
+          <strong>Cherokee Purple tomato</strong>
+          <span>Packet 0417</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th scope="col">Date due</th><th scope="col">Borrower</th><th scope="col">Returned</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="stamp">OCT 31 2025</span></td>
+              <td class="who">R. Nguyen</td>
+              <td><span class="stamp returned">212 SEEDS</span></td>
+            </tr>
+            <tr>
+              <td><span class="stamp">OCT 31 2026</span></td>
+              <td class="who">D. Alvarez</td>
+              <td><span class="stamp returned">340 SEEDS</span></td>
+            </tr>
+            <tr>
+              <td><span class="stamp new">OCT 31 2027</span></td>
+              <td class="who you"><a href="#join">Your name here</a></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+        <figcaption class="loan-foot">One packet of 25 seeds, borrowed twice, came back as 552.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="intro">
+        <h2 id="how-title">How borrowing works</h2>
+        <p>A loan lasts one growing season. There are no fees, and no penalty if a crop doesn't make it.</p>
+      </div>
+      <ol class="year">
+        <li>
+          <span class="when">Any time</span>
+          <h3>Get a card</h3>
+          <p>Sign up below or at any branch. Membership is free for anyone who gardens in the Portland area.</p>
+        </li>
+        <li>
+          <span class="when">March to May</span>
+          <h3>Borrow up to 5 packets</h3>
+          <p>Browse the seed drawers at a branch, or reserve packets online and pick them up.</p>
+        </li>
+        <li>
+          <span class="when">May to September</span>
+          <h3>Grow and let some go to seed</h3>
+          <p>Leave a few of your healthiest plants in the ground until the seeds are ripe and dry.</p>
+        </li>
+        <li>
+          <span class="when">September to November</span>
+          <h3>Return saved seeds</h3>
+          <p>Put dry seeds in an envelope, write the variety and your neighborhood on it, and drop it in any branch's return box.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seeds" aria-labelledby="seeds-title">
+    <div class="wrap">
+      <div class="seed-top">
+        <div class="intro">
+          <h2 id="seeds-title">This season's seeds</h2>
+          <p>Every variety is open-pollinated, so the seeds you save will grow true next year. Packets can be reserved from March 6.</p>
+        </div>
+        <div class="drawers" role="group" aria-label="Show seeds">
+          <button type="button" aria-pressed="true" data-filter="all">All</button>
+          <button type="button" aria-pressed="false" data-filter="vegetable">Vegetables</button>
+          <button type="button" aria-pressed="false" data-filter="flower">Flowers</button>
+        </div>
+      </div>
+      <ul class="packets" id="packets" aria-live="polite"></ul>
+    </div>
+  </section>
+
+  <section id="join" aria-labelledby="join-title">
+    <div class="wrap">
+      <div class="intro">
+        <h2 id="join-title">Get a free library card</h2>
+        <p>Your card lets you borrow at all three branches. You don't need any seed-saving experience; every packet comes with saving instructions.</p>
+        <ul class="perks">
+          <li>Borrow up to 5 packets each spring</li>
+          <li>Reserve packets online before they run out</li>
+          <li>Free seed-saving workshops each August</li>
+        </ul>
+      </div>
+
+      <div id="join-area">
+        <form id="join-form" novalidate>
+          <div>
+            <label for="name">Name</label>
+            <input id="name" name="name" autocomplete="name" aria-describedby="name-err" required>
+            <p class="err" id="name-err"></p>
+          </div>
+          <div>
+            <label for="email">Email <span class="hint">for reservation reminders</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" aria-describedby="email-err" required>
+            <p class="err" id="email-err"></p>
+          </div>
+          <div>
+            <label for="branch">Home branch</label>
+            <select id="branch" name="branch">
+              <option>Fernhill</option>
+              <option>St. Johns</option>
+              <option>Woodstock</option>
+            </select>
+          </div>
+          <div><button class="btn" type="submit">Get my library card</button></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" aria-labelledby="faq-title">
+    <div class="wrap">
+      <h2 id="faq-title">Common questions</h2>
+      <div class="faq">
+        <details>
+          <summary>Does it cost anything?</summary>
+          <p>No. Membership, seeds and workshops are free. We're a non-profit funded by donations and a small city grant, and there are never late fees.</p>
+        </details>
+        <details>
+          <summary>What if my plants don't produce seeds?</summary>
+          <p>It happens to everyone. Slugs, a cold June or an early frost can end a crop. Let us know when you visit and borrow again next spring.</p>
+        </details>
+        <details>
+          <summary>Do I have to return the same variety I borrowed?</summary>
+          <p>We'd love that, since it keeps each variety in circulation. If it didn't work out, you can return any open-pollinated seeds you saved from your garden instead.</p>
+        </details>
+        <details>
+          <summary>Which seeds are easiest to save if I'm new?</summary>
+          <p>Beans, peas, lettuce and tomatoes. They mostly pollinate themselves, so the seeds come out true even if a neighbor grows a different variety. Look for "Easy" on the packet.</p>
+        </details>
+        <details>
+          <summary>How many seeds should I bring back?</summary>
+          <p>Enough to fill at least one packet, usually 20 to 30 seeds. Keep the rest for your own garden or share them with friends.</p>
+        </details>
+        <details>
+          <summary>Can I donate seeds I didn't borrow from you?</summary>
+          <p>Yes, if they're open-pollinated and saved within the last two years. Label the envelope with the variety, the year and where it grew. We can't accept hybrid (F1) seeds because they don't grow true.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section id="branches" aria-labelledby="branches-title">
+    <div class="wrap">
+      <div class="intro">
+        <h2 id="branches-title">Branches and hours</h2>
+        <p>Pick up seeds and drop off returns at any branch.</p>
+      </div>
+      <div class="branches" id="branch-list"></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Fernhill Seed Library is a 501(c)(3) non-profit in Portland, Oregon.</p>
+    <p><a href="mailto:hello@fernhillseeds.org">hello@fernhillseeds.org</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  /* ---------- seeds ---------- */
+  var seeds = [
+    { name: "Cherokee Purple", crop: "Tomato", type: "vegetable", color: "#6E2E3C",
+      note: "Dusky, rose-brown slicers with a smoky sweetness. Thrives in a warm spot against a south wall.",
+      days: 80, save: "Easy", left: 18 },
+    { name: "Oregon Sugar Pod II", crop: "Snow pea", type: "vegetable", color: "#7FA650",
+      note: "Bred at Oregon State for our cool, wet springs. Sow in March and pick flat pods by June.",
+      days: 68, save: "Easy", left: 24 },
+    { name: "Dragon Tongue", crop: "Bush bean", type: "vegetable", color: "#C9B24A",
+      note: "Butter-yellow pods streaked with purple. Eat them young or let them dry for soup beans.",
+      days: 60, save: "Easy", left: 9 },
+    { name: "Black Seeded Simpson", crop: "Lettuce", type: "vegetable", color: "#A9C46B",
+      note: "Frilly, quick leaf lettuce that tolerates our early-spring chill. Bolts readily, which helps you save it.",
+      days: 46, save: "Easy", left: 31 },
+    { name: "Lemon", crop: "Cucumber", type: "vegetable", color: "#E3C84F",
+      note: "Round, pale-yellow cucumbers that are crisp and never bitter. Keep it away from other cucumbers if you plan to save seed.",
+      days: 65, save: "Moderate", left: 6 },
+    { name: "Painted Mountain", crop: "Flour corn", type: "vegetable", color: "#8A3E5C",
+      note: "Multicolored kernels bred for short northern seasons. Needs distance from sweet corn to stay pure.",
+      days: 90, save: "Advanced", left: 4 },
+    { name: "Lauren's Grape", crop: "Poppy", type: "flower", color: "#6B3F7A",
+      note: "Single, plum-purple blooms on tall stems. Sow on top of the soil in late winter and let the pods rattle dry.",
+      days: 90, save: "Easy", left: 15 },
+    { name: "Miss Jekyll", crop: "Love-in-a-mist", type: "flower", color: "#6F8FC2",
+      note: "Sky-blue flowers in a lacy ruff, followed by striped balloon pods that are full of seed.",
+      days: 75, save: "Easy", left: 20 },
+    { name: "Torch", crop: "Mexican sunflower", type: "flower", color: "#D2572B",
+      note: "Six-foot plants with flame-orange daisies that bees and hummingbirds visit all of August.",
+      days: 80, save: "Moderate", left: 11 },
+    { name: "Sensation Mix", crop: "Cosmos", type: "flower", color: "#D88FB3",
+      note: "Pink, white and crimson flowers for cutting from July to frost. The more you pick, the more it blooms.",
+      days: 85, save: "Easy", left: 7 }
+  ];
+
+  var list = document.getElementById("packets");
+  list.innerHTML = seeds.map(function (s) {
+    var low = s.left < 10;
+    return '<li class="packet" data-type="' + s.type + '">' +
+      '<div class="swatch" style="--c:' + s.color + '" aria-hidden="true"></div>' +
+      '<div class="body">' +
+        '<span class="kind">' + s.crop + '</span>' +
+        '<h3>' + s.name + '</h3>' +
+        '<p>' + s.note + '</p>' +
+        '<dl>' +
+          '<dt>Days to harvest</dt><dd>' + s.days + '</dd>' +
+          '<dt>Seed saving</dt><dd>' + s.save + '</dd>' +
+          '<dt>Packets left</dt><dd' + (low ? ' class="low"' : '') + '>' + s.left + '</dd>' +
+        '</dl>' +
+      '</div></li>';
+  }).join("");
+
+  var buttons = document.querySelectorAll(".drawers button");
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () {
+      var f = b.getAttribute("data-filter");
+      buttons.forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); });
+      list.querySelectorAll(".packet").forEach(function (p) {
+        p.hidden = !(f === "all" || p.getAttribute("data-type") === f);
+      });
+    });
+  });
+
+  /* ---------- branches ---------- */
+  var days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  // hours per weekday index (0 = Sunday), 24h [open, close]
+  var branches = [
+    { name: "Fernhill", lines: ["Concordia Grange Hall", "4110 NE 37th Ave", "Portland, OR 97211"],
+      map: "4110 NE 37th Ave Portland OR 97211",
+      hours: { 2: [15, 19], 4: [15, 19], 6: [10, 14] } },
+    { name: "St. Johns", lines: ["Back room of Cathedral Park Hardware", "8720 N Lombard St", "Portland, OR 97203"],
+      map: "8720 N Lombard St Portland OR 97203",
+      hours: { 3: [16, 20], 6: [9, 13], 0: [12, 16] } },
+    { name: "Woodstock", lines: ["Woodstock Community Center", "5120 SE Woodstock Blvd", "Portland, OR 97206"],
+      map: "5120 SE Woodstock Blvd Portland OR 97206",
+      hours: { 1: [15, 19], 5: [15, 19], 6: [10, 15] } }
+  ];
+
+  function fmt(h) {
+    var suffix = h >= 12 ? "pm" : "am";
+    var hr = h % 12 || 12;
+    return hr + suffix;
+  }
+
+  // current time in Portland, whatever the visitor's own timezone
+  var now = new Date();
+  var parts = new Intl.DateTimeFormat("en-US", { timeZone: "America/Los_Angeles", weekday: "long", hour: "numeric", hour12: false })
+    .formatToParts(now).reduce(function (o, p) { o[p.type] = p.value; return o; }, {});
+  var today = days.indexOf(parts.weekday);
+  var hourNow = parseInt(parts.hour, 10) % 24;
+
+  function statusFor(b) {
+    var t = b.hours[today];
+    if (t && hourNow >= t[0] && hourNow < t[1]) return { open: true, text: "Open now until " + fmt(t[1]) };
+    if (t && hourNow < t[0]) return { open: false, text: "Opens today at " + fmt(t[0]) };
+    for (var i = 1; i <= 7; i++) {
+      var d = (today + i) % 7;
+      if (b.hours[d]) return { open: false, text: "Closed. Opens " + (i === 1 ? "tomorrow" : days[d]) + " at " + fmt(b.hours[d][0]) };
+    }
+    return { open: false, text: "Closed" };
+  }
+
+  var order = [1, 2, 3, 4, 5, 6, 0]; // Monday first
+  document.getElementById("branch-list").innerHTML = branches.map(function (b) {
+    var s = statusFor(b);
+    var rows = order.map(function (d) {
+      var t = b.hours[d];
+      return '<tr' + (d === today ? ' class="today"' : '') + '><th scope="row">' + days[d] + '</th>' +
+        (t ? '<td>' + fmt(t[0]) + " to " + fmt(t[1]) + '</td>' : '<td class="closed">Closed</td>') + '</tr>';
+    }).join("");
+    return '<article class="branch">' +
+      '<h3>' + b.name + '</h3>' +
+      '<address>' + b.lines.join("<br>") + '<br><a href="https://www.openstreetmap.org/search?query=' + encodeURIComponent(b.map) + '">Get directions</a></address>' +
+      '<span class="status' + (s.open ? ' open' : '') + '">' + s.text + '</span>' +
+      '<table class="hours"><caption class="sr-only">' + b.name + ' hours</caption><tbody>' + rows + '</tbody></table>' +
+      '</article>';
+  }).join("");
+
+  /* ---------- join form ---------- */
+  var form = document.getElementById("join-form");
+  function setErr(input, msg) {
+    var e = document.getElementById(input.id + "-err");
+    e.textContent = msg;
+    input.setAttribute("aria-invalid", msg ? "true" : "false");
+    return !msg;
+  }
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var name = form.elements.name, email = form.elements.email;
+    var okName = setErr(name, name.value.trim() ? "" : "Enter your name so we can put it on your card.");
+    var okEmail = setErr(email, /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim()) ? "" :
+      (email.value.trim() ? "That email is missing something. Check it looks like name@example.com." : "Enter your email so we can send reservation reminders."));
+    if (!okName) { name.focus(); return; }
+    if (!okEmail) { email.focus(); return; }
+
+    var first = name.value.trim().split(/\s+/)[0];
+    var branch = form.elements.branch.value;
+    var area = document.getElementById("join-area");
+    var div = document.createElement("div");
+    div.className = "done";
+    div.setAttribute("role", "status");
+    div.tabIndex = -1;
+    var h = document.createElement("h3");
+    h.textContent = "Your card is ready, " + first + ".";
+    var p = document.createElement("p");
+    p.textContent = "Pick it up at the " + branch + " branch during open hours. We'll email you on March 6 when spring borrowing opens.";
+    div.appendChild(h); div.appendChild(p);
+    area.replaceChildren(div);
+    div.focus();
+  });
+})();
+</script>
+</body>
+</html>

@@ -37,6 +37,10 @@ A removed line identifies something to investigate. Inspect both sides of every
 relevant hunk, and report a regression only after confirming the change did not
 replace the removed behavior.
 
+The markers below are web examples. In native code, read the removed lines for
+the same behaviors: accessibility labels, focus handling, reduced-motion checks,
+text direction, text styles and string-catalog entries.
+
 | Removed from the `-` side | What to check |
 | --- | --- |
 | `aria-label`, `aria-labelledby`, `aria-describedby`, `aria-live`, `role=` | The control or region lost its accessible name, description, or announcement |
@@ -85,5 +89,11 @@ states of a new variant or theme, translation entries for new strings, and
 sibling surfaces that must expose the same action. Report missing states only
 where the component or task requires them.
 
-Return the resolved scope, affected surfaces, classified findings, and
-uninspected coverage.
+Return the resolved scope, affected surfaces,
+[design scores](../../../references/scores.md), classified findings, and
+uninspected coverage. The [severity](../../../references/severity.md) cap and
+verdict cover `Introduced` and `Regression` findings only, so a change whose only
+findings are `Pre-existing` is an `Approve`.
+
+Adapted from Jakub Krehel's public interface-review (jakubkrehel/skills, commit 60bf140).
+See [license](../../../references/jakub-krehel-LICENSE.txt).

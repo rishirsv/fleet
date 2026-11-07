@@ -41,6 +41,10 @@ additional review needed instead of claiming combined coverage.
 
 ## Inspect and judge
 
+Look at each capture before using it as evidence. Reject and recapture one
+that is blank, still loading, cropped, covered by a dialog, or showing the wrong
+state. Use only captures from this review unless the user supplied others.
+
 Use the criteria to check your first impression and assess every applicable
 one. For user tasks, follow the important steps and recovery paths. Keep
 observations tied to the captured state; intentional loading, empty, and error
@@ -90,6 +94,9 @@ finding.
 
 ## Result
 
-Report as the skill's report section describes. For readiness, name what blocks
-acceptance. Keep routine criterion accounting out of the report unless
+Report as the skill's report section describes: open with the
+[design scores](../../../references/scores.md) and end with the
+[severity](../../../references/severity.md) verdict. For a flow, list every
+step in order with a one-line health rating (works, rough, or broken) before
+the findings. For readiness, name what blocks acceptance. Keep routine criterion accounting out of the report unless
 requested.

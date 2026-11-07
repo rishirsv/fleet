@@ -20,7 +20,8 @@ only:
   affected, with explicit required coverage and any known access gaps.
 - Current captures and interaction evidence, with their paths and capture
   context, plus relevant existing test or detector findings when available.
-- The absolute paths of this file, [craft floor](craft-floor.md), and
+- The absolute paths of this file, [craft floor](craft-floor.md), the
+  [design skill](../skills/design/SKILL.md) for its generic defaults, and
   [visual proof](evidence.md). For a visual target also pass
   [design QA](../skills/design/references/design-qa.md).
 
@@ -58,19 +59,18 @@ Check these together in one scoped pass:
 Return a short result:
 
 1. `recapture`, `rebuild`, `fix`, or `ship`, scoped to what you reviewed.
-2. Material findings, each with a stable ID, priority, location, expected versus
-   observed result, evidence, and concrete correction. Use design QA's P0–P3
-   severity when loaded; otherwise P0 blocks the task, P1 is a major failure,
-   P2 is a material defect, and P3 is optional refinement. A violated aesthetic
-   ban is at least P2 unless the packet supplies an explicit exception authority.
+2. Material findings, each with a stable ID, [severity](severity.md),
+   location, expected versus observed result, evidence, and concrete
+   correction. A violated aesthetic ban is at least MEDIUM unless the packet
+   supplies an explicit exception authority.
 3. One line on what to preserve and any unverified required coverage.
 
 Use `recapture` when required visual evidence is missing or invalid. Keep any
 independently supported findings, but defer visual approval until valid evidence
 is reviewed. Use `rebuild` when the central composition or material contradicts
 the target and local patches cannot resolve it; name the regions and assets to
-replace. Use `fix` for other P0–P2 findings or missing required nonvisual proof.
-Use `ship` only with no open P0–P2 findings or required evidence gaps in scope.
+replace. Use `fix` for other HIGH or MEDIUM findings or missing required nonvisual proof.
+Use `ship` only with no open HIGH or MEDIUM findings or required evidence gaps in scope.
 Do not invent numerical quality scores or call uninspected scope approved.
 
 ## Corrections and verification

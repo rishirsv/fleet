@@ -1,9 +1,9 @@
 # Recreate a reference
 
 Recreate a selected image, screenshot, mockup, or live URL as a faithful,
-responsive, interactive interface. Default to browser-openable local HTML with
-CSS and JavaScript. Use an existing app's stack when the task is to integrate
-there.
+responsive, interactive interface. Build in the target project's stack, web or
+native, when the task is to integrate there; otherwise default to
+browser-openable local HTML with CSS and JavaScript.
 
 ## Contents
 
@@ -26,8 +26,18 @@ there.
   reference viewport and supported sizes. Infer the platform from the task and
   project; the screenshot's aspect ratio does not decide it.
 
-Use this workflow when the reference is the target to reproduce. For inspiration
-or redesign requests, preserve only the aspects the user selected.
+Use this workflow when the reference is the target to reproduce. "One to one",
+"exact" or "like this" means every value comes from the reference, and a
+guessed value is a finding. "Inspired by" means carry the concept and use the
+project's own tokens; for inspiration or redesign requests, preserve only the
+aspects the user selected. Rebuild the part the user named and nothing around
+it, and carry the idea, not the brand: another product's logo, names and colors
+stay behind unless the user asked for them.
+
+Open the reference itself, never a memory of it. When the reference is a native
+or desktop app, inspect that app, not its marketing site. Inventory every state
+it has (hover, pressed, focus, open, empty, loading, error, selected, disabled)
+and its transitions; rebuilding the resting state alone is a finding.
 
 ## Resolve an image or mockup
 
@@ -40,6 +50,9 @@ typography, icons, or assets need closer comparison. A still image establishes
 appearance; use the brief and product context for behavior it cannot show.
 
 ## Capture a live reference
+
+Recreate only a site the user owns or has permission to copy. When the source
+belongs to someone else, say so once before capturing.
 
 Open the source in the in-app browser or the user's chosen browser. Confirm the
 intended route and state before treating it as evidence; an unexpected login,
@@ -161,8 +174,8 @@ asset subtask.
 
 ## Build the local interface
 
-Use one HTML file with embedded CSS and JavaScript when practical, with local
-asset files as needed. Add a framework or build tooling only when the existing
+Outside an existing project, use one HTML file with embedded CSS and JavaScript
+when practical, with local asset files as needed. Add a framework or build tooling only when the existing
 project or requested behavior needs it. Reuse shared styles and components so
 each correction applies to all equivalent elements.
 
@@ -200,3 +213,5 @@ remaining differences or unverified behavior. If the iteration limit leaves QA
 blocked, deliver the reviewable prototype with that status. Keep the preview
 server running while the user needs it. Local delivery is sufficient;
 publishing is a separate request.
+
+Reference-matching rules adapted from Raphael Salaja's public match (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

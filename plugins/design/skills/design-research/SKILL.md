@@ -1,6 +1,6 @@
 ---
 name: design-research
-description: "Plan product user research, synthesize supplied interviews or feedback, or investigate a named product's UX problems from sources. Use for research questions, interview guides, usability studies, surveys, evidence synthesis, or user-pain scans."
+description: "Plan user research, synthesize interviews or feedback, or scan a product's reported UX problems. Use for study plans, interview guides, surveys, or evidence synthesis."
 ---
 
 # Design research
@@ -49,7 +49,6 @@ documentation and feature requests. Report access gaps and uncertainty.
 ## Deliver
 
 Return the decision-relevant findings, evidence ledger/source map, limitations
-and next action. Use the requested format; otherwise preserve the selected workflow's
-Output structure (Deliverables for research planning) in chat, with unsupported fields marked unknown. Save reusable
+and next action. Save reusable
 findings only when requested, through `$design-context`, with sources and scope.
 Follow [reporting guidance](../../references/reporting.md).

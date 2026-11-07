@@ -1,9 +1,3 @@
----
-name: design-critique
-description: Get structured design feedback on usability, hierarchy, and consistency. Trigger with "review this design", "critique this mockup", "what do you think of this screen?", or when sharing a Figma link or screenshot for feedback at any stage from exploration to final polish.
-argument-hint: "<Figma URL, screenshot, or description>"
----
-
 # $design-review critique
 
 Read [Workflow guidance](workflows-guide.md) for evidence, output formats, tool availability, and authorization before applying this workflow.
