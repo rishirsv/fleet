@@ -74,6 +74,3 @@ flip them under `[dir="rtl"]` with `scale: -1 1`.
 
 Analyze composite icons part by part; a badge or slash overlay may keep its
 position when the base glyph flips. Give icon-only buttons accessible names.
-
-Adapted from Jakub Krehel's public better-ui (jakubkrehel/skills, commit 60bf140).
-See [license](../../../references/jakub-krehel-LICENSE.txt).

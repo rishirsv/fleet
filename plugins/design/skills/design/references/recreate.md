@@ -213,5 +213,3 @@ remaining differences or unverified behavior. If the iteration limit leaves QA
 blocked, deliver the reviewable prototype with that status. Keep the preview
 server running while the user needs it. Local delivery is sufficient;
 publishing is a separate request.
-
-Reference-matching rules adapted from Raphael Salaja's public match (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

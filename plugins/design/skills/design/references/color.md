@@ -84,6 +84,3 @@ page, suppress transitions for the swap.
 | Dark tokens equal to the light ramp in reverse step order | Lower the accent's chroma, widen the dark end and remeasure every pair |
 | Color tokens set under both `prefers-color-scheme` and a `.dark` class | Pick one switching mechanism and use it throughout |
 | `oklch()` chroma beyond sRGB with no sRGB value declared before it | Declare the sRGB value first, then the vivid one inside `@media (color-gamut: p3)` |
-
-Adapted from Jakub Krehel's public better-colors (jakubkrehel/skills, commit 60bf140).
-See [license](../../../references/jakub-krehel-LICENSE.txt).

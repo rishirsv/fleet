@@ -164,5 +164,3 @@ name what remains, including fixes not authorized in a comparison-only request.
 Reaching the iteration limit does not make unresolved QA pass. A fidelity pass
 does not certify the quality of the source design or untested accessibility and
 behavior.
-
-Design-to-project mapping adapted from Jakub Krehel's public build-design (jakubkrehel/skills, commit 60bf140). See [license](../../../references/jakub-krehel-LICENSE.txt).

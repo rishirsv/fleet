@@ -186,5 +186,3 @@ When the result depends on feel that code can't settle (a cross-fade, a spring's
 - Gestures: Pointer Events with `setPointerCapture`, and a short position and time history for release velocity.
 - Gate hover motion with `@media (hover: hover) and (pointer: fine)`, reduced motion with `@media (prefers-reduced-motion: reduce)`, and skip state animation on mount with `initial={false}` on `AnimatePresence`.
 - Add `will-change` only after you see first-frame stutter, naming the animated property, never `all`.
-
-Adapted from Emil Kowalski's public animate and apple-design skills (emilkowalski/skills, commit c8a7962) Jakub Krehel's public better-ui (jakubkrehel/skills, commit 60bf140), and sound defaults from Raphael Salaja's public defaults (raphaelsalaja/skills, commit 31031e9). See the [Kowalski](../../../references/emil-kowalski-LICENSE.txt), [Krehel](../../../references/jakub-krehel-LICENSE.txt) and [Salaja](../../../references/raphael-salaja-LICENSE.txt) licenses.

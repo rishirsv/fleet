@@ -165,8 +165,3 @@ Disable selection only on a draggable or gesture-driven surface where accidental
 | `-webkit-font-smoothing` or `antialiased` inside a component | Move it to the root |
 | Mixed-direction value such as a name, number or URL without `<bdi>` or `dir` | Wrap it in `<bdi>` |
 | `user-select: none` or `select-none` on a layout root or text container | Remove it; keep it only on a drag or gesture surface |
-
-Adapted from Jakub Krehel's public better-typography (jakubkrehel/skills, commit 60bf140).
-The truncate, wrap or clamp choice is from Emil Kowalski's public
-break-ui (emilkowalski/skills, commit c8a7962) ([license](../../../references/emil-kowalski-LICENSE.txt)).
-See [license](../../../references/jakub-krehel-LICENSE.txt).

@@ -228,5 +228,3 @@ If **~~design tool** is connected:
 1. **Be specific about context** — "Error message when payment fails" is better than "error message."
 2. **Share your brand voice** — "We're professional but warm" helps me match your tone.
 3. **Consider the user's emotional state** — Error messages need empathy. Success messages can celebrate.
-
-Writing rules adapted from Jakub Krehel's public better-writing (jakubkrehel/skills, commit 60bf140) and Raphael Salaja's public copy (raphaelsalaja/skills, commit 31031e9). See the [Krehel](jakub-krehel-LICENSE.txt) and [Salaja](raphael-salaja-LICENSE.txt) licenses.

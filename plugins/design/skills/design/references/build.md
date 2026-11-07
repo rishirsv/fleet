@@ -72,5 +72,3 @@ result again. When you can start a fresh reviewer, use
 comparison and verified corrections. Keep the handoff proportional to the change;
 do not reopen settled design decisions or audit unrelated screens. Report open
 findings and evidence gaps at any stop; stopping does not establish readiness.
-
-Build-with-what-exists rules adapted from Raphael Salaja's public restraint and reuse (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

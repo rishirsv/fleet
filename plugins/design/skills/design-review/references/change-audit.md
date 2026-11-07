@@ -94,6 +94,3 @@ Return the resolved scope, affected surfaces,
 uninspected coverage. The [severity](../../../references/severity.md) cap and
 verdict cover `Introduced` and `Regression` findings only, so a change whose only
 findings are `Pre-existing` is an `Approve`.
-
-Adapted from Jakub Krehel's public interface-review (jakubkrehel/skills, commit 60bf140).
-See [license](../../../references/jakub-krehel-LICENSE.txt).

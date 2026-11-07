@@ -116,5 +116,3 @@ suggestions. Offer relevant, visible filters; tokens may supplement them. When
 there are no results, show the query and a way to change or clear it. Exercise
 entry, clearing, cancellation, scope changes, suggestions, filters, results,
 and no results.
-
-Surface, form, loading, navigation and sound defaults adapted from Raphael Salaja's public defaults (raphaelsalaja/skills, commit 31031e9). See [license](../../../references/raphael-salaja-LICENSE.txt).

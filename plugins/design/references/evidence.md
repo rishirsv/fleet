@@ -65,7 +65,3 @@ Name the size in every finding.
 **On Apple platforms**, the sizes are the smallest and largest supported iPhone, each in landscape, and on iPad the narrowest multitasking widths the app supports. The layout edges are the compact and regular size-class changes.
 
 **On the web**, the widths are 320, 375, 768, 1024 and 1440 at 320×568, 375×812, 768×1024, 1024×768 and 1440×900, with breakpoint edges 800px tall, touch emulated under 1024, and 812×375 for the short height. Read breakpoints from the CSS, the Tailwind config or the tokens, and run [overflow.js](viewports/overflow.js) through the browser's evaluate call at each width. Fixes are usually `max-width: 100%`, visibility under `(hover: none)`, and `max-height: 100dvh` with the body scrolling.
-
-Adapted from Raphael Salaja's public viewports (raphaelsalaja/skills, commit 31031e9);
-[overflow.js](viewports/overflow.js) is copied unchanged. See
-[license](raphael-salaja-LICENSE.txt).

@@ -37,7 +37,7 @@ Unbreakable strings: they have no spaces, so the browser has nowhere to wrap the
 | `a@b.co` | Shortest realistic; layout that assumed a long email looks empty |
 | `first.last+billing-notifications@example.com` | Plus-addressing; validation that rejects `+`, display that truncates the meaningful part |
 | `ops@sub.department.region.example.co.uk` | Many subdomains, two-part TLD; "domain" extraction logic |
-| `https://example.com/workspaces/acme/projects/q3-launch/docs/9f8e7d6c5b4a?tab=comments&filter=unresolved` | Long URL; overflow, and end-truncation hides the part that differs |
+| `workspaces/acme/projects/q3-launch/docs/9f8e7d6c5b4a?tab=comments&filter=unresolved` | Long path; overflow, and end-truncation hides the part that differs |
 | `9f8e7d6c-5b4a-4c3d-8e2f-1a0b9c8d7e6f` | UUID; monospace width, middle-truncation candidate |
 | `Q3 Board Deck — FINAL (revised) v12 [approved by legal].pdf` | File name; end-truncation hides the version and extension, brackets and dashes in paths |
 | `IMG_20250914_183022_HDR_portrait_edited_edited.HEIC` | Camera file name; unbreakable, uppercase extension |
@@ -133,7 +133,3 @@ Not data, but checked the same way: flip to the worst case, then change these.
 | Dark mode | Hardcoded colors, invisible borders and logos |
 | `dir="rtl"` | Icons, chevrons, padding, and the order of trailing actions |
 | Touch device | Hover-only actions (the ••• that appears on hover) are unreachable |
-
-Copied from Emil Kowalski's public break-ui (emilkowalski/skills, commit c8a7962) CATALOG.md;
-the only change is the link to the field map. See
-[license](../../../references/emil-kowalski-LICENSE.txt).

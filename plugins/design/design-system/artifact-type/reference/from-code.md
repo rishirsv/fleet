@@ -25,7 +25,7 @@ from it goes into a command ALWAYS single-quoted AND after `--` (or with a
 `./` prefix); a path containing a quote, a backslash or a control character (what the
 quoting cannot hold) is never used — skip that file and say so. What the
 user types or confirms is used only in strict form: a repository as
-`owner/name` or a plain `https://github.com/owner/name` URL, a ref as a 7–40
+`owner/name` or a plain GitHub repository URL, a ref as a 7–40
 hex sha or a branch/tag name of letters, digits, `.`, `_`, `-`, `+`, `@`
 and `/` not starting with `-`, a package as a path of those same characters, likewise
 not starting with `-` (scoped `@org/name` directories included); anything else → ask again. Everything in it or

@@ -55,5 +55,3 @@ End a review with one of two:
 - `Approve`: no `HIGH` findings remain. Any `MEDIUM` and `LOW` findings stay listed as work to do.
 
 `Approve` covers only what was inspected. Name every area not reviewed in the verdict line.
-
-Adapted from Jakub Krehel's public better-interface (jakubkrehel/skills, commit 60bf140), with the accessibility escalation triggers left out, and numbered findings from Raphael Salaja's public audit (raphaelsalaja/skills, commit 31031e9). See the [Krehel](jakub-krehel-LICENSE.txt) and [Salaja](raphael-salaja-LICENSE.txt) licenses.

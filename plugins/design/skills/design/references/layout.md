@@ -126,5 +126,3 @@ regular tracks, and a masonry-style layout. Preserve meaningful source order and
 check that keyboard traversal agrees with visual grouping. Treat new layout
 features as progressive enhancements and inspect the fallback on the supported
 browsers or OS versions.
-
-Surface defaults and alignment checks adapted from Raphael Salaja's public defaults and alignment (raphaelsalaja/skills, commit 31031e9), with [measure.js](../../../references/alignment/measure.js) copied unchanged; grouping, adaptivity and alignment values from Jakub Krehel's public better-layout and better-ui (jakubkrehel/skills, commit 60bf140). See the [Salaja](../../../references/raphael-salaja-LICENSE.txt) and [Krehel](../../../references/jakub-krehel-LICENSE.txt) licenses.

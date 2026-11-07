@@ -55,7 +55,7 @@ When the design is a working app or tool rather than a page to read:
 ### Generic defaults
 
 For calibration, AI-generated design right now clusters around some traits:
-1. a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta or warm-clay accent (often near #D97757 — Anthropic's own Claude-interaction accent, so on a user's brief it reads as a tell);
+1. a warm cream background (near #F4F1EA) with a high-contrast serif display and a terracotta or warm-clay accent (often near #D97757);
 2. a near-black background with a single bright acid-green or vermilion accent;
 3. a broadsheet-style layout with hairline rules, zero border-radius, and dense newspaper-like columns;
 4. the SaaS-card kit: content chopped into identical rounded cards, one border-radius on everything regardless of hierarchy, the same soft grey shadow (rgba(0,0,0,.1)) under each, and gradient washes as decoration;
@@ -129,5 +129,3 @@ Open one of these only when a specific question comes up while building. Do not 
 [Visual proof](../../references/evidence.md) sets what counts as evidence for a claim about how the result renders or behaves. When you can start a fresh reviewer, run [finish review](../../references/finish-review.md) on implemented UI.
 
 Write design explanations with [Writing style](../../references/reporting.md): lead with the visible result, decision, or blocker; name elements and quote copy.
-
-Forked from Anthropic's frontend-design skill (anthropics/claude-plugins-official, commit 1aa4a4b), changed only where it meets this plugin. See [license](../../references/anthropic-frontend-design-LICENSE.txt).

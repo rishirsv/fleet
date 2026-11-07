@@ -123,8 +123,3 @@ A test-only request reports findings. When fixes are also requested, correct the
 component, then rerun the failing cases and the other cases the correction could
 affect. Keep the test page or native preview fixtures available, state how to
 open them, and list checks that remain unverified.
-
-Scenario axes adapted from Jakub Krehel's public break (jakubkrehel/skills, commit 60bf140); field map,
-worst-case values and failure signatures from Emil Kowalski's public
-break-ui (emilkowalski/skills, commit c8a7962). See the [Krehel](../../../references/jakub-krehel-LICENSE.txt)
-and [Kowalski](../../../references/emil-kowalski-LICENSE.txt) licenses.

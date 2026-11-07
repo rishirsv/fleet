@@ -155,5 +155,3 @@ Continue from the selected prototype source instead of rebuilding it. For a
 selected image, follow the recreation workflow. Once an accepted visual target
 exists, design QA governs fidelity and correction iterations; ideation needs no
 fidelity pass before a target is chosen.
-
-The variant axis and shared floor are adapted from Jakub Krehel's public variant (jakubkrehel/skills, commit 60bf140). See [license](../../../references/jakub-krehel-LICENSE.txt).
