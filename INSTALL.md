@@ -104,7 +104,7 @@ copies even when their version is unchanged, preserving data and disabled state.
 Plugin sync refuses dirty plugin/tooling source; `--allow-dirty` is for development.
 
 `scripts/sync-plugins.sh --all` refreshes both hosts. Local sync does not publish
-cloud releases; follow [cloud releases](docs/releases.md).
+cloud releases.
 Config sync installs the selected VS Code extensions; Codex/Claude plugin
 installation remains a separate step.
 
